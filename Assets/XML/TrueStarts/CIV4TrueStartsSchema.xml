@@ -1,0 +1,121 @@
+<!-- advc.tsl: XML schema for data used by the True Starts option -->
+<Schema xmlns="urn:schemas-microsoft-com:xml-data" xmlns:dt="urn:schemas-microsoft-com:datatypes">
+	<!-- Mostly just to be consistent with other info types. Could also be
+		 used for lookup by type string for debugging. -->
+	<ElementType name="Type" content="textOnly"/>
+	<!-- custom: Long_Comments_XML.txt #290 -->
+	<ElementType name="iBias" content="textOnly" dt:type="int"/>
+	<!-- TruCivs ... -->
+	<ElementType name="CivilizationType" content="textOnly"/>
+	<ElementType name="iLatitudeTimes10" content="textOnly" dt:type="int"/>
+	<ElementType name="iLongitudeTimes10" content="textOnly" dt:type="int"/>
+	<ElementType name="iPrecipitation" content="textOnly" dt:type="int"/>
+	<ElementType name="iClimateVariation" content="textOnly" dt:type="int"/>
+	<ElementType name="iOceanity" content="textOnly" dt:type="int"/>
+	<ElementType name="iMajorRiverWeight" content="textOnly" dt:type="int"/>
+	<ElementType name="iMaxElevation" content="textOnly" dt:type="int"/>
+	<ElementType name="iMountainousArea" content="textOnly" dt:type="int"/>
+	<ElementType name="iTotalArea" content="textOnly" dt:type="int"/>
+	<ElementType name="iHStretch" content="textOnly" dt:type="int"/>
+	<ElementType name="GeoRegion" content="textOnly"/>
+	<ElementType name="TruCivInfo" content="eltOnly">
+		<element type="Type"/>
+		<!-- custom: Long_Comments_XML.txt #291 -->
+		<element type="CivilizationType"/>
+		<!-- custom: Long_Comments_XML.txt #292 -->
+		<element type="iLatitudeTimes10"/>
+		<!-- Can take any values between -1800 and +1800.
+			 Negative sign for western hemisphere. -->
+		<element type="iLongitudeTimes10"/>
+		<!-- custom: Long_Comments_XML.txt #280 -->
+		<element type="iPrecipitation" minOccurs="0"/>
+		<!-- custom: Long_Comments_XML.txt #281 -->
+		<element type="iClimateVariation" minOccurs="0"/>
+		<!-- custom: Long_Comments_XML.txt #282 -->
+		<element type="iOceanity" minOccurs="0"/>
+		<!-- custom: Long_Comments_XML.txt #283 -->
+		<element type="iMajorRiverWeight" minOccurs="0"/>
+		<!-- custom: Long_Comments_XML.txt #284 -->
+		<element type="iMaxElevation" minOccurs="0"/>
+		<!-- custom: Long_Comments_XML.txt #285 -->
+		<element type="iMountainousArea" minOccurs="0"/>
+		<!-- custom: Long_Comments_XML.txt #286 -->
+		<element type="iTotalArea" minOccurs="0"/>
+		<!-- custom: Long_Comments_XML.txt #287 -->
+		<element type="iHStretch" minOccurs="0"/>
+		<!-- custom: Long_Comments_XML.txt #288 -->
+		<element type="GeoRegion" minOccurs="0"/>
+		<!-- See comment above the ElementType definition. Important for
+			 balancing the civs' frequencies of appearance on the bottom line. -->
+		<element type="iBias" minOccurs="0"/>
+	</ElementType>
+	<ElementType name="TruCivInfos" content="eltOnly">
+		<element type="TruCivInfo" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="Civ4TruCivInfos" content="eltOnly">
+		<element type="TruCivInfos" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<!-- TruLeaders ... -->
+	<ElementType name="Description" content="textOnly"/>
+	<ElementType name="LeaderType" content="textOnly"/>
+	<ElementType name="iStartOfReign" content="textOnly" dt:type="int"/>
+	<ElementType name="TruLeaderInfo" content="eltOnly">
+		<element type="Type"/>
+		<!-- "LEADER_..." type name of the leader that the
+			 TruLeader info refers to. -->
+		<element type="LeaderType"/>
+		<!-- custom: Long_Comments_XML.txt #289 -->
+		<element type="iStartOfReign" minOccurs="0"/>
+		<element type="iBias" minOccurs="0"/>
+	</ElementType>
+	<ElementType name="TruLeaderInfos" content="eltOnly">
+		<element type="TruLeaderInfo" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="Civ4TruLeaderInfos" content="eltOnly">
+		<element type="TruLeaderInfos" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<!-- TruBonuses ... -->
+	<ElementType name="BonusType" content="textOnly"/>
+	<ElementType name="bLandOnly" content="textOnly" dt:type="boolean"/>
+	<ElementType name="UntilEra" content="textOnly"/>
+	<ElementType name="DiscouragedRegion" content="eltOnly">
+		<element type="GeoRegion" minOccurs="1" maxOccurs="1"/>
+		<element type="UntilEra" minOccurs="1" maxOccurs="1"/>
+	</ElementType>
+	<ElementType name="DiscouragedRegions" content="eltOnly">
+		<element type="DiscouragedRegion" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="DiscouragedCiv" content="eltOnly">
+		<element type="CivilizationType" minOccurs="1" maxOccurs="1"/>
+		<!-- custom: Long_Comments_XML.txt #293 -->
+		<element type="UntilEra" minOccurs="1" maxOccurs="1"/>
+	</ElementType>
+	<ElementType name="DiscouragedCivs" content="eltOnly">
+		<element type="DiscouragedCiv" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="EncouragedCiv" content="eltOnly">
+		<element type="CivilizationType" minOccurs="1" maxOccurs="1"/>
+		<!-- See comment above -->
+		<element type="UntilEra" minOccurs="1" maxOccurs="1"/>
+	</ElementType>
+	<ElementType name="EncouragedCivs" content="eltOnly">
+		<element type="EncouragedCiv" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="TruBonusInfo" content="eltOnly">
+		<element type="Type"/>
+		<!-- custom: Long_Comments_XML.txt #294 -->
+		<element type="BonusType"/>
+		<!-- custom: Long_Comments_XML.txt #295 -->
+		<element type="bLandOnly" minOccurs="0"/>
+		<element type="DiscouragedRegions" minOccurs="0" maxOccurs="*"/>
+		<element type="DiscouragedCivs" minOccurs="0" maxOccurs="*"/>
+		<element type="EncouragedCivs" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="TruBonusInfos" content="eltOnly">
+		<element type="TruBonusInfo" maxOccurs="*"/>
+	</ElementType>
+	<ElementType name="Civ4TruBonusInfos" content="eltOnly">
+		<element type="TruBonusInfos" minOccurs="0" maxOccurs="*"/>
+	</ElementType>
+	<!-- advc.tsl: end -->
+</Schema>

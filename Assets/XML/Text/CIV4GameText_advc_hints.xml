@@ -1,0 +1,719 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- custom: Keep only English text keys in this file; German/French/Italian/Spanish entries were intentionally removed for AdvCiv-SAS cleanup consistency and to solve formatting errors from mixed encodings/translations. (GPT-5.3-Codex) -->
+<Civ4GameText xmlns="http://www.firaxis.com">
+<!-- "A negative event that afflicts one of your rivals is, in effect, like a
+	 positive event for you!" Messages about roads washed away in Beijing are
+	 just annoying, and this hint feels like a taunt. -->
+<!-- advc.130v (replacement): -->
+<TEXT>
+	<Tag>TXT_KEY_HINT_70</Tag>
+	<English>(AdvCiv) The behavior of your capitulated vassals reflects on you. If they raze cities or trade with a pariah, your rivals will hold you responsible.</English>
+</TEXT>
+
+<!-- "Rival civilizations led by computer opponents now pose a more significant
+	 threat from the sea." -->
+<!-- advc.130v, advc.104 -->
+<TEXT>
+	<Tag>TXT_KEY_HINT_71</Tag>
+	<English>(AdvCiv) Don't worry about rivals that dislike your capitulated vassals - this can't sway them to declare war on you. However, vassals that came to you peacefully are a different story!</English>
+</TEXT>
+
+<!-- custom: caravel removed, disable this hint as well (commented-out) -->
+<!-- custom: Long_Comments_XML.txt #140 -->
+
+<!-- "If you find a valuable resource that is too far away for you to use,
+	 it may still be smart to keep a unit on top of it, if only to find
+	 out who eventually is going to control it." Who does that? -->
+<!-- advc.012 -->
+<TEXT>
+	<Tag>TXT_KEY_HINT_16</Tag>
+	<English>(AdvCiv) There is no military reason for clearing the vegetation around your cities: When you attack invading units on a tile within your borders, they receive no defensive bonus from forest or jungle.</English>
+</TEXT>
+
+<!-- "Intercontinental trade routes now yield more gold than normal trade
+	 routes." Not news anymore. -->
+<TEXT>
+	<Tag>TXT_KEY_HINT_56</Tag>
+	<English>(UWAI) Some leaders are known not to wage war against civs they're pleased with (+4 relations); however, don't depend on it if the target is a large civ that looks like very easy pickings.</English>
+</TEXT>
+
+<!-- "Oil-based navies are a huge step up from coal-powered ironclads. If you
+	 are the first to build Destroyers, use them to prevent rivals from obtaining sea-based oil resources; protect your advantage as long as possible!" Oil rigs matter very rarely. -->
+<TEXT>
+	<Tag>TXT_KEY_HINT_31</Tag>
+	<English>(UWAI) When a civilization refuses to join a war on grounds of "having enough on their hands," this can mean that they're already preparing a different war. But it's also possible that they're only preoccupied with peaceful development.</English>
+</TEXT>
+
+<!-- "If you find a valuable resource that is too far away for you to use, it
+	 may still be smart to keep a unit on top of it, if only to find out who
+	 eventually is going to control it." Who does that? -->
+<TEXT>
+	<Tag>TXT_KEY_HINT_16</Tag>
+	<English>(UWAI) If you believe that a rival is planning war against you, it may still be possible to dissuade them by amending relations, improving your military or proposing a war against a third party.</English>
+</TEXT>
+
+<!-- "Short on gold? Send your spies to steal from your neighbors!" That'll
+	 hardly help in the short run, and the gold mission it's generally so
+	 tedious that it shouldn't be advertised. -->
+<!-- advc.130o -->
+<TEXT>
+	<Tag>TXT_KEY_HINT_64</Tag>
+	<English>(AdvCiv) If you attack a civilization after receiving their tribute, everyone will be deaf to your demands and pleas for a long time. Once a civilization no longer remembers how "you made an arrogant demand," they're fair game to attack.</English>
+</TEXT>
+
+<!-- "Don't neglect your navy! Especially in the late game. Controlling the
+	 seas can provide a decisive advantage." I wish! -->
+<!-- advc.300 -->
+<TEXT>
+	<Tag>TXT_KEY_HINT_43</Tag>
+	<English>(AdvCiv) Don't be lulled if Barbarians appear only in small numbers in the ancient era - it's often not until the end of the classical era that they reach their full strength.</English>
+</TEXT>
+
+<!-- Not news anymore: "The Courthouse, Jail, Palace and Castle increase the
+	 number of Espionage Points the player will receive each turn." -->
+<TEXT>
+	<Tag>TXT_KEY_HINT_50</Tag>
+	<English>(UWAI) If a war opponent refuses to negotiate peace, it's because everything you could offer them in trade wouldn't be enough. (Or because you're fighting the war on behalf of a third party.)</English>
+</TEXT>
+
+<!-- Minor improvements to the wording (En, Ger) -->
+<TEXT>
+	<Tag>TXT_KEY_HINT_61</Tag>
+	<English>Fighter aircraft can intercept multiple incoming planes per turn but become less effective at it as they get damaged. Take the time to repair your defensive planes.</English>
+</TEXT>
+
+<!-- "Use your mouse wheel to zoom" duh -->
+<TEXT>
+	<Tag>TXT_KEY_HINT_INTERFACE_1</Tag>
+	<English>Use [Alt + M] to set a reminder for yourself.</English>
+</TEXT>
+
+<!-- "Press the forward and back buttons on your mouse to cycle through units
+	 on the same plot" Few people have these, and it doesn't sound very
+	 convenient either. -->
+<TEXT>
+	<Tag>TXT_KEY_HINT_INTERFACE_45</Tag>
+	<English>When the screen says "Initializing" for several seconds while loading a saved game in full-screen mode, it might help to briefly minimize the game by pressing [ALT + TAB] twice.</English>
+</TEXT>
+
+<!-- Said that the screenshot gets saved in Civ4\Screenshots, which is no
+	 longer true in BtS. Also mention Ctrl. -->
+<TEXT>
+	<Tag>TXT_KEY_HINT_INTERFACE_13</Tag>
+	<English>Press [PRINT SCREEN] to take a screenshot. It gets saved in the screenshots folder under "My Games\Beyond the Sword". Hold [CTRL] for a high-resolution screenshot.</English>
+</TEXT>
+
+<!-- advc.002g: "Press [ESC] to bring up the in-game Options Menu..." -->
+<TEXT>
+	<Tag>TXT_KEY_HINT_INTERFACE_14</Tag>
+	<English>If you have cheats enabled (code "chipotle"), you can press [Shift + Ctrl + X] to enable AI Auto Play, i.e. to shift control of your civilization to the AI for a number of turns.</English>
+</TEXT>
+
+<!-- advc.102: I've extended this hint a bit. -->
+<TEXT>
+	<Tag>TXT_KEY_HINT_INTERFACE_15</Tag>
+	<English>Press [Ctrl + O] to access the player options menu even during your opponents' turns. If animations of rival moves seem to take forever, you can, right there, enable quick combat or hide foreign moves.</English>
+</TEXT>
+
+
+<!-- New hints not replacing anything -->
+<!-- advc.300 -->
+<TEXT>
+	<Tag>TXT_KEY_ADVC_HINT_1</Tag>
+	<English>(AdvCiv) Don't worry about leaving snow and desert tiles unattended: Barbarians can't appear there.</English>
+</TEXT>
+
+<!-- advc.310 -->
+<TEXT>
+	<Tag>TXT_KEY_ADVC_HINT_2</Tag>
+	<English>(AdvCiv) The trade route ability of the [COLOR_BUILDING_TEXT]Great Wall[COLOR_REVERT] should make it worth considering even in games without Barbarians. It does not have this ability, though, in games with Raging Barbarians.</English>
+</TEXT>
+
+<!-- advc.306 -->
+<TEXT>
+	<Tag>TXT_KEY_ADVC_HINT_3</Tag>
+	<English>(AdvCiv) Barbarian land units can appear aboard galleys in the fog of war. Don't assume that your cities are safe unless you've also secured your coasts!</English>
+</TEXT>
+
+<!-- advc.312 -->
+<TEXT>
+	<Tag>TXT_KEY_ADVC_HINT_4</Tag>
+	<English>(AdvCiv) By fighting Barbarians, your units can gain experience and [COLOR_HIGHLIGHT_TEXT]Great General[COLOR_REVERT] points. However, little experience and no points are earned if your units outclass theirs, and units at level 4 or higher have nothing to learn from Barbarians.</English>
+</TEXT>
+
+<!-- advc.130m -->
+<TEXT>
+	<Tag>TXT_KEY_ADVC_HINT_5</Tag>
+	<English>(AdvCiv) For a lasting boost to relations from a mutual military struggle, it is not enough to be formally at war with the same civilization. You'll have to actually send units to fight in the war. Even then, the bonus to relations fades over time.</English>
+</TEXT>
+
+<!-- advc.sha -->
+<TEXT>
+	<Tag>TXT_KEY_ADVC_HINT_6</Tag>
+	<English>A first impression is indeed a lasting one. Some relations modifiers are locked in at the beginning of the game and cannot be changed.</English>
+</TEXT>
+
+<!-- advc.130j (hints not used anymore, no longer true) start -->
+<TEXT>
+	<Tag>TXT_KEY_ADVC_HINT_7</Tag>
+	<English>(AdvCiv) A civilization that distrusts you will be more impressed by a gesture of goodwill than one that already likes you. So long as you haven't burned down half their cities, reconciliation is achievable.</English>
+</TEXT>
+<TEXT>
+	<Tag>TXT_KEY_ADVC_HINT_8</Tag>
+	<English>(AdvCiv) Trust is slowly gained and quickly lost. If you snub a friendly civilization, expect relations to take a hit.</English>
+</TEXT>
+<!-- advc.130j: end -->
+
+<!-- advc.130w -->
+<TEXT>
+	<Tag>TXT_KEY_ADVC_HINT_9</Tag>
+	<English>(AdvCiv) If your rivals voice opposition to your territorial expansion, it can help to grant some of your cities independence. That said, the resulting vassal state may raise objections as well. You can't expect to conquer the world and have the world thank you for it.</English>
+</TEXT>
+
+<TEXT>
+	<Tag>TXT_KEY_ADVC_HINT_10</Tag>
+	<English>(K-Mod) Don't panic if the city screen shows a positive revolt probability: Cities don't flip to a new owner until the third revolt.</English>
+</TEXT>
+
+<!-- advc.026, advc.134a -->
+<TEXT>
+	<Tag>TXT_KEY_ADVC_HINT_11</Tag>
+	<English>(K-Mod) If a rival proposes a trade, it could be a one-time offer - don't negotiate without considering the initial proposal. You can consult the advisor screens before you decide.</English>
+</TEXT>
+
+<TEXT>
+	<Tag>TXT_KEY_ADVC_HINT_12</Tag>
+	<English>(K-Mod) Don't risk your fishermen getting pillaged and blockaded by Barbarians. Barbarian ships aren't an even match for yours - just a single galley may be enough to fend them off.</English>
+</TEXT>
+
+<TEXT>
+	<Tag>TXT_KEY_ADVC_HINT_13</Tag>
+	<English>(K-Mod) Press "Let's stop this fighting" to let your war opponent propose conditions for peace. The peace treaty isn't automatically signed; you can still reject their offer.</English>
+</TEXT>
+
+<!-- advc.099 -->
+<TEXT>
+	<Tag>TXT_KEY_ADVC_HINT_14</Tag>
+	<English>(AdvCiv) You may have to keep a sizable portion of your troops stationed in conquered cities to suppress revolts until your culture value increases. Make sure those cities are worth the effort.</English>
+</TEXT>
+
+<!-- advc.124 -->
+<TEXT>
+	<Tag>TXT_KEY_ADVC_HINT_15</Tag>
+	<English>(AdvCiv) You can't have trade routes with cities that you haven't located on the map. Be sure to regularly scout for new foreign cities in order to get the full trade benefits from your [COLOR_HIGHLIGHT_TEXT]Open Borders[COLOR_REVERT] agreements.</English>
+</TEXT>
+<TEXT>
+	<Tag>TXT_KEY_ADVC_HINT_32</Tag>
+	<English>(AdvCiv) Normally, a colonial city or fort is required in order to integrate an island into your trade network. However, tiles that are workable by a mainland city only require a road.</English>
+</TEXT>
+
+<TEXT>
+	<Tag>TXT_KEY_ADVC_HINT_16</Tag>
+	<English>A double click on a stack of units wakes them all up.</English>
+</TEXT>
+
+<!-- advc.124 -->
+<TEXT>
+	<Tag>TXT_KEY_ADVC_HINT_17</Tag>
+	<English>(AdvCiv) If a civilization refuses to sign [COLOR_HIGHLIGHT_TEXT]Open Borders[COLOR_REVERT] with you on grounds of having "nothing to gain," have patience. Once their scouts reach your lands, they'll want to explore inside your borders. Civs that like you enough sign Open Borders even if they haven't located your territory yet.</English>
+</TEXT>
+
+<!-- advc.099 -->
+<TEXT>
+	<Tag>TXT_KEY_ADVC_HINT_18</Tag>
+	<English>(AdvCiv) If conquered cities complain about "being ruled by a foreign culture," it won't help to conquer the remaining cities of the former owner. You'll have to increase your own culture in the conquered cities, or learn to live with the anger.</English>
+</TEXT>
+
+<!-- advc.108 -->
+<TEXT>
+	<Tag>TXT_KEY_ADVC_HINT_19</Tag>
+	<English>(AdvCiv) Don't count on discovering initially hidden resources like iron or horses near your capital. They're no more likely to appear there than anywhere else.</English>
+</TEXT>
+
+<!-- advc.102  (advc.076: Quick Moves is a graphics option now) -->
+<TEXT>
+	<Tag>TXT_KEY_ADVC_HINT_20</Tag>
+	<English>(AdvCiv) The "Show Friendly Moves" option no longer shows Worker moves, but it's still advisable to enable the "Quick Moves" graphics option in addition.</English>
+</TEXT>
+
+<TEXT>
+	<Tag>TXT_KEY_ADVC_HINT_21</Tag>
+	<English>Press [ALT + D] to change the name of your leader and civilization.</English>
+</TEXT>
+
+<TEXT>
+	<Tag>TXT_KEY_ADVC_HINT_22</Tag>
+	<English>You can view all the loading screen hints in the [COLOR_HIGHLIGHT_TEXT]Hints[COLOR_REVERT] section of the Sevopedia.</English>
+</TEXT>
+
+<TEXT>
+	<Tag>TXT_KEY_ADVC_HINT_23</Tag>
+	<English>To review your leader traits, move the cursor over your flag at the bottom of the main screen.</English>
+</TEXT>
+
+<TEXT>
+	<Tag>TXT_KEY_ADVC_HINT_24</Tag>
+	<English>(UWAI) While your AI opponents try to avoid two-front wars, they still give consideration to starting more than one war at a time. Don't feel too safe when an opponent seems distracted!</English>
+</TEXT>
+
+<TEXT>
+	<Tag>TXT_KEY_ADVC_HINT_25</Tag>
+	<English>Press [ALT + X] to show the city radius ("big fat cross") around the cursor. You can mark a future city site by left-clicking; right-click removes a mark.</English>
+</TEXT>
+
+<!-- Romance languages mostly Google Translate -->
+<TEXT>
+	<Tag>TXT_KEY_ADVC_HINT_26</Tag>
+	<English>The first time that you demand resources from a vassal is guaranteed to succeed. Make sure to demand all the resources you need at once.</English>
+</TEXT>
+
+<!-- advc.036 -->
+<TEXT>
+	<Tag>TXT_KEY_ADVC_HINT_27</Tag>
+	<English>(AdvCiv) When asked to make a trade offer for a resource, the AI will try to offer gold per turn if your income is negative, and a resource otherwise. Adjust your gold slider in order to get the offer you want.</English>
+</TEXT>
+
+<!-- advc.115a, advc.115c -->
+<TEXT>
+	<Tag>TXT_KEY_ADVC_HINT_28</Tag>
+	<English>(AdvCiv) Scouts can help stave off Barbarians in the early game. While unable to attack non-Animal units, Scouts now have a defensive bonus against all Barbarians.</English>
+</TEXT>
+
+<!-- advc.008c: (related to advc.004z) -->
+<TEXT>
+	<Tag>TXT_KEY_ADVC_HINT_29</Tag>
+	<English>If you zoom out into Globe View, the Unit Layer will indicate unit stack sizes through color: The larger the stack in a tile, the more opaque the tile color.</English>
+</TEXT>
+
+<!-- advc.008c: (related to advc.127b) -->
+<TEXT>
+	<Tag>TXT_KEY_ADVC_HINT_30</Tag>
+	<English>Most announcements can be located on the map by opening the Event Log [Ctrl+Tab] and clicking on the announcement text.</English>
+</TEXT>
+
+<!-- advc.124 -->
+<TEXT>
+	<Tag>TXT_KEY_ADVC_HINT_31</Tag>
+	<English>(AdvCiv) When a war disrupts your maritime trade connections, a naval blockade can override this: tiles blockaded by your ships block enemy trade and enable friendly trade.</English>
+</TEXT>
+
+<!-- advc.008c: Was "Snacks are good in moderation" - the joke got old.
+	 It also works in the tech tree; however, right-click in the tech tree also
+	 sets a research target, so this is not recommendable. -->
+<TEXT>
+	<Tag>TXT_KEY_HINT_35</Tag>
+	<English>In the city screen, a right-click on a production button opens the Sevopedia. The Sevopedia can also be accessed via right-click from the tech-chooser and the civics screen.</English>
+</TEXT>
+
+<!-- advc.008c: Let's not be so dramatic about enemy spies -->
+<TEXT>
+	<Tag>TXT_KEY_HINT_52</Tag>
+	<English>If you spend more Espionage Points than an opponent, your missions towards that opponent get cheaper. Every point you spend throughout the game is added to this total. By increasing your Espionage spending, you also make it costlier for rivals to conduct missions against you.</English>
+</TEXT>
+<TEXT>
+	<Tag>TXT_KEY_HINT_63</Tag>
+	<English>If you are vexed by enemy spies, consider placing a Spy unit in each of your most vulnerable cities.</English>
+</TEXT>
+
+<!-- advc.008c: Nudge players toward disabling Random Events -->
+<TEXT>
+	<Tag>TXT_KEY_HINT_69</Tag>
+	<English>If you play with the Random Events option, you may be wise to keep some reserve gold in your treasury. Your savings could help mitigate the effects of a disastrous event or grant you access to additional opportunities when a positive event rolls around.</English>
+</TEXT>
+
+<!-- advc.008c: Removed "now" as it's longer news. -->
+<TEXT>
+	<Tag>TXT_KEY_HINT_56</Tag>
+	<English>Intercontinental trade routes yield more gold than normal trade routes. Build a Customs House to further cash in.</English>
+</TEXT>
+
+<!-- advc.008c: An opportunity to point out Civ4lerts. -->
+<TEXT>
+	<Tag>TXT_KEY_HINT_13</Tag>
+	<English>Check the foreign advisor often - knowing what your friends (and foes) can offer in trade is valuable information. The BUG mod can alert you whenever a technology or resource becomes available for trade; see the "Alerts" tab of the BUG menu.</English>
+</TEXT>
+
+<!-- advc.008c: Another one that needs to be less emphatic -->
+<TEXT>
+	<Tag>TXT_KEY_HINT_15</Tag>
+	<English>Walls and castles help protect your cities in the first half of the game, but, after gunpowder, only city culture boosts your defenses.</English>
+</TEXT>
+
+<!-- advc.008c: The part about "espionage benefits" may have referred to
+	 visibility from religion. Not worth mentioning with BtS. -->
+<TEXT>
+	<Tag>TXT_KEY_HINT_26</Tag>
+	<English>Open Borders agreements are invitations for your missionaries - if you spread your state religion widely enough, your neighbors may convert to your faith, which greatly improves diplomatic relations.</English>
+</TEXT>
+
+<!-- advc.008c: Wall and Castle aren't good examples; suggests that these
+	 should normally be built. -->
+<TEXT>
+	<Tag>TXT_KEY_HINT_27</Tag>
+	<English>Make sure you need every building your city creates. Cities bringing in no research can sometimes skip Libraries, just as cities that don't train units can skip Barracks.</English>
+</TEXT>
+
+<!-- advc.008c: Inconsistent capitilization, and the button isn't called
+	 "Colony". -->
+<TEXT>
+	<Tag>TXT_KEY_HINT_54</Tag>
+	<English>To reduce your city maintenance, consider turning your cities on distant continents into colonies. To form a colony, go to the Domestic Advisor screen and press the button with the fist icon.</English>
+</TEXT>
+
+<!-- advc.008c: Weird capitalization; and clarified the "not only
+	 resources" part. -->
+<TEXT>
+	<Tag>TXT_KEY_HINT_36</Tag>
+	<English>Grains, livestock, and seafood not only provide resources to your city network, but also rich yields to the local city. Cities placed near two or more of these food sources will grow quickly!</English>
+</TEXT>
+
+<!-- advc.106: The removed GP announcements aren't quite important enough to
+	 mention in the main part of the manual, so I'm sneaking the info into this
+	 hint. -->
+<TEXT>
+	<Tag>TXT_KEY_HINT_24</Tag>
+	<English>Announcements about religions founded and wonders completed in "faraway lands" by rivals whom you haven't yet met can give you a hint as to how advanced their civilizations are. Note, however, that [COLOR_HIGHLIGHT_TEXT]Great Person[COLOR_REVERT] births in faraway lands are not announced in AdvCiv.</English>
+</TEXT>
+
+<!-- advc.008c: To say that barbs can appear "anywhere" in the fog of war
+	 is a bit misleading. Removed that part. -->
+<TEXT>
+	<Tag>TXT_KEY_HINT_12</Tag>
+	<English>If a tile is presently obscured by fog of war, Barbarians can appear there. Don't assume a tile you can't see is safe, even if you've checked it last turn!</English>
+</TEXT>
+
+<!-- advc.008c: Added Explorers. Was "Entering native villages with scouts will
+	 produce better results..." -->
+<TEXT>
+	<Tag>TXT_KEY_HINT_1</Tag>
+	<English>Scouts and Explorers get better results from tribal villages than other units.</English>
+</TEXT>
+
+<!-- advc.008c: "More great people will appear in cities that build ancient
+	 wonders or multiple great wonders." ??
+	 Whether they're ancient doesn't matter (it might matter for the culture
+	 output, but not for GPP). Perhaps they meant "a great wonder or multiple
+	 national wonders", which is what the German version says.
+	 I've just removed that part in the English version. -->
+<TEXT>
+	<Tag>TXT_KEY_HINT_41</Tag>
+	<English>Wonders of the World not only provide unique benefits, they also inspire your populace. More great people will appear in cities that build Wonders.</English>
+</TEXT>
+
+<!-- advc.008c: Shortened this a bit -->
+<TEXT>
+	<Tag>TXT_KEY_HINT_67</Tag>
+	<English>While the HQ of a corporation generates extra income, each city hosting a corporation branch suffers increased maintenance costs. Unless you build Courthouses in your branch cities and a Bank in the HQ city, you may actually run at a net loss.</English>
+</TEXT>
+
+<!-- advc.008c: Was "to play with a minimized," but playing that way doesn't
+	 really seem practical. It's good for taking screenshots. Said "ALT-I"
+	 (instead of plus), which was confusing. Improved German translation. -->
+<TEXT>
+	<Tag>TXT_KEY_HINT_INTERFACE_2</Tag>
+	<English>Press [CTRL + I] to minimize the user interface. Press [ALT + I] to hide the user interface.</English>
+</TEXT>
+
+<!-- advc.008c: Combines TXT_KEY_HINT_INTERFACE_38 (ALT key) and
+	 TXT_KEY_HINT_INTERFACE_39 (right-click hover). Will use _38 for something
+	 else (see somewhere later in the file). -->
+<TEXT>
+	<Tag>TXT_KEY_HINT_INTERFACE_39</Tag>
+	<English>To view combat odds, hold down the right mouse button on the target tile. By holding down [ALT], you can view combat odds even when not at war.</English>
+</TEXT>
+
+<!-- advc.008c: "take damage" instead of "get damage" -->
+<TEXT>
+	<Tag>TXT_KEY_HINT_61</Tag>
+	<English>Your Fighters can intercept multiple enemy planes per turn, but become less effective at it as they take damage, so take care to repair your defensive planes.</English>
+</TEXT>
+
+<!-- advc.008c: Changed "may not be" to "aren't". Rewrote the German
+	 translation. -->
+<TEXT>
+	<Tag>TXT_KEY_HINT_20</Tag>
+	<English>Don't be afraid to attack with ranged units - archers and longbows aren't the best offensive units, but properly promoted, they can do a respectable job.</English>
+</TEXT>
+
+<!-- advc.906: Just plugged in the new name. Perhaps this hint should be
+	 replaced though; it suggests that the cheap 2-nukes-on-every-coastal-city
+	 tactic is fair game. -->
+<TEXT>
+	<Tag>TXT_KEY_HINT_62</Tag>
+	<English>Use the Nuclear Submarine's stealth along with its ability to carry conventional and tactical nuclear missiles to launch a devastating opening attack on another landmass.</English>
+</TEXT>
+
+<!-- advc.011b: This said that random events can be disabled through Custom Game.
+	 -->
+<TEXT>
+	<Tag>TXT_KEY_HINT_46</Tag>
+	<English>(AdvCiv) If you hold down [CTRL] while issuing a command to a [COLOR_UNIT_TEXT]Worker[COLOR_REVERT], the work will be suspended one turn before completion. Bear in mind though that progress on unfinished jobs begins to decay after 8 turns.</English>
+</TEXT>
+
+<!-- advc.008c: These two BtS hints were too wordy -->
+<TEXT>
+	<Tag>TXT_KEY_HINT_55</Tag>
+	<English>During wartime, the [COLOR_HIGHLIGHT_TEXT]Blockade[COLOR_REVERT] mission lets your ships sever all naval trade of an enemy city. During peacetime, a blockading Privateer will plunder gold from the city owner's treasury.</English>
+</TEXT>
+<TEXT>
+	<Tag>TXT_KEY_HINT_72</Tag>
+	<English>If you plan to found a specific corporation, make sure that you're able to generate the proper type of [COLOR_HIGHLIGHT_TEXT]Great Person[COLOR_REVERT] as well as the resources that the corporation consumes.</English>
+</TEXT>
+
+<!-- advc.008c: Was difficult to comprehend and the German key was incorrect.
+	 (Tbd.: Doesn't sound very useful. The behavior should perhaps be
+	 changed so that sleeping Workers are included.) -->
+<TEXT>
+	<Tag>TXT_KEY_HINT_INTERFACE_35</Tag>
+	<English>Press [/] to cycle through Workers that need orders.</English>
+</TEXT>
+
+<!-- advc.008c: German key was incorrect. Don't know about the others. -->
+<TEXT>
+	<Tag>TXT_KEY_HINT_INTERFACE_64</Tag>
+	<English>Press [\] to jump back to the last selected unit.</English>
+</TEXT>
+
+<!-- advc.008c: Use the verb "wait" as a memory hook. And warn about [Enter]. -->
+<TEXT>
+	<Tag>TXT_KEY_HINT_INTERFACE_34</Tag>
+	<English>Press [W] or [ENTER] to let the selected unit wait and cycle through your other units first. If no unit needs orders, [ENTER] will end the turn.</English>
+</TEXT>
+
+<!-- advc.008c: clarified -->
+<TEXT>
+	<Tag>TXT_KEY_HINT_INTERFACE_10</Tag>
+	<English>You can load units into a transport in a coastal water tile by ordering the units to move into that tile. A transport in a city tile will have to be loaded through the [COLOR_HIGHLIGHT_TEXT]Load[COLOR_REVERT] command.</English>
+</TEXT>
+<TEXT>
+	<Tag>TXT_KEY_HINT_INTERFACE_11</Tag>
+	<English>You can unload units from a transport by ordering the transport to move onto a land tile without a city. To unload in a city, you'll have to use the [COLOR_HIGHLIGHT_TEXT]Unload[COLOR_REVERT] command.</English>
+</TEXT>
+<!-- advc.008c: The two hints above don't explain why it's often better to
+	 unload in cities. Overwrite a redundant hint about combat odds 
+	 (which is replaced by TXT_KEY_HINT_INTERFACE_39 higher up in this file). -->
+<TEXT>
+	<Tag>TXT_KEY_HINT_INTERFACE_38</Tag>
+	<English>Unloading units in friendly cities or forts doesn't cost any movement points. Even if your transport needs to use one or two extra movement points to enter a city, the movement points saved by the units in cargo are often more valuable.</English>
+</TEXT>
+
+<!-- advc.008c: Was imprecise, and an example for what a number is shouldn't
+	 really be needed. -->
+<TEXT>
+	<Tag>TXT_KEY_HINT_INTERFACE_20</Tag>
+	<English>Press [CTRL] and a number key to bind the currently selected unit(s) to that number. This way, you can later return to the current selection by pressing its number key again.</English>
+</TEXT>
+<!-- Only minor changes -->
+<TEXT>
+	<Tag>TXT_KEY_HINT_INTERFACE_21</Tag>
+	<English>While in the city screen, press [CTRL] and a number key to save the production queue. This queue can be loaded in any other city by pressing the number key again.</English>
+</TEXT>
+
+<!-- advc.008c: Minor changes -->
+<TEXT>
+	<Tag>TXT_KEY_HINT_INTERFACE_68</Tag>
+	<English>To view your Spaceship, go to the "Victory Conditions" screen [F8] and press the "View" button next to "Space Race."</English>
+</TEXT>
+
+<!-- advc.008c: This needed some more explanation -->
+<TEXT>
+	<Tag>TXT_KEY_HINT_INTERFACE_63</Tag>
+	<English>The NUMPAD arrow keys can be used to jump between cities when the city screen is up. This only works if there is a city in the direction of the arrow key.</English>
+</TEXT>
+
+<!-- advc.008c: Mouse wheel zoom is obvious. Emphasize the key command more. -->
+<TEXT>
+	<Tag>TXT_KEY_HINT_INTERFACE_3</Tag>
+	<English>Apart from turning the mouse wheel, you can also use [PAGE UP] and [PAGE DOWN] to zoom the camera in and out.</English>
+</TEXT>
+
+<!-- advc.004z: "Flag Resources view" isn't the proper term -->
+<TEXT>
+	<Tag>TXT_KEY_HINT_INTERFACE_25</Tag>
+	<English>Press [CTRL + R] to toggle the Resource Display ("balloons").</English>
+</TEXT>
+<!-- If we mention the Resource layer ...
+	 Overwrites the hint "Move units to a distant tile by right-clicking on it"
+	 -->
+<TEXT>
+	<Tag>TXT_KEY_HINT_INTERFACE_48</Tag>
+	<English>Press [ALT + U] to toggle the Unit Display ("balloons").</English>
+</TEXT>
+
+<!-- Replacing a hint that only said that music can be toggled -->
+<TEXT>
+	<Tag>TXT_KEY_HINT_INTERFACE_47</Tag>
+	<English>A quick way to skip a music track is to disable and then re-enable music by pressing [Ctrl + M] twice.</English>
+</TEXT>
+
+<!-- advc.004m: This said that group orders can be given if a group is
+	 selected. The slider position not only being remembered, but continuing to
+	 apply is a K-Mod change btw. -->
+<TEXT>
+	<Tag>TXT_KEY_HINT_INTERFACE_9</Tag>
+	<English>To change the default camera distance, you can enable the field-of-view slider on the "Map" tab of the BUG mod menu [CTRL + ALT + O]. The slider position is remembered even if you hide the slider again.</English>
+</TEXT>
+
+<!-- advc.103
+	 This replaces a redundant hint about blockades (covered by
+	 TXT_KEY_HINT_55). -->
+<TEXT>
+	<Tag>TXT_KEY_HINT_57</Tag>
+	<English>(AdvCiv) Your spy units can investigate rival cities again, but unlike in "Warlords" and Civ 4, a mission cost needs to be paid.</English>
+</TEXT>
+
+<!-- advc.210 -->
+<TEXT>
+	<Tag>TXT_KEY_ADVC_HINT_33</Tag>
+	<English>(AdvCiv) When any member of your team is researching the same technology as you are, you both receive a 10% penalty on your research rates. Still, when a particular technology is urgently needed by the team, it can make sense to research that technology together.</English>
+</TEXT>
+
+<!-- advc.099f (always enabled as of AdvCiv v1.0) -->
+<!--TEXT>
+	<Tag>TXT_KEY_ADVC_HINT_34</Tag>
+	<English>(AdvCiv) To see the culture percentages of unowned tiles, hold down [Shift] or enable "Always Show Tile Culture" on the "Map" tab of the BUG menu.</English>
+</TEXT-->
+<!-- advc.098: Would prefer to change this obscure rule, but it doesn't look like I will for now. -->
+<TEXT>
+	<Tag>TXT_KEY_ADVC_HINT_34</Tag>
+	<English>The culture rate of a building doubles 1000 years after its construction. For medieval buildings, this doubling can still occur early enough to contribute to a culture victory.</English>
+</TEXT>
+
+<!-- The right-click behavior is pretty obscure, and therefore perhaps worth
+	 pointing out. -->
+<TEXT>
+	<Tag>TXT_KEY_ADVC_HINT_35</Tag>
+	<English>When more than one of your cities is able to work a tile, the game assigns that tile to the closest city. You can override this by opening the screen of another city and left-clicking the tile. Right-click the tile to undo the assignment.</English>
+</TEXT>
+
+<!-- advc.008c: Thought it'd be nice to mention the small K-Mod change to
+	 fortified Spies. Overwrites the value in CIV4GameText_BTS.xml -->
+<TEXT>
+	<Tag>TXT_KEY_HINT_51</Tag>
+	<English>Good things come to spies who wait. Leaving a spy on a tile will reduce the costs of all Espionage Missions performed in that tile. If you fortify a Spy in a foreign tile, it will wake up once mission costs are maximally reduced.</English>
+</TEXT>
+
+<!-- advc.008c: New hint (about a K-Mod feature) -->
+<TEXT>
+	<Tag>TXT_KEY_ADVC_HINT_36</Tag>
+	<English>(K-Mod) Your vassals will join you in preparing for war if you inform them of your war plans through "Let's discuss something else." You can also tell them to abandon their preparations.</English>
+</TEXT>
+
+<!-- advc.106i -->
+<TEXT>
+	<Tag>TXT_KEY_ADVC_HINT_37</Tag>
+	<English>Replays created by the AdvCiv mod can be viewed with any BtS installation; the mod isn't required.</English>
+</TEXT>
+
+<!-- advc.164 -->
+<TEXT>
+	<Tag>TXT_KEY_ADVC_HINT_38</Tag>
+	<English>(AdvCiv) Ships can reach the [COLOR_HIGHLIGHT_TEXT]Blitz[COLOR_REVERT] promotion via [COLOR_HIGHLIGHT_TEXT]Drill I[COLOR_REVERT]. This gives them one extra attack per turn, which can make a great difference when a group of enemy transports has almost reached your shore.</English>
+</TEXT>
+
+<!-- Based on a BUG hint (but it describes BtS behavior); kept their FR and ES
+	 translations. K-Mod removed all but one of the BUG hints. Many of them are
+	 aimed at beginners, others are already covered by my own hints; so this is
+	 the only one that I want to include (in addition to the one in
+	 'K-Mod_hints.xml'). -->
+<TEXT>
+	<Tag>TXT_KEY_BUG_HINT_INTERFACE_4</Tag>
+	<English>To cancel the missions of all your Workers, select one of them and click the [COLOR_HIGHLIGHT_TEXT]Cancel Mission[COLOR_REVERT] button while holding down the [ALT] key.</English>
+</TEXT>
+
+<!-- advc.130f -->
+<TEXT>
+	<Tag>TXT_KEY_ADVC_HINT_39</Tag>
+	<English>(AdvCiv) Your AI rivals will not consider proposals for a trade embargo so long as you have trades with the target of the embargo. In contrast, you can always tell your vassals to stop trading with any target.</English>
+</TEXT>
+
+<!-- advc.059 -->
+<TEXT>
+	<Tag>TXT_KEY_ADVC_HINT_40</Tag>
+	<English>(AdvCiv) To see which tiles affect the health of a city, click the city's name on the main map and then hover over the surrounding tiles.</English>
+</TEXT>
+
+<!-- advc.savem -->
+<TEXT>
+	<Tag>TXT_KEY_ADVC_HINT_41</Tag>
+	<English>(Savemap) Press [Shift + Alt + M] to save the map you're playing on as a Python script, e.g. to start over with different game options.</English>
+</TEXT>
+
+<TEXT>
+	<Tag>TXT_KEY_ADVC_HINT_42</Tag>
+	<English>(AdvCiv) A city threatened by hostile units normally can't be ceded to a third party except through liberation.</English>
+</TEXT>
+
+<!-- advc.ctr -->
+<TEXT>
+	<Tag>TXT_KEY_ADVC_HINT_43</Tag>
+	<English>(AdvCiv) If you found a city only for the purpose of trading it to an AI neighbor, be warned that the AI may reject the city if it is very badly situated: "We don't want to trade this."</English>
+</TEXT>
+<TEXT>
+	<Tag>TXT_KEY_ADVC_HINT_44</Tag>
+	<English>(AdvCiv) Ceding a city can appease a powerful AI neighbor and results in a peace treaty. However, the AI may refuse to accept an insignificant city if it is unwilling to sign a peace treaty: "We have our reasons."</English>
+</TEXT>
+<TEXT>
+	<Tag>TXT_KEY_ADVC_HINT_45</Tag>
+	<English>(AdvCiv) Spread enough culture to a city with a well-disposed owner, and you might be able to trade for the city; the owner might even liberate it without compensation.</English>
+</TEXT>
+<TEXT>
+	<Tag>TXT_KEY_ADVC_HINT_46</Tag>
+	<English>(AdvCiv) Conquered cities can only be liberated - not traded - to third parties until the current and previous owner have made peace.</English>
+</TEXT>
+
+<!-- Little known fact -->
+<TEXT>
+	<Tag>TXT_KEY_ADVC_HINT_47</Tag>
+	<English>Consider producing settlers and workers in cities with angry or unhealthy citizens. So long as food gets converted into production, angry citizens don't consume food, and unhealthiness from population isn't counted.</English>
+</TEXT>
+
+<!-- advc.004m: -->
+<TEXT>
+	<Tag>TXT_KEY_ADVC_HINT_48</Tag>
+	<English>(AdvCiv) The audio mix is affected by the camera distance. If e.g. the music volume is too low at your preferred camera distance, consider changing the default camera distance on the "Map" tab of the BUG menu.</English>
+</TEXT>
+
+<!-- advc.002f -->
+<TEXT>
+	<Tag>TXT_KEY_ADVC_HINT_49</Tag>
+	<English>(AdvCiv) When a city is set to [COLOR_HIGHLIGHT_TEXT]Avoid Growth[COLOR_REVERT], a warning icon is (optionally) shown above the city bar on the main map. Citizen automation needs to be enabled if the governor is supposed to maximize production and commerce while avoiding growth.</English>
+</TEXT>
+
+<!-- advc.186 -->
+<TEXT>
+	<Tag>TXT_KEY_ADVC_HINT_50</Tag>
+	<English>To change the production order of a city, it suffices to select the city's billboard on the main screen; opening the city screen isn't necessary. Essential city statistics are shown in hover text.</English>
+</TEXT>
+
+<!-- advc.650 -->
+<TEXT>
+	<Tag>TXT_KEY_ADVC_HINT_51</Tag>
+	<English>(AdvCiv) A pair of nukes should be expected to destroy 4 in 5 units in an enemy stack, a single nuke less than 2 in 5. Double is still better, but the BtS damage roll had resulted in a much starker difference between one and two nukes.</English>
+</TEXT>
+
+<!-- Adding to the (few) espionage hints in CIV4GameText_BTS.xml -->
+<TEXT>
+	<Tag>TXT_KEY_ADVC_HINT_52</Tag>
+	<English>When the defensive modifier of an enemy city looks formidable, consider using spies to support a city revolt just before your attack. Note, however, that such a revolt does not count toward flipping the city peacefully.</English>
+</TEXT>
+<!-- "Usually" - if the player loses a long-held city through conquest,
+	 Spread Culture can help flip it back. Would also be nice to mention that
+	 K-Mod blocks the "espionage victory" (by not adding city culture, just
+	 tile culture based on total city culture), but I hope that espionage victory
+	 not being mentioned at all will at least make players suspect that it might
+	 no longer work. -->
+<TEXT>
+	<Tag>TXT_KEY_ADVC_HINT_53</Tag>
+	<English>Letting spies spread your culture in a foreign city can be a way of alleviating culture pressure on your nearby cities, but it's usually not effective at flipping a foreign city where your culture is already dominant.</English>
+</TEXT>
+
+<!-- advc.031: Hopefully, this'll help players come to terms
+	 with AI city placement. -->
+<TEXT>
+	<Tag>TXT_KEY_ADVC_HINT_54</Tag>
+	<English>When placing cities, bear in mind that only the best few tiles will get worked any time soon - so those tiles matter the most. Not every city has to grow large either.</English>
+</TEXT>
+
+
+</Civ4GameText>

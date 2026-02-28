@@ -1,0 +1,17838 @@
+#include "CvGameCoreDLL.h"
+#include "CvCityAI.h"
+#include "CoreAI.h"
+#include "CvSelectionGroupAI.h"
+#include "UWAIAgent.h" // advc.031b (for trait checks)
+#include "CityPlotIterator.h"
+#include "CvUnit.h"
+#include "CvArea.h"
+#include "CvInfo_City.h"
+#include "CvInfo_Terrain.h"
+#include "CvInfo_GameOption.h"
+#include "CvInfo_Civics.h"
+#include "BBAILog.h" // BETTER_BTS_AI_MOD, AI logging, 10/02/09, jdog5000
+
+
+CvCityAI::CvCityAI() // advc.003u: Merged with AI_reset
+{
+	FAssert(GC.getNumEmphasizeInfos() > 0);
+	m_pbEmphasize = new bool[GC.getNumEmphasizeInfos()]();
+	/*  (Could also declare these as arrays in CvCityAI.h, but would then have to
+		use loops to zero-initialize them) */
+	m_aiEmphasizeYieldCount = new int[NUM_YIELD_TYPES]();
+	m_aiEmphasizeCommerceCount = new int[NUM_COMMERCE_TYPES]();
+	m_aiSpecialYieldMultiplier = new int[NUM_YIELD_TYPES]();
+	m_aiPlayerCloseness = new int[MAX_PLAYERS]();
+	// <advc.opt> Store closeness cache meta data for each player separately
+	m_aiCachePlayerClosenessTurn = new int[MAX_PLAYERS];
+	for (int i = 0; i < MAX_PLAYERS; i++)
+		m_aiCachePlayerClosenessTurn[i] = -1;
+	m_aiCachePlayerClosenessDistance = new int[MAX_PLAYERS];
+	for (int i = 0; i < MAX_PLAYERS; i++)
+		m_aiCachePlayerClosenessDistance[i] = -1; // </advc.opt>
+	/*	These two were declared as arrays, but it's neater to treat them all alike.
+		And the build values had been set to NO_BUILD instead of 0. */
+	m_aiBestBuildValue = new int[NUM_CITY_PLOTS]();
+	m_aeBestBuild = new BuildTypes[NUM_CITY_PLOTS];
+	FOR_EACH_ENUM(CityPlot)
+		m_aeBestBuild[eLoopCityPlot] = NO_BUILD;
+	m_eBestBuild = NO_BUILD; // advc.opt
+
+	AI_ClearConstructionValueCache(); // K-Mod
+
+	m_iCultureWeight = 30; // K-Mod
+	m_iEmphasizeAvoidGrowthCount = 0;
+	m_iEmphasizeGreatPeopleCount = 0;
+	m_iWorkersNeeded = 0;
+	m_iWorkersHave = 0;
+	m_iNeededFloatingDefenders = -1;
+	m_iNeededFloatingDefendersCacheTurn = -1;
+	m_iCityValPercent = 0; // advc.139
+
+	m_bForceEmphasizeCulture = false;
+	m_bStrongEmphasis = false; // advc.131d
+	m_bAssignWorkDirty = false;
+	m_eSafety = CITYSAFETY_SAFE; // advc.139
+}
+
+
+CvCityAI::~CvCityAI()
+{
+	SAFE_DELETE_ARRAY(m_pbEmphasize); // advc.003u: Moved from deleted AI_uninit
+	SAFE_DELETE_ARRAY(m_aiEmphasizeYieldCount);
+	SAFE_DELETE_ARRAY(m_aiEmphasizeCommerceCount);
+	SAFE_DELETE_ARRAY(m_aiSpecialYieldMultiplier);
+	SAFE_DELETE_ARRAY(m_aiPlayerCloseness);
+
+	SAFE_DELETE_ARRAY(m_aiBestBuildValue);
+	SAFE_DELETE_ARRAY(m_aeBestBuild);
+}
+
+// Instead of having CvCity::init call CvCityAI::AI_init
+void CvCityAI::init(int iID, PlayerTypes eOwner, int iX, int iY,
+	bool bBumpUnits, bool bUpdatePlotGroups, /* advc.ctr: */ int iOccupationTimer)
+{
+	CvCity::init(iID, eOwner, iX, iY, bBumpUnits, bUpdatePlotGroups, iOccupationTimer);
+	//AI_reset(); // advc.003u: Merged into constructor
+	AI_assignWorkingPlots();
+	// BETTER_BTS_AI_MOD, City AI, Worker AI, 11/14/09, jdog5000: calls swapped
+	AI_updateBestBuild();
+	AI_updateWorkersHaveAndNeeded();
+	// BETTER_BTS_AI_MOD: END
+}
+
+
+void CvCityAI::AI_doTurn()
+{
+	PROFILE_FUNC();
+
+	if (!isHuman())
+	{
+		FOR_EACH_ENUM(Specialist)
+			setForceSpecialistCount(eLoopSpecialist, 0);
+		AI_stealPlots();
+	}
+	/*AI_updateWorkersHaveAndNeeded();
+	AI_updateBestBuild();*/
+	// BETTER_BTS_AI_MOD, City AI, Worker AI, 11/14/09, jdog5000: START
+	if (!isDisorder()) // K-Mod
+		AI_updateBestBuild();
+	AI_updateWorkersHaveAndNeeded();
+	// BETTER_BTS_AI_MOD: END
+	AI_updateRouteToCity();
+
+	if (isHuman())
+	{
+		if (isProductionAutomated())
+			AI_doHurry();
+		return;
+	}
+	AI_doPanic();
+	AI_doDraft();
+	AI_doHurry();
+	AI_doEmphasize();
+}
+
+// (Most of this function has been rewritten for K-Mod)
+void CvCityAI::AI_assignWorkingPlots(/* advc.131d: */ bool bEmphasize)
+{
+	PROFILE_FUNC();
+
+	/*if (0 != GC.getDefineINT("AI_SHOULDNT_MANAGE_PLOT_ASSIGNMENT"))
+		return;*/ // K-Mod. that bts option would break a bunch of stuff.
+
+	// remove any plots we can no longer work for any reason
+	verifyWorkingPlots();
+
+	// if we have more specialists of any type than this city can have, reduce to the max
+	FOR_EACH_ENUM2(Specialist, e)
+	{
+		if (!isSpecialistValid(e))
+		{
+			if (getSpecialistCount(e) > getMaxSpecialistCount(e))
+			{
+				setSpecialistCount(e, getMaxSpecialistCount(e));
+			}
+			// K-Mod. Apply the cap to forced specialist count as well.
+			if (getForceSpecialistCount(e) > getMaxSpecialistCount(e))
+				setForceSpecialistCount(e, getMaxSpecialistCount(e));
+
+			// <!-- custom: adding a more detailed assert here just in case if it helps or if it fires too-->
+			// FAssert(isSpecialistValid(e));
+			FAssertMsg(isSpecialistValid(e),
+				CvString::format("T%d city=%S owner=%S type=%s e=%d value=%d",
+					GC.getGame().getGameTurn(),
+					getName().GetCString(),
+					GET_PLAYER(getOwner()).getName(),
+					GC.getInfo(e).getType(), // gives e.g. SPECIALIST_CITIZEN
+					(int)e,
+					getSpecialistCount(e)   // <- 'value'. swap to isSpecialistValid(e) or getMaxSpecialistCount(e) if you prefer
+				).c_str());
+		}
+	}
+
+	// always work the home plot (center)
+	CvPlot* pHomePlot = getCityIndexPlot(CITY_HOME_PLOT);
+	if (pHomePlot != NULL)
+	{
+		setWorkingPlot(CITY_HOME_PLOT,
+				getPopulation() > 0 && canWork(*pHomePlot));
+	}
+
+	// keep removing the worst citizen until we are not over the limit
+	while (extraPopulation() < 0)
+	{
+		if (!AI_removeWorstCitizen())
+		{
+			FErrorMsg("failed to remove extra population");
+			break;
+		}
+	}
+
+	// extraSpecialists() is less than extraPopulation()
+	FAssertMsg(extraSpecialists() >= 0, "extraSpecialists() is expected to be non-negative (invalid Index)");
+
+	// K-Mod. If the city is in disorder, then citizen assignment doesn't matter.
+	if (isDisorder())
+	{
+		FAssert((getWorkingPopulation() + getSpecialistPopulation()) <= (totalFreeSpecialists() + getPopulation()));
+		AI_setAssignWorkDirty(false);
+
+		if (isActiveOwned() && isCitySelected())
+		{
+			gDLL->UI().setDirty(CitizenButtons_DIRTY_BIT, true);
+		}
+		return;
+	}
+
+	//update the special yield multiplier to be current
+	AI_updateSpecialYieldMultiplier();
+
+	// Remove all assigned plots before automatic assignment.
+	/*if (!isHuman() || isCitizensAutomated()) {
+		FOR_EACH_ENUM(CityPlot)
+			setWorkingPlot(eLoopCityPlot, false);
+	}*/
+
+	// make sure at least the forced amount of specialists are assigned
+	// K-Mod note: it's best if we don't clear all working specialists,
+	// because AI_specialistValue uses our current GPP rate in its evaluation.
+	bool bNewlyForcedSpecialists = false;
+	if (isSpecialistForced()) // advc.opt
+	{
+		FOR_EACH_ENUM2(Specialist, e)
+		{
+			int iForcedSpecialistCount = getForceSpecialistCount(e);
+
+			if (getSpecialistCount(e) < iForcedSpecialistCount)
+			{
+				setSpecialistCount(e, iForcedSpecialistCount);
+				bNewlyForcedSpecialists = true;
+				// <!-- custom: FAssert fires very often with debug DLL at turn 0-1; replaced with FAssertMsg to detail the assert for investigation. Credit: ChatGPT 5. (Claude code Sonnet 4.5 (summarized)) -->
+				// FAssert(isSpecialistValid(e));
+				FAssertMsg(isSpecialistValid(e),
+					CvString::format("T%d city=%S owner=%S type=%s e=%d value=%d",
+						GC.getGame().getGameTurn(),
+						getName().GetCString(),
+						GET_PLAYER(getOwner()).getName(),
+						GC.getInfo(e).getType(), // gives e.g. SPECIALIST_CITIZEN
+						(int)e,
+						getSpecialistCount(e)   // <- 'value'. swap to isSpecialistValid(e) or getMaxSpecialistCount(e) if you prefer
+					).c_str());
+				// <<!-- custom: example with the detailed message thanks chatgpt 5: -->
+				// Assert Failed
+				// File:  ..\.\CvCityAI.cpp
+				// Line:  219
+				// Func:  CvCityAI::AI_assignWorkingPlots
+				// Expression:  isSpecialistValid(e)
+				// Message:  T001 Thebes SPECIALIST_ARTIST e=2 value=1
+				// <!-- custom: note: in all these cities, at least early up to when i checked, it is always the artist specialist that fails the assert. -->
+			}
+		}
+	}
+	// If we added new specialists, we might need to remove something else.
+	if (bNewlyForcedSpecialists)
+	{
+		while (extraPopulation() < 0)
+		{
+			if (!AI_removeWorstCitizen())
+			{
+				FErrorMsg("failed to remove extra population");
+				break;
+			}
+		}
+	}
+
+	// do we have population unassigned
+	while (extraPopulation() > 0)
+	{
+		// (AI_addBestCitizen now handles forced specialist logic)
+		if (!AI_addBestCitizen(/*bWorkers*/ true, /*bSpecialists*/ true))
+		{
+			FErrorMsg("failed to assign extra population");
+			break;
+		}
+	}
+
+	// if we still have population to assign, assign specialists
+	while (extraSpecialists() > 0)
+	{
+		if (!AI_addBestCitizen(/*bWorkers*/ false, /*bSpecialists*/ true))
+		{
+			FErrorMsg("failed to assign extra specialist");
+			break;
+		}
+	}
+
+	FAssertMsg(extraSpecialists() >= 0, "added too many specialists");
+
+	// if automated, look for better choices than the current ones
+	if (!isHuman() || isCitizensAutomated())
+		AI_juggleCitizens(/* advc.131d: */ bEmphasize);
+
+	// at this point, we should not be over the limit
+	FAssert((getWorkingPopulation() + getSpecialistPopulation()) <= (totalFreeSpecialists() + getPopulation()));
+	FAssert(extraPopulation() == 0); // K-Mod.
+
+	AI_setAssignWorkDirty(false);
+
+	if (isActiveOwned() && isCitySelected())
+		gDLL->UI().setDirty(CitizenButtons_DIRTY_BIT, true);
+}
+
+
+void CvCityAI::AI_updateAssignWork()
+{
+	if (AI_isAssignWorkDirty())
+		AI_assignWorkingPlots();
+}
+
+// advc.003j: Unused K-Mod function (one call commented out in CvGameTextMgr)
+/*bool CvCityAI::AI_ignoreGrowth() {
+	PROFILE_FUNC();
+	if (!AI_isEmphasizeYield(YIELD_FOOD) && !AI_isEmphasizeGreatPeople()) {
+		if (!AI_foodAvailable((isHuman()) ? 0 : 1))
+			return true;
+	}
+	return false;
+}*/
+
+
+// units of ~400x commerce
+int CvCityAI::AI_specialistValue(SpecialistTypes eSpecialist, bool bRemove, bool bIgnoreFood, int iGrowthValue) const
+{
+	// K-Mod. To reduce code duplication, this function now uses AI_jobChangeValue. (original code deleted)
+	if (bRemove)
+	{
+		return -AI_jobChangeValue(std::make_pair(false, -1), std::make_pair(true, eSpecialist),
+				bIgnoreFood, false, iGrowthValue);
+	}
+	return AI_jobChangeValue(std::make_pair(true, eSpecialist), std::make_pair(false, -1),
+			bIgnoreFood, false, iGrowthValue);
+}
+
+// K-Mod. The value of a long-term specialist, for use in calculating great person value, and value of free specialists from buildings.
+// value is roughly 4 * 100 * commerce
+int CvCityAI::AI_permanentSpecialistValue(SpecialistTypes eSpecialist) const
+{
+	const CvPlayerAI& kPlayer = GET_PLAYER(getOwner());
+
+	const int iCommerceValue = 4;
+	const int iProdValue = 7;
+	const int iFoodValue = 11;
+
+	int iValue = 0;
+
+	// AI_getYieldMultipliers takes a little bit of time, so lets only do it if we need to.
+	bool bHasYield = false;
+	FOR_EACH_ENUM(Yield)
+	{
+		if (kPlayer.specialistYield(eSpecialist, eLoopYield) != 0)
+		{
+			bHasYield = true;
+			break;
+		}
+	}
+
+	if (bHasYield)
+	{
+		int iFoodX, iProdX, iComX, iUnused;
+		AI_getYieldMultipliers(iFoodX, iProdX, iComX, iUnused);
+		// I'm going to dilute the yield value multipliers, because they are ultimately less stable than commerce multipliers.
+		iValue += iFoodValue * kPlayer.specialistYield(eSpecialist, YIELD_FOOD) *
+				AI_yieldMultiplier(YIELD_FOOD) * (100+iFoodX) / 200;
+		iValue += iProdValue * kPlayer.specialistYield(eSpecialist, YIELD_PRODUCTION) *
+				AI_yieldMultiplier(YIELD_PRODUCTION) * (100+iProdX) / 200;
+		iValue += iCommerceValue * kPlayer.specialistYield(eSpecialist, YIELD_COMMERCE) *
+				AI_yieldMultiplier(YIELD_COMMERCE) * (100+iComX) / 200;
+	}
+
+	FOR_EACH_ENUM(Commerce)
+	{
+		int iTemp = iCommerceValue * kPlayer.specialistCommerce(
+				eSpecialist, eLoopCommerce);
+		if (iTemp != 0)
+		{
+			iTemp *= getTotalCommerceRateModifier(eLoopCommerce);
+			iTemp *= kPlayer.AI_commerceWeight(eLoopCommerce, this);
+			iTemp /= 100;
+			iValue += iTemp;
+		}
+	}
+
+	int iGreatPeopleRate = GC.getInfo(eSpecialist).getGreatPeopleRateChange();
+
+	if (iGreatPeopleRate != 0)
+	{
+		int iGPPValue = 4;
+
+		int iTempValue = 100 * iGreatPeopleRate * iGPPValue;
+
+		// Scale based on how often this city will actually get a great person.
+		/* Actually... don't do that. That's not the kind of thing we should take into account for permanent specialists.
+		int iCityRate = getGreatPeopleRate();
+		int iHighestRate = 0;
+		FOR_EACH_CITY(pLoopCity, GET_PLAYER(getOwner())) {
+			int x = pLoopCity->getGreatPeopleRate();
+			if (x > iHighestRate)
+				iHighestRate = x;
+		}
+		if (iHighestRate > iCityRate) {
+			iTempValue *= 100;
+			iTempValue /= (2*100*(iHighestRate+3))/(iCityRate+3) - 100;
+		} */
+		iTempValue *= kPlayer.AI_getGreatPersonWeight((UnitClassTypes)GC.getInfo(eSpecialist).getGreatPeopleUnitClass());
+		iTempValue /= 100;
+
+		iTempValue *= getTotalGreatPeopleRateModifier();
+		iTempValue /= 100;
+
+		iValue += iTempValue;
+	}
+
+	// <!-- custom: AI goes for Great General units while Military Instructor is much better, especially in top hammer cities with Heroic Epic. Boost Military Instructor value. Credit: ChatGPT 5; Claude Sonnet 4.5. (Claude code Sonnet 4.5 (summarized)) -->
+	// 1. Modify AI_permanentSpecialistValue() - Boost Military Instructor Value
+	int iExperience = GC.getInfo(eSpecialist).getExperience();
+	if (iExperience != 0)
+	{
+		// <!-- custom: make const (safe to do). (Claude code Sonnet 4.5 (summarized)) -->
+		const int iProductionRank = findYieldRateRank(YIELD_PRODUCTION);
+
+		// CHANGE: Much higher base value for military instructors
+		static const int iSAS_GREAT_GENERAL_AS_MILITARY_INSTRUCTOR_EXTRA_VALUING = GC.getDefineINT("SAS_GREAT_GENERAL_AS_MILITARY_INSTRUCTOR_EXTRA_VALUING");
+		int iTempValue = 100 * iExperience * iSAS_GREAT_GENERAL_AS_MILITARY_INSTRUCTOR_EXTRA_VALUING;
+
+		// CHANGE: Massive bonus for top production cities (top N)
+		static const int iSAS_GREAT_GENERAL_AS_MILITARY_INSTRUCTOR_TOP_N_HAMMER_CITY_THRESHOLD = GC.getDefineINT("SAS_GREAT_GENERAL_AS_MILITARY_INSTRUCTOR_TOP_N_HAMMER_CITY_THRESHOLD");
+		if (iProductionRank <= iSAS_GREAT_GENERAL_AS_MILITARY_INSTRUCTOR_TOP_N_HAMMER_CITY_THRESHOLD)
+		{
+			static const int iSAS_GREAT_GENERAL_AS_MILITARY_INSTRUCTOR_TOP_N_HAMMER_EXTRA_VALUING = GC.getDefineINT("SAS_GREAT_GENERAL_AS_MILITARY_INSTRUCTOR_TOP_N_HAMMER_EXTRA_VALUING");
+
+			// <!-- custom: performance optimization: compute this only once if i'm not mistaken; e.g. "BUILDINGCLASS_HARBOR", check defines for string value -->
+			static const BuildingClassTypes eHeroicEpicEffectBuildingClass = (BuildingClassTypes)GC.getInfoTypeForString(GC.getDefineSTRING("SAS_GREAT_GENERAL_AS_MILITARY_INSTRUCTOR_TOP_N_HAMMER_EXTRA_VALUING_BUILDINGCLASS_FULL_NAME"));
+			static const int iSAS_GREAT_GENERAL_AS_MILITARY_INSTRUCTOR_TOP_N_HAMMER_EXTRA_VALUING_BUILDINGCLASS_FULL_NAME_EXTRA_VALUING = GC.getDefineINT("SAS_GREAT_GENERAL_AS_MILITARY_INSTRUCTOR_TOP_N_HAMMER_EXTRA_VALUING_BUILDINGCLASS_FULL_NAME_EXTRA_VALUING");
+			const CvCivilizationInfo& kCivInfo = GC.getInfo(kPlayer.getCivilizationType());
+			BuildingTypes eHeroicEpicEffectBuilding = NO_BUILDING;
+			if (eHeroicEpicEffectBuildingClass != NO_BUILDINGCLASS)
+			{
+				eHeroicEpicEffectBuilding = (BuildingTypes)kCivInfo.getCivilizationBuildings(eHeroicEpicEffectBuildingClass);
+			}
+			int iHeroicEffectBuildingExtraAddedExtraValue = 0;
+			if (eHeroicEpicEffectBuilding != NO_BUILDING)
+			{
+				const bool bHasHeroicEffectBuilding = (getNumBuilding(eHeroicEpicEffectBuilding) > 0);
+				const bool bBuildingHeroicEffectBuilding = (getProductionBuilding() == eHeroicEpicEffectBuilding);
+				if (bHasHeroicEffectBuilding || bBuildingHeroicEffectBuilding)
+				{
+					iHeroicEffectBuildingExtraAddedExtraValue = iSAS_GREAT_GENERAL_AS_MILITARY_INSTRUCTOR_TOP_N_HAMMER_EXTRA_VALUING_BUILDINGCLASS_FULL_NAME_EXTRA_VALUING;
+				}
+			}
+
+			// <!-- custom: the higher the rank the more we value it -->
+			// <!-- custom: extra value if city has or is building the heroic epic, it will be top hammer for military anyway -->
+			const int iMilitaryInstructorExtraValue = (iSAS_GREAT_GENERAL_AS_MILITARY_INSTRUCTOR_TOP_N_HAMMER_EXTRA_VALUING - (10 * iProductionRank) + iHeroicEffectBuildingExtraAddedExtraValue);
+			iTempValue += 100 * iExperience * iMilitaryInstructorExtraValue;
+		}
+		iTempValue += (getMilitaryProductionModifier() * iExperience * 6); // was * 8
+
+		// CHANGE: No penalty from existing free experience (stacking is fine)
+		// iTempValue *= 100;
+		// iTempValue /= (100+15*(getFreeExperience()/5));
+
+		iValue += iTempValue;
+	}
+
+	return iValue;
+}
+
+/*	advc.192: Based on K-Mod code cut from AI_chooseProduction --
+	to make the AI logic there consistent with AI_buildingValue. */
+namespace
+{
+	__inline bool AI_isSwiftBorderExpansion(int iProductionTurns)
+	{
+		// (advc.192: K-Mod had returned true when there is no higher culture level)
+		return (GC.getNumCultureLevelInfos() >= 2 &&
+			/*	advc.192: Coefficients added that make this check more lenient - b/c
+				citizens may well get reassigned once we commit to a culture building. */
+				2 * iProductionTurns <=
+				3 * GC.getGame().getCultureThreshold((CultureLevelTypes)2));
+	}
+}
+
+#define BUILDINGFOCUS_FOOD					(1 << 1)
+#define BUILDINGFOCUS_PRODUCTION			(1 << 2)
+#define BUILDINGFOCUS_GOLD					(1 << 3)
+#define BUILDINGFOCUS_RESEARCH				(1 << 4)
+#define BUILDINGFOCUS_CULTURE				(1 << 5)
+#define BUILDINGFOCUS_DEFENSE				(1 << 6)
+#define BUILDINGFOCUS_HAPPY					(1 << 7)
+#define BUILDINGFOCUS_HEALTHY				(1 << 8)
+#define BUILDINGFOCUS_EXPERIENCE			(1 << 9)
+#define BUILDINGFOCUS_MAINTENANCE			(1 << 10)
+#define BUILDINGFOCUS_SPECIALIST			(1 << 11)
+#define BUILDINGFOCUS_ESPIONAGE				(1 << 12)
+#define BUILDINGFOCUS_BIGCULTURE			(1 << 13)
+//#define BUILDINGFOCUS_WORLDWONDER			(1 << 14)
+#define BUILDINGFOCUS_WORLDWONDER			(1 << 14 | 1 << 16) // K-Mod (WORLDWONDER implies WONDEROK)
+#define BUILDINGFOCUS_DOMAINSEA				(1 << 15)
+#define BUILDINGFOCUS_WONDEROK				(1 << 16)
+#define BUILDINGFOCUS_CAPITAL				(1 << 17)
+
+// Heavily edited by K-Mod. (note, I've deleted a lot of the old code from BtS and from BBAI, and some of my changes are unmarked.)
+void CvCityAI::AI_chooseProduction()
+{
+	PROFILE_FUNC();
+
+	bool bWasFoodProduction = isFoodProduction();
+	bool bDanger = AI_isDanger();
+
+	CvPlayerAI& kPlayer = GET_PLAYER(getOwner());
+	// <advc>
+
+	// <!-- custom: cache to kTeam for perf opt if i'm not mistaken. See note at CvCityAI::AI_buildingValue. -->
+	CvTeamAI const& kTeam = GET_TEAM(kPlayer.getTeam()); // kekm.16
+
+	CvGame const& kGame = GC.getGame();
+	CvArea const& kArea = getArea();
+	CvCityAI const* pCapital = kPlayer.AI_getCapital();
+	// </advc>
+
+	// <!-- custom: performance optimizations -->
+	CvPlot const& kPlot = getPlot();
+	
+	if (isProduction())
+	{
+		if (getProduction() > 0)
+		{
+			//if we are killing our growth to train this, then finish it.
+			if (!bDanger && isFoodProduction() && (getProductionUnitAI() != UNITAI_SETTLE ||
+				(!kPlayer.AI_isFinancialTrouble() &&
+				kPlayer.AI_getNumCitySites() > 0))) // advc.031b
+			{
+				if (kArea.getAreaAIType(getTeam()) != AREAAI_DEFENSIVE)
+					return;
+			}
+			// if less than 3 turns left, keep building current item
+			else if (getProductionTurnsLeft() <= 3)
+				return;
+			// if building a combat unit, and we have no defenders, keep building it
+			UnitTypes eProductionUnit = getProductionUnit();
+			if (eProductionUnit != NO_UNIT)
+			{
+				if (kPlot.getNumDefenders(getOwner()) == 0)
+				{
+					if (GC.getInfo(eProductionUnit).getCombat() > 0)
+						return;
+				}
+			}
+			// // if we are building a wonder, do not cancel, keep building it (if no danger)
+			// /*BuildingTypes eProductionBuilding = getProductionBuilding();
+			// if (!bDanger && eProductionBuilding != NO_BUILDING && CvBuildingInfo::isLimited(eProductionBuilding))
+			// 	return;*/ // BtS
+			// <!-- custom: we definitely want to tighten this, if we are weak, don't build wonders for our ennemies when they conquer us, ditch current building production and try to produce a few longbowmen or such rather, and if strong and at war, maybe urgency is not world wonders as well but making sure we are effective in our war, so adjust thresholds for this; code written by chatgpt 5 with my adjustments or such, check if accurate -->
+			// // K-Mod. same idea, but with a few more conditions
+			BuildingTypes eProductionBuilding = getProductionBuilding();
+			if (eProductionBuilding != NO_BUILDING && GC.getInfo(eProductionBuilding).isLimited())
+			// {
+			// 	int iCompletion = 100*getBuildingProduction(eProductionBuilding) /
+			// 			std::max(1, getProductionNeeded(eProductionBuilding));
+			// 	int iThreshold = 25;
+			// 	iThreshold += kPlayer.AI_isLandWar(kArea) ? 40 : 0;
+			// 	iThreshold += kPlayer.AI_isDoStrategy(AI_STRATEGY_TURTLE) ? 25 : 0; // (in addition to land war)
+			// 	iThreshold += !GC.getInfo(eProductionBuilding).isWorldWonder() ? 10 : 0;
+			// 	if (iCompletion >= iThreshold)
+			// 		return;
+			// }
+			// // K-Mod end
+			{
+				// % complete of the current wonder
+				const int iCompletion = 100 * getBuildingProduction(eProductionBuilding) /
+					std::max(1, getProductionNeeded(eProductionBuilding));
+
+				// Situation read
+				bool const bWarPlan = kPlayer.AI_isFocusWar();
+				// <!-- custom: it seems to me guessedly more reliable than the old AI_isLandWar check, chatgpt 5 advises for this as well when looking at the function's code when i asked it about it, check if accurate -->
+				const bool bAtWar = (kTeam.getNumWars() > 0);
+				const int iEnemyPowerPercent = kTeam.AI_getEnemyPowerPercent(true);
+				static const int iSAS_ENEMY_STRONG_POWER_THRESHOLD = GC.getDefineINT("SAS_ENEMY_STRONG_POWER_THRESHOLD"); // e.g. 120
+				const bool bEnemyStrong = (iEnemyPowerPercent >= iSAS_ENEMY_STRONG_POWER_THRESHOLD);
+				// <!-- custom: note: if i remember it correctly, chatgpt 5 said this applies also if not at war. I guessedly thought this maybe would or could return 0 if we are not at war with any ennemy, faslifying formula and defeating the purpose. In some places, i have added bAtWarAndEnemyWeak, while in some other places i may have left it as bEnemyWeak (check to be sure, i didn't check too much). I don't know which is more correct as of now and didn't dig too deep into it, so left as such, hopefully accurate enough, thankfully at this part of the code the difference wouldn't be too big regardless, and most importantly it already pre-checks bAtWar before so no issue there but ideally figure out how it works to decide if we should merge the weak with an at war check to be safe or if uneeded and be more flexible and accurate with only a weak check, but left as such -->
+				static const int iSAS_ENEMY_WEAK_POWER_THRESHOLD = GC.getDefineINT("SAS_ENEMY_WEAK_POWER_THRESHOLD"); // e.g. 80
+				const bool bEnemyWeak = (iEnemyPowerPercent <= iSAS_ENEMY_WEAK_POWER_THRESHOLD);
+				// <!-- custom: redundant given below checks but for clarity (ideally should apply it elsewhere it is used but didn't do so so far as bit tedious and would need to test it to be sure if better results as such or if relevant for relevant parts of the code although not checking war seems a mistake based on the info i found while solving known issue as of now 53.3 but check to be sure and left as such at least as of now in other places) -->
+				const bool bAtWarAndEnemyWeak = (bAtWar && bEnemyWeak);
+
+				// Keep a baseline threshold so peaceful wonder builds don’t auto-stick at 0%. 
+				int iThreshold = 25;
+
+				if (GC.getInfo(eProductionBuilding).isWorldWonder())
+				{
+					if (bAtWar)
+					{
+						// <!-- custom: don't build the world wonder for our enemy when they conquer us (as for national wonders, more generally read after bracket as well), attempt to build a few longbowmen with the hammer rather or anything else -->
+						if (bEnemyStrong)
+						{
+							iThreshold = 80;
+						}
+						else if (bAtWarAndEnemyWeak)
+						{
+							iThreshold = 50;
+						}
+						else
+						{
+							iThreshold = 60;
+						}
+					}
+					// <!-- custom: similar reasoning than if at war and enemy is strong -->
+					else if (bDanger)
+					{
+						iThreshold = 70;
+					}
+					// <!-- custom: this assumes we're strong i guess, but not sure this is just a guess from me, check if accurate; in all cases we don't want to build too long a world wonder if we're plotting an invasion, consider ditching it quite strongly -->
+					else if (bWarPlan)
+					{
+						iThreshold = 50;
+					}
+				}
+				// <!-- custom: be a more lenient towards national wonders, they should cost a bit less, and finish a bit faster expectedly -->
+				else if (GC.getInfo(eProductionBuilding).isNationalWonder())
+				{
+					if (bAtWar)
+					{
+						// <!-- custom: don't build the world wonder for our enemy when they conquer us (as for national wonders, more generally read after bracket as well), attempt to build a few longbowmen with the hammer rather or anything else -->
+						if (bEnemyStrong)
+						{
+							iThreshold = 65;
+						}
+						else if (bAtWarAndEnemyWeak)
+						{
+							iThreshold = 35;
+						}
+						else
+						{
+							iThreshold = 45;
+						}
+					}
+					// <!-- custom: similar reasoning than if at war and enemy is strong -->
+					else if (bDanger)
+					{
+						iThreshold = 55;
+					}
+					// <!-- custom: this assumes we're strong i guess, but not sure this is just a guess from me, check if accurate; in all cases we don't want to build too long a world wonder if we're plotting an invasion, consider ditching it quite strongly -->
+					else if (bWarPlan)
+					{
+						iThreshold = 35;
+					}
+				}
+
+				// If we’ve already invested at least the threshold, keep building; else allow switch.
+				if (iCompletion >= iThreshold)
+				{
+					return;
+				}
+			}
+		}
+		clearOrderQueue();
+	}
+	//if (kPlayer.isAnarchy())
+	if (isDisorder()) // K-Mod
+		return;
+
+	// only clear the dirty bit if we actually do a check, multiple items might be queued
+	setChooseProductionDirty(false);
+	if (bWasFoodProduction)
+		AI_assignWorkingPlots();
+
+	if (GC.getPythonCaller()->AI_chooseProduction(*this))
+		return;
+
+	//if (isHuman() && isProductionAutomated())
+	if (isHuman())
+	{
+		AI_buildGovernorChooseProduction();
+		return;
+	}
+
+	if (isBarbarian())
+	{
+		AI_barbChooseProduction();
+		return;
+	}
+
+	CvArea* pWaterArea = waterArea(true);
+	bool bMaybeWaterArea = false;
+	bool bWaterDanger = false;
+
+	if (pWaterArea != NULL)
+	{
+		bMaybeWaterArea = true;
+		if (!kTeam.AI_isWaterAreaRelevant(*pWaterArea))
+			pWaterArea = NULL;
+		bWaterDanger = kPlayer.AI_isAnyWaterDanger(kPlot, 4);
+	}
+
+	// advc: Some old and unused code deleted
+	bool bLandWar = kPlayer.AI_isLandWar(kArea); // K-Mod
+	bool const bWarPrep = kTeam.AI_isSneakAttackPreparing(); // advc.104s
+	bool const bDefenseWar = (kArea.getAreaAIType(getTeam()) == AREAAI_DEFENSIVE);
+	bool const bAssaultAssist = (kArea.getAreaAIType(getTeam()) == AREAAI_ASSAULT_ASSIST);
+	bool const bTotalWar = (kTeam.AI_getNumWarPlans(WARPLAN_TOTAL) // K-Mod
+			/* <advc.104s> */ + (!getUWAI().isEnabled() ? 0 :
+			kTeam.AI_getNumWarPlans(WARPLAN_PREPARING_TOTAL)) > 0); // </advc.104s>
+	bool bAssault = (bAssaultAssist ||
+			kArea.getAreaAIType(getTeam()) == AREAAI_ASSAULT ||
+			kArea.getAreaAIType(getTeam()) == AREAAI_ASSAULT_MASSING);
+	bool const bPrimaryArea = kPlayer.AI_isPrimaryArea(kArea);
+	bool const bFinancialTrouble = kPlayer.AI_isFinancialTrouble();
+
+	int const iNumCitiesInArea = kArea.getCitiesPerPlayer(getOwner());
+	// <!-- custom: store this once since we use it many times then reference the cached variable rather as chatgpt 5 usually advices hehe-->
+	const int iNumCities = kPlayer.getNumCities();
+
+	// advc: Renamed from bImportantCity
+	bool bCultureCity = false; //be very careful about setting this.
+	int const iCultureRateRank = findCommerceRateRank(COMMERCE_CULTURE);
+	int const iCulturalVictoryNumCultureCities = kGame.culturalVictoryNumCultureCities();
+
+	int const iWarSuccessRating = kTeam.AI_getWarSuccessRating();
+	int iEnemyPowerPerc = kTeam.AI_getEnemyPowerPercent(true);
+	// <cdtw> (comment by Dave_uk:)
+	/*  if we are the weaker part of a team, and have a land war in our primary
+		area, increase enemy power percent so we aren't overconfident due to a
+		powerful team-mate who may not actually be that much help */
+	if (bLandWar && bPrimaryArea && !kTeam.isAVassal() && kTeam.getNumMembers() > 1)
+	{
+		int iOurPowerPercent = (100 * kPlayer.getPower()) / kTeam.getPower(false);
+		if (iOurPowerPercent * kTeam.getNumMembers() < 100)
+		{
+			iEnemyPowerPerc *= 100;
+			iEnemyPowerPerc /= std::max(1, iOurPowerPercent * kTeam.getNumMembers());
+		}
+	} // </cdtw>
+	if (!bLandWar && !bAssault && kTeam.isAVassal())
+	{
+		bLandWar = kTeam.AI_isMasterPlanningLandWar(kArea);
+		if (!bLandWar)
+			bAssault = kTeam.AI_isMasterPlanningSeaWar(kArea);
+	}
+
+	bool const bGetBetterUnits = kPlayer.AI_isDoStrategy(AI_STRATEGY_GET_BETTER_UNITS);
+	bool const bDagger = kPlayer.AI_isDoStrategy(AI_STRATEGY_DAGGER);
+	bool const bAggressiveAI = kGame.isOption(GAMEOPTION_AGGRESSIVE_AI);
+	bool const bAlwaysPeace = //kGame.isOption(GAMEOPTION_ALWAYS_PEACE);
+			!kTeam.AI_isWarPossible(); // advc.001j
+
+	/* bts code
+	int iUnitCostPercentage = (kPlayer.calculateUnitCost() * 100) / std::max(1, kPlayer.calculatePreInflatedCosts()); */
+	// K-Mod. (note, this is around 3x bigger than the original formula)
+	int const iUnitSpending = kPlayer.AI_unitCostPerMil();
+	int const iWaterPercent = AI_calculateWaterWorldPercent();
+
+	int const iBuildUnitProb = AI_buildUnitProb();
+	// advc.109: Moved into AI_buildUnitProb
+	//iBuildUnitProb /= kPlayer.AI_isDoStrategy(AI_STRATEGY_ECONOMY_FOCUS) ? 2 : 1; // K-Mod
+
+	int const iExistingWorkers = kPlayer.AI_totalAreaUnitAIs(kArea, UNITAI_WORKER);
+	int const iNeededWorkers = kPlayer.AI_neededWorkers(kArea);
+	int const iMissingWorkers = iNeededWorkers - iExistingWorkers; // advc.113
+	// Sea worker need independent of whether water area is militarily relevant
+	int const iNeededSeaWorkers = (bMaybeWaterArea) ? AI_neededSeaWorkers() : 0;
+	int const iExistingSeaWorkers = (pWaterArea != NULL) ?
+			kPlayer.AI_totalWaterAreaUnitAIs(*pWaterArea, UNITAI_WORKER_SEA) : 0;
+
+	int iAreaBestFoundValue=-1;
+	int const iNumAreaCitySites = kPlayer.AI_getNumAreaCitySites(kArea, iAreaBestFoundValue);
+
+	int iWaterAreaBestFoundValue = 0;
+	CvArea* pWaterSettlerArea = pWaterArea;
+	if (pWaterSettlerArea == NULL)
+	{
+		pWaterSettlerArea = GC.getMap().findBiggestArea(true);
+		if(pWaterSettlerArea != NULL && // advc.001: What if there is no water at all?
+			kPlayer.AI_totalWaterAreaUnitAIs(*pWaterSettlerArea, UNITAI_SETTLER_SEA) == 0)
+		{
+			pWaterSettlerArea = NULL;
+		}
+	}
+	int iNumWaterAreaCitySites = (pWaterSettlerArea == NULL) ? 0 :
+			kPlayer.AI_getNumAdjacentAreaCitySites(iWaterAreaBestFoundValue,
+			*pWaterSettlerArea, &kArea);
+	int iNumSettlers = kPlayer.AI_totalUnitAIs(UNITAI_SETTLE);
+
+	bool bCapitalArea = false;
+	int iNumCapitalAreaCities = 0;
+	if (pCapital != NULL)
+	{
+		iNumCapitalAreaCities = pCapital->getArea().getCitiesPerPlayer(getOwner());
+		if (sameArea(*pCapital))
+			bCapitalArea = true;
+	}
+
+	int iMaxSettlers = 0;
+	if (!bFinancialTrouble)
+	{
+		iMaxSettlers = std::min((iNumCities + 1) / 2,
+				iNumAreaCitySites + iNumWaterAreaCitySites);
+		if (bLandWar || bAssault)
+			iMaxSettlers = (iMaxSettlers + 2) / 3;
+	}
+	int iSettlerPriority = 0; // advc.031b
+
+	if (iNumCitiesInArea > 2 &&
+		kPlayer.AI_atVictoryStage(AI_VICTORY_CULTURE2) &&
+		iCultureRateRank <= iCulturalVictoryNumCultureCities + 1)
+	{
+		/*	if we do not have enough cities, then the highest culture city
+			will not get special attention. */
+		if (iCultureRateRank > 1 ||
+			iNumCities > iCulturalVictoryNumCultureCities + 1)
+		{
+			if (iNumAreaCitySites + iNumWaterAreaCitySites > 0 &&
+				iNumCities < 6 && SyncRandOneChanceIn(2))
+			{
+				bCultureCity = false;
+			}
+			else bCultureCity = true;
+		}
+	}
+
+	// Free experience for various unit domains
+	/*int const iFreeLandExperience = getSpecialistFreeExperience() +
+		getDomainFreeExperience(DOMAIN_LAND);*/ // advc: unused
+	int const iFreeSeaExperience = getSpecialistFreeExperience() +
+			getDomainFreeExperience(DOMAIN_SEA);
+	int const iFreeAirExperience = getSpecialistFreeExperience() +
+			getDomainFreeExperience(DOMAIN_AIR);
+
+	int const iProductionRank = findYieldRateRank(YIELD_PRODUCTION);
+
+	int const iOwnerEra = kPlayer.getCurrentEra(); // advc
+	scaled const rOwnerAIEraFactor = kPlayer.AI_getCurrEraFactor(); // advc.erai
+	// K-Mod.
+	BuildingTypes eBestBuilding = AI_bestBuildingThreshold(); // go go value cache!
+	int iBestBuildingValue = (eBestBuilding == NO_BUILDING) ? 0 : AI_buildingValue(eBestBuilding);
+	/*	for the purpose of adjusting production probabilities,
+		scale the building value up for early eras
+		(because early-game buildings are relatively weaker) */
+	if (GC.getNumEraInfos() > 1)
+	{
+		FAssert(iOwnerEra < GC.getNumEraInfos());
+		iBestBuildingValue *= 2 * (GC.getNumEraInfos() - 1) - iOwnerEra;
+		iBestBuildingValue /= GC.getNumEraInfos() - 1;
+	}
+	// also, reduce the value to encourage early expansion until we reach the recommend city target
+	{
+		int iCitiesTarget = GC.getInfo(GC.getMap().getWorldSize()).getTargetNumCities();
+		if (iNumAreaCitySites > 0 && iNumCities < iCitiesTarget)
+		{
+			iBestBuildingValue *= iNumCities + iCitiesTarget;
+			iBestBuildingValue /= 2*iCitiesTarget;
+		}
+	}
+
+	// Check for military exemption for commerce cities and underdeveloped cities.
+	// Don't give exemptions to cities that don't have anything good to build anyway.
+	bool bUnitExempt = false;
+	if (iBestBuildingValue >= 40 &&
+		(iProductionRank - 1) * 2 > iNumCities)
+	{
+		bool bBelowMedian = true;
+		FOR_EACH_ENUM(Commerce)
+		{
+			/*	I'd use the total commerce rank, but there currently
+				isn't a cached value of that. */
+			int iRank = findCommerceRateRank(eLoopCommerce);
+			if (iRank < iProductionRank)
+			{
+				bUnitExempt = true;
+				break;
+			}
+			if ((iRank - 1) * 2 < iNumCities)
+				bBelowMedian = false;
+		}
+		if (bBelowMedian)
+			bUnitExempt = true;
+	}
+	// K-Mod end
+
+	// <!-- custom: performance optimization - cache getPopulation() to avoid repeated calls in AI_chooseProduction. Credit: ChatGPT 5. (Claude code Sonnet 4.5 (summarized)) -->
+	int const iCityPopulation = getPopulation();
+
+	// <!-- custom: performance optimization - cache getName() to avoid repeated calls when used multiple times in this function. Credit: ChatGPT 5. (Claude code Sonnet 4.5 (summarized)) -->
+	const CvWString& kCityName = getName();      // bound to the city's internal name
+	const wchar* sCityName    = kCityName.GetCString();
+
+
+	if (gCityLogLevel >= 3) logBBAI("      City %S pop %d considering new production: iProdRank %d, iBuildUnitProb %d%s, iBestBuildingValue %d", sCityName, iCityPopulation, iProductionRank, iBuildUnitProb, bUnitExempt?"*":"", iBestBuildingValue);
+
+	// if we need to pop borders, then do that immediately if we have drama and can do it
+	if (getCultureLevel() <= 1)
+	{
+		// K-Mod. If our best building is a cultural building, just start building it.
+		bool bCultureBuilding = false;
+		int iProductionTurns = MAX_SHORT;
+		if (eBestBuilding != NO_BUILDING)
+		{
+			CvBuildingInfo const& kBestBuilding = GC.getInfo(eBestBuilding);
+			if (kBestBuilding.getCommerceChange(COMMERCE_CULTURE) +
+				kBestBuilding.getObsoleteSafeCommerceChange(COMMERCE_CULTURE) > 0 &&
+				!kBestBuilding.isLimited() && // advc.192: No wonders here
+				AI_countGoodTiles(true, false) > 0) // advc.opt: Moved down
+			{
+				bCultureBuilding = true;
+				iProductionTurns = getProductionTurnsLeft(eBestBuilding, 0);
+			}
+		}
+		if (bCultureBuilding &&
+			// advc.192: Moved into auxiliary function
+			AI_isSwiftBorderExpansion(iProductionTurns))
+		{
+			pushOrder(ORDER_CONSTRUCT, eBestBuilding);
+			return;
+		} // K-Mod end
+		if (AI_chooseProcess(COMMERCE_CULTURE))
+			return;
+		/*	<advc.192> If city keeps growing, but production stays slow,
+			then we should bite the bullet and start a slow culture building
+			rather sooner than later. */
+		if (iBestBuildingValue >= 60 && iCityPopulation > 2 &&
+			AI_isSwiftBorderExpansion(iProductionTurns /
+			std::min(iCityPopulation - 1, 3)))
+		{
+			pushOrder(ORDER_CONSTRUCT, eBestBuilding);
+			return;
+		} // </advc.192>
+	}
+
+	if (kPlot.getNumDefenders(getOwner()) == 0) // XXX check for other team's units?
+	{
+		if (gCityLogLevel >= 2) logBBAI("      City %S uses no defenders", sCityName);
+		if (AI_chooseUnit(UNITAI_CITY_DEFENSE))
+			return;
+		if (AI_chooseUnit(UNITAI_CITY_COUNTER))
+			return;
+		if (AI_chooseUnit(UNITAI_CITY_SPECIAL))
+			return;
+		if (AI_chooseUnit(UNITAI_ATTACK))
+			return;
+	}
+
+	if (kPlayer.isStrike())
+	{
+		int iStrikeFlags = 0;
+		iStrikeFlags |= BUILDINGFOCUS_GOLD;
+		iStrikeFlags |= BUILDINGFOCUS_MAINTENANCE;
+
+		if (AI_chooseBuilding(iStrikeFlags))
+		{
+			if (gCityLogLevel >= 2) logBBAI("      City %S uses strike building (w/ flags)", sCityName);
+			return;
+		}
+
+		if (AI_chooseBuilding())
+		{
+			if (gCityLogLevel >= 2) logBBAI("      City %S uses strike building (w/o flags)", sCityName);
+			return;
+		}
+	}
+
+	// K-Mod. Make room for a 'best project'. -1 indicates that we haven't yet calculated the best project.
+	// Well evaluate it soon if we are aiming for a space victory; otherwise we'll just leave it until the end.
+	ProjectTypes eBestProject = NO_PROJECT;
+	int iProjectValue = -1;
+	// K-Mod end
+
+	// K-Mod, short-circuit production choice if we already have something really good in mind
+	if (iNumCities > 1) // don't use this short circuit if this is our only city.
+	{
+		if (kPlayer.AI_atVictoryStage(AI_VICTORY_SPACE4))
+		{
+			eBestProject = AI_bestProject(&iProjectValue);
+			if (eBestProject != NO_PROJECT && iProjectValue > iBestBuildingValue)
+			{
+				int iOdds = std::max(0, 100 * iProjectValue / (3 * iProjectValue + 300) - 10);
+				if (SyncRandSuccess100(iOdds))
+				{
+					pushOrder(ORDER_CREATE, eBestProject);
+					if (gCityLogLevel >= 2) logBBAI("      City %S uses choose project short-circuit 1. (project value: %d, building value: %d, odds: %d)", sCityName, iProjectValue, iBestBuildingValue, iOdds);
+					return;
+				}
+			}
+		}
+
+		int iOdds = std::max(0, 100 * iBestBuildingValue / (3 * iBestBuildingValue + 300) - 10);
+		if (AI_chooseBuilding(0, MAX_INT, 0, iOdds))
+		{
+			if (gCityLogLevel >= 2) logBBAI("      City %S uses building value short-circuit 1 (odds: %d)", sCityName, iOdds);
+			return;
+		}
+	} // K-Mod end
+
+	// So what's the right detection of defense which works in early game too?
+	int iPlotSettlerCount = (iNumSettlers == 0) ? 0 : kPlot.plotCount(
+			PUF_isUnitAIType, UNITAI_SETTLE, -1, getOwner());
+	int iPlotCityDefenderCount = /* advc.107: */ std::max(
+			kPlot.plotCount(PUF_isUnitAIType, UNITAI_CITY_DEFENSE, -1, getOwner()),
+			/*	<advc.107> I guess we want non-CITY_DEFENSE units on GUARD_CITY mission to
+				switch to different missions eventually. But not counting them at all
+				sometimes leads to too much unit production before the 2nd city. */
+			kPlot.plotCount(PUF_isMissionAIType, MISSIONAI_GUARD_CITY, -1, getOwner()) /
+			iNumCitiesInArea); // </advc.107>
+	if (iOwnerEra == 0)
+	{
+		/*	Warriors are blocked from UNITAI_CITY_DEFENSE,
+			in early game this confuses AI city building */
+		if (kPlayer.AI_totalUnitAIs(UNITAI_CITY_DEFENSE) <= iNumCities)
+		{
+			if (kPlayer.AI_bestCityUnitAIValue(UNITAI_CITY_DEFENSE, this) == 0)
+			{
+				iPlotCityDefenderCount = kPlot.plotCount(PUF_canDefend, -1, -1,
+						getOwner(), NO_TEAM, PUF_isDomainType, DOMAIN_LAND);
+			}
+		}
+	}
+
+	//minimal defense.
+	//if (iPlotCityDefenderCount <= iPlotSettlerCount)
+	if (!bUnitExempt && iPlotSettlerCount > 0 && iPlotCityDefenderCount <= iPlotSettlerCount)
+	{
+		if (gCityLogLevel >= 2) logBBAI("      City %S needs escort for existing settler", sCityName);
+		if (AI_chooseUnit(UNITAI_CITY_DEFENSE))
+		{
+			// BBAI TODO: Does this work right after settler is built???
+			if (gCityLogLevel >= 2) logBBAI("      City %S uses escort existing settler 1 defense", sCityName);
+			return;
+		}
+
+		if (AI_chooseUnit(UNITAI_ATTACK))
+		{
+			if (gCityLogLevel >= 2) logBBAI("      City %S uses escort existing settler 1 attack", sCityName);
+			return;
+		}
+	}
+
+	if (iCityPopulation > 5 && AI_needsCultureToWorkFullRadius() &&
+		!kPlayer.AI_isDoStrategy(AI_STRATEGY_TURTLE))
+	{
+		if (AI_chooseBuilding(BUILDINGFOCUS_CULTURE, 30))
+		{
+			if (gCityLogLevel >= 2) logBBAI("      City %S uses zero culture build", sCityName);
+			return;
+		}
+	}
+
+	// Early game worker logic
+	// <advc.113>
+	bool bCloseToNewTech = false;
+	TechTypes eCurrentResearch = kPlayer.getCurrentResearch();
+	if (eCurrentResearch != NO_TECH && bPrimaryArea)
+	{
+		int iTurnsLeft = kPlayer.getResearchTurnsLeft(eCurrentResearch, true);
+		/*  Research turns per tech tend to stay the same throughout the game
+			(in AdvCiv), but production turns per worker decrease. */
+		if(iTurnsLeft >= 0 && iTurnsLeft <= 12 / (rOwnerAIEraFactor + 1))
+			bCloseToNewTech = true;
+	} // </advc.113>
+	// K-Mod 10/sep/10: iLandBonuses moved up
+	int const iLandBonuses = AI_countNumImprovableBonuses(true,
+			//kPlayer.getCurrentResearch()
+			bCloseToNewTech ? eCurrentResearch : NO_TECH); // advc.113
+
+	bool bChooseWorker = false;
+
+	if (isCapital() &&
+		kGame.getElapsedGameTurns() * 100 <
+		30 * GC.getInfo(kGame.getGameSpeedType()).getTrainPercent() &&
+		!bDanger && !kPlayer.AI_isDoStrategy(AI_STRATEGY_TURTLE))
+	{
+		if (!bWaterDanger && iCityPopulation < 3 &&
+			iNeededSeaWorkers > 0 && iExistingSeaWorkers <= 0)
+		{
+			// Build Work Boat first since it doesn't stop growth
+			if (AI_chooseUnit(UNITAI_WORKER_SEA))
+			{
+				if (gCityLogLevel >= 2) logBBAI("      City %S uses choose worker sea 1a", sCityName);
+				return;
+			}
+		}
+		if (iExistingWorkers == 0 && /* advc.113: */ iMissingWorkers > 0 &&
+			//AI_totalBestBuildValue(kArea) > 10
+			AI_totalBestBuildValue(kArea) + 50 * iLandBonuses > 100) // K-Mod
+		{
+			if (!bChooseWorker && AI_chooseUnit(UNITAI_WORKER))
+			{
+				if (gCityLogLevel >= 2) logBBAI("      City %S uses choose worker 1a", sCityName);
+				return;
+			}
+			bChooseWorker = true;
+		}
+	}
+
+	if (!(bDefenseWar && iWarSuccessRating < -50) && !bDanger)
+	{
+		if (iExistingWorkers == 0)
+		{	/*  K-Mod, 10/sep/10, Karadoc
+				I've taken iLandBonuses from here and moved it higher for use elsewhere. */
+			//int iLandBonuses = ...
+			if (iLandBonuses > 1 || (iCityPopulation > 3 && //iNeededWorkers > 0
+				// <advc.113>
+				iMissingWorkers > 0 &&
+				// Wait for the mainland to send a worker
+				(bPrimaryArea ||
+				(iMissingWorkers > 1 && SyncRandSuccess100(20 * iMissingWorkers)))
+				/* </advc.113> */))
+			{
+				if (!bChooseWorker && AI_chooseUnit(UNITAI_WORKER))
+				{
+					if (gCityLogLevel >= 2) logBBAI("      City %S uses choose worker 1", sCityName);
+					return;
+				}
+				bChooseWorker = true;
+			}
+
+			if (!bWaterDanger && iNeededSeaWorkers > iExistingSeaWorkers && iCityPopulation < 3)
+			{
+				if (AI_chooseUnit(UNITAI_WORKER_SEA))
+				{
+					if (gCityLogLevel >= 2) logBBAI("      City %S uses choose worker sea 1", sCityName);
+					return;
+				}
+			}
+
+			if (iLandBonuses >= 1  && iCityPopulation > 1)
+			{
+				if (!bChooseWorker && AI_chooseUnit(UNITAI_WORKER))
+				{
+					if (gCityLogLevel >= 2) logBBAI("      City %S uses choose worker 2", sCityName);
+					return;
+				}
+				bChooseWorker = true;
+			}
+		}
+	}
+	/*if (kPlayer.AI_atVictoryStage(AI_VICTORY_DOMINATION3)) {
+		if (goodHealth() - badHealth(true, 0) < 1) {
+			if (AI_chooseBuilding(BUILDINGFOCUS_HEALTHY, 20, 0, (kPlayer.AI_atVictoryStage(AI_VICTORY_DOMINATION4) ? 50 : 20)))
+				return;
+		}
+	}
+	if (kTeam.isAVassal() && kTeam.isCapitulated()) {
+		if (!bLandWar) {
+			if (goodHealth() - badHealth(true, 0) < 1) {
+				if (AI_chooseBuilding(BUILDINGFOCUS_HEALTHY, 30, 0, 3*iCityPopulation))
+					return;
+			}
+			if (iCityPopulation > 3 && getCommerceRate(COMMERCE_CULTURE) < 5) {
+				if (AI_chooseBuilding(BUILDINGFOCUS_CULTURE, 30, 0 + 3*iWarTroubleThreshold, 3*iCityPopulation))
+					return;
+			}
+		}
+	}*/ // BtS  <cdtw.6>
+	if(!kPlayer.isHuman() && kPlayer.AI_atVictoryStage(AI_VICTORY_SPACE4) &&
+		!isCoastal() && !isCapital() && bCapitalArea && !bDanger && !bLandWar &&
+		pCapital != NULL && pCapital->isCoastal() &&
+		kPlot.calculateCulturePercent(getOwner()) >= 50 &&
+		// Dave_uk's code (directly) based on AI_cityThreat looked too slow
+		AI_neededFloatingDefenders(true) <= pCapital->AI_neededFloatingDefenders(true) &&
+		AI_chooseBuilding(BUILDINGFOCUS_CAPITAL, 12))
+	{
+		return;
+	} // </cdtw.6>
+
+	// -------------------- BBAI Notes -------------------------
+	// Minimal attack force, both land and sea
+	if (bDanger)
+	{
+		int iAttackNeeded = 4;
+		iAttackNeeded += std::max(0, AI_neededDefenders() -
+				kPlot.plotCount(PUF_isUnitAIType, UNITAI_CITY_DEFENSE, -1, getOwner()));
+
+		if (kPlayer.AI_totalAreaUnitAIs(kArea, UNITAI_ATTACK) <  iAttackNeeded)
+		{
+			if (AI_chooseUnit(UNITAI_ATTACK))
+			{
+				if (gCityLogLevel >= 2) logBBAI("      City %S uses danger minimal attack", sCityName);
+				return;
+			}
+		}
+	}
+	// <advc.124> Need these values again later
+	int iSeaExplorersTarget = 0;
+	int iSeaExplorersNow = 0;
+	if(pWaterArea != NULL)
+	{
+		iSeaExplorersTarget = kPlayer.AI_neededExplorers(*pWaterArea);
+		iSeaExplorersNow = kPlayer.AI_totalWaterAreaUnitAIs(*pWaterArea,
+				UNITAI_EXPLORE_SEA);
+	} // </advc.124>
+
+	const bool bMinor = kPlayer.isMinorCiv();
+	const bool bBarbarian = kPlayer.isBarbarian();
+
+	if (bMaybeWaterArea)
+	{
+		if (!(bLandWar && iWarSuccessRating < -30) && !bDanger && !bFinancialTrouble)
+		{	/*  <advc.017> These were calls to AI_getNumTrainAIUnits, i.e. the
+				BBAI code ensured that we're not building lots of ships in parallel.
+				I want to make sure that we don't end up with more than a
+				minimal naval force. */
+			std::vector<UnitAITypes> aeSeaAttackTypes;
+			aeSeaAttackTypes.push_back(UNITAI_ATTACK_SEA);
+			// <!-- custom: stop bypassing our code ffs if i may say xd...; also specifically for this unitai, we don't want it anymore, see code comment at bestunit( for details -->
+			if (bMinor || bBarbarian)
+			{
+				aeSeaAttackTypes.push_back(UNITAI_PIRATE_SEA);
+			}
+			aeSeaAttackTypes.push_back(UNITAI_RESERVE_SEA);
+			if ((bMaybeWaterArea && bWaterDanger) ||
+				(pWaterArea != NULL && bPrimaryArea &&
+				0 < kPlayer.AI_countNumAreaHostileUnits(*pWaterArea, true, false, false, false,
+				plot()))) // advc.081: Range limit
+			{
+				/*	pWaterArea can be NULL if bMaybeWaterArea, i.e. if there is only an
+					unimportant water area. Need to deal with bWaterDanger either way,
+					and need to make sure, either way, not to train too many ships. */
+				CvArea const* pAnyWaterArea = waterArea(true);
+				if (pAnyWaterArea != NULL &&
+					kPlayer.AI_totalWaterAreaUnitAIs(*pAnyWaterArea, aeSeaAttackTypes)
+					/* </advc.017> */  < std::min(3, iNumCities))
+				{
+					if (gCityLogLevel >= 2) logBBAI("      City %S uses minimal naval", sCityName);
+					/*  <advc.017> Don't prioritize those ships quite as much
+						(was 100% chance in BBAI) */
+					int iOdds = 60;
+					if(bLandWar && iWarSuccessRating < 0)
+						iOdds += 2 * iWarSuccessRating;
+					// </advc.017>
+					if (AI_chooseUnit(UNITAI_ATTACK_SEA, iOdds))
+						return;
+					/*  advc.017: Don't want to fall back on these when the above
+						fails due to iOdds. Shouldn't be needed either; pirate and
+						reserve units can also function as attackers. */
+					/*if (AI_chooseUnit(UNITAI_PIRATE_SEA))
+						return;
+					if (AI_chooseUnit(UNITAI_RESERVE_SEA))
+						return;*/
+				}
+			}
+
+			if (pWaterArea != NULL)
+			{
+				int iOdds = -1;
+				if (iAreaBestFoundValue == 0 || iWaterAreaBestFoundValue > iAreaBestFoundValue)
+					iOdds = 100;
+				else if (iWaterPercent > 60)
+					iOdds = 13;
+				if (iOdds >= 0)
+				{	// <advc.040>
+					if (GC.getInfo(kPlayer.getCurrentEra()).get(CvEraInfo::AIAgeOfExploration) ?
+						(iSeaExplorersTarget > iSeaExplorersNow) : // </advc.040>
+						/*  advc.124: No functional change from the K-Mod code.
+							Original BtS condition deleted (it didn't check
+							seaExplorersTarget). */
+						(iSeaExplorersNow == 0 && iSeaExplorersTarget > 0))
+					{
+						iOdds /= (iSeaExplorersNow + 1); // advc.040
+						if (AI_chooseUnit(UNITAI_EXPLORE_SEA, iOdds))
+						{
+							if (gCityLogLevel >= 2) logBBAI("      City %S uses early sea explore", sCityName);
+							return;
+						}
+					}
+					// BBAI TODO: Really only want to do this if no good area city sites ... 13% chance on water heavy maps
+					// of slow start, little benefit
+					/*  <advc.017b> ^That, and we certainly don't want a SETTLER_SEA
+						when iWaterAreaBestFoundValue is 0. Especially now that
+						CvUnitAI::AI_settlerSeaMove gives unneeded SETTLER_SEA ships
+						a different AI type b/c then we keep training ships */
+				}
+				if((iWaterAreaBestFoundValue > 0 ||
+					/*  Should afford one Galleon eventually, if only to
+						ferry Workers (advc.040). */
+				(iOwnerEra >= CvEraInfo::AI_getAgeOfExploration() &&
+					iNumCities >= 4)) &&
+					pCapital != NULL && sameArea(*pCapital) &&
+					// </advc.017b>
+					kPlayer.AI_totalWaterAreaUnitAIs(*pWaterArea, UNITAI_SETTLER_SEA) <= 0)
+				{
+					// <advc.017b>
+					iOdds = (iWaterAreaBestFoundValue > iAreaBestFoundValue ?
+							-60 : -100);
+					if(iAreaBestFoundValue <= 0)
+						iOdds = 100;
+					else iOdds += (150 * iWaterAreaBestFoundValue) / iAreaBestFoundValue;
+					// </advc.017b>
+					if (AI_chooseUnit(UNITAI_SETTLER_SEA, iOdds))
+					{
+						if (gCityLogLevel >= 2) logBBAI("      City %S uses early settler sea", sCityName);
+						return;
+					}
+				}
+			}
+		}
+	}
+	// -------------------- BBAI Notes -------------------------
+	// Top normal priorities
+	/* if (!bPrimaryArea && !bLandWar) {
+		if (AI_chooseBuilding(BUILDINGFOCUS_FOOD, 60, 10 + 2*iWarTroubleThreshold, 50)) {
+			if (gCityLogLevel >= 2) logBBAI("      City %S uses choose BUILDINGFOCUS_FOOD 1", sCityName);
+			return;
+		}
+	}
+	if (!bDanger && ((iOwnerEra > (kGame.getStartEra() + iProductionRank / 2))) || (iOwnerEra > (GC.getNumEraInfos() / 2))) {
+		if (AI_chooseBuilding(BUILDINGFOCUS_PRODUCTION, 20 - iWarTroubleThreshold, 15, ((bLandWar || bAssault) ? 25 : -1))) {
+			if (gCityLogLevel >= 2) logBBAI("      City %S uses choose BUILDINGFOCUS_PRODUCTION 1", sCityName);
+			return;
+		}
+		if (!(bDefenseWar && iWarSuccessRatio < -30)) {
+			if ((iExistingWorkers < ((iNeededWorkers + 1) / 2))) {
+				if (iCityPopulation > 3 || (iProductionRank < (iNumCities + 1) / 2)) {
+					if (!bChooseWorker && AI_chooseUnit(UNITAI_WORKER)) {
+						if (gCityLogLevel >= 2) logBBAI("      City %S uses choose worker 3", sCityName);
+						return;
+					}
+					bChooseWorker = true;
+				}
+			}
+		}
+	} */ // K-Mod disabled this stuff
+
+	// advc.113: Moved this conditional block (way) up to prioritize workers
+	// note: this is the only worker test that allows us to reach the full number of needed workers.
+	if (!(bLandWar && iWarSuccessRating < -30) && !bDanger)
+	{	// <advc.113>
+		if (iMissingWorkers > 0)
+		{	// 1 added on both sides of the inequation so that "have 1, need 2" is invalid
+			bool bValid = (3 * (AI_getWorkersHave() + 1) / 2 < AI_getWorkersNeeded() + 1  && // local
+					// Wait for existing workers if new city
+					getGameTurnFounded() + 5 < kGame.getGameTurn());
+			//|| SyncRandNum(80) < iBestBuildingValue + (iBuildUnitProb + 50) / 2
+			// Replacing the alt. condition above
+			if(!bValid)
+			{
+				int iWorkerOdds = 110;
+				// Discourage training workers in parallel
+				int iMaking = kArea.getNumTrainAIUnits(getOwner(), UNITAI_WORKER);
+				iWorkerOdds -= (100 * iMaking) / std::max(1, iNumCities - 1);
+				/*  If nearly enough workers, then rather train more settlers first.
+					(Use sth. like AI_calculateSettlerPriority*iExistingWorkers^2/iNeededWorkers^2 instead?) */
+				if(10 * iExistingWorkers >= 8 * iNeededWorkers && iMaxSettlers > iNumSettlers)
+					iWorkerOdds -= 10 * (iMaxSettlers - iNumSettlers);
+				iWorkerOdds -= iBestBuildingValue + (iBuildUnitProb + 50) / // no change
+						(bWarPrep ? 1 : 2); // Don't halve when prepping
+				if(iWorkerOdds > 0 && !bPrimaryArea)
+					iWorkerOdds /= 2; // Wait for the mainland to send workers
+				bValid = SyncRandSuccess100(iWorkerOdds);
+			}
+			if(bValid) // </advc.113>
+			{
+				if (!bChooseWorker && AI_chooseUnit(UNITAI_WORKER))
+				{
+					if (gCityLogLevel >= 2) logBBAI("      City %S uses choose worker 6", sCityName);
+					return;
+				}
+				bChooseWorker = true;
+			}
+		}
+	}
+
+	bool bCrushStrategy = kPlayer.AI_isDoStrategy(AI_STRATEGY_CRUSH);
+	int iNeededFloatingDefenders = (isBarbarian() || bCrushStrategy) ?  0 :
+			kPlayer.AI_getTotalFloatingDefendersNeeded(kArea);
+	// K-Mod. (note: this has a different scale to the original code).
+	int iMaxUnitSpending = kPlayer.AI_maxUnitCostPerMil(&kArea, iBuildUnitProb);
+
+	if (kPlayer.AI_isDoStrategy(AI_STRATEGY_ECONOMY_FOCUS)) // K-Mod
+		iNeededFloatingDefenders = (2 * iNeededFloatingDefenders + 2)/3;
+
+ 	int iTotalFloatingDefenders = (isBarbarian() ? 0 :
+			kPlayer.AI_getTotalFloatingDefenders(kArea));
+
+	// advc: Replacing raw vector of pairs "floatingDefenderTypes"
+	UnitAIWeightMap floatingDefenderWeight;
+	floatingDefenderWeight.set(UNITAI_CITY_DEFENSE, 125);
+	floatingDefenderWeight.set(UNITAI_CITY_COUNTER, 100);
+	//floatingDefenderWeight.set(UNITAI_CITY_SPECIAL, 0);
+	floatingDefenderWeight.set(UNITAI_RESERVE, 100);
+	// <!-- custom: stop bypassing our code ffs if i may say xd...; also specifically for this unitai, we don't want it anymore, see code comments at bestunit, bestunitai, and this function too for details for details or additional/related info -->
+	if (bMinor || bBarbarian)
+	{
+		floatingDefenderWeight.set(UNITAI_COLLATERAL, 80); // K-Mod, down from 100.
+	}
+
+	if (iTotalFloatingDefenders < (iNeededFloatingDefenders + 1) / (bGetBetterUnits ? 3 : 2))
+	{
+		if (!bUnitExempt && iUnitSpending < iMaxUnitSpending + 5)
+		{
+			if (kArea.getAreaAIType(getTeam()) != AREAAI_NEUTRAL ||
+				kPlayer.AI_isDoStrategy(AI_STRATEGY_ALERT1) ||
+				SyncRandNum(iNeededFloatingDefenders) >
+				iTotalFloatingDefenders * (2*iUnitSpending + iMaxUnitSpending) /
+				std::max(1, 3*iMaxUnitSpending))
+			{
+				if (AI_chooseLeastRepresentedUnit(floatingDefenderWeight))
+				{
+					if (gCityLogLevel >= 2) logBBAI("      City %S uses choose floating defender 1", sCityName);
+					return;
+				}
+			}
+		}
+	}
+
+	// If losing badly in war, need to build up defenses and counter attack force
+	//if (bLandWar && (iWarSuccessRatio < -30 || iEnemyPowerPerc > 150))
+	// K-Mod. I've changed the condition on this; but to be honest, I'm thinking it should just be completely removed.
+	// The normal unit selection function should know what kind of units we should be building...
+	if (bLandWar && iWarSuccessRating < -10 && iEnemyPowerPerc - iWarSuccessRating > 150)
+	{
+		UnitAIWeightMap defensiveWeight; // advc: Was vector of pairs "defensiveTypes"
+		defensiveWeight.set(UNITAI_COUNTER, 100);
+		defensiveWeight.set(UNITAI_ATTACK, 100);
+		defensiveWeight.set(UNITAI_RESERVE, 60);
+		//defensiveWeight.push_back(std::make_pair(UNITAI_COLLATERAL, 60));
+		// <!-- custom: stop bypassing our code ffs if i may say xd...; also specifically for this unitai, we don't want it anymore, see code comments at bestunit, bestunitai, and this function too for details for details or additional/related info -->
+		if (bMinor || bBarbarian)
+		{
+			defensiveWeight.set(UNITAI_COLLATERAL, 80);
+		}
+		if (bDanger || (iTotalFloatingDefenders <
+			(5*iNeededFloatingDefenders) / (bGetBetterUnits ? 6 : 4)))
+		{
+			defensiveWeight.set(UNITAI_CITY_DEFENSE, 200);
+			defensiveWeight.set(UNITAI_CITY_COUNTER, 50);
+		}
+		int iOdds = iBuildUnitProb;
+		if (iWarSuccessRating < -50)
+			iOdds -= iWarSuccessRating / 3;
+		// K-Mod
+		iOdds *= (-iWarSuccessRating + 20 + iBestBuildingValue);
+		iOdds /= (-iWarSuccessRating + 2 * iBestBuildingValue);
+		// K-Mod end
+		if (bDanger)
+			iOdds += 10;
+
+		if (AI_chooseLeastRepresentedUnit(defensiveWeight, iOdds))
+		{
+			if (gCityLogLevel >= 2) logBBAI("      City %S uses choose losing extra defense with odds %d", sCityName, iOdds);
+			return;
+		}
+	}
+
+	if (!bDefenseWar && iWarSuccessRating < -50)
+	{
+	/*  K-Mod, 10/sep/10, Karadoc
+		Disabled iExistingWorkers == 0. Changed Pop > 3 to Pop >=3.
+		Changed Rank < (cities + 1)/2 to Rank <= ...  So that it can catch the case
+		where we only have 1 city. */
+		//if (iExistingWorkers != 0)
+		if (!bDanger && iExistingWorkers < (iNeededWorkers + 1) / 2)
+		{
+			if (iCityPopulation >= 3 || iProductionRank <= (iNumCities + 1) / 2)
+			{
+				if (!bChooseWorker &&
+					// advc.113: Wait for mainland to send workers
+					(bPrimaryArea || SyncRandSuccess100(15 * iMissingWorkers)) &&
+					AI_chooseUnit(UNITAI_WORKER))
+				{
+					if (gCityLogLevel >= 2) logBBAI("      City %S uses choose worker 4", sCityName);
+					return;
+				}
+				bChooseWorker = true;
+			}
+		}
+	}
+
+	//do a check for one tile island type thing?
+	//this can be overridden by "wait and grow more"
+	// K-Mod, 10/sep/10: was "if (bDanger", I have changed it to "if (!bDanger" 
+	if (!bDanger && iExistingWorkers == 0 && (isCapital() ||
+		iMissingWorkers > 0 || // advc.113: was iNeededWorkers>0
+		iNeededSeaWorkers > iExistingSeaWorkers))
+	{
+		if (!(bDefenseWar && iWarSuccessRating < -30) &&
+			!kPlayer.AI_isDoStrategy(AI_STRATEGY_TURTLE))
+		{
+			if (AI_countNumBonuses(NO_BONUS, /*bIncludeOurs*/ true,
+				/*bIncludeNeutral*/ true, -1, /*bLand*/ true, /*bWater*/ false) > 0 ||
+				(isCapital() && iCityPopulation > 3 && iNumCitiesInArea > 1))
+			{
+				if (!bChooseWorker && AI_chooseUnit(UNITAI_WORKER))
+				{
+					if (gCityLogLevel >= 2) logBBAI(" 	 City %S uses choose worker 5", sCityName);
+					return;
+				}
+				bChooseWorker = true;
+			}
+
+			if (iNeededSeaWorkers > iExistingSeaWorkers)
+			{
+				if (AI_chooseUnit(UNITAI_WORKER_SEA,
+					60)) // advc.131: From MNAI; was -1.
+				{
+					if (gCityLogLevel >= 2) logBBAI("      City %S uses choose worker sea 2", sCityName);
+					return;
+				}
+			}
+		}
+	}
+
+	if (!(bDefenseWar && iWarSuccessRating < -30))
+	{
+		if (!bWaterDanger && iNeededSeaWorkers > iExistingSeaWorkers)
+		{
+			if (AI_chooseUnit(UNITAI_WORKER_SEA))
+			{
+				if (gCityLogLevel >= 2) logBBAI("      City %S uses choose worker sea 3", sCityName);
+				return;
+			}
+		}
+	}
+
+	if	(!bLandWar && !bAssault && AI_needsCultureToWorkFullRadius())
+	{
+		if (AI_chooseBuilding(BUILDINGFOCUS_CULTURE,
+			bAggressiveAI ? 10 : 20, 0, bAggressiveAI ? 33 : 50))
+		{
+			if (gCityLogLevel >= 2) logBBAI("      City %S uses minimal culture rate", sCityName);
+			return;
+		}
+	}
+
+	int iMinFoundValue = kPlayer.AI_getMinFoundValue();
+	if (bDanger)
+	{
+		iMinFoundValue *= 3;
+		iMinFoundValue /= 2;
+	}
+
+	// BBAI TODO: Check that this works to produce early rushes on tight maps
+	if (!bUnitExempt && !bGetBetterUnits && bCapitalArea &&
+		iAreaBestFoundValue < iMinFoundValue * 2 &&
+		// <advc.017>
+		!kPlayer.AI_isDoStrategy(AI_STRATEGY_ECONOMY_FOCUS) &&
+		// (Maybe check CvTeamAI::AI_isLandTarget?)
+		kArea.getNumCities() > kTeam.countNumCitiesByArea(kArea))
+		// </advc.017>
+	{	//Building city hunting stack.
+		if (getDomainFreeExperience(DOMAIN_LAND) == 0 &&
+			getYieldRate(YIELD_PRODUCTION) > 4)
+		{
+			if (AI_chooseBuilding(BUILDINGFOCUS_EXPERIENCE,
+				rOwnerAIEraFactor > 1 ? 0 : 7, 33))
+			{
+				if (gCityLogLevel >= 2) logBBAI("      City %S uses special BUILDINGFOCUS_EXPERIENCE 1a", sCityName);
+				return;
+			}
+		}
+		int iStartAttackStackRand = 0;
+		if (kArea.getCitiesPerPlayer(BARBARIAN_PLAYER) > 0)
+			iStartAttackStackRand += 15;
+		if (kArea.getNumCities() - iNumCitiesInArea > 0)
+			iStartAttackStackRand += iBuildUnitProb / 2;
+		if (iStartAttackStackRand > 0)
+		{
+			int iAttackCityCount = kPlayer.AI_totalAreaUnitAIs(kArea, UNITAI_ATTACK_CITY);
+			int iAttackCount = iAttackCityCount +
+					kPlayer.AI_totalAreaUnitAIs(kArea, UNITAI_ATTACK);
+			if (iAttackCount == 0)
+			{
+				if (!bFinancialTrouble)
+				{
+					if (AI_chooseUnit(UNITAI_ATTACK, iStartAttackStackRand))
+						return;
+				}
+			}
+			else
+			{
+				//if((iAttackCount > 1) && (iAttackCityCount == 0))
+				/*  <advc.017> Just 1 city-attacker? Isn't it supposed to be a
+					"city hunting stack"? Early units don't have the ATTACK_CITY
+					AI type, but AI_chooseUnit doesn't care much about the AI types
+					assigned in XML. Otoh, ATTACK units will be more useful than
+					ATTACK_CITY if we don't end up hunting for any cities ... */
+				if (iAttackCount >= iAttackCityCount &&
+					iAttackCityCount < 1 + iBuildUnitProb / 19) // </advc.017>
+				{
+					if (AI_chooseUnit(UNITAI_ATTACK_CITY))
+					{
+						if (gCityLogLevel >= 2) logBBAI("      City %S chooses to start city attack stack", sCityName);
+						return;
+					}
+				}
+				//else if (iAttackCount < 3 + iBuildUnitProb / 10)
+				else if (iAttackCount < 2 + iBuildUnitProb / 18) // advc.017
+				{
+					if (AI_chooseUnit(UNITAI_ATTACK))
+					{
+						if (gCityLogLevel >= 2) logBBAI("      City %S chooses to add to city attack stack", sCityName);
+						return;
+					}
+				}
+			}
+			/*	<advc.300> The above won't enable the AI to take Barbarian cities;
+				perhaps it was intended to, if so, I think it's far off the mark.
+				It might be helpful for giving the AI an appetite for warfare, so
+				I'm going to keep it. Now, to at least sometimes conquer Barbarians: */
+			if (!kPlayer.AI_isFocusWar())
+			{
+				int iNeededCityAtt = (kPlayer.AI_neededCityAttackersVsBarbarians()
+						/*	Safety margin; some may well be guarding cities or
+							have trouble reaching the main stack. */
+						* fixp(4/3.)).uceil();
+				/*	Even go 1 above the safety margin eventually - in case that
+					the Barbarians have unusually many defenders. */
+				if (iAttackCityCount <= iNeededCityAtt)
+				{
+					scaled rProb = kPlayer.AI_barbarianTargetCityScore(getArea());
+					if (rProb > 0) // to save time
+					{
+						if (iAttackCityCount >= iNeededCityAtt)
+							rProb /= scaled::max(1, 6 - kPlayer.AI_getCurrEraFactor());
+						else
+						{
+							/*	Inertia - the more attackers we still need, the less
+								we're inclined to train any. */
+							scaled rDiv = iNeededCityAtt - iAttackCityCount;
+							rDiv.exponentiate(std::max(fixp(0.5),
+									2 - kPlayer.AI_getCurrEraFactor() / 2));
+							rProb /= rDiv;
+						}
+						/*	The iOdds param causes a re-roll after every production turn.
+							Perhaps that should be amended. For now, avoid using it. */
+						std::vector<int> aiInputs;
+						aiInputs.push_back(getID());
+						aiInputs.push_back(iAttackCityCount);
+						if (scaled::hash(aiInputs, getOwner()) < rProb &&
+							AI_chooseUnit(UNITAI_ATTACK_CITY))
+						{
+							if (gCityLogLevel >= 2) logBBAI("      City %S trains city attacker vs. Barbarians", sCityName);
+							return;
+						}
+					}
+				}
+			} // </advc.300>
+		}
+	}
+
+	//opportunistic wonder build (1)
+	if (!bDanger && !hasActiveWorldWonder() && iNumCities <= 3 &&
+		(iNumCities > 1 || iNumSettlers > 0)) // K-Mod
+	{
+		// For small civ at war, don't build wonders unless winning
+		//if (!bLandWar || (iWarSuccessRating > 30))
+		// K-Mod. Don't do this if there is any war at all.
+		if (kArea.getAreaAIType(getTeam()) == AREAAI_NEUTRAL)
+		{
+			// <!-- custom: getInt assert in CvRandom.h fails, fix it as advised by chatgpt 5, check if accurate, see known issue as of now 72 for details -->
+			// Assert Failed
+			// File:  c:\program files (x86)\steam\steamapps\common\sid meier's civilization iv beyond the sword\beyond the sword\mods\advciv-sas\cvgamecoredll\CvRandom.h
+			// Line:  48
+			// Func:  CvRandom::getInt
+			// Expression:  iNum >= 0
+			// Message:  getInt: range<0 (-4) msg=CvCityAI::AI_chooseProduction@L1634 d1=-2147483648 d2=-2147483648
+			//
+			// Yep—that crash is because this line can pass a negative range into the RNG:
+			// Some leaders (or your defaults) have getWonderConstructRand() <= 0 (your assert showed -4). Passing that to getSorenRandNum/SyncRandNum triggers the Debug assert.
+			// Minimal, correct fix (skip the roll when disabled)
+			// Treat <= 0 as “don’t roll / don’t do opportunistic wonder":
+			const int iWC = GC.getInfo(getPersonalityType()).getWonderConstructRand();
+			if (iWC > 0) // <-- guard: only roll with a valid positive range
+			{
+				int iWonderTime = SyncRandNum(iWC);
+				iWonderTime /= 5;
+				iWonderTime += 7;
+				if (AI_chooseBuilding(BUILDINGFOCUS_WORLDWONDER, iWonderTime))
+				{
+					if (gCityLogLevel >= 2) logBBAI("      City %S uses opportunistic wonder build 1", sCityName);
+					return;
+				}
+			}
+		}
+	}
+
+	if (!bDanger && !bCapitalArea &&
+		kArea.getCitiesPerPlayer(getOwner()) > iNumCapitalAreaCities)
+	{
+		// BBAI TODO: Should be handled by CvPlayer, not CvCity. And optimize placement.
+		// If losing badly in war, don't build big things.
+		if (!bLandWar || iWarSuccessRating > -30)
+		{
+			// advc.131: Added multipliers to create some inertia
+			if (pCapital == NULL || (4 * kArea.getPopulationPerPlayer(getOwner()) >
+				5 * pCapital->getArea().getPopulationPerPlayer(getOwner()) &&
+				// advc.131:
+				findBaseYieldRateRank(YIELD_PRODUCTION) <= iNumCities / 2))
+			{
+				int iOdds = 3 * kArea.getCitiesPerPlayer(getOwner()); // advc.131: was 15 flat
+				if (AI_chooseBuilding(BUILDINGFOCUS_CAPITAL, iOdds))
+					return;
+			}
+		}
+	}
+
+	// K-Mod.
+	if (iProjectValue < 0 &&
+		(kPlayer.AI_atVictoryStage(AI_VICTORY_SPACE3) ||
+		!(bLandWar && iWarSuccessRating < 30)))
+	{
+		eBestProject = AI_bestProject(&iProjectValue);
+	} // K-Mod end
+
+	int iSpreadUnitThreshold = 1000;
+	if (bLandWar)
+		iSpreadUnitThreshold += 800 - 10*iWarSuccessRating;
+	iSpreadUnitThreshold += 1000*kPlot.plotCount(
+			PUF_isUnitAIType, UNITAI_MISSIONARY, -1, getOwner());
+	UnitTypes eBestSpreadUnit = NO_UNIT;
+	int iBestSpreadUnitValue = -1;
+	if (!bDanger && !kPlayer.AI_isDoStrategy(AI_STRATEGY_TURTLE) &&
+		!bAssault) // advc.131 (from MNAI)
+	{
+		int iSpreadUnitRoll = (100 - iBuildUnitProb) / 3;
+		// <advc.104s>
+		if (bWarPrep)
+			iSpreadUnitRoll -= 5; // </advc.104s>
+		else if (!bLandWar)
+			iSpreadUnitRoll += 10;
+		// K-Mod
+		iSpreadUnitRoll *= (200 + std::max(iProjectValue, iBestBuildingValue));
+		iSpreadUnitRoll /= (100 + 3 * std::max(iProjectValue, iBestBuildingValue));
+		// K-Mod end
+		// <!-- custom: the assert in parent caller fails sometimes, move it a bit sooner in this block, as recommended by chatgpt 5 after asking it about this point in general, check if accurate -->
+		// Assert Failed
+		// File: ..\.\CvCityAI.cpp
+		// Line: 1717
+		// Func: CvCityAI::AI_chooseProduction
+		// Expression: false
+		// Message: AI_bestSpreadUnit should provide a valid unit when it returns true
+		//
+		// The assert is firing because AI_chooseUnit can legitimately fail even when AI_bestSpreadUnit returned true (e.g., you can’t currently train that unit, queue/state changed, resource/civic lockouts, etc.). So the assert text/placement is wrong.
+		// Do this minimal, conservative caller-side fix:
+		if (AI_bestSpreadUnit(true, true, iSpreadUnitRoll,
+			&eBestSpreadUnit, &iBestSpreadUnitValue) &&
+			iBestSpreadUnitValue > iSpreadUnitThreshold)
+		{
+			// <!-- custom: while we're at it, make the assert prettier with more info -->
+			// FErrorMsg("AI_bestSpreadUnit should provide a valid unit when it returns true");
+			// Contract check: if function said "true", we expect a concrete unit
+			FAssertMsg(eBestSpreadUnit != NO_UNIT,
+				CvString::format("bestSpreadUnit: returned true but NO_UNIT | T%d %S roll=%d thr=%d",
+					kGame.getGameTurn(), sCityName,
+					iSpreadUnitRoll, iSpreadUnitThreshold).c_str());
+			// if (AI_chooseUnit(eBestSpreadUnit, UNITAI_MISSIONARY))
+			if (eBestSpreadUnit != NO_UNIT && AI_chooseUnit(eBestSpreadUnit, UNITAI_MISSIONARY))
+			{
+				if (gCityLogLevel >= 2) logBBAI("      City %S uses choose missionary 1", sCityName);
+					return;
+			}
+		}
+	}
+	// K-Mod
+	if (eBestProject != NO_PROJECT && iProjectValue > iBestBuildingValue)
+	{
+		int iOdds = 100 * (iProjectValue - iBestBuildingValue) /
+				(iProjectValue + iBestBuildingValue + iBuildUnitProb);
+		if (SyncRandSuccess100(iOdds))
+		{
+			pushOrder(ORDER_CREATE, eBestProject);
+			if (gCityLogLevel >= 2) logBBAI("      City %S uses choose project 1. (project value: %d, building value: %d, odds: %d)", sCityName, iProjectValue, iBestBuildingValue, iOdds);
+			return;
+		}
+	} // K-Mod end
+	// <advc>
+	int const iMinDefenders = AI_minDefenders() + iPlotSettlerCount;
+	bool const bSpendingExempt = (bUnitExempt ||
+			(bFinancialTrouble && iUnitSpending > iMaxUnitSpending)); // </advc>
+	//minimal defense.
+	//if (!bUnitExempt && iPlotCityDefenderCount < (AI_minDefenders() + iPlotSettlerCount))
+	/*	K-Mod.. take into account any defenders that are on their way.
+		(recall that in AI_guardCityMinDefender, defenders can be shuffled around)
+		(I'm doing the min defender check twice for efficiency -
+		so that we don't count targetmissionAIs when we don't need to) */
+	if (!bSpendingExempt &&
+		iPlotCityDefenderCount < iMinDefenders &&
+		iPlotCityDefenderCount < iMinDefenders - kPlayer.AI_plotTargetMissionAIs(kPlot, MISSIONAI_GUARD_CITY))
+	// K-Mod end
+	{
+		if (AI_chooseUnit(UNITAI_CITY_DEFENSE))
+		{
+			if (gCityLogLevel >= 2) logBBAI("      City %S uses choose min defender", sCityName);
+			return;
+		}
+
+		if (AI_chooseUnit(UNITAI_ATTACK))
+		{
+			if (gCityLogLevel >= 2) logBBAI("      City %S uses choose min defender (attack ai)", sCityName);
+			return;
+		}
+	}
+	int const iNukeWeight = kPlayer.AI_nukeWeight(); // K-Mod (advc: moved up)
+	// <advc.650> This has much higher priority than the !bLandWar code later on
+	if (!bSpendingExempt && iNukeWeight > 0)
+	{
+		int iNukesHave = kPlayer.AI_totalUnitAIs(UNITAI_ICBM);
+		int iNukesWant = 1 + std::min(iNumCities,
+				kGame.getNumCities() - iNumCities) / 5;
+		if (iNukesHave < iNukesWant)
+		{
+			/*	Relying on the RNG in this function seems generally questionable
+				b/c the AI reconsiders orders during the first few production turns */
+			std::vector<int> aiInputs;
+			aiInputs.push_back(getID());
+			aiInputs.push_back(kGame.getGameTurn() / 8);
+			scaled rTrainProb(iNukeWeight * (iNukesWant - iNukesHave), 425 * iNukesWant);
+			if (scaled::hash(aiInputs, getOwner()) < rTrainProb)
+			{
+				if (AI_chooseUnit(UNITAI_ICBM))
+					return;
+			}
+		}
+	} // </advc.650>
+
+	// <!-- custom: the below code doesn't apply to barbarians, as they have no settler, produce no naval units as a result on pangea so they don't pirate anymore as they should, and should still be focused on their usual invade and such routine, but this is also proof our logic is working as intended nicely if i may say which is a good thing if i may say too-->
+	bool bNoSettler = false;
+	bool bWorkerReplacesSettler = false;
+
+	if (!bMinor && !bBarbarian)
+	{
+		// <!-- custom: add bNoSettler checks here rather than hardcoded in bestUnitAI with the old bNoGrow logic of base advciv +/- civ4 code, hopefully cleaner and we can contorl it better as well -->
+		//int const iFoodDifference = foodDifference(true, true);
+		bool const bStagnant = (!isFoodProduction() && foodDifference() <= 0);
+
+		// CvArea* pWaterArea = waterArea(true);
+
+		// <!-- custom: note: sometimes AI_isFocusWar is used with, sometimes without in cvcityai.cpp, going for the larger one and chatgpt 5 suggests to do as such despite not knowing all our code but should be fine, and maybe we handle more cases this way, check if accurate -->
+		bool const bWarPlan = GET_PLAYER(getOwner()).AI_isFocusWar(); // advc.105
+				//(kTeam.getAnyWarPlanCount(true) > 0);
+		bool const bDefense = (getArea().getAreaAIType(getTeam()) == AREAAI_DEFENSIVE);
+		bLandWar = (bDefense || (getArea().getAreaAIType(getTeam()) == AREAAI_OFFENSIVE) || (getArea().getAreaAIType(getTeam()) == AREAAI_MASSING));
+		// bool const bLandWar = kOwner.AI_isLandWar(getArea()); // K-Mod
+		// <!-- custom: already defined at beginning of this chooseProduction function if i'm not mistaken, so no double define here-->
+		// //bool const bAssault = (getArea().getAreaAIType(getTeam()) == AREAAI_ASSAULT);
+		// bool const bPrimaryArea = kOwner.AI_isPrimaryArea(getArea());
+		// bool const bAreaAlone = kOwner.AI_isAreaAlone(getArea());
+		// bool const bFinancialTrouble = kOwner.AI_isFinancialTrouble();
+		// <!-- custom: be careful, do not use this bWarPossible, this is always true at last for the 100 turns where i tested it, using this for settler build control logic resulted in no settler at all in 100 turns (probably true longer but didn't test) -->
+		// bool const bWarPossible = kTeam.AI_isWarPossible();
+		// <!-- custom: already defined at beginning of this chooseProduction function if i'm not mistaken, so no double define here-->
+		// //bool const bDanger = AI_isDanger();
+
+		// int const iHasMetCount = kTeam.getHasMetCivCount(true);
+		// int const iMilitaryWeight = kOwner.AI_militaryWeight(area());
+		// int const iNumCitiesInArea = getArea().getCitiesPerPlayer(getOwner());
+
+		// int iCoastalCities = 0;
+		// if (pWaterArea != NULL)
+		// 	iCoastalCities = kOwner.countNumCoastalCitiesByArea(*pWaterArea);
+
+		bool const bAnyRealWar = (kTeam.getNumWars(false, true) > 0);
+		bool const bAnyPlannedWar = kTeam.AI_isAnyChosenWar();
+		//bool const bPeaceAloneLikely = (bAreaAlone || iHasMetCount <= 0);
+		// <!-- custom: note: according to chatgpt 5 from it reading the function's code there, if we have 2 ennemies that have 80% vs us, then iEnemyPowerPercent would be 160 if i understood it correctly, and if at peace it would be 0, check to be sure if accurate but as for me i'll use this as an assumption to be true i mean (i didn't check too much if at all but fed it the actual real function and a few other bits of code if i may say in this case) -->
+		// <!-- custom: moudo faitou!!! xd, cambio forma in an anime i watched long ago... if an AI (or even human is reading this), can you guess which... (note: no need to tell me is general question you may or not tell me but not sure i want to hear...) -->
+		// <!-- custom: note: seems redundant to do (a & b) || a, which it is, but testing just b (e.g. >= 130) results in this always being true even at peace, as AIs don't build any settlers at all due to bOffenseMode <= 70 being always true, didn't seem necessary from the >=130 check that was false in the first 100 turns it seems for most if not all civs so not added -->
+		int const iEnemyPowerPercent = kTeam.AI_getEnemyPowerPercent(true);
+
+		// <!-- custom: if i may say... difensu moudo!!... -->
+		// <!-- custom: test to reduce this a bit more as recommended by chatgpt 5 but done in my own way/own values, as it's a bit too late to defend when too behind maybe indeed-->
+		static const int iSAS_ENEMY_STRONG_POWER_THRESHOLD = GC.getDefineINT("SAS_ENEMY_STRONG_POWER_THRESHOLD"); // e.g. 120
+		int const iDefenseModeThreshold = iSAS_ENEMY_STRONG_POWER_THRESHOLD;
+		bool const bDefenseMode = ((iEnemyPowerPercent >= iDefenseModeThreshold) || /* bWarPossible || */ bAnyPlannedWar || bAnyRealWar || bDanger || bDefense /* && !bPeaceAloneLikely */);
+		// bool const bOffenseMode = (((!bAnyRealWar && iEnemyPowerPercent <= 70) || bWarPlan || bAnyPlannedWar || bAnyRealWar || bAssault || (!bDefense && bLandWar) /* && !bPeaceAloneLikely */));
+		// <!-- custom: test to increase this a bit more as recommended by chatgpt 5 but done in my own way/own values, as it's a bit too late to defend when too behind maybe indeed-->
+		static const int iSAS_ENEMY_WEAK_POWER_THRESHOLD = GC.getDefineINT("SAS_ENEMY_WEAK_POWER_THRESHOLD"); // e.g. 80
+		int const iOffenseModeThreshold = iSAS_ENEMY_WEAK_POWER_THRESHOLD;
+		bool const bOffenseMode = ((bAnyRealWar && iEnemyPowerPercent <= iOffenseModeThreshold) || bWarPlan || bAnyPlannedWar || bAnyRealWar || bAssault || (!bDefense && bLandWar) /* && !bPeaceAloneLikely */);
+
+		// int const iNumCities = kOwner.getNumCities();
+		// <!-- custom: make sure we don't overbuild workers, used only in the context of blocking forced settlers builds and aoviding chain worker loops, so maybe fine to be a bit stricter and maybe workers would still be produced with more relaxed conditions hopefully and but check to be sure; each city needs maximum 2 workers before it's too much -->
+		bool const bTooMuchWorkers = GET_PLAYER(getOwner()).AI_totalUnitAIs(UNITAI_WORKER) >= (2 * iNumCities);
+
+		// <!-- custom: try our luck expanding blindly in the early game (then later we'll consider if we go expansion mode or on guard mode no settler we'll consider it after this delay); 75 turns allow for a few cities but from a more delayed start and stornger cities, less barbarian captures too due to being less thin before expanding based on autoplay results -->
+		const int iBaseFreeTurns = 75; // @NORMAL speed
+		const int iFreeTurns = iBaseFreeTurns * GC.getInfo(kGame.getGameSpeedType()).getTrainPercent() / 100;
+		const bool bFreeSettlerEarlyWindow = (kGame.getElapsedGameTurns() < iFreeTurns);
+
+		// <!-- custom: only capital can produce settler as of now, but in case we change it, safer to put these at common tree/logic (i.e. with non capital cities too); note: it is intended that this applies regardless of free window, as even in first 75 or so turns (see below for updated value if any), we want to grow first still before producing settlers, see below for reasons, that include more efficient food is production due to higher pop, as well as stronger military or such so less barbarian captures than with a bunch of 1 size cities thinly/weakly guarded at turn 50-75 then recaptured at turn 75-100 by a rival :( So take a bit slower growth for higher efifciency and see below for details -->
+		if (iCityPopulation <= 4)
+		{
+			// <!-- custom: keep growing as in same old code that was now deleted, i start to understand maybe how they felt writing it, but it was way too permissive or and inaccurate or ineffective or not enough i think, i hope AI is more competitive with this one but there could be a better way ofc but i hope this is not too bad and better than previous one too i think as well but.. open to feedback xd, in this code at least not that i would necessarily reply though if i may say but open about being wrong or mistaken... (t.l.d.r don't contact me but i can be wrong xd) -->
+			if (!bStagnant)
+			{
+				bNoSettler = true;
+			}
+			// <!-- custom: small city stagnant (and not food is production that would alter the calculation to 0 or some other value), build a worker rather (but be careful of the chain loop endless worker though) -->
+			else 
+			{
+				if (iCityPopulation <= 2 && !bTooMuchWorkers)
+				{
+					bNoSettler = true;
+					bWorkerReplacesSettler = true;
+				}
+			}
+		}
+
+		if (!isCapital())
+		{
+			bNoSettler = true;
+		}
+		// <!-- custom: much more efficient and stronger to grow a bit then use our food to produce settlers faster later, even though it comes at a cost of losing 1-2 early spots, we are also less thin so good long term, stronger economy and military and less city captured, and we make up the gap if our strategy allows us to, else we prepare militarily quite soon; but if stagnating, produce anyway, better than do nothing -->
+		else {
+			if (!bFreeSettlerEarlyWindow)
+			{
+				if (AI_isDanger())
+				{
+					bNoSettler = true;
+				}
+				else if (bFinancialTrouble)
+				{
+					bNoSettler = true;
+				}
+				// <!-- custom: now we don't have a settler at all even at turn 100 (i.e. only one city for all AIs, but it shows our code is working as intended at least), as for now, trying to fix it by making it more lax as advised by chatgpt 5 but check to be sure -->
+				// else if (kTeam.AI_isWarPossible())
+				// {
+				// 	bNoSettler = true;
+				// }
+				else if (bDefenseMode)
+				{
+					bNoSettler = true;
+				}
+				else if (bOffenseMode)
+				{
+					bNoSettler = true;
+				}
+			}
+		}
+	}
+
+	if (!(bDefenseWar && iWarSuccessRating < -50))
+	{
+		if (iAreaBestFoundValue > iMinFoundValue || iWaterAreaBestFoundValue > iMinFoundValue)
+		{	/*  BBAI TODO: Needs logic to check for early settler builds,
+				settler builds in small cities, whether settler sea exists
+				for water area sites? */
+			if (pWaterArea != NULL)
+			{
+				int iTotalCities = iNumCities;
+				int iSettlerSeaNeeded = std::min(iNumWaterAreaCitySites, ((iTotalCities + 4) / 8) + 1);
+				bool bColonies = false; // advc.017b
+				if (pCapital != NULL)
+				{
+					int iOverSeasColonies = iTotalCities -
+							pCapital->getArea().getCitiesPerPlayer(getOwner());
+					// <advc.017b>
+					if(iOverSeasColonies > 0)
+						bColonies = true; // </advc.017b>
+					int iLoop = 2;
+					int iExtras = 0;
+					while (iOverSeasColonies >= iLoop)
+					{
+						iExtras++;
+						iLoop += iLoop + 2;
+					}
+					iSettlerSeaNeeded += std::min(kPlayer.AI_totalUnitAIs(UNITAI_WORKER) / 4, iExtras);
+				}
+				if (bAssault)
+				{
+					iSettlerSeaNeeded = std::min(1, iSettlerSeaNeeded);
+					// <advc.017b> For consistency with CvUnitAI::AI_settlerSeaMove
+					if(!bColonies && kPlayer.AI_totalUnitAIs(UNITAI_SETTLE) <= 0)
+						iSettlerSeaNeeded = 0; // </advc.017b>
+				}
+
+				if (kPlayer.AI_totalWaterAreaUnitAIs(*pWaterArea, UNITAI_SETTLER_SEA) < iSettlerSeaNeeded)
+				{
+					if (AI_chooseUnit(UNITAI_SETTLER_SEA))
+					{
+						if (gCityLogLevel >= 2) logBBAI("      City %S uses main settler sea", sCityName);
+						return;
+					}
+				}
+			}
+
+			if (iPlotSettlerCount <= 0 && iNumSettlers < iMaxSettlers)
+			{
+				// <advc.031b> Store the result for "build settler 2"
+				iSettlerPriority = AI_calculateSettlerPriority(iNumAreaCitySites,
+						iAreaBestFoundValue, iNumWaterAreaCitySites, iWaterAreaBestFoundValue);
+				// <!-- custom: add a no barbarian check and also add our no settler check as well too here cleanly, as first parameter for computational efficiency-->
+				if (!isBarbarian() && !bNoSettler && AI_chooseUnit(UNITAI_SETTLE, //bLandWar ? 50 : -1))
+				// // </advc.031b>
+				// if (AI_chooseUnit(UNITAI_SETTLE, //bLandWar ? 50 : -1))
+					// advc.031b: Replacing the above
+					iSettlerPriority * (bLandWar ? 1 : 2)))
+				{
+					if (gCityLogLevel >= 2) logBBAI("      City %S uses build settler 1", sCityName);
+					if (kPlayer.getNumMilitaryUnits() <= iNumCities + 1)
+					{
+						if (AI_chooseUnit(UNITAI_CITY_DEFENSE))
+						{
+							if (gCityLogLevel >= 2) logBBAI("      City %S uses build settler 1 extra quick defense", sCityName);
+							return;
+						}
+					}
+					return;
+				}
+				else if (bWorkerReplacesSettler && AI_chooseUnit(UNITAI_WORKER, /*iOdds=*/100))
+				{
+					if (gCityLogLevel >= 2)
+						logBBAI("      City %S replaces Settler 1 with Worker", sCityName);
+					return;
+				}
+			}
+		}
+	}
+
+	// don't build frivolous things in an important culture city unless at war
+	if (!bCultureCity || bLandWar || bAssault)
+	{
+		if (bPrimaryArea && !bFinancialTrouble)
+		{
+			if (kPlayer.AI_totalAreaUnitAIs(kArea, UNITAI_ATTACK) == 0)
+			{
+				if (AI_chooseUnit(UNITAI_ATTACK))
+				{
+					if (gCityLogLevel >= 2) logBBAI("      City %S uses choose attacker", sCityName); // advc
+					return;
+				}
+			}
+		}
+
+		if (!bLandWar && !bDanger && !bFinancialTrouble)
+		{
+			int iMissingExplorers = kPlayer.AI_neededExplorers(kArea) -
+					kPlayer.AI_totalAreaUnitAIs(kArea, UNITAI_EXPLORE);
+			if (iMissingExplorers > 0)
+			{
+				if (AI_chooseUnit(UNITAI_EXPLORE,
+					34 * iMissingExplorers)) // advc.131: was 100 flat (MNAI uses 25 flat)
+				{
+					if (gCityLogLevel >= 2) logBBAI("      City %S uses choose missing explorer", sCityName); // advc
+					return;
+				}
+			}
+		}
+
+		// K-Mod (the spies stuff used to be lower down)
+		int iNumSpies = kPlayer.AI_totalAreaUnitAIs(kArea, UNITAI_SPY);
+				// advc: already counted
+				//+ kPlayer.AI_getNumTrainAIUnits(UNITAI_SPY);
+		int iNeededSpies = iNumCitiesInArea / 3;
+		if (bPrimaryArea)
+			iNeededSpies += intdiv::uround(kPlayer.getCommerceRate(COMMERCE_ESPIONAGE), 100);
+		iNeededSpies *= GC.getInfo(kPlayer.getPersonalityType()).getEspionageWeight();
+		iNeededSpies /= 100;
+		{
+			if (pCapital != NULL && sameArea(*pCapital))
+				iNeededSpies++;
+		}
+		iNeededSpies -= (bDefenseWar ? 1 : 0);
+		if (kPlayer.AI_isDoStrategy(AI_STRATEGY_ESPIONAGE_ECONOMY))
+			iNeededSpies++;
+		else iNeededSpies /= kPlayer.AI_isDoStrategy(AI_STRATEGY_ECONOMY_FOCUS) ? 2 : 1;
+
+		if (iNumSpies < iNeededSpies)
+		{
+			int iOdds = 35;
+			if (kPlayer.AI_isDoStrategy(AI_STRATEGY_ESPIONAGE_ECONOMY))
+				//|| kTeam.getAnyWarPlanCount(true)
+				//|| kPlayer.AI_isFocusWar(&kArea)) // advc.105: if anything ...
+			{
+				iOdds += 10;
+			}
+			/*  <advc.120> ... but, actually, I don't think training extra
+				spies during war is a good idea at all. */
+			else if (kTeam.AI_getNumWarPlans(WARPLAN_PREPARING_TOTAL) > 0)
+				iOdds += 10;
+			else if (kTeam.AI_getNumWarPlans(WARPLAN_PREPARING_LIMITED) > 0)
+				iOdds += 5; // </advc.120>
+			iOdds *= 50 + std::max(iProjectValue, iBestBuildingValue);
+			iOdds /= 20 + 2 * std::max(iProjectValue, iBestBuildingValue);
+			iOdds *= iNeededSpies;
+			iOdds /= 4*iNumSpies + iNeededSpies;
+			iOdds -= bUnitExempt ? 10 : 0; // not completely exempt, but at least reduced probability.
+			iOdds = std::max(0, iOdds);
+			if (AI_chooseUnit(UNITAI_SPY, iOdds))
+			{
+				if (gCityLogLevel >= 2) logBBAI("      City %S chooses spy with %d/%d needed, at %d odds", sCityName, iNumSpies, iNeededSpies, iOdds);
+				return;
+			}
+		}
+		// K-Mod end
+
+		if (bDefenseWar || (bLandWar && iWarSuccessRating < -30))
+		{
+			UnitAIWeightMap panicDefenderWeight; // advc: Was vector of pairs "defensiveTypes"
+			panicDefenderWeight.set(UNITAI_RESERVE, 100);
+			panicDefenderWeight.set(UNITAI_COUNTER, 100);
+			// <!-- custom: stop bypassing our code ffs if i may say xd...; also specifically for this unitai, we don't want it anymore, see code comments at bestunit, bestunitai, and this function too for details for details or additional/related info -->
+			if (bMinor || bBarbarian)
+			{
+				panicDefenderWeight.set(UNITAI_COLLATERAL, 100);
+			}
+			panicDefenderWeight.set(UNITAI_ATTACK, 100);
+			if (AI_chooseLeastRepresentedUnit(panicDefenderWeight,
+				(bGetBetterUnits ? 40 : 60) - iWarSuccessRating/3))
+			{
+				if (gCityLogLevel >= 2) logBBAI("      City %S uses choose panic defender", sCityName);
+				return;
+			}
+		}
+	}
+
+	/*	<advc.124> Could've modified the K-Mod condition above, but that one
+		is aimed at exploration for the sake of initial meetings and expansion,
+		not (specifically) at trade. Rather handle trade here separately. */
+	if (!bDanger && !bDefenseWar && pWaterArea != NULL && iSeaExplorersNow == 0)
+	{
+		bool bNavalTrade = false;
+		FOR_EACH_ENUM(Terrain)
+		{
+			if(GC.getInfo(eLoopTerrain).isWater() &&
+				GET_TEAM(getOwner()).isTerrainTrade(eLoopTerrain))
+			{
+				bNavalTrade = true;
+				break;
+			}
+		}
+		if (bNavalTrade)
+		{
+			/*	Don't rely on seaExplorersTarget. Can be 0 if already met all
+				other civs or if there is a larger separate water area. */
+			bool bEnoughWaterUnits = false;
+			int iWaterUnits = 0;
+			for (MemberIter itMember(getTeam()); itMember.hasNext(); ++itMember)
+			{
+				iWaterUnits += pWaterArea->getNumAIUnits(itMember->getID(), NO_UNITAI);
+				if (iWaterUnits >= 3)
+				{
+					bEnoughWaterUnits = true;
+					break;
+				}
+			}
+			/*	Would rather use a condition based on the number of unrevealed
+				tiles, but it's difficult to count just the tiles that an explorer
+				could actually reach. */
+			if (!bEnoughWaterUnits && AI_chooseUnit(UNITAI_EXPLORE_SEA, 25))
+			{
+				if (gCityLogLevel >= 2) logBBAI("      City %S uses choose sea explorer for naval trade", sCityName);
+				return;
+			}
+		}
+	} // </advc.124>
+
+	// We don't need this. It just ends up putting aqueducts everywhere.
+	/*if (AI_chooseBuilding(BUILDINGFOCUS_FOOD, 60, 10, (bLandWar ? 30 : -1))) {
+		if (gCityLogLevel >= 2) logBBAI("      City %S uses choose BUILDINGFOCUS_FOOD 3", sCityName);
+		return;
+	}*/ // BtS
+
+	//opportunistic wonder build
+	if (!bDanger && (!hasActiveWorldWonder() || iNumCities > 3))
+	{
+		// For civ at war, don't build wonders if losing
+		if (!bTotalWar && (!bLandWar || iWarSuccessRating > 0)) // was -30
+		{
+			// <!-- custom: getInt assert in CvRandom.h fails, fix it as advised by chatgpt 5, check if accurate, see known issue as of now 72 for details -->
+			// Assert Failed
+			// File:  c:\program files (x86)\steam\steamapps\common\sid meier's civilization iv beyond the sword\beyond the sword\mods\advciv-sas\cvgamecoredll\CvRandom.h
+			// Line:  48
+			// Func:  CvRandom::getInt
+			// Expression:  iNum >= 0
+			// Message:  getInt: range<0 (-4) msg=CvCityAI::AI_chooseProduction@L2112 d1=-2147483648 d2=-2147483648
+			//
+			// Yep—that crash is because this line can pass a negative range into the RNG:
+			// Some leaders (or your defaults) have getWonderConstructRand() <= 0 (your assert showed -4). Passing that to getSorenRandNum/SyncRandNum triggers the Debug assert.
+			// Minimal, correct fix (skip the roll when disabled)
+			// Treat <= 0 as “don’t roll / don’t do opportunistic wonder":
+			const int iWC = GC.getInfo(getPersonalityType()).getWonderConstructRand();
+			if (iWC > 0) // <-- guard: only roll with a valid positive range
+			{
+				int iWonderTime = SyncRandNum(iWC);
+				iWonderTime /= 5;
+				iWonderTime += 8;
+				/*if (AI_chooseBuilding(BUILDINGFOCUS_WORLDWONDER, iWonderTime)) {
+					if (gCityLogLevel >= 2) logBBAI("      City %S uses opportunistic wonder build 2", sCityName);
+					return;
+				}*/
+				// K-Mod
+				/*	Reduce the max time when at war
+					(arbitrary - but then again, this part of the AI is not for strategy.
+					It's for flavour.) */
+				if (kArea.getAreaAIType(getTeam()) != AREAAI_NEUTRAL)
+					iWonderTime = iWonderTime * 2/3;
+				// And only build the wonder if it is at least as valuable as the building we would have chosen anyway.
+				BuildingTypes eBestWonder = AI_bestBuildingThreshold(BUILDINGFOCUS_WORLDWONDER, iWonderTime);
+				if (eBestWonder != NO_BUILDING && AI_buildingValue(eBestWonder) >= iBestBuildingValue)
+				{
+					if (gCityLogLevel >= 2) logBBAI("      City %S uses opportunistic wonder build 2", sCityName);
+					pushOrder(ORDER_CONSTRUCT, eBestWonder);
+					return;
+				} // K-Mod end
+			}
+		}
+	}
+
+	// K-Mod, short-circuit 2 - a strong chance to build some high value buildings.
+	{
+		bool const bLowOdds = (bLandWar || (bAssault && pWaterArea != NULL));
+		bool const bExtraLowOdds = (bLowOdds && bWarPrep); // advc.104s
+		//int iOdds = (bLowOdds ? 80 : 130);
+		int iOdds = (bLowOdds ? (bExtraLowOdds ?
+				(bTotalWar ? 77 : 84) - iBuildUnitProb/3 : // advc.104s
+				90 - iBuildUnitProb/4) :
+				150 - iBuildUnitProb/2);
+		iOdds *= iBestBuildingValue;
+		iOdds /= iBestBuildingValue + 40 + iBuildUnitProb; // was ...+20+...
+		iOdds = std::max(0, iOdds - 20); // was -25
+		if (AI_chooseBuilding(0, MAX_INT, 0, iOdds))
+		{
+			if (gCityLogLevel >= 2) logBBAI("      City %S uses building value short-circuit 2 (odds: %d)", sCityName, iOdds);
+   			return;
+		}
+	}
+	// <advc.081>
+	if(pWaterArea != NULL && !bUnitExempt && !bCultureCity &&
+		iEnemyPowerPerc - iWarSuccessRating < 150 && // else give up at sea
+		kTeam.getNumWars(false, true) > 0) // for performance
+	{
+		int iHostile = kPlayer.AI_countNumAreaHostileUnits(*pWaterArea, true, false, false, false, plot());
+		if(iHostile > 0)
+		{
+			int iOurWarships = 0;
+			std::vector<UnitAITypes> aeSeaAttackTypes;
+			aeSeaAttackTypes.push_back(UNITAI_ATTACK_SEA);
+			// <!-- custom: stop bypassing our code ffs if i may say xd...; also specifically for this unitai, we don't want it anymore, see code comment at bestunit( for details -->
+			if (bMinor || bBarbarian)
+			{
+				aeSeaAttackTypes.push_back(UNITAI_PIRATE_SEA);
+			}
+			aeSeaAttackTypes.push_back(UNITAI_RESERVE_SEA);
+			for(size_t i = 0; i < aeSeaAttackTypes.size(); i++)
+				iOurWarships += kPlayer.AI_getNumTrainAIUnits(aeSeaAttackTypes[i]);
+			if(3 * iOurWarships < 4 * iHostile) // for performance
+			{
+				iOurWarships += kPlayer.AI_totalWaterAreaUnitAIs(*pWaterArea, aeSeaAttackTypes);
+				if(3 * iOurWarships < 4 * iHostile) // Odds: 0.75*35% to 70% plus 2*XP
+				{
+					int iOdds = (35 * iHostile) / std::max(iHostile/2, std::max(1, iOurWarships));
+					iOdds += 2 * iFreeSeaExperience;
+					if(AI_chooseUnit(UNITAI_ATTACK_SEA, iOdds))
+					{
+						if (gCityLogLevel >= 2) logBBAI("      City %S trains warship to attack hostiles in territory", sCityName);
+						return;
+					}
+				}
+			}
+		}
+	} // </advc.081>
+	if (!bDanger)
+	{
+		// <!-- custom: also fix this preemptively as if i recall it correctly, this assert failed did happen in several code lines, so as it's harmless, better fix it as well as chatgpt 5 advises as well, check if accurate. Note: according to chatgpt 5, about the issue related to AI_bestSpreadUnit, we don't need an assert here since we're only reusing previously computed values if i understood it correctly, check if accurate -->
+		// The second block is a follow-up gate; it doesn’t recompute eBestSpreadUnit. If the first block didn’t run (or returned false), eBestSpreadUnit will be NO_UNIT by design. Asserting here just creates false positives.
+		// Assert Failed
+		// File:  ..\.\CvCityAI.cpp
+		// Line:  2246
+		// Func:  CvCityAI::AI_chooseProduction
+		// Expression:  eBestSpreadUnit != NO_UNIT
+		// Message:  bestSpreadUnit: returned true but NO_UNIT | T100 Orleans thr=1800
+		// if (iBestSpreadUnitValue > (iSpreadUnitThreshold * (bLandWar ? 80 : 60)) / 100)
+		if (eBestSpreadUnit != NO_UNIT && iBestSpreadUnitValue > (iSpreadUnitThreshold * (bLandWar ? 80 : 60)) / 100)
+		{
+			if (AI_chooseUnit(eBestSpreadUnit, UNITAI_MISSIONARY))
+			{
+				if (gCityLogLevel >= 2) logBBAI("      City %S uses choose missionary 2", sCityName);
+				return;
+			}
+		}
+		// no else, no assert — just fall through
+	}
+
+	if (getDomainFreeExperience(DOMAIN_LAND) == 0 && getYieldRate(YIELD_PRODUCTION) > 4)
+	{
+		if (AI_chooseBuilding(BUILDINGFOCUS_EXPERIENCE,
+			rOwnerAIEraFactor > 1 ? 0 : 7, 33))
+		{
+			if (gCityLogLevel >= 2) logBBAI("      City %S uses special BUILDINGFOCUS_EXPERIENCE 1", sCityName);
+			return;
+		}
+	}
+
+	int iCarriers = kPlayer.AI_totalUnitAIs(UNITAI_CARRIER_SEA);
+
+	// Revamped logic for production for invasions
+	if (iUnitSpending < iMaxUnitSpending + 25) // was + 10 (new unit spending metric)
+	{
+		bool bBuildAssault = bAssault;
+		CvArea* pAssaultWaterArea = NULL;
+		if (pWaterArea != NULL)
+		{
+			// Coastal city extra logic
+
+			pAssaultWaterArea = pWaterArea;
+
+			// If on offensive and can't reach enemy cities from here, act like using AREAAI_ASSAULT
+			if (pAssaultWaterArea != NULL && !bBuildAssault && kTeam.AI_isAnyWarPlan() &&
+				kArea.getAreaAIType(getTeam()) != AREAAI_DEFENSIVE)
+			{
+				// <advc.030b>
+				bool bAssaultTargetFound = false;
+				for (PlayerIter<CIV_ALIVE,KNOWN_POTENTIAL_ENEMY_OF> itTarget(getTeam());
+					itTarget.hasNext(); ++itTarget)
+				{
+					if(kTeam.AI_getWarPlan(itTarget->getTeam()) == NO_WARPLAN)
+						continue;
+					if(pWaterArea->getCitiesPerPlayer(itTarget->getID(), true) > 0)
+					{
+						bAssaultTargetFound = true;
+						break;
+					}
+				}
+				if (!bAssaultTargetFound)
+					pAssaultWaterArea = NULL;
+				if (bAssaultTargetFound && // </advc.030b>
+					!kTeam.AI_isHasPathToEnemyCity(kPlot))
+				{
+					bBuildAssault = true;
+				}
+			}
+		}
+
+		if (bBuildAssault)
+		{
+			if (gCityLogLevel >= 2) logBBAI("      City %S uses build assault", sCityName);
+
+			UnitTypes eBestAssaultUnit = NO_UNIT;
+			if (pAssaultWaterArea != NULL)
+				kPlayer.AI_bestCityUnitAIValue(UNITAI_ASSAULT_SEA, this, &eBestAssaultUnit);
+			else kPlayer.AI_bestCityUnitAIValue(UNITAI_ASSAULT_SEA, NULL, &eBestAssaultUnit);
+
+			int iBestSeaAssaultCapacity = 0;
+			if (eBestAssaultUnit != NO_UNIT)
+				iBestSeaAssaultCapacity = GC.getInfo(eBestAssaultUnit).getCargoSpace();
+
+			int iAreaAttackCityUnits = kPlayer.AI_totalAreaUnitAIs(kArea, UNITAI_ATTACK_CITY);
+
+			int iUnitsToTransport = iAreaAttackCityUnits;
+			iUnitsToTransport += kPlayer.AI_totalAreaUnitAIs(kArea, UNITAI_ATTACK);
+			iUnitsToTransport += kPlayer.AI_totalAreaUnitAIs(kArea, UNITAI_COUNTER)/2;
+
+			int const iLocalTransports = kPlayer.AI_totalAreaUnitAIs(kArea, UNITAI_ASSAULT_SEA);
+			int iTransportsAtSea = 0;
+			if (pAssaultWaterArea != NULL)
+				iTransportsAtSea = kPlayer.AI_totalAreaUnitAIs(*pAssaultWaterArea, UNITAI_ASSAULT_SEA);
+			else iTransportsAtSea = kPlayer.AI_totalUnitAIs(UNITAI_ASSAULT_SEA) / 2;
+
+			/*	The way of calculating numbers is a bit fuzzy since the ships
+				can make return trips. When massing for a war it'll train enough
+				ships to move it's entire army. Once the war is underway it'll stop
+				training so many ships on the assumption that those out at sea
+				will return... */
+
+			int const iTransports = iLocalTransports + (bPrimaryArea ?
+					iTransportsAtSea/2 : iTransportsAtSea/4);
+			int const iTransportCapacity = iBestSeaAssaultCapacity * iTransports;
+
+			if (pAssaultWaterArea != NULL)
+			{
+				int iEscorts = kPlayer.AI_totalAreaUnitAIs(kArea, UNITAI_ESCORT_SEA);
+				iEscorts += kPlayer.AI_totalAreaUnitAIs(*pAssaultWaterArea, UNITAI_ESCORT_SEA);
+
+				int iTransportViability = kPlayer.AI_calculateUnitAIViability(
+						UNITAI_ASSAULT_SEA, DOMAIN_SEA);
+
+				//int iDesiredEscorts = ((1 + 2 * iTransports) / 3);
+				int iDesiredEscorts = iTransports; // K-Mod
+
+				if (iTransportViability > 95)
+				{
+					// Transports are stronger than escorts (usually Galleons and Caravels)
+					iDesiredEscorts /= 2; // was /3
+				}
+				// <advc.017>
+				iDesiredEscorts = ((rOwnerAIEraFactor * iDesiredEscorts) /
+						(rOwnerAIEraFactor + 1)).round();
+				/*  Use max, not sum, b/c multiple war enemies are unlikely
+					to coordinate an attack on our transports. */
+				scaled rMaxThreat = 0;
+				for (PlayerAIIter<CIV_ALIVE,KNOWN_POTENTIAL_ENEMY_OF> it(kTeam.getID());
+					it.hasNext(); ++it)
+				{
+					CvPlayerAI const& kEnemy = *it;
+					if (kTeam.AI_getWarPlan(kEnemy.getMasterTeam()) == NO_WARPLAN)
+						continue;
+					/*  Tbd.: Should perhaps check if the enemy sea attackers even
+						pose a danger to our cargo ships; could be e.g. Frigates
+						against Industrial-era Transports. */
+					bool bAreaAlone = kEnemy.AI_isCapitalAreaAlone();
+					scaled rThreat;
+					/*  Don't want to just count the enemy ships (not open info);
+						count their coastal cities instead. */
+					FOR_EACH_CITY(c, kEnemy)
+					{
+						if(c->isRevealed(kTeam.getID()) &&
+							c->getPlot().isAdjacentToArea(*pAssaultWaterArea))
+						{
+							// Isolated civs tend to build more ships
+							rThreat += (bAreaAlone ? fixp(1.4) : 1);
+						}
+					}
+					rMaxThreat.increaseTo(rThreat);
+				}
+				iDesiredEscorts = std::min(iDesiredEscorts,
+						(fixp(1.4) * rMaxThreat).round());
+				iDesiredEscorts = std::max(iDesiredEscorts,
+						((rOwnerAIEraFactor / 2) * rMaxThreat).round());
+				// </advc.017>
+				/*if (iEscorts < iDesiredEscorts) {
+					if (AI_chooseUnit(UNITAI_ESCORT_SEA, (iEscorts < iDesiredEscorts/3) ? -1 : 50)) */
+				// K-Mod
+				if (iEscorts < iDesiredEscorts && iDesiredEscorts > 0)
+				{
+					int iOdds = 100;
+					iOdds *= iDesiredEscorts;
+					iOdds /= iDesiredEscorts + 2*iEscorts;
+					if (AI_chooseUnit(UNITAI_ESCORT_SEA, iOdds))
+				// K-Mod end
+					{
+						AI_chooseBuilding(BUILDINGFOCUS_DOMAINSEA, 12);
+						return;
+					}
+				}
+
+				UnitTypes eBestAttackSeaUnit = NO_UNIT;
+				kPlayer.AI_bestCityUnitAIValue(UNITAI_ATTACK_SEA, this, &eBestAttackSeaUnit);
+				if (eBestAttackSeaUnit != NO_UNIT)
+				{
+					// (tweaked for K-Mod)
+					int iAttackSea = kPlayer.AI_totalAreaUnitAIs(kArea, UNITAI_ATTACK_SEA);
+					iAttackSea += kPlayer.AI_totalAreaUnitAIs(*pAssaultWaterArea, UNITAI_ATTACK_SEA);
+
+					int iDesiredAttackSea = 1 + 4*iTransports /
+							(GC.getInfo(eBestAttackSeaUnit).getBombardRate() == 0 ? 10 : 3);
+					// <advc.017>
+					/*  Don't build lots of sea attackers if we already have
+						lots of escorts */
+					iDesiredAttackSea = std::max(1 + iDesiredAttackSea / 3,
+							iDesiredAttackSea - iEscorts); // </advc.017>
+					if (iAttackSea < iDesiredAttackSea)
+					{
+						int iOdds = 20 + 50 * (iDesiredAttackSea - iAttackSea)/iDesiredAttackSea;
+						if (iUnitSpending > iMaxUnitSpending)
+							iOdds /= 3;
+						// Note: there is a hard limit condition on iUnitSpending earlier in the code.
+
+						if (SyncRandSuccess100(iOdds) &&
+							AI_chooseUnit(eBestAttackSeaUnit, UNITAI_ATTACK_SEA))
+						{
+							AI_chooseBuilding(BUILDINGFOCUS_DOMAINSEA, 12);
+							return;
+						}
+					}
+				}
+				/*  <advc.104p> Cargo space isn't that expensive; make sure
+					AI landings don't get delayed by a lack of transport capacity.
+					Existing cargo units can also be stuck somewhere. */
+				int iTargetCapacity = intdiv::uround(5 * iUnitsToTransport, 4);
+				if(iTargetCapacity > iTransportCapacity) // </advc.104p>
+				{
+					//if ((iUnitSpending < iMaxUnitSpending) || (iUnitsToTransport > 2*iTransportCapacity))
+					// K-Mod
+					if (iUnitSpending < iMaxUnitSpending ||
+						SyncRandSuccess100(
+						// advc.104p: Changed 100 to 350
+						(350 * (iTargetCapacity - iTransportCapacity)) /
+						std::max(1, iTransportCapacity)))
+					// K-Mod end
+					{
+						if (AI_chooseUnit(UNITAI_ASSAULT_SEA))
+						{
+							AI_chooseBuilding(BUILDINGFOCUS_DOMAINSEA, 8);
+							return;
+						}
+					}
+				}
+			}
+
+			if (iUnitSpending < iMaxUnitSpending)
+			{
+				if (pAssaultWaterArea != NULL)
+				{
+					if (!bFinancialTrouble && iCarriers < (kPlayer.AI_totalUnitAIs(UNITAI_ASSAULT_SEA) / 4))
+					{
+						// Reduce chances of starting if city has low production
+						if (AI_chooseUnit(UNITAI_CARRIER_SEA, (iProductionRank <= ((iNumCities / 3) + 1)) ? -1 : 30))
+						{
+							AI_chooseBuilding(BUILDINGFOCUS_DOMAINSEA, 16);
+							return;
+						}
+					}
+				}
+			}
+
+			// Consider building more land units to invade with
+			int iTrainInvaderChance = iBuildUnitProb + 10;
+
+			iTrainInvaderChance += (bAggressiveAI ? 8 : 0); // advc.019: was ?15:0
+			iTrainInvaderChance += bTotalWar ? 10 : 0; // K-Mod
+			iTrainInvaderChance /= (bAssaultAssist ? 2 : 1);
+			iTrainInvaderChance /= (bCultureCity ? 2 : 1);
+			iTrainInvaderChance /= (bGetBetterUnits ? 2 : 1);
+
+			// K-Mod
+			iTrainInvaderChance *= (100 + std::max(iProjectValue, iBestBuildingValue));
+			iTrainInvaderChance /= (20 + 3 * std::max(iProjectValue, iBestBuildingValue));
+			// K-Mod end
+
+			iUnitsToTransport *= 9;
+			iUnitsToTransport /= 10;
+
+			if (iUnitsToTransport > iTransportCapacity && iUnitsToTransport > (bAssaultAssist ? 2 : 4)*iBestSeaAssaultCapacity)
+			{
+				// Already have enough
+				iTrainInvaderChance /= 2;
+			}
+			else if (iUnitsToTransport < (iLocalTransports*iBestSeaAssaultCapacity))
+			{
+				iTrainInvaderChance += 8; // advc.019: was 15
+			}
+
+			if (iCityPopulation < 4)
+			{
+				// Let small cities build themselves up first
+				iTrainInvaderChance /= (5 - iCityPopulation);
+			}
+
+			UnitAIWeightMap invaderWeight; // advc: Was vector of pairs "defensiveTypes"
+			invaderWeight.set(UNITAI_ATTACK_CITY, 110); // was 100
+			invaderWeight.set(UNITAI_COUNTER, 40); // was 50
+			invaderWeight.set(UNITAI_ATTACK, 50); // was 40
+			if (kPlayer.AI_isDoStrategy(AI_STRATEGY_AIR_BLITZ))
+				invaderWeight.set(UNITAI_PARADROP, 20);
+
+			if (AI_chooseLeastRepresentedUnit(invaderWeight, iTrainInvaderChance))
+			{
+				if (!bCultureCity && iUnitsToTransport >=
+					iLocalTransports*iBestSeaAssaultCapacity)
+				{	// Have time to build barracks first
+					AI_chooseBuilding(BUILDINGFOCUS_EXPERIENCE, 20);
+				}
+				return;
+			}
+			// kekm.15: missile carrier code moved
+		}
+	}
+
+	UnitAIWeightMap airWeight; // advc: Was vector of pairs "airUnitTypes"
+	int iAircraftNeed = 0;
+	int iAircraftHave = 0;
+	UnitTypes eBestAttackAircraft = NO_UNIT;
+	UnitTypes eBestMissile = NO_UNIT;
+	// advc: To help consistency between the air production code segments
+	bool bFarTooFewAircraft = false;
+	// K-Mod. was +4, now +12 for the new unit spending metric
+	bool const bFundingForAircraft = //(iUnitSpending < iMaxUnitSpending + 12)
+			// <advc.airf>
+			(iUnitSpending < iMaxUnitSpending + 10 ||
+			iUnitSpending * 100 < iMaxUnitSpending * 115); // </advc.airf>
+	if (bFundingForAircraft && (!bCultureCity || bDefenseWar))
+	{
+		if (bLandWar || bAssault || iFreeAirExperience > 0 || SyncRandOneChanceIn(3))
+		{
+			int iBestAirValue = kPlayer.AI_bestCityUnitAIValue(
+					UNITAI_ATTACK_AIR, this, &eBestAttackAircraft);
+			int iBestMissileValue = kPlayer.AI_bestCityUnitAIValue(
+					UNITAI_MISSILE_AIR, this, &eBestMissile);
+			if ((iBestAirValue + iBestMissileValue) > 0)
+			{
+				iAircraftHave = kPlayer.AI_totalUnitAIs(UNITAI_ATTACK_AIR) +
+						kPlayer.AI_totalUnitAIs(UNITAI_DEFENSE_AIR) +
+						kPlayer.AI_totalUnitAIs(UNITAI_MISSILE_AIR);
+				if (NO_UNIT != eBestAttackAircraft)
+				{
+					iAircraftNeed = (2 + iNumCities *
+							(3 * GC.getInfo(eBestAttackAircraft).getAirCombat())) /
+							(2 * std::max(1, kGame.getBestLandUnitCombat()));
+					int iBestDefenseValue = kPlayer.AI_bestCityUnitAIValue(
+							UNITAI_DEFENSE_AIR, this);
+					if (iBestDefenseValue > 0)
+					{	// <K-Mod>
+						iAircraftNeed = std::max(iAircraftNeed,
+								kPlayer.AI_getTotalAirDefendersNeeded()); // </K-Mod>
+						if (iBestAirValue > iBestDefenseValue)
+							iAircraftNeed = iAircraftNeed*3/2;
+					}
+					/* if ((iBestDefenseValue > 0) && (iBestAirValue > iBestDefenseValue))
+					{
+						iAircraftNeed *= 3;
+						iAircraftNeed /= 2;
+					} */ // (bts code, reworded above.)
+				}
+				if (iBestMissileValue > 0)
+				{
+					iAircraftNeed = std::max(iAircraftNeed, 1 + iNumCities / 2);
+				}
+				bool bAirBlitz = kPlayer.AI_isDoStrategy(AI_STRATEGY_AIR_BLITZ);
+				bool bLandBlitz = kPlayer.AI_isDoStrategy(AI_STRATEGY_LAND_BLITZ);
+				if (bAirBlitz)
+				{
+					iAircraftNeed *= 3;
+					iAircraftNeed /= 2;
+				}
+				else if (bLandBlitz)
+				{
+					iAircraftNeed /= 2;
+					iAircraftNeed += 1;
+				}
+				airWeight.set(UNITAI_ATTACK_AIR, bAirBlitz ? 125 : 80);
+				airWeight.set(UNITAI_DEFENSE_AIR, /*bLandBlitz?100:100*/ 100); // advc: huh?
+				if (iBestMissileValue > 0)
+					airWeight.set(UNITAI_MISSILE_AIR, bAssault ? 60 : 40);
+				//airWeight.set(UNITAI_ICBM, 20);
+				airWeight.set(UNITAI_ICBM, 20 * iNukeWeight / 100); // K-Mod
+				bFarTooFewAircraft = (iAircraftHave * 2 < iAircraftNeed);
+				if (bFarTooFewAircraft)
+				{
+					if (AI_chooseLeastRepresentedUnit(airWeight))
+					{
+						if (gCityLogLevel >= 2) logBBAI("      City %S uses build least represented air", sCityName);
+						return;
+					}
+				}
+				// Additional check for air defenses
+				int iFightersHave = kPlayer.AI_totalUnitAIs(UNITAI_DEFENSE_AIR);
+
+				if(3*iFightersHave < iAircraftNeed)
+						// <cdtw.7> (Disabled again)
+						/*(kPlayer.AI_atVictoryStage(AI_VICTORY_CULTURE4) &&
+						3*iFightersHave < 2*iNumCities)) */// </cdtw.7>
+				{
+					if (AI_chooseUnit(UNITAI_DEFENSE_AIR))
+					{
+						if (gCityLogLevel >= 2) logBBAI("      City %S uses build air defence", sCityName);
+						return;
+					}
+				}
+			}
+		}
+	}
+
+	// Check for whether to produce planes to fill carriers
+	if ((bLandWar || bAssault) && iUnitSpending < iMaxUnitSpending)
+	{
+		if (iCarriers > 0 && !bCultureCity)
+		{
+			UnitTypes eBestCarrierUnit = NO_UNIT;
+			kPlayer.AI_bestCityUnitAIValue(UNITAI_CARRIER_SEA, NULL, &eBestCarrierUnit);
+			if (eBestCarrierUnit != NO_UNIT)
+			{
+				FAssert(GC.getInfo(eBestCarrierUnit).getDomainCargo() == DOMAIN_AIR);
+
+				int iCarrierAirNeeded = iCarriers * GC.getInfo(eBestCarrierUnit).getCargoSpace();
+
+				// Reduce chances if city gives no air experience
+				if (kPlayer.AI_totalUnitAIs(UNITAI_CARRIER_AIR) < iCarrierAirNeeded)
+				{
+					if (AI_chooseUnit(UNITAI_CARRIER_AIR, (iFreeAirExperience > 0) ? -1 : 35))
+					{
+						if (gCityLogLevel >= 2) logBBAI("      City %S uses build carrier air", sCityName);
+						return;
+					}
+				}
+			}
+		}
+	} // <kekm.15>
+	int iMissileCarriers = kPlayer.AI_totalUnitAIs(UNITAI_MISSILE_CARRIER_SEA);
+	if (!bFinancialTrouble && iMissileCarriers > 0 && !bCultureCity)
+	{	// Bugfix(?): was '<=' in BtS
+		// advc: Make it '>=' though, not '>'.
+		if (iProductionRank >= iNumCities / 2 + 1)
+		{
+			UnitTypes eBestMissileCarrierUnit = NO_UNIT;
+			kPlayer.AI_bestCityUnitAIValue(UNITAI_MISSILE_CARRIER_SEA, NULL, &eBestMissileCarrierUnit);
+			if (eBestMissileCarrierUnit != NO_UNIT)
+			{
+				FAssert(GC.getInfo(eBestMissileCarrierUnit).getDomainCargo() == DOMAIN_AIR);
+
+				int iMissileCarrierAirNeeded = iMissileCarriers * GC.getInfo(eBestMissileCarrierUnit).getCargoSpace();
+
+				if ((kPlayer.AI_totalUnitAIs(UNITAI_MISSILE_AIR) < iMissileCarrierAirNeeded) ||
+						(bPrimaryArea && (kPlayer.AI_totalAreaUnitAIs(kArea, UNITAI_MISSILE_CARRIER_SEA) *
+						GC.getInfo(eBestMissileCarrierUnit).getCargoSpace()
+						// Bugfix: was '<' in BtS
+						> kPlayer.AI_totalAreaUnitAIs(kArea, UNITAI_MISSILE_AIR))))
+				{
+					// Don't always build missiles, more likely if really low on missiles.
+					if (AI_chooseUnit(UNITAI_MISSILE_AIR, (kPlayer.AI_totalUnitAIs(UNITAI_MISSILE_AIR) < iMissileCarrierAirNeeded/2) ? 50 : 20))
+					{
+						if (gCityLogLevel >= 2) logBBAI("      City %S uses build missile", sCityName);
+						return;
+					}
+				}
+			}
+		}
+	} // </kekm.15>
+
+	/*if (!bAlwaysPeace && !(bLandWar || bAssault) && (kPlayer.AI_isDoStrategy(AI_STRATEGY_OWABWNW) || SyncRandOneChanceIn(12))) {
+		if (!bFinancialTrouble) {
+			int iTotalNukes = kPlayer.AI_totalUnitAIs(UNITAI_ICBM);
+			int iNukesWanted = 1 + 2 * std::min(iNumCities, kGame.getNumCities() - iNumCities);
+			if ((iTotalNukes < iNukesWanted) && (SyncRandNum(100) < (90 - (80 * iTotalNukes) / iNukesWanted))) {
+				if (pWaterArea != NULL) {
+					if (AI_chooseUnit(UNITAI_MISSILE_CARRIER_SEA, 50))
+						return;
+				}
+				if (AI_chooseUnit(UNITAI_ICBM))
+					return;
+			}
+		}
+	}*/ // BtS
+	/*	K-Mod. Roughly the same conditions for building a nuke,
+		but with a few adjustments for flavour and strategy */
+	if (!bLandWar && !bUnitExempt && !bFinancialTrouble &&
+		iNukeWeight > 0) // advc.143b
+	{
+		if ((kPlayer.AI_isDoStrategy(AI_STRATEGY_OWABWNW) ||
+			SyncRandNum(1200) < std::min(400, iNukeWeight)) &&
+			(!bAssault || SyncRandNum(400) < std::min(200, 50 + iNukeWeight/2)))
+		{
+			int iTotalNukes = kPlayer.AI_totalUnitAIs(UNITAI_ICBM);
+			int iNukesWanted = 1 + 2 * std::min(iNumCities,
+					kGame.getNumCities() - iNumCities);
+			if (iTotalNukes < iNukesWanted &&
+				SyncRandNum(100) * iNukesWanted < 90 - (80 * iTotalNukes))
+			{
+				if (pWaterArea != NULL &&
+					kPlayer.AI_totalUnitAIs(UNITAI_MISSILE_CARRIER_SEA) * 2 < iTotalNukes &&
+					SyncRandOneChanceIn(3))
+				{
+					if (AI_chooseUnit(UNITAI_MISSILE_CARRIER_SEA, 50))
+						return;
+				}
+				if (AI_chooseUnit(UNITAI_ICBM))
+					return;
+			}
+		}
+	}
+	// K-Mod end
+
+	// Assault case now completely handled above
+	if (!bAssault && (!bCultureCity || bDefenseWar) && iUnitSpending < iMaxUnitSpending)
+	{
+		if (!bFinancialTrouble && (bLandWar || (bDagger && !bGetBetterUnits)))
+		{	// <advc.081>
+			bool bNavalSiege = false;
+			bool bAssaultAlongCoast = false;
+			// </advc.081>
+			//int iTrainInvaderChance = iBuildUnitProb + 10;
+			int iTrainInvaderChance = iBuildUnitProb + (bTotalWar ? 16 : 8); // K-Mod
+
+			if (bAggressiveAI)
+				iTrainInvaderChance += 5; // advc.019: was +15
+
+			if (bGetBetterUnits)
+				iTrainInvaderChance /= 2;
+			else if (kArea.getAreaAIType(getTeam()) == AREAAI_MASSING ||
+				kArea.getAreaAIType(getTeam()) == AREAAI_ASSAULT_MASSING)
+			{
+				iTrainInvaderChance = (100 - ((100 - iTrainInvaderChance) /
+						// advc.018: Was 6 in the Crush case
+						(bCrushStrategy ? 2 : 3)));
+				// <advc.081>
+				CvCity* pTargetCity = kArea.AI_getTargetCity(kPlayer.getID());
+				if(pTargetCity != NULL && sameArea(*pTargetCity) &&
+					pWaterArea != NULL && pWaterArea == pTargetCity->waterArea(true) &&
+					(!pTargetCity->isVisible(kPlayer.getTeam()) ||
+					pTargetCity->getDefenseModifier(true) > 10))
+				{
+					bAssaultAlongCoast = true;
+					UnitTypes eBestNavalSiege = AI_bestUnitAI(UNITAI_ATTACK_SEA);
+					if(eBestNavalSiege != NO_UNIT &&
+						GC.getInfo(eBestNavalSiege).getBombardRate() >= 8)
+					{
+						bNavalSiege = true;
+					}
+				} // </advc.081>
+			}
+
+			if (AI_chooseBuilding(BUILDINGFOCUS_EXPERIENCE, 20, 0, bDefenseWar ? 10 : 30))
+			{
+				if (gCityLogLevel >= 2) logBBAI("      City %S uses special BUILDINGFOCUS_EXPERIENCE 2", sCityName); // advc
+				return;
+			}
+
+			UnitAIWeightMap invaderWeight; // advc: Was vector of pairs "invaderTypes"
+			invaderWeight.set(UNITAI_ATTACK_CITY,// 100
+					// <advc.081>
+					bNavalSiege ? 96 : 100);
+			if(bNavalSiege)
+				invaderWeight.set(UNITAI_ATTACK_SEA, 8);
+			if(bAssaultAlongCoast) {
+				invaderWeight.set(UNITAI_ASSAULT_SEA, 8 -
+						(bNavalSiege ? 4 : 0));
+			} // </advc.081>
+			invaderWeight.set(UNITAI_COUNTER, 50);
+			invaderWeight.set(UNITAI_ATTACK, 40);
+			invaderWeight.set(UNITAI_PARADROP,
+					(kPlayer.AI_isDoStrategy(AI_STRATEGY_AIR_BLITZ) ? 30 : 20) /
+					(bAssault ? 2 : 1));
+			// <!-- custom: stop bypassing our code ffs if i may say xd...; also specifically for this unitai, we don't want it anymore, see code comment at bestunit( for details -->
+			if (bMinor || bBarbarian)
+			{
+				if (!bAssault)
+				if (!bAssault && !bCrushStrategy) // K-Mod
+				if(!bCrushStrategy) // advc: !bAssault already guaranteed
+				{
+					if (kPlayer.AI_totalAreaUnitAIs(kArea, UNITAI_PILLAGE) <=
+						(iNumCitiesInArea + 1) / 2)
+					{
+						invaderWeight.set(UNITAI_PILLAGE, 30);
+					}
+				}
+			}
+			// K-Mod - get more siege units for crush
+			if (bCrushStrategy && SyncRandSuccess100(iTrainInvaderChance))
+			{
+				// <cdtw.8> Moved up
+				UnitTypes eCityAttackUnit = NO_UNIT;
+				kPlayer.AI_bestCityUnitAIValue(UNITAI_ATTACK_CITY, this, &eCityAttackUnit);
+				// </cdtw.8>
+				if (eCityAttackUnit != NO_UNIT && GC.getInfo(eCityAttackUnit).getBombardRate() > 0)
+				{
+					if (AI_chooseUnit(eCityAttackUnit, UNITAI_ATTACK_CITY))
+					{
+						if (gCityLogLevel >= 2) logBBAI("      City %S uses extra crush bombard", sCityName);
+						return;
+					}
+				}
+			}
+			// K-Mod end
+			// <cdtw.8> (Don't do this after all)
+			/*if(iUnitSpending > (iBuildUnitProb / 2)) {
+				if(eCityAttackUnit == NO_UNIT ||
+					(!GC.getInfo(eCityAttackUnit).getUnitAIType(UNITAI_ATTACK_CITY) &&
+					kPlayer.AI_bestCityUnitAIValue(UNITAI_ATTACK_CITY, this, &eCityAttackUnit) <= 110))
+				iTrainInvaderChance /= 2;*/ // </cdtw.8>
+			if (AI_chooseLeastRepresentedUnit(invaderWeight, iTrainInvaderChance))
+				return;
+		}
+	}
+
+	if (pWaterArea != NULL && !bDefenseWar && !bAssault)
+	{
+		if (!bFinancialTrouble)
+		{
+			// Force civs with foreign colonies to build a few assault transports to defend the colonies
+			if (kPlayer.AI_totalUnitAIs(UNITAI_ASSAULT_SEA) < (iNumCities - iNumCapitalAreaCities)/3)
+			{
+				if (AI_chooseUnit(UNITAI_ASSAULT_SEA))
+					return;
+			}
+
+			if (kPlayer.AI_calculateUnitAIViability(UNITAI_SETTLER_SEA, DOMAIN_SEA) < 61)
+			{
+				// Force civs to build escorts for settler_sea units
+				if (kPlayer.AI_totalUnitAIs(UNITAI_SETTLER_SEA) > kPlayer.AI_getNumAIUnits(UNITAI_RESERVE_SEA))
+				{
+					if (AI_chooseUnit(UNITAI_RESERVE_SEA))
+						return;
+				}
+			}
+		}
+	}
+
+	// <!-- custom: stop bypassing our code ffs if i may say xd...; also specifically for this unitai, we don't want it anymore, see code comment at bestunit( for details; update: exception is barbarians as they may need to to pilage and such i mean check to be sure-->
+	// <!-- custom: since barbarians are seemingly handled in AI_barbChooseProduction (but this is just a guess based on what it seems to be at a quick glance, check if accurate), we can probably disable this entirely rather than add a barbarian check, but keep the check just in case -->
+	// Don't build pirates in financial trouble as they'll be disbanded with high probability
+	if (bMinor || bBarbarian)
+	{
+		if (pWaterArea != NULL && !bLandWar && !bAssault &&
+			!bFinancialTrouble && !bUnitExempt &&
+			!kTeam.isCapitulated()) // advc.033
+		{
+			int iPirateCount = kPlayer.AI_totalWaterAreaUnitAIs(*pWaterArea, UNITAI_PIRATE_SEA);
+			int iNeededPirates = 1 + (pWaterArea->getNumTiles() /
+					std::max(1, 200 - iBuildUnitProb));
+			iNeededPirates *= 20 + iWaterPercent;
+			iNeededPirates /= 100;
+
+			if (kPlayer.isNoForeignTrade())
+			{
+				iNeededPirates *= 3;
+				iNeededPirates /= 2;
+			}
+			if (kPlayer.AI_totalWaterAreaUnitAIs(*pWaterArea, UNITAI_PIRATE_SEA) < iNeededPirates)
+			{
+				if (kPlayer.AI_calculateUnitAIViability(UNITAI_PIRATE_SEA, DOMAIN_SEA) > 49)
+				{
+					if (AI_chooseUnit(UNITAI_PIRATE_SEA, iWaterPercent / (1 + iPirateCount)))
+						return;
+				}
+			}
+		}
+	}
+
+	if (!bLandWar && !bFinancialTrouble &&
+		pWaterArea != NULL && iWaterPercent > 40 &&
+		kPlayer.AI_totalAreaUnitAIs(kArea, UNITAI_SPY) > 0 &&
+		kPlayer.AI_totalWaterAreaUnitAIs(*pWaterArea, UNITAI_SPY_SEA) == 0)
+	{
+		if (AI_chooseUnit(UNITAI_SPY_SEA))
+			return;
+	}
+
+	// <!-- custom: also fix this preemptively as if i recall it correctly, this assert failed did happen in several code lines, so as it's harmless, better fix it as well as chatgpt 5 advises as well, check if accurate. Note: according to chatgpt 5, about the issue related to AI_bestSpreadUnit, we don't need an assert here since we're only reusing previously computed values if i understood it correctly, check if accurate -->
+	// The second block is a follow-up gate; it doesn’t recompute eBestSpreadUnit. If the first block didn’t run (or returned false), eBestSpreadUnit will be NO_UNIT by design. Asserting here just creates false positives.
+	// Assert Failed
+	// File:  ..\.\CvCityAI.cpp
+	// Line:  2246
+	// Func:  CvCityAI::AI_chooseProduction
+	// Expression:  eBestSpreadUnit != NO_UNIT
+	// Message:  bestSpreadUnit: returned true but NO_UNIT | T100 Orleans thr=1800
+	// if (iBestSpreadUnitValue > (iSpreadUnitThreshold * 40) / 100)
+	if (eBestSpreadUnit != NO_UNIT && iBestSpreadUnitValue > (iSpreadUnitThreshold * 40) / 100)
+	{
+		if (AI_chooseUnit(eBestSpreadUnit, UNITAI_MISSIONARY))
+		{
+			if (gCityLogLevel >= 2) logBBAI("      City %S uses choose missionary 3", sCityName);
+			return;
+		}
+	}
+
+	if (!bUnitExempt && iTotalFloatingDefenders < iNeededFloatingDefenders &&
+		(!bFinancialTrouble || bLandWar))
+	{
+		if (AI_chooseLeastRepresentedUnit(floatingDefenderWeight, 50))
+		{
+			if (gCityLogLevel >= 2) logBBAI("      City %S uses choose floating defender 2", sCityName);
+			return;
+		}
+	}
+
+	if (bLandWar && !bDanger)
+	{
+		if (iPlotSettlerCount <= 0 && // advc.031b: Same condition as for "build settler 1"
+			iNumSettlers < iMaxSettlers)
+		{
+			if (!bFinancialTrouble && iAreaBestFoundValue > iMinFoundValue)
+			{	// <advc.031b>
+				if(iSettlerPriority <= 0) // "build settler 1" may have already computed it
+				{
+					iSettlerPriority = AI_calculateSettlerPriority(iNumAreaCitySites,
+							iAreaBestFoundValue, iNumWaterAreaCitySites, iWaterAreaBestFoundValue);
+				} // </advc.031b>
+				if (!isBarbarian() && !bNoSettler && AI_chooseUnit(UNITAI_SETTLE, (iSettlerPriority * 3) / 2))
+				// if (AI_chooseUnit(UNITAI_SETTLE, /* advc.031b: */ (iSettlerPriority * 3) / 2))
+				{
+					if (gCityLogLevel >= 2) logBBAI("      City %S uses build settler 2", sCityName);
+					return;
+				}
+				// <!-- custom: also add a barbarian check here (with also our worker replaces settler new logic too) as our logic doesn't apply to barbarians as well at least not as of now-->
+				else if (!isBarbarian() && bWorkerReplacesSettler && AI_chooseUnit(UNITAI_WORKER, /*iOdds=*/100))
+				{
+					if (gCityLogLevel >= 2)
+						logBBAI("      City %S replaces Settler 2 with Worker", sCityName);
+					return;
+				}
+			}
+		}
+	}
+
+	//if ((iProductionRank <= ((iNumCities > 8) ? 3 : 2))
+	// Ideally we'd look at relative production, not just rank.
+	if (iProductionRank <= iNumCities / 9 + 2 && iCityPopulation > 3)
+	{
+		// <!-- custom: getInt assert in CvRandom.h fails, fix it as advised by chatgpt 5, check if accurate, see known issue as of now 72 for details -->
+		// Assert Failed
+		// File:  c:\program files (x86)\steam\steamapps\common\sid meier's civilization iv beyond the sword\beyond the sword\mods\advciv-sas\cvgamecoredll\CvRandom.h
+		// Line:  48
+		// Func:  CvRandom::getInt
+		// Expression:  iNum >= 0
+		// Message:  getInt: range<0 (-4) msg=CvCityAI::AI_chooseProduction@L2889 d1=-2147483648 d2=-2147483648
+		//
+		// Yep—that crash is because this line can pass a negative range into the RNG:
+		// Some leaders (or your defaults) have getWonderConstructRand() <= 0 (your assert showed -4). Passing that to getSorenRandNum/SyncRandNum triggers the Debug assert.
+		// Minimal, correct fix (skip the roll when disabled)
+		// Treat <= 0 as “don’t roll / don’t do opportunistic wonder":
+		const int iWC = GC.getInfo(getPersonalityType()).getWonderConstructRand();
+		if (iWC > 0) // <-- guard: only roll with a valid positive range
+		{
+			const int iWonderTime = SyncRandNum(iWC);
+			int iWonderRand = 8 + iWonderTime;
+
+			// increase chance of going for an early wonder
+			if (kGame.getElapsedGameTurns() * 100 <
+				100 * GC.getInfo(kGame.getGameSpeedType()).getConstructPercent() &&
+				iNumCitiesInArea > 1)
+			{
+				iWonderRand *= 35;
+				iWonderRand /= 100;
+			}
+			else if (iNumCitiesInArea >= 3)
+			{
+				iWonderRand *= 30;
+				iWonderRand /= 100;
+			}
+			else
+			{
+				iWonderRand *= 25;
+				iWonderRand /= 100;
+			}
+
+			if (bAggressiveAI)
+			{
+				iWonderRand *= 2;
+				iWonderRand /= 3;
+			}
+
+			/* if (bLandWar && bTotalWar)
+			{
+				iWonderRand *= 2;
+				iWonderRand /= 3;
+			} */
+			// K-Mod. When losing a war, it's not really an "opportune" time to build a wonder...
+			if (bLandWar)
+				iWonderRand = iWonderRand * 2/3;
+			if (bTotalWar)
+				iWonderRand = iWonderRand * 2/3;
+			if (iWarSuccessRating < 0)
+				iWonderRand = iWonderRand * 10/(10-iWarSuccessRating);
+			// K-Mod end
+
+			int iWonderRoll = SyncRandNum(100);
+
+			if (iProductionRank == 1)
+				iWonderRoll /= 2;
+
+			if (iWonderRoll < iWonderRand)
+			{
+				int iWonderMaxTurns = 20 + ((iWonderRand - iWonderRoll) * 2);
+				if (bLandWar)
+					iWonderMaxTurns /= 2;
+				if (AI_chooseBuilding(BUILDINGFOCUS_WORLDWONDER, iWonderMaxTurns))
+				{
+					if (gCityLogLevel >= 2) logBBAI("      City %S uses opportunistic wonder build 3", sCityName);
+					return;
+				}
+			}
+		}
+	}
+
+	if (bFundingForAircraft && !bFarTooFewAircraft && // advc (b/c handled higher up)
+		iAircraftHave < iAircraftNeed && !bFinancialTrouble)
+	{
+		int iOdds = 33;
+		if (iFreeAirExperience > 0 || iProductionRank <= 1 + iNumCities / 2)
+			iOdds = -1;
+		if (AI_chooseLeastRepresentedUnit(airWeight, iOdds))
+			return;
+	}
+
+	if (!bLandWar)
+	{
+		if (pWaterArea != NULL && bFinancialTrouble &&
+			kPlayer.AI_totalAreaUnitAIs(kArea, UNITAI_MISSIONARY) > 0 &&
+			kPlayer.AI_totalWaterAreaUnitAIs(*pWaterArea, UNITAI_MISSIONARY_SEA) <= 0)
+		{
+			if (AI_chooseUnit(UNITAI_MISSIONARY_SEA))
+				return;
+		}
+	}
+
+
+	if (AI_needsCultureToWorkFullRadius())
+	{
+		if (AI_chooseBuilding(BUILDINGFOCUS_CULTURE, 30))
+			return;
+	}
+
+	if (!bAlwaysPeace)
+	{
+		if (!bDanger)
+		{
+			if (AI_chooseBuilding(BUILDINGFOCUS_EXPERIENCE, 20, 0, 3 * iCityPopulation))
+			{
+				if (gCityLogLevel >= 2) logBBAI("      City %S uses special BUILDINGFOCUS_EXPERIENCE 3", sCityName); // advc
+				return;
+			}
+		}
+
+		if (AI_chooseBuilding(BUILDINGFOCUS_DEFENSE, 20, 0, bDanger ? -1 : 3 * iCityPopulation))
+		{
+			if (gCityLogLevel >= 2) logBBAI("      City %S uses special BUILDINGFOCUS_DEFENSE", sCityName); // advc
+			return;
+		}
+		if (bDanger)
+		{
+			if (AI_chooseBuilding(BUILDINGFOCUS_EXPERIENCE, 20, 0, 2 * iCityPopulation))
+			{
+				if (gCityLogLevel >= 2) logBBAI("      City %S uses special BUILDINGFOCUS_EXPERIENCE 4", sCityName); // advc
+				return;
+			}
+		}
+	}
+
+	// Short-circuit 3 - a last chance to catch important buildings
+	{
+		int iOdds = std::max(0, (bLandWar ? 160 : 220) * iBestBuildingValue / (iBestBuildingValue
+				/* <advc.131> was +32 */ + 20 /* </advc.131> */) - 100);
+		if (AI_chooseBuilding(0, MAX_INT, 0, iOdds))
+		{
+			if (gCityLogLevel >= 2) logBBAI("      City %S uses building value short-circuit 3 (odds: %d)", sCityName, iOdds);
+   			return;
+		}
+	}
+
+	if (!bLandWar)
+	{
+		if (pWaterArea != NULL)
+		{
+			if (bPrimaryArea)
+			{	// advc.124 (no functional change)
+				if (iSeaExplorersNow < std::min(1, iSeaExplorersTarget))
+				{
+					if (AI_chooseUnit(UNITAI_EXPLORE_SEA))
+						return;
+				}
+			}
+		}
+	}
+
+	// advc.017: UNITAI_CITY_COUNTER block moved down
+	// ...
+
+	// we do a similar check lower, in the landwar case. (umm. no you don't. I'm changing this.)
+	//if (!bLandWar && bFinancialTrouble)
+	// <advc.110>
+	//if(bFinancialTrouble)
+	// Afforess - don't wait until we are in trouble, preventative medicine is best
+	if (kPlayer.AI_financialTroubleMargin() < 10) // </advc.110>
+	{
+		if (AI_chooseBuilding(BUILDINGFOCUS_GOLD))
+		{
+			if (gCityLogLevel >= 2) logBBAI("      City %S uses choose financial trouble gold", sCityName);
+			return;
+		}
+	}
+
+	bool bChooseUnit = false;
+	if (iUnitSpending < iMaxUnitSpending + 15) // was +5 (new metric)
+	{
+		/*	advc: iBuildUnitProb gets used in a bunch of places.
+			Shouldn't sneakily modify it here. */
+		int iBuildUnitProbAdjusted = iBuildUnitProb;
+		// K-Mod
+		iBuildUnitProbAdjusted *= (250 + std::max(iProjectValue, iBestBuildingValue));
+		iBuildUnitProbAdjusted /= (100 + 3 * std::max(iProjectValue, iBestBuildingValue));
+		// K-Mod end
+		if (bLandWar || (iNumCities <= 3 && kGame.getElapsedGameTurns() < 60) ||
+			(!bUnitExempt && SyncRandSuccess100(iBuildUnitProbAdjusted)) ||
+			(isHuman() && getGameTurnFounded() == kGame.getGameTurn()))
+		{
+			if (AI_chooseUnit()) // advc.031b (note): Can train Settlers, but that rarely happens.
+			{
+				if (gCityLogLevel >= 2) logBBAI("      City %S uses choose unit by probability", sCityName);
+				return;
+			}
+			bChooseUnit = true;
+		}
+	}
+
+	// Only cities with reasonable production
+	/*if ((iProductionRank <= ((iNumCities > 8) ? 3 : 2))
+			&& (iCityPopulation > 3)) {
+		if (AI_chooseProject()) {
+			if (gCityLogLevel >= 2) logBBAI("      City %S uses choose project 2", sCityName);
+			return;
+		}
+	}*/ // BtS
+	// K-Mod
+	FAssert((eBestProject == NO_PROJECT) == (iProjectValue <= 0));
+	if (iProjectValue < 0)
+		eBestProject = AI_bestProject(&iProjectValue);
+	if (iProjectValue > iBestBuildingValue)
+	{
+		FAssert(eBestProject != NO_PROJECT);
+		pushOrder(ORDER_CREATE, eBestProject);
+		if (gCityLogLevel >= 2) logBBAI("      City %S uses choose project 2. (project value: %d, building value: %d)", sCityName, iProjectValue, iBestBuildingValue);
+		return;
+	}
+
+	ProcessTypes eBestProcess = AI_bestProcess();
+	if (eBestProcess != NO_PROCESS)
+	{	// unfortunately, the evaluation of eBestProcess is duplicated.
+		// Here we calculate roughly how many turns it would take for the building to pay itself back, where the cost it the value we could have had from building a process..
+		// Note that as soon as we start working the process, our citizens will rearrange in a way that is likely to devalue the process for the next turn.
+		int iOdds = 100;
+		if (eBestBuilding != NO_BUILDING)
+		{	// <advc.004x>
+			int iConstructTurnsLeft = getProductionTurnsLeft(eBestBuilding, 0);
+			if(iConstructTurnsLeft == MAX_INT)
+				iOdds = 0;
+			else // </advc.004x>
+			{
+				int iBuildingCost = AI_processValue(eBestProcess) * iConstructTurnsLeft;
+				int iScaledTime = 10000 * iBuildingCost / (std::max(1, iBestBuildingValue) *
+						GC.getInfo(kGame.getGameSpeedType()).getConstructPercent());
+				iOdds = 100*(iScaledTime - 400)/(iScaledTime + 600); // <= 4 turns means 0%. 20 turns ~ 61%.
+			}
+		}
+		if (SyncRandSuccess100(iOdds))
+		{
+			pushOrder(ORDER_MAINTAIN, eBestProcess);
+			if (gCityLogLevel >= 2) logBBAI("      City %S uses choose process by value", sCityName);
+			return;
+		}
+	}
+	// K-Mod end
+
+	// advc.017: Moved here; used to come before the Process check
+	if (!bUnitExempt && kPlot.plotCheck(PUF_isUnitAIType, UNITAI_CITY_COUNTER, -1, getOwner()) == NULL)
+	{
+		if (AI_chooseUnit(UNITAI_CITY_COUNTER))
+		{
+			return;
+		}
+	}
+
+	if (AI_chooseBuilding())
+	{
+		if (gCityLogLevel >= 2) logBBAI("      City %S uses choose building by probability", sCityName);
+		return;
+	}
+
+	if (!bChooseUnit && !bFinancialTrouble && kPlayer.AI_isDoStrategy(AI_STRATEGY_FINAL_WAR))
+	{
+		if (AI_chooseUnit())
+		{
+			if (gCityLogLevel >= 2) logBBAI("      City %S uses choose unit by default", sCityName);
+			return;
+		}
+	}
+
+	//if (AI_chooseProcess())
+	if (eBestProcess != NO_PROCESS)
+	{
+		pushOrder(ORDER_MAINTAIN, eBestProcess);
+		if (gCityLogLevel >= 2) logBBAI("      City %S uses choose process by default", sCityName);
+		return;
+	}
+}
+
+
+UnitTypes CvCityAI::AI_bestUnit(bool bAsync, AdvisorTypes eIgnoreAdvisor, UnitAITypes* peBestUnitAI) /* advc: */ const
+{
+	if (peBestUnitAI != NULL)
+		*peBestUnitAI = NO_UNITAI;
+
+	CvPlayerAI const& kOwner = GET_PLAYER(getOwner()); // K-Mod
+
+	// <!-- custom: cache to kTeam for perf opt if i'm not mistaken. See note at CvCityAI::AI_buildingValue. -->
+	CvTeamAI const& kTeam = GET_TEAM(kOwner.getTeam()); // kekm.16
+
+	// <!-- custom: performance optimizations -->
+	CvGame const& kGame = GC.getGame();
+
+	// BETTER_BTS_AI_MOD, City AI, 11/30/08, jdog5000: bNoImpassable=true
+	CvArea* pWaterArea = waterArea(true);
+
+	// <!-- custom: note: sometimes AI_isFocusWar is used with, sometimes without in cvcityai.cpp, going for the larger one and chatgpt 5 suggests to do as such despite not knowing all our code but should be fine, and maybe we handle more cases this way, check if accurate -->
+	bool const bWarPlan = kOwner.AI_isFocusWar(); // advc.105
+			//(kTeam.getAnyWarPlanCount(true) > 0);
+	bool const bDefense = (getArea().getAreaAIType(getTeam()) == AREAAI_DEFENSIVE);
+	//bLandWar = (bDefense || (getArea().getAreaAIType(getTeam()) == AREAAI_OFFENSIVE) || (getArea().getAreaAIType(getTeam()) == AREAAI_MASSING));
+	bool const bLandWar = kOwner.AI_isLandWar(getArea()); // K-Mod
+	bool const bAssault = (getArea().getAreaAIType(getTeam()) == AREAAI_ASSAULT);
+	bool const bPrimaryArea = kOwner.AI_isPrimaryArea(getArea());
+	bool const bAreaAlone = kOwner.AI_isAreaAlone(getArea());
+	bool const bFinancialTrouble = kOwner.AI_isFinancialTrouble();
+	// <!-- custom: be careful, do not use this bWarPossible, this is always true at last for the 100 turns where i tested it, using this for settler build control logic resulted in no settler at all in 100 turns (probably true longer but didn't test) -->
+	//bool const bWarPossible = kTeam.AI_isWarPossible();
+	bool const bDanger = AI_isDanger();
+
+	int const iHasMetCount = kTeam.getHasMetCivCount(true);
+	int const iMilitaryWeight = kOwner.AI_militaryWeight(area());
+	int const iNumCitiesInArea = getArea().getCitiesPerPlayer(getOwner());
+
+	int iCoastalCities = 0;
+	if (pWaterArea != NULL)
+		iCoastalCities = kOwner.countNumCoastalCitiesByArea(*pWaterArea);
+
+	int aiUnitAIVal[NUM_UNITAI_TYPES] = { 0 };
+
+	// <!-- custom: info if helps in this mess, here about most unitais not all (those i had plus not some like great person unitais as not relevant here i think but check to be sure if i were to be mistaken maybe i mean or not or yes or etc) see modding ressouces in our docs for details if i may say i.e. mineand source there and check if this is accurate too -->
+	// - UNITAI_ATTACK: General purpose; unit prioritizes joining an attack stack, but also may wander off on search and destroy/explore, sit in a city and defend it, etc.
+	// UNITAI_ATTACK_CITY: Join an attack stack -> If in an attack stack, lead assault on a city once the AI decides the stack should attack a city
+	// - UNITAI_COLLATERAL: Similar to UNITAI_ATTACK_CITY, but may also attack enemy stacks in the field
+	// - UNITAI_PILLAGE: Causes unit to wander off by itself into enemy territory and pillage stuff
+	// - UNITAI_RESERVE: Primary use - Floating defenders to shuffle around between threatened cities. Also is a priority UNITAI type for the AI to change if it needs units of another type (the AI will frequently change reserve units to attack units once it starts warplans, for instance)
+	// - UNITAI_COUNTER: Join an attack stack -> if in stack may leave stack to attack adjacent tiles with enemy units
+	// - UNITAI_CITY_COUNTER: Same as UNITAI_COUNTER, but for cities instead of stacks
+	// - UNITAI_PARADROP: Hold in reserve and drop into enemy territory; very similar to UNITAI_PILLAGE, except units drop deep into enemy territory
+	// - UNITAI_CITY_DEFENSE: Defend a city, never leave the city
+	// - UNITAI_CITY_SPECIAL: Basically the same as UNITAI_CITY_DEFENSE, except the AI deprioritizes this type if a city already has a defender of this AI type, meaning that the AI in unmodded BtS, the AI only ever builds a single machine gun in it's cities
+	// - UNITAI_EXPLORE: Wander around prioritizing terrain that hasn't been revealed until unit is killed
+	// - UNITAI_ATTACK_AIR: Air Unit used for bombing
+	// - UNITAI_CARRIER_AIR: Similar to UNITAI_ATTACK_AIR, but prioritizes filling up carriers
+	// - UNITAI_ATTACK_CITY_LEMMING: beeline enemy cities and Suicide against enemy units
+	// - UNITAI_ICBM: Hold unit, and then launch when at war
+	// - UNITAI_SPY: Basic spy AI (prioritize going into enemy territory and running spy missions - In base BtS this is purely random, with the spys basically wandering around and rolling dice, in BBAI the spys prioritize high value missions and improvements)
+	// - UNITAI_WORKER_SEA: Build sea improvement, if none is available explore
+	// - UNITAI_ATTACK_SEA: Basic sea AI, wander around the oceans in search and destroy mode, join a stack, etc
+	// - UNITAI_RESERVE_SEA: Similar to UNITAI_RESERVE except for sea units
+	// - UNITAI_ESCORT_SEA: Join a stack
+	// - UNITAI_EXPLORE_SEA: Wander around the oceans prioritizing moving into unexplored territory until unit dies
+	// - UNITAI_ASSAULT_SEA: Transport land units for sea assault, launch when a sufficient assault stack is ready; forms core of water domain stacks
+	// - UNITAI_SETTLER_SEA: Ferry settlers and workers over water tiles
+	// - UNITAI_MISSIONARY_SEA: Ferry missionaries over water tiles
+	// - UNITAI_SPY_SEA: Ferry spys over water tiles
+	// - UNITAI_CARRIER_SEA: Be a mobile air base for UNITAI_CARRIER_AIR units
+	// - UNITAI_MISSILE_CARRIER_SEA: similar to UNITAI_CARRIER_SEA but for missiles
+	// - UNITAI_PIRATE_SEA: Wander around pointlessly, sometimes run a blockade if the die roll tells you to and you are in enemy territory
+
+	const int iNumCities = kOwner.getNumCities();
+
+	int iDummy=-1;
+	if (!bFinancialTrouble && (bPrimaryArea ?
+		//kOwner.findBestFoundValue() > 0 : getArea().getBestFoundValue(getOwner()) > 0
+		// <advc.opt>
+		kOwner.AI_getNumCitySites() > 0 :
+		kOwner.AI_getNumAreaCitySites(getArea(), iDummy) > 0)) // </advc.opt>
+	{
+		aiUnitAIVal[UNITAI_SETTLE]++;
+	}
+	aiUnitAIVal[UNITAI_WORKER] += kOwner.AI_neededWorkers(getArea());
+
+	aiUnitAIVal[UNITAI_ATTACK] += iMilitaryWeight /
+			(bWarPlan || bLandWar || bAssault ? 7 : 12) +
+			(bPrimaryArea /* && bWarPossible */ ? 2 : 0) + 1;
+
+	aiUnitAIVal[UNITAI_CITY_DEFENSE] += iNumCitiesInArea + 1;
+	aiUnitAIVal[UNITAI_CITY_COUNTER] += (5 * (iNumCitiesInArea + 1)) / 8;
+	aiUnitAIVal[UNITAI_CITY_SPECIAL] += (iNumCitiesInArea + 1) / 2;
+
+	// if (bWarPossible)
+	// {
+	aiUnitAIVal[UNITAI_ATTACK_CITY] += iMilitaryWeight /
+			(bWarPlan || bLandWar || bAssault ? 10 : 17) +
+			(bPrimaryArea ? 1 : 0);
+	aiUnitAIVal[UNITAI_COUNTER] += iMilitaryWeight /
+			(bWarPlan || bLandWar || bAssault ? 13 : 22) +
+			(bPrimaryArea ? 1 : 0);
+	aiUnitAIVal[UNITAI_PARADROP] += iMilitaryWeight /
+			(bWarPlan || bLandWar || bAssault ? 5 : 8) +
+			(bPrimaryArea ? 1 : 0);
+
+	//aiUnitAIVal[UNITAI_DEFENSE_AIR] += (iNumCities + 1);
+	aiUnitAIVal[UNITAI_DEFENSE_AIR] += kOwner.AI_getTotalAirDefendersNeeded(); // K-Mod
+	aiUnitAIVal[UNITAI_CARRIER_AIR] += kOwner.AI_countCargoSpace(
+			UNITAI_CARRIER_SEA);
+	aiUnitAIVal[UNITAI_MISSILE_AIR] += kOwner.AI_countCargoSpace(
+			UNITAI_MISSILE_CARRIER_SEA);
+
+	if (bPrimaryArea)
+	{
+		//aiUnitAIVal[UNITAI_ICBM] += std::max((kOwner.getTotalPopulation() / 25), ((kGame.countCivPlayersAlive() + kGame.countTotalNukeUnits()) / (kGame.countCivPlayersAlive() + 1)));
+		// K-Mod
+		aiUnitAIVal[UNITAI_ICBM] += std::max(kOwner.getTotalPopulation() / 25,
+				(kGame.countFreeTeamsAlive() +
+				kGame.countTotalNukeUnits() +
+				kGame.getNukesExploded()) /
+				(kGame.countFreeTeamsAlive() + 1));
+	}
+
+	// <!-- custom: update this doesn't seem to do too much in the early game, code at chooseProduction we added there too is much more effective it seems, but kept just in case it helps too, i don't know if it applies similarly to all unit ais but doing as such for now -->
+	// <!-- custom: do not build any settler at all if war likely, prepare for war, the hammer is very precious and can make us win the war with more units, but having an extra city to defend would make us even thinner, having split military, on top of having less units, see known issue 36 for details -->
+	aiUnitAIVal[UNITAI_SETTLE] = 0;
+	// <!-- custom: not sure this one is necessary nor exactly what it does but just in case -->
+	aiUnitAIVal[UNITAI_SETTLER_SEA] = 0;
+	// }
+
+	if (isBarbarian())
+		aiUnitAIVal[UNITAI_ATTACK] *= 2;
+	else
+	{
+		if (!bLandWar)
+			aiUnitAIVal[UNITAI_EXPLORE] += kOwner.AI_neededExplorers(getArea());
+
+		if (pWaterArea != NULL)
+		{
+			// <!-- custom: dereference risk here so define only after null check according to chatgpt 5 if i understood it correctly, check if accurate; since they are in different scopes, fine to redefine it later when we use it again (after null check) if i understood it correctly and after asking chatgpt 5, check if accurate -->
+			const int iPWaterAreaGetNumTiles = pWaterArea->getNumTiles();
+
+			aiUnitAIVal[UNITAI_WORKER_SEA] += AI_neededSeaWorkers();
+			if (iNumCities > 3 || getArea().getNumUnownedTiles() < 10)
+			{
+				if (bPrimaryArea)
+					aiUnitAIVal[UNITAI_EXPLORE_SEA] += kOwner.AI_neededExplorers(*pWaterArea);
+				if (bPrimaryArea && kOwner.findBestFoundValue() > 0 &&
+					iPWaterAreaGetNumTiles > 300)
+				{
+					aiUnitAIVal[UNITAI_SETTLER_SEA]++;
+				}
+				if (bPrimaryArea &&
+					kOwner.AI_totalAreaUnitAIs(getArea(), UNITAI_MISSIONARY) > 0 &&
+					iPWaterAreaGetNumTiles > 400)
+				{
+					aiUnitAIVal[UNITAI_MISSIONARY_SEA]++;
+				}
+
+				if (bPrimaryArea && kOwner.AI_totalAreaUnitAIs(getArea(), UNITAI_SPY) > 0 &&
+					iPWaterAreaGetNumTiles > 500)
+				{
+					aiUnitAIVal[UNITAI_SPY_SEA]++;
+				}
+
+				aiUnitAIVal[UNITAI_PIRATE_SEA] += iPWaterAreaGetNumTiles / 600;
+
+				// <!-- custom: be careful, do not use this bWarPossible, this is always true at last for the 100 turns where i tested it, using this for settler build control logic resulted in no settler at all in 100 turns (probably true longer but didn't test) -->
+				// if (bWarPossible)
+				// {
+				// K-Mod note: this is bogus. TODO: change it so that it scales properly with map size.
+				aiUnitAIVal[UNITAI_ATTACK_SEA] += std::min(
+						iPWaterAreaGetNumTiles / 150,
+						(iCoastalCities * 2 + iMilitaryWeight / 9) / (bAssault ? 4 : 6) +
+						(bPrimaryArea ? 1 : 0));
+				aiUnitAIVal[UNITAI_RESERVE_SEA] += std::min(
+						iPWaterAreaGetNumTiles / 200,
+						(iCoastalCities * 2 + iMilitaryWeight / 7) / 5 +
+						(bPrimaryArea ? 1 : 0));
+				aiUnitAIVal[UNITAI_ESCORT_SEA] += (kOwner.AI_totalWaterAreaUnitAIs(
+						*pWaterArea, UNITAI_ASSAULT_SEA) +
+						(kOwner.AI_totalWaterAreaUnitAIs(
+						*pWaterArea, UNITAI_CARRIER_SEA) * 2));
+				aiUnitAIVal[UNITAI_ASSAULT_SEA] += std::min(iPWaterAreaGetNumTiles / 250,
+						(iCoastalCities * 2 + iMilitaryWeight / 6) / (bAssault ? 5 : 8) +
+						(bPrimaryArea ? 1 : 0));
+				aiUnitAIVal[UNITAI_CARRIER_SEA] += std::min(
+						iPWaterAreaGetNumTiles / 350,
+						(iCoastalCities * 2 + iMilitaryWeight / 8) / 7 +
+						(bPrimaryArea ? 1 : 0));
+				aiUnitAIVal[UNITAI_MISSILE_CARRIER_SEA] += std::min(
+						iPWaterAreaGetNumTiles / 350,
+						(iCoastalCities * 2 + iMilitaryWeight / 8) / 7 +
+						(bPrimaryArea ? 1 : 0));
+				// }
+			}
+		}
+
+		if ((iHasMetCount > 0) /* && bWarPossible */)
+		{
+			if (bLandWar || bAssault || !bFinancialTrouble ||
+				kOwner.calculateUnitCost() == 0)
+			{
+				aiUnitAIVal[UNITAI_ATTACK] +=
+						iMilitaryWeight / (bLandWar || bAssault ? 9 : 16) +
+						(bPrimaryArea && !bAreaAlone ? 1 : 0);
+				aiUnitAIVal[UNITAI_ATTACK_CITY] +=
+						iMilitaryWeight / (bLandWar || bAssault ? 7 : 15) +
+						(bPrimaryArea && !bAreaAlone ? 1 : 0);
+				aiUnitAIVal[UNITAI_COLLATERAL] +=
+						iMilitaryWeight / (bDefense ? 8 : 14) +
+						(bPrimaryArea && !bAreaAlone ? 1 : 0);
+				aiUnitAIVal[UNITAI_PILLAGE] +=
+						iMilitaryWeight / (bLandWar ? 10 : 19) +
+						(bPrimaryArea && !bAreaAlone ? 1 : 0);
+				aiUnitAIVal[UNITAI_RESERVE] +=
+						iMilitaryWeight / (bLandWar ? 12 : 17) +
+						(bPrimaryArea && !bAreaAlone ? 1 : 0);
+				aiUnitAIVal[UNITAI_COUNTER] +=
+						iMilitaryWeight / (bLandWar || bAssault ? 9 : 16) +
+						(bPrimaryArea && !bAreaAlone ? 1 : 0);
+				aiUnitAIVal[UNITAI_PARADROP] +=
+						iMilitaryWeight / (bLandWar || bAssault ? 4 : 8) +
+						(bPrimaryArea && !bAreaAlone ? 1 : 0);
+
+				//aiUnitAIVal[UNITAI_ATTACK_AIR] += (iNumCities + 1);
+				// K-Mod (extra air attack and defence). Note: iMilitaryWeight is (pArea->getPopulationPerPlayer(getID()) + pArea->getCitiesPerPlayer(getID())
+				aiUnitAIVal[UNITAI_ATTACK_AIR] += (bLandWar ? 2 : 1) *
+						iNumCities + 1;
+				// it would be nice if this was based on enemy air power...
+				aiUnitAIVal[UNITAI_DEFENSE_AIR] += (bDefense ? 1 : 0) *
+						iNumCities + 1;
+
+				// <!-- custom: add a check `&& isCoastal(GC.getDefineINT("MIN_WATER_SIZE_FOR_OCEAN")` here as well as advised by gemini ai: if city is landlocked (i assume it means is in a lake, do not build any military naval unit on it is quite pointless or at least do not prioritize it further); note: i don't know if this is the correct way to access MIN_WATER_SIZE_FOR_OCEAN or whichever thing is relevant for our check of city being landlocked, but it compiled successfully and gemini ai provided it to me based on our global search results and a code sample i provided too so hopefully accurate(if not i wouldn't mind less military naval units, but i hope this is as intended though and there are still a bit of military naval units still but not too much or too prioritized ). -->
+				// if (pWaterArea != NULL)
+				// <!-- custom: make these static const for performance optimization as advised by chatgpt 5 too. -->
+				const int iOceanThresh = GC.getDefineINT(CvGlobals::MIN_WATER_SIZE_FOR_OCEAN);
+				const bool bOceanCoastal = isCoastal(iOceanThresh);
+
+				if (pWaterArea != NULL && bOceanCoastal)
+				{
+					// <!-- custom: dereference risk here so define only after null check according to chatgpt 5 if i understood it correctly, check if accurate -->
+					const int iPWaterAreaGetNumTiles = pWaterArea->getNumTiles();
+
+					if (iNumCities > 3 || getArea().getNumUnownedTiles() < 10)
+					{
+						aiUnitAIVal[UNITAI_ATTACK_SEA] += std::min(
+								iPWaterAreaGetNumTiles / 100,
+								(iCoastalCities * 2 + iMilitaryWeight / 10) / (bAssault ? 5 : 7) +
+								(bPrimaryArea ? 1 : 0));
+						aiUnitAIVal[UNITAI_RESERVE_SEA] += std::min(
+								iPWaterAreaGetNumTiles / 150,
+								(iCoastalCities * 2 + iMilitaryWeight / 11) / 8 +
+								(bPrimaryArea ? 1 : 0));
+					}
+				}
+			}
+			// K-Mod
+			if (bLandWar && !bDefense && !isHuman() &&
+				kTeam.AI_getNumWarPlans(WARPLAN_TOTAL) > 0)
+			{
+				// if we're winning, then focus on capturing cities.
+				int iSuccessRatio = kTeam.AI_getWarSuccessRating();
+				if (iSuccessRatio > 0)
+				{
+					aiUnitAIVal[UNITAI_ATTACK] += iSuccessRatio * iMilitaryWeight / 800;
+					aiUnitAIVal[UNITAI_ATTACK_CITY] += iSuccessRatio * iMilitaryWeight / 1000;
+					aiUnitAIVal[UNITAI_COUNTER] += iSuccessRatio * iMilitaryWeight / 1400;
+					aiUnitAIVal[UNITAI_PARADROP] += iSuccessRatio * iMilitaryWeight / 1000;
+				}
+			} // K-Mod end
+		}
+	}
+
+	// XXX this should account for air and heli units too...
+	/*	K-Mod. Human players don't choose the AI type of the units they build.
+		Therefore we shouldn't use the unit AI counts to decide what to build next. */
+	if (isHuman())
+	{
+		aiUnitAIVal[UNITAI_SETTLE] = 0;
+		aiUnitAIVal[UNITAI_WORKER] = 0;
+		aiUnitAIVal[UNITAI_WORKER_SEA] = 0;
+		aiUnitAIVal[UNITAI_EXPLORE] = 0;
+		aiUnitAIVal[UNITAI_EXPLORE_SEA] = 0;
+		aiUnitAIVal[UNITAI_ATTACK_CITY] /= 3;
+		aiUnitAIVal[UNITAI_COLLATERAL] /= 2;
+		aiUnitAIVal[UNITAI_PILLAGE] /= 3;
+	}
+	else // K-Mod end
+	{
+		FOR_EACH_ENUM(UnitAI)
+		{
+			if (kOwner.AI_unitAIDomainType(eLoopUnitAI) == DOMAIN_SEA)
+			{
+				if (pWaterArea != NULL)
+				{
+					aiUnitAIVal[eLoopUnitAI] -= kOwner.AI_totalWaterAreaUnitAIs(
+							*pWaterArea, eLoopUnitAI);
+				}
+			}
+			else if (kOwner.AI_unitAIDomainType(eLoopUnitAI) == DOMAIN_AIR ||
+				eLoopUnitAI == UNITAI_ICBM)
+			{
+				aiUnitAIVal[eLoopUnitAI] -= kOwner.AI_totalUnitAIs(
+						eLoopUnitAI);
+			}
+			else
+			{
+				aiUnitAIVal[eLoopUnitAI] -= kOwner.AI_totalAreaUnitAIs(
+						getArea(), eLoopUnitAI);
+			}
+		}
+	}
+
+	aiUnitAIVal[UNITAI_SETTLE] *= (bDanger ? 8 : 12); // was ? 8 : 20
+	aiUnitAIVal[UNITAI_WORKER] *= (bDanger ? 2 : 7);
+
+	aiUnitAIVal[UNITAI_ATTACK] *= 3;
+	aiUnitAIVal[UNITAI_ATTACK_CITY] *= 5; // K-Mod, up from *4
+	aiUnitAIVal[UNITAI_COLLATERAL] *= 5;
+	aiUnitAIVal[UNITAI_PILLAGE] *= 3;
+	aiUnitAIVal[UNITAI_RESERVE] *= 3;
+	/*aiUnitAIVal[UNITAI_COUNTER] *= 3;
+	aiUnitAIVal[UNITAI_COUNTER] *= 2;*/
+	/*  advc.131: The double weights look unintentional, but apparently,
+		they somewhat work. Let's use 4 as a compromise. */
+	aiUnitAIVal[UNITAI_COUNTER] *= 4;
+	aiUnitAIVal[UNITAI_CITY_DEFENSE] *= 2;
+	aiUnitAIVal[UNITAI_CITY_COUNTER] *= 2;
+	aiUnitAIVal[UNITAI_CITY_SPECIAL] *= 2;
+
+	aiUnitAIVal[UNITAI_EXPLORE] *= (bDanger ? 6 : 15);
+
+	//aiUnitAIVal[UNITAI_ICBM] *= 18;
+	aiUnitAIVal[UNITAI_ICBM] *= 18 * kOwner.AI_nukeWeight() / 100; // K-Mod
+
+	aiUnitAIVal[UNITAI_WORKER_SEA] *= (bDanger ? 3 : 10);
+
+	aiUnitAIVal[UNITAI_ATTACK_SEA] *= 5;
+	aiUnitAIVal[UNITAI_RESERVE_SEA] *= 4;
+	aiUnitAIVal[UNITAI_ESCORT_SEA] *= 20;
+	aiUnitAIVal[UNITAI_EXPLORE_SEA] *= 18;
+	aiUnitAIVal[UNITAI_ASSAULT_SEA] *= 14;
+	aiUnitAIVal[UNITAI_SETTLER_SEA] *= 16;
+	aiUnitAIVal[UNITAI_MISSIONARY_SEA] *= 12;
+	aiUnitAIVal[UNITAI_SPY_SEA] *= 10;
+	aiUnitAIVal[UNITAI_CARRIER_SEA] *= 8;
+	aiUnitAIVal[UNITAI_MISSILE_CARRIER_SEA] *= 8;
+	aiUnitAIVal[UNITAI_PIRATE_SEA] *= 5;
+
+	aiUnitAIVal[UNITAI_ATTACK_AIR] *= 6;
+	aiUnitAIVal[UNITAI_DEFENSE_AIR] *= 4; // K-Mod, up from *3
+	aiUnitAIVal[UNITAI_CARRIER_AIR] *= 15;
+	aiUnitAIVal[UNITAI_MISSILE_AIR] *= 15;
+
+	// K-Mod
+	if (kOwner.AI_isDoStrategy(AI_STRATEGY_CRUSH))
+	{
+		aiUnitAIVal[UNITAI_ATTACK_CITY] *= 2;
+		aiUnitAIVal[UNITAI_ATTACK] *= 2;
+		aiUnitAIVal[UNITAI_ATTACK_AIR] *= 3;
+	}
+	if (kTeam.AI_getRivalAirPower() <=
+		8 * kOwner.AI_totalAreaUnitAIs(getArea(), UNITAI_DEFENSE_AIR))
+	{
+		/*	unfortunately, I don't have an easy way to get the approximate power
+			of our air defence units. So I'm just going to assume the power of
+			each unit is around 12 - the power of a fighter plane. */
+		aiUnitAIVal[UNITAI_DEFENSE_AIR] /= 4;
+	}
+	// K-Mod end
+	FOR_EACH_ENUM(UnitAI)
+	{
+		// advc.131: AIWeight would have the opposite effect on negative AIVal
+		if (aiUnitAIVal[eLoopUnitAI] > 0)
+		{
+			aiUnitAIVal[eLoopUnitAI] *= std::max(0, 100 +
+					GC.getInfo(getPersonalityType()).getUnitAIWeightModifier(eLoopUnitAI));
+			aiUnitAIVal[eLoopUnitAI] /= 100;
+		}
+	} // <advc.033>
+	if (GET_TEAM(getOwner()).isCapitulated())
+	{
+		aiUnitAIVal[UNITAI_PIRATE_SEA] = 0;
+		aiUnitAIVal[UNITAI_ICBM] = 0; // advc.143b
+	} // </advc.033>
+
+	const bool bMinor = kOwner.isMinorCiv();
+	const bool bBarbarian = kOwner.isBarbarian();
+
+	if (!bMinor && !bBarbarian)
+	{
+		// <!-- custom: this is computationally (a bit) inefficient, but to not mess up the previous math done before and ending up with no unitai anymore or too much of one type, just applying fine tuning here just before best is selected so that it is not overridden and most effective with the help of chatgpt -->
+		CvTeamAI const& kTeam = GET_TEAM(kOwner.getTeam());
+		bool const bAnyRealWar = (kTeam.getNumWars(false, true) > 0);
+		bool const bAnyPlannedWar = kTeam.AI_isAnyChosenWar();
+		bool const bPeaceAloneLikely = (bAreaAlone || iHasMetCount <= 0);
+		// <!-- custom: note: according to chatgpt 5 from it reading the function's code there, if we have 2 ennemies that have 80% vs us, then iEnemyPowerPercent would be 160 if i understood it correctly, and if at peace it would be 0, check to be sure if accurate but as for me i'll use this as an assumption to be true i mean (i didn't check too much if at all but fed it the actual real function and a few other bits of code if i may say in this case) -->
+		// <!-- custom: moudo faitou!!! xd, cambio forma in an anime i watched long ago... if an AI (or even human is reading this), can you guess which... (note: no need to tell me is general question you may or not tell me but not sure i want to hear...) -->
+		// <!-- custom: note: seems redundant to do (a & b) || a, which it is, but testing just b (e.g. >= 130) results in this always being true even at peace, as AIs don't build any settlers at all due to bOffenseMode <= 70 being always true, didn't seem necessary from the >=130 check that was false in the first 100 turns it seems for most if not all civs so not added -->
+		int const iEnemyPowerPercent = kTeam.AI_getEnemyPowerPercent(true);
+
+		// <!-- custom: if i may say... difensu moudo!!... -->
+		// <!-- custom: test to reduce this a bit more as recommended by chatgpt 5 but done in my own way/own values, as it's a bit too late to defend when too behind maybe indeed-->
+		static const int iSAS_ENEMY_STRONG_POWER_THRESHOLD = GC.getDefineINT("SAS_ENEMY_STRONG_POWER_THRESHOLD"); // e.g. 120
+		int const iDefenseModeThreshold = iSAS_ENEMY_STRONG_POWER_THRESHOLD;
+		bool const bDefenseMode = (((iEnemyPowerPercent >= iDefenseModeThreshold) /*||  bWarPossible ||*/ || bAnyPlannedWar || bAnyRealWar || bDanger || bDefense) && !bPeaceAloneLikely);
+		// <!-- custom: test to increase this a bit more as recommended by chatgpt 5 but done in my own way/own values, as it's a bit too late to defend when too behind maybe indeed-->
+		static const int iSAS_ENEMY_WEAK_POWER_THRESHOLD = GC.getDefineINT("SAS_ENEMY_WEAK_POWER_THRESHOLD"); // e.g. 80
+		int const iOffenseModeThreshold = iSAS_ENEMY_WEAK_POWER_THRESHOLD;
+		bool const bOffenseMode = (((bAnyRealWar && iEnemyPowerPercent <= iOffenseModeThreshold) || bWarPlan || bAnyPlannedWar || bAnyRealWar || bAssault || (!bDefense && bLandWar)) && !bPeaceAloneLikely);
+
+		// <!-- custom: note: use these map checks with else if to make sure both are not true according to chatgpt 5 and so to not run both corresponding blocks in case we made a mistake somehow (even though if so our priority should rather be to fix code but this is just in theory and as a less worse solution if it were o be true which i think isn't even with 2 if but check to be sure, and if -> else if -> else is preferable anyway for clarity or performance as well) -->
+		// <!-- custom: trying to save some computing power by condtionally checking naval maps only if not land map (which also btw in most cases shouldn't be for players i think) -->
+		bool const bLandHeavyMapname = kGame.isLandHeavyMapnameCached();
+		bool bNavalHeavyMapname = false;
+		if (!bLandHeavyMapname)
+		{
+			bNavalHeavyMapname = kGame.isNavalHeavyMapnameCached();
+		}
+
+		// <!-- custom: war strategy, first the offense block: favour offensive unitAI types, like attack_city, etc, avoid defensive ones as well. Also as a general rule for war best units: no naval units (favour land warfare for better or worse is more efficient, no civilian units (no settler, no worker, etc if any more), allow air since it's so late anyway, i didn't play long enough in late game to know if air units are strong or not, but as a general rule we'll deprioritize them while not strictly forbidding them -->
+		if (bOffenseMode)
+		{
+			aiUnitAIVal[UNITAI_SETTLE] = 0;
+			aiUnitAIVal[UNITAI_WORKER] = 0;
+
+			// <!-- custom: no time to waste with pillaging; disable UNITAI_PILLAGE to help AI stay focused on effective attack. (Claude code Sonnet 4.5 (summarized)) -->
+			aiUnitAIVal[UNITAI_PILLAGE] = 0;
+
+			// // <!-- custom: lower priority to prevent units suiciding or getting baited; keep a strong pushing stack. Helps address base AdvCiv issue of units getting baited and suiciding. (Claude code Sonnet 4.5 (summarized)) -->
+			// aiUnitAIVal[UNITAI_COLLATERAL] = 0;
+			//
+			// // <!-- custom: avoid risky siege units; focus on reliable units. (Claude code Sonnet 4.5 (summarized)) -->
+			// <!-- custom: trebuchets are bad at anything else than city attacks (lower strength, higher hammer cost, great city attack modifier); AI often overbuilds them even when weaker. Keep UNITAI_ATTACK_CITY_LEMMING disabled for simplicity and reliability. See known issue 53.3. (Claude code Sonnet 4.5 (summarized)) -->
+			aiUnitAIVal[UNITAI_ATTACK_CITY_LEMMING] = 0;
+
+			// <!-- custom: on land-heavy maps, no time/hammers for naval units; favor land warfare as we're about to enter war and want max power/hammer. Fixes AI building too many naval units while cities die undefended (10+ galleons, almost no land units defending cities - see known issue 35). Land warfare should be most important, though this favors Pangea a bit too much, it makes AI overall stronger and less prone to abuse. (Claude code Sonnet 4.5 (summarized)) -->
+			// <!-- custom: use else if to ensure only one map branch executes (if -> else if -> else is preferable for clarity or performance). Credit: ChatGPT 5. (Claude code Sonnet 4.5 (summarized)) -->
+			if (bLandHeavyMapname)
+			{
+				aiUnitAIVal[UNITAI_ATTACK] *= 3;
+				aiUnitAIVal[UNITAI_ATTACK_CITY] *= 3;
+				aiUnitAIVal[UNITAI_COUNTER] *= 3;
+				aiUnitAIVal[UNITAI_CITY_COUNTER] *= 3;
+
+				// <!-- custom: AI may struggle with paradrop or produce unexpected results; reduce UNITAI_PARADROP conservatively. (Claude code Sonnet 4.5 (summarized)) -->
+				aiUnitAIVal[UNITAI_PARADROP] /= 2;
+
+				// <!-- custom: no time for naval settlers/missionaries; we are at war or about to be. (Claude code Sonnet 4.5 (summarized)) -->
+				aiUnitAIVal[UNITAI_SETTLER_SEA] = 0;
+				aiUnitAIVal[UNITAI_MISSIONARY_SEA] = 0;
+
+				aiUnitAIVal[UNITAI_ATTACK_SEA] = 0;
+				aiUnitAIVal[UNITAI_RESERVE_SEA] = 0;
+				aiUnitAIVal[UNITAI_ESCORT_SEA] = 0;
+				aiUnitAIVal[UNITAI_EXPLORE_SEA] = 0;
+				aiUnitAIVal[UNITAI_ASSAULT_SEA] = 0;
+				
+				// // <!-- custom: don't waste time or hammer with this, focus on effective offense -->
+				// aiUnitAIVal[UNITAI_PIRATE_SEA] = 0;
+
+				// <!-- custom: assume our enemy is on land, don't focus on time / no time for this / not efficient -->
+				aiUnitAIVal[UNITAI_SPY_SEA] = 0;
+
+				// <!-- custom: don't count too much on this to win the war -->
+				aiUnitAIVal[UNITAI_MISSILE_CARRIER_SEA] /= 2;
+			}
+			// <!-- custom: note: use these map checks with else if to make sure both are not true according to chatgpt 5 and so to not run both corresponding blocks in case we made a mistake somehow (even though if so our priority should rather be to fix code but this is just in theory and as a less worse solution if it were to be true which i think isn't even with 2 if but check to be sure, and if -> else if -> else is preferable anyway for clarity or computational performance as well) -->
+			else if (bNavalHeavyMapname)
+			{
+				// <!-- custom: note by chatgpt 5 on percentage reductions (check if accurate) -->
+				// "In Civ4 code, aiUnitAIVal[] is an int in many places, so 0.2 will truncate to 0 unless it’s cast to float earlier.
+				// If you actually want a fractional reduction, you need something like:
+				// aiUnitAIVal[UNITAI_RESERVE_SEA] = (aiUnitAIVal[UNITAI_RESERVE_SEA] * 2) / 10;"
+				aiUnitAIVal[UNITAI_SETTLER_SEA] = aiUnitAIVal[UNITAI_SETTLER_SEA] * 8 / 10;
+
+				// Adjust sea unit priorities in offense mode with integer-safe scaling -->
+				// *= 0.8 → multiply by 8/10
+				// <!-- custom: note: not wrapping in std::max(1, aiUnitAIVal[UNITAI_ATTACK_SEA] * 8 / 10) as even if they reach 0 due to rounding as chatgpt 5 taught me and warned and advised against hehe, it's still fine because they would be too low to be chosen anyway, as it agreed too hehe thanks, and then finally as it added below in reply to my prompt too and as it did first: -->
+				// "And yes, I’d also wrap the multiplication/division in parentheses for safety so operator precedence is crystal clear."
+				aiUnitAIVal[UNITAI_ATTACK_SEA] = (aiUnitAIVal[UNITAI_ATTACK_SEA] * 8) / 10;
+				// <!-- custom: focus on attack not defense, but while attacking maybe these can help just in case, still not our core focus so don't produce unless already too favoured already somehow then fine maybe-->
+
+				aiUnitAIVal[UNITAI_RESERVE_SEA] = (aiUnitAIVal[UNITAI_RESERVE_SEA] * 6) / 10;
+				// <!-- custom: i don't know what this does, from name looks like it can be reduced maybe in an offense context but check to be sure -->
+				aiUnitAIVal[UNITAI_ESCORT_SEA] = (aiUnitAIVal[UNITAI_ESCORT_SEA] * 3) / 10;
+				// <!-- custom: no time for this -->
+				aiUnitAIVal[UNITAI_EXPLORE_SEA] = 0;
+				// <!-- custom: maybe this is what we need here but not sure about what or how it does it exactly so a bit cautious and need other unitais too -->
+				aiUnitAIVal[UNITAI_ASSAULT_SEA] = aiUnitAIVal[UNITAI_ASSAULT_SEA] * 2;
+				// <!-- custom: don't hope too much from this or lose efficiency capitalizing on this unless really stronger favoured -->
+
+				// aiUnitAIVal[UNITAI_PIRATE_SEA] = (aiUnitAIVal[UNITAI_PIRATE_SEA] * 6) / 10;
+				// // <!-- custom: don't count too much on this to win the war -->
+
+				aiUnitAIVal[UNITAI_MISSILE_CARRIER_SEA] = (aiUnitAIVal[UNITAI_MISSILE_CARRIER_SEA] * 8) / 10;
+				// <!-- custom: don't count too much on this to win the war -->
+			}
+			// <!-- custom: else map clear not immediately clear if it is more land or water heavy, keep options open just in casebut still lean more land as should help us the most or most often, plus considering current 10 galleon issue, attempt to patch it a bit still here but don't overdo it in case map is naval xd and we barely have war naval units or such in being a bit cautious to do so but check to be sure-->
+			// <!-- custom: note: use these map checks with else if to make sure both are not true according to chatgpt 5 and so to not run both corresponding blocks in case we made a mistake somehow (even though if so our priority should rather be to fix code but this is just in theory and as a less worse solution if it were o be true which i think isn't even with 2 if but check to be sure,a nd if -> else if -> else is preferable anyway for clarity or performance as well) -->
+			else
+			{
+				// <!-- custom: map type unclear or unknown, assume a bit of land at least-->
+				aiUnitAIVal[UNITAI_ATTACK] *= 2;
+				aiUnitAIVal[UNITAI_ATTACK_CITY] *= 2;
+				aiUnitAIVal[UNITAI_COUNTER] *= 2;
+				aiUnitAIVal[UNITAI_CITY_COUNTER] *= 2;
+
+				aiUnitAIVal[UNITAI_SETTLER_SEA] = (aiUnitAIVal[UNITAI_SETTLER_SEA] * 6) / 10;
+				// <!-- custom: don't spend too much time with these as we are at war or about to be -->
+				aiUnitAIVal[UNITAI_MISSIONARY_SEA] = (aiUnitAIVal[UNITAI_MISSIONARY_SEA] * 4) / 10;
+
+				aiUnitAIVal[UNITAI_ATTACK_SEA] = (aiUnitAIVal[UNITAI_ATTACK_SEA] * 6) / 10;
+				aiUnitAIVal[UNITAI_RESERVE_SEA] = (aiUnitAIVal[UNITAI_RESERVE_SEA] * 4) / 10;
+				aiUnitAIVal[UNITAI_ESCORT_SEA] = (aiUnitAIVal[UNITAI_ESCORT_SEA] * 2) / 10;
+				aiUnitAIVal[UNITAI_EXPLORE_SEA] = (aiUnitAIVal[UNITAI_EXPLORE_SEA] * 6) / 10;
+
+				// // <!-- custom: think map is mostly land maybe, unlikely to be too useful statistically, make AI more efficient as much as possible with most likely to be useful unitais  -->
+				// aiUnitAIVal[UNITAI_PIRATE_SEA] = (aiUnitAIVal[UNITAI_PIRATE_SEA] * 2) / 10;
+
+				// <!-- custom: assume our enemy is on land, don't focus on time / no time for this too much, but map could be more water focused, just reduce the probability for it to be best instead -->
+				aiUnitAIVal[UNITAI_SPY_SEA] = (aiUnitAIVal[UNITAI_SPY_SEA] * 3) / 10;
+
+				// <!-- custom: don't count too much on this to win the war -->
+				aiUnitAIVal[UNITAI_MISSILE_CARRIER_SEA] = (aiUnitAIVal[UNITAI_MISSILE_CARRIER_SEA] * 6) / 10;
+			}
+
+			// <!-- custom: maximize attack, and since offensive units can defend too, no need to bother further for simplified strategy hopefully effective, i hope the remaning defenders or reserve force are enough xd hehe, as for us focus on how to win the war or not lose xd, even though we could defend as well but not effective, hope the war is short and focused as well, hopefully most often focused for AIs-->
+			aiUnitAIVal[UNITAI_CITY_DEFENSE] = 0;
+			aiUnitAIVal[UNITAI_CITY_SPECIAL] = 0;
+		}
+
+		// <!-- custom: war strategy, for defense it is about the same, we are at war or about to be after all, but more focus on defense. In particular, don't get baited during invasion, defend our cities as best as we can rather; was an especially big problem in base advciv where AI abandonned defense of big or even small cities too, just to attack one or a few or a stack outside its comfortable city tile and most important tile to defend with defense modifiers as well -->
+		else if (bDefenseMode)
+		{
+			aiUnitAIVal[UNITAI_SETTLE] = 0;
+			aiUnitAIVal[UNITAI_WORKER] = 0;
+
+			// // <!-- custom: same or equivalent -->
+			// aiUnitAIVal[UNITAI_PILLAGE] = 0;
+
+			// // <!-- custom: same or equivalent -->
+			// aiUnitAIVal[UNITAI_COLLATERAL] = 0;
+			// <!-- custom: same or equivalent -->
+			aiUnitAIVal[UNITAI_ATTACK_CITY_LEMMING] = 0;
+
+			// <!-- custom: we'll need some attackers in case, but no city attackers -->
+			aiUnitAIVal[UNITAI_ATTACK] *= 2;
+			aiUnitAIVal[UNITAI_ATTACK_CITY] = 0;
+			// <!-- custom: don't get baited, defend cities as best as we can, the inner city tiles, with specialized defense units or units more likely to be so and not roam and die, making our remaining core weaker as a result -->
+			aiUnitAIVal[UNITAI_COUNTER] = 0;
+			aiUnitAIVal[UNITAI_CITY_COUNTER] = 0;
+
+			// // <!-- custom: don't waste time or hammer with this, we're trying not to die -->
+			// aiUnitAIVal[UNITAI_PIRATE_SEA] = 0;
+
+			// <!-- custom: no time for this, we are trying not to die -->
+			aiUnitAIVal[UNITAI_PARADROP] = 0;
+
+			// <!-- custom: same or equivalent -->
+			if (bLandHeavyMapname)
+			{
+				// <!-- custom: maximize defense, and units that will defend to the last bit/soldier xd if i may say in this case xd-->
+				aiUnitAIVal[UNITAI_CITY_DEFENSE] *= 50;
+				aiUnitAIVal[UNITAI_CITY_SPECIAL] *= 50;
+				// <!-- custom: a bit less reliable but we need defend units that are flexible too, and if they are somehow the highest unitai, hopefully this smaller in this casemultiplication will not make them be 2nd bets and be overlooked, but in other cases maybe favour core defense unitais-->
+				aiUnitAIVal[UNITAI_RESERVE] *= 40;
+
+				// <!-- custom: no time for naval settlers/missionaries; we are at war or about to be. (Claude code Sonnet 4.5 (summarized)) -->
+				aiUnitAIVal[UNITAI_SETTLER_SEA] = 0;
+				aiUnitAIVal[UNITAI_MISSIONARY_SEA] = 0;
+
+				aiUnitAIVal[UNITAI_ATTACK_SEA] = 0;
+				aiUnitAIVal[UNITAI_RESERVE_SEA] = 0;
+				aiUnitAIVal[UNITAI_ESCORT_SEA] = 0;
+				aiUnitAIVal[UNITAI_EXPLORE_SEA] = 0;
+				aiUnitAIVal[UNITAI_ASSAULT_SEA] = 0;
+				
+				// <!-- custom: not the focus or most likely way to affect our enemy on a land heavy map war, so better be more efficient/effective and avoid it -->
+				aiUnitAIVal[UNITAI_SPY_SEA] = 0;
+
+				// <!-- custom: don't count too much on this to win the war -->
+				aiUnitAIVal[UNITAI_MISSILE_CARRIER_SEA] /= 2;
+			}
+			// <!-- custom: same or equivalent -->
+			else if (bNavalHeavyMapname)
+			{
+				// <!-- custom: maximize defense, and units that will defend to the last bit/soldier xd if i may say in this case xd-->
+				aiUnitAIVal[UNITAI_CITY_DEFENSE] *= 5;
+				aiUnitAIVal[UNITAI_CITY_SPECIAL] *= 5;
+				// <!-- custom: a bit less reliable but we need defend units that are flexible too, and if they are somehow the highest unitai, hopefully this smaller in this casemultiplication will not make them be 2nd bets and be overlooked, but in other cases maybe favour core defense unitais-->
+				aiUnitAIVal[UNITAI_RESERVE] *= 4;
+
+				// <!-- custom: no time or not too much time for these, although could be useful to slow down our ennemies that are attacking us, but by the time we produce them or do anything of use with them, most of the war would have happened already, so don't capitalize or bet too much on these, except if some units are already existing, not handled here by this best unitai to produce code, so still devaluing them here when it comes to best to produce-->
+				aiUnitAIVal[UNITAI_SETTLER_SEA] = 0;
+				aiUnitAIVal[UNITAI_MISSIONARY_SEA] = (aiUnitAIVal[UNITAI_MISSIONARY_SEA] * 2) / 10;
+
+				// <!-- custom: much lower priority on these, we are attacked, so top priority is to defend our cities, assuming the land attack on our coast has already started or about to, count on our remaining water units to hold the water coast/line protected, and capitalize and invest now rather on land defense in thinking so-->
+				aiUnitAIVal[UNITAI_ATTACK_SEA] = (aiUnitAIVal[UNITAI_ATTACK_SEA] * 4) / 10;
+				aiUnitAIVal[UNITAI_RESERVE_SEA] = (aiUnitAIVal[UNITAI_RESERVE_SEA] * 4) / 10;
+				aiUnitAIVal[UNITAI_ESCORT_SEA] = (aiUnitAIVal[UNITAI_ESCORT_SEA] * 4) / 10;
+				aiUnitAIVal[UNITAI_EXPLORE_SEA] = (aiUnitAIVal[UNITAI_EXPLORE_SEA] * 4) / 10;
+				aiUnitAIVal[UNITAI_ASSAULT_SEA] = (aiUnitAIVal[UNITAI_ASSAULT_SEA] * 4) / 10;
+
+				// <!-- custom: could be useful to weaken enemy cities, but since this is about production when the war has already started or close to it, don't lean too much on this in case we have a full spy sea army and weak defenses, plus if too high may overshadow the other few sea attack units we chose -->
+				aiUnitAIVal[UNITAI_SPY_SEA] = (aiUnitAIVal[UNITAI_SPY_SEA] * 4) / 10;
+
+				// <!-- custom: don't count too much on this to win the war -->
+				aiUnitAIVal[UNITAI_MISSILE_CARRIER_SEA] /= 2;
+			}
+			// <!-- custom: same or equivalent -->
+			else
+			{
+				// <!-- custom: maximize defense, and units that will defend to the last bit/soldier xd if i may say in this case xd-->
+				aiUnitAIVal[UNITAI_CITY_DEFENSE] *= 20;
+				aiUnitAIVal[UNITAI_CITY_SPECIAL] *= 20;
+				// <!-- custom: a bit less reliable but we need defend units that are flexible too, and if they are somehow the highest unitai, hopefully this smaller in this casemultiplication will not make them be 2nd bets and be overlooked, but in other cases maybe favour core defense unitais-->
+				aiUnitAIVal[UNITAI_RESERVE] *= 16;
+
+				// <!-- custom: no time for these -->
+				aiUnitAIVal[UNITAI_SETTLER_SEA] = 0;
+				aiUnitAIVal[UNITAI_MISSIONARY_SEA] = (aiUnitAIVal[UNITAI_MISSIONARY_SEA] * 1) / 10;
+
+				// <!-- custom: map type unclear, but still same general rule to not count too much on these nor focus on them when core and urgent priroity is defend and not die -->
+				aiUnitAIVal[UNITAI_ATTACK_SEA] = 0;
+				// <!-- custom: if we have to produce any, this would be most useful -->
+				aiUnitAIVal[UNITAI_RESERVE_SEA] = (aiUnitAIVal[UNITAI_RESERVE_SEA] * 4) / 10;
+				// <!-- custom: not sure what this does so just reduced instead -->
+				aiUnitAIVal[UNITAI_ESCORT_SEA] = (aiUnitAIVal[UNITAI_ESCORT_SEA] * 2) / 10;
+				aiUnitAIVal[UNITAI_EXPLORE_SEA] = 0;
+				aiUnitAIVal[UNITAI_ASSAULT_SEA] = (aiUnitAIVal[UNITAI_ASSAULT_SEA] * 2) / 10;
+
+				// <!-- custom: don't count too much on this to win the war statistically in most maps and most likely to be effective-->
+				aiUnitAIVal[UNITAI_SPY_SEA] = (aiUnitAIVal[UNITAI_SPY_SEA] * 2) / 10;
+
+				// <!-- custom: don't count too much on this to win the war -->
+				aiUnitAIVal[UNITAI_MISSILE_CARRIER_SEA] /= 2;
+			}
+		}
+
+		// <!-- custom: general rules regardless -->
+
+		// <!-- custom: make the AI more calculated and avoid suicides or inefficient actions, hopefully helps with suicides, getting baited, or other inefficiency or often suboptimal strategies other players, especially humans, could punish, or that may cause weird inconsistency (like declaring war, pillaging, going back home xd, then 10 turns later coming to attack, hopefully these help reduce these even if we lose a bit of versatiltiy (maybe for the better here), (and that happened often in base advciv to me at least, and were extremely frustrating of AI ruining its chances or behaving erratically or such, hopefully fixed or enhanced/addressed now but untested so check to be sure) plus these actions always have risked, a pillager could get ambused, same for collateral, etc, so avoid these as a general rule i'd say for example); also keep both in case we change our mind (unlikely, or some modder wants to, then they could reuse our preferred roles for these unitais above maybe, for efficiency we can comment them out above then); or as chatgpt 5 calls these and those below the "universal sanity filter" hehe thanks saying they may sense too hehe if i got it right from quick glance in this case i mean but or not but or yes but thanks; and "the benefits of disabling these outweigh" the risks and "complexity of keeping rare exceptions" as well i think so and it agrees or it thinks so and i agree or both-->
+		aiUnitAIVal[UNITAI_PILLAGE] = 0;
+		aiUnitAIVal[UNITAI_COLLATERAL] = 0;
+		// <!-- custom: i know we have allowed this to some extent before, but after all more often than not this is not going to be useful or significant, avoid wasting hammer or precious time on these as well and focus on most likely strategies to help us win or not lose; as a side effect, this makes a bit more peaceful as this is annoying to rebuild a workboat for no real or serious military gain or critical effect, so hopefully convenient too as well enve tohugh core goal was really to make AI more efficient and reliable and effective-->
+		aiUnitAIVal[UNITAI_PIRATE_SEA] = 0;
+
+		// <!-- custom: then attempt to fix the issue of cities size 1 building a settler for 50 turns instead of growing fast and allowing bigger cities to produce settlers (or workers is needed) super fast, especially more efficient if they have stopped growing and don't use the food anyway -->
+		int const iCityPopulation = getPopulation();
+		bool const bCapital = isCapital();
+
+		// <!-- custom: for capital city, we need workers and settlers more leniently  (i.e. do not disallow settlers and workers exceptfor strong exceptions) -->
+		if (iCityPopulation <= 4 && !bCapital)
+		{
+			aiUnitAIVal[UNITAI_SETTLE] = 0; // Don't build Settlers in small cities
+
+			// <!-- custom: if this small city is stagnant (indirectly also check excessive unhealthiness, without the risk of worker loop maybe, and more flexible as well to cover other causes of stagnation, as well as allowing city to stop producing workers sooner even if some unhealthiness remains (e.g. we have a lot of excess food maybe which is core concern to fix)), a worker would be of great use, perhaps to chop jungle or such or grow the city in some other way maybe -->
+			// <!-- custom: make pop requirement quite a bit tighter if i may say in this casepop check to avoid worker spam / loop trap, as chatgpt noted that could happen so i had the idea to add this-->
+			bool const bStagnant = (!isFoodProduction() && foodDifference() <= 0);
+			// <!-- custom: make sure we don't overbuild workers, used only in the context of blocking forced settlers builds and aoviding chain worker loops, so maybe fine to be a bit stricter and maybe workers would still be produced with more relaxed conditions hopefully and but check to be sure; each city needs maximum 2 workers before it's too much -->
+			bool const bTooMuchWorkers = GET_PLAYER(getOwner()).AI_totalUnitAIs(UNITAI_WORKER) >= (2 * iNumCities);
+
+			if (bStagnant && iCityPopulation <= 2 && !bTooMuchWorkers) // <!-- custom: stagnant or about to be, which would be unusual at such a small size so try to find how/why and if tiles could be fixed or enhanced maybe(if not worker would still be useful otherwise for the whole empire maybe so favour this as well, even if this city would grow slower individually as a result, in most cases i hope it will help AI a lot switch to workers sooner when needed in small or stagnating cities, on top of having an uneeded settler, if it doesn't cause issues with unitai selection otherwise in other parts of the code like it being pruned if AI thinks it has too much workers or such; this is just a guess but mabe it is effective in most cases and perhaps also helpful to the AI cities stagnating in jungle which is now a rich potential feature to exploit (and remove unhealthiness while doing so too as well) so build workers); we are not using the food anyway so better use food as production. -->
+			{
+				aiUnitAIVal[UNITAI_WORKER] += 20000;
+			}
+		}
+
+		// <!-- custom: make sure only highest pop city produces a settler. This is because it uses food as production too, and with all its food from all population, settler would be produced very fast, while the smaller cities would take a long time and halt their growth to do so. Also, highest pop cities are more likely to stagnate and so as such to not be using their food anyway, so this should be in most cases the most efficient. This change may not always be the most efficient, and AIs may miss a wonder or 2 as a result, but i believe in most cases it should be the more efficient use of food as well as cities optimization; code added with chatgpt 5 thanks -->
+		if (!bCapital)
+		{
+			aiUnitAIVal[UNITAI_SETTLE] = 0;
+		}
+
+		// <!-- custom: other idea by chatgpt 5 that i had too to a more or lesser extent if i may say maybe; seems to be handled already but just in case; and also that i formatted if i may say too from chatgpt 5's message-->
+		// if expansion is too costly, chill on settlers
+		if (bFinancialTrouble)
+		{
+			aiUnitAIVal[UNITAI_SETTLE] = 0;
+		}
+	}
+
+	int iBestValue = 0;
+	UnitTypes eBestUnit = NO_UNIT;
+
+	FOR_EACH_ENUM(UnitAI)
+	{
+		if (aiUnitAIVal[eLoopUnitAI] <= 0)
+			continue;
+		if (bAsync)
+		{
+			aiUnitAIVal[eLoopUnitAI] += GC.getASyncRand().get(
+					iMilitaryWeight, "AI Best UnitAI ASYNC");
+		}
+		else aiUnitAIVal[eLoopUnitAI] += SyncRandNum(iMilitaryWeight);
+		if (aiUnitAIVal[eLoopUnitAI] > iBestValue)
+		{
+			UnitTypes eUnit = AI_bestUnitAI(eLoopUnitAI, bAsync, eIgnoreAdvisor);
+			if (eUnit != NO_UNIT)
+			{
+				iBestValue = aiUnitAIVal[eLoopUnitAI];
+				eBestUnit = eUnit;
+				if (peBestUnitAI != NULL)
+					*peBestUnitAI = eLoopUnitAI;
+			}
+		}
+	}
+	return eBestUnit;
+}
+
+// Choose the best unit to build for the given AI type.
+// Note: a lot of this function has been restructured / rewritten for K-Mod
+UnitTypes CvCityAI::AI_bestUnitAI(UnitAITypes eUnitAI, bool bAsync, AdvisorTypes eIgnoreAdvisor) /* advc: */ const
+{
+	PROFILE_FUNC();
+	FAssertMsg(eUnitAI != NO_UNITAI, "UnitAI is not assigned a valid value");
+
+	// <!-- custom: it seems that sometimes the settler or such bestunits are forced and bypass our new logic that is simpler in bestunit, and that is also an attempt to fix ai producing settlers in small sizes cities, that currently take +/- 50 turns to complete and ruin AI growth and potential, instead of big cities that could produce them fast (see code comments at bestUnit for details). Instead of rewriting everything tediously, try to fix current issue(s) instead/rather by making the below GrowMore logic closer to ours; also rewrite this below to be our economy rather than workers or such, assume there are always good cities to settle, and let workers handle best tiles, and settlers handle best found value, focus only on if we should produce a settler or not based on our economy or such rather; see code comments we added in AI_chooseProduction as well where logic was moved for details (change parent callers rather then hack this one in a not clean not reliable way) -->
+
+	// <!-- custom: old code now commented out -->
+	// bool bGrowMore = false;
+	// int const iFoodDiff = /* K-Mod: */ foodDifference(true, true);
+	CvPlayerAI const& kOwner = GET_PLAYER(getOwner());
+	// if (iFoodDiff > 0)
+	// {
+	// 	bool bAssumeImprovements = (AI_getWorkersHave() > 0 || isHuman()); // advc.113
+	// 	// BBAI NOTE: This is where small city worker and settler production is blocked
+	// 	if (kOwner.getNumCities() <= 2)
+	// 	{
+	// 		//bGrowMore = ((getPopulation() < 3) && (AI_countGoodTiles(true, false, 100) >= getPopulation()));
+	// 		// K-Mod. We need to allow the starting city to build a worker at size 1.
+	// 		bGrowMore = ((eUnitAI != UNITAI_WORKER ||
+	// 				kOwner.AI_totalAreaUnitAIs(getArea(), UNITAI_WORKER) > 0) && // K-Mod end
+	// 				getPopulation() < 3 && AI_countGoodTiles(true, false, 100,
+	// 				//false) >= getPopulation()
+	// 				/*  advc.113: Assume improvements and req. a good tile for the
+	// 					extra citizen as well ('>' instead of '>=') */
+	// 				bAssumeImprovements) > getPopulation());
+	// 		// <advc.052> Train Settler at size 2 if growth is slow in capital
+	// 		if(bGrowMore && getPopulation() == 2 &&
+	// 			kOwner.getNumCities() == 1 && eUnitAI == UNITAI_SETTLE &&
+	// 			getFoodTurnsLeft() * 100 >=
+	// 			6 * GC.getInfo(GC.getGame().getGameSpeedType()).getTrainPercent() &&
+	// 			/*  This is more often true than I'd like b/c of improvements
+	// 				under construction. Could check Worker count and
+	// 				improvement count ... */
+	// 			iFoodDiff <= 2 &&
+	// 			// No point in an early settler if we can't escort it yet
+	// 			(kOwner.getNumCities() > 1 ||
+	// 			getPlot().plotCount(PUF_isMissionAIType, MISSIONAI_GUARD_CITY, -1, getOwner()) >=
+	// 			AI_neededDefenders()))
+	// 		{
+	// 			bGrowMore = false;
+	// 		} // </advc.052>
+	// 	}
+	// 	else
+	// 	{	// advc.113: Require a value-50 tile for bGrowMore even if the city is size 1 or 2
+	// 		bGrowMore = (AI_countGoodTiles(true, false, 50, bAssumeImprovements) > getPopulation() &&
+	// 				((getPopulation() < 3 /* advc.052: */ && iFoodDiff > 1) ||
+	// 				// advc.113: Was '>='. (Don't assume improvements here; be pessimistic.)
+	// 				AI_countGoodTiles(true, false, 100) > getPopulation()));
+	// 	}
+
+	// 	if (!bGrowMore && getPopulation() < 6 &&
+	// 		// advc.113: Was '>='. And assume improvements.
+	// 		AI_countGoodTiles(true, false, 80, bAssumeImprovements) > getPopulation())
+	// 	{
+	// 		if (getFood() - getFoodKept() / 2 >= growthThreshold() / 2 &&
+	// 			//angryPopulation(1) == 0 && healthRate(false, 1) == 0)
+	// 			// advc.113: Handle anger below
+	// 			healthRate(false, 1) <= 0)
+	// 		{
+	// 			bGrowMore = true;
+	// 		}
+	// 	}
+	// 	/*else if (bGrowMore) {
+	// 		if (angryPopulation(1) > 0)
+	// 			bGrowMore = false;
+	// 	}*/ // advc.113: Replacing the K-Mod code above ('else' removed)
+	// 	bGrowMore = (bGrowMore && angryPopulation(1) <= 0);
+	// }
+
+	std::vector<std::pair<int, UnitTypes> > candidates;
+	int iBestBaseValue = 0;
+
+	CvCivilization const& kCiv = getCivilization(); // advc.003w
+	for (int i = 0; i < kCiv.getNumUnits(); i++)
+	{
+		UnitTypes eUnit = kCiv.unitAt(i);
+		CvUnitInfo const& kUnit = GC.getInfo(eUnit);
+		if (eIgnoreAdvisor != NO_ADVISOR && kUnit.getAdvisorType() == eIgnoreAdvisor)
+			continue;
+
+		// <!-- custom: disabled and replaced with as of now NoSettler new logic in Ai_chooseProduction, see above as well for details in this function; note: in case we replace it with a worker, then don't continue and keep the worker instead -->
+		// if (bGrowMore && isFoodProduction(eUnit))
+		// 	continue;
+
+		if (!canTrain(eUnit))
+			continue;
+		// <advc.041> Mostly cut and pasted from CvPlot::canTrain
+		int iMinAreaSz = kUnit.getMinAreaSize();
+		if (iMinAreaSz > 0)
+		{
+			CvPlot const& p = getPlot();
+			if ((kUnit.getDomainType() == DOMAIN_SEA &&
+				!p.isCoastalLand(iMinAreaSz)) ||
+				(kUnit.getDomainType() != DOMAIN_SEA &&
+				p.getArea().getNumTiles() < iMinAreaSz))
+			{
+				continue;
+			}
+		} // </advc.041>
+		int iValue = kOwner.AI_unitValue(eUnit, eUnitAI, area());
+		if (iValue > 0)
+		{
+			candidates.push_back(std::make_pair(iValue, eUnit));
+			if (iValue > iBestBaseValue)
+				iBestBaseValue = iValue;
+		}
+	}
+
+	int iBestValue = 0;
+	UnitTypes eBestUnit = NO_UNIT;
+
+	for (size_t i = 0; i < candidates.size(); i++)
+	{
+		UnitTypes const eUnit = candidates[i].second;
+
+		int iValue = candidates[i].first;
+		if (iValue < iBestBaseValue*2/3 || (eUnitAI == UNITAI_EXPLORE && iValue < iBestBaseValue))
+			continue;
+
+		CvUnitInfo const& kUnit = GC.getInfo(eUnit);
+
+		iValue *= (getProductionExperience(eUnit) + 10);
+		iValue /= 10;
+
+		// Take into account free promotions, and available promotions that suit the AI type.
+		// Note: it might be better if this was in AI_unitValue rather than here, but the
+		// advantage of doing it here is that we can check city promotions at the same time.
+		int iPromotionValue = 0;
+		bool bHasGoodPromotion = false; // check that appropriate non-free promotions are available
+		FOR_EACH_ENUM2(Promotion, ePromo)
+		{
+			bool bFree = kUnit.getFreePromotions(ePromo);
+			CvPromotionInfo const& kPromo = GC.getInfo(ePromo);
+
+			if (!bFree && isFreePromotion(ePromo))
+			{
+				if (kUnit.getUnitCombatType() != NO_UNITCOMBAT &&
+					kPromo.getUnitCombat(kUnit.getUnitCombatType()))
+				{
+					bFree = true;
+				}
+			}
+
+			if (!bFree)
+			{
+				UnitCombatTypes eCombat = kUnit.getUnitCombatType();
+				if (eCombat != NO_UNITCOMBAT) // advc: Moved up
+				{
+					FOR_EACH_ENUM(Trait)
+					{
+						if (hasTrait(eLoopTrait) && GC.getInfo(eLoopTrait).isFreePromotion(ePromo))
+						{
+							if (GC.getInfo(eLoopTrait).isFreePromotionUnitCombat(eCombat))
+								bFree = true;
+						}
+					}
+				}
+			}
+
+			// For simplicity, I'll assume that each promotion only gives one type of bonus.
+			// (eg. if the promotion gives + city defence, assume that it's a defensive promotion)
+			// This may not be true in general, but I think it's a good enough approximation.
+			if (!bHasGoodPromotion)
+			{
+				if (eUnitAI == UNITAI_ATTACK_CITY)
+				{
+					if (kPromo.getCityAttackPercent() > 0)
+					{
+						if (bFree || kUnit.isPromotionValid(ePromo, false))
+						{
+							bHasGoodPromotion = true;
+							iPromotionValue += 15;
+						}
+					}
+				}
+				else if (eUnitAI == UNITAI_CITY_DEFENSE)
+				{
+					if (kPromo.getCityDefensePercent() > 0)
+					{
+						if (bFree || kUnit.isPromotionValid(ePromo, false))
+						{
+							bHasGoodPromotion = true;
+							iPromotionValue += 12;
+						}
+					}
+				}
+			}
+
+			if (bFree)
+			{
+				// Note: in the original bts code, all free promotions were worth 15 points.
+				if (kPromo.getCityAttackPercent() > 0)
+				{
+					if (eUnitAI == UNITAI_CITY_DEFENSE)
+						iPromotionValue += 4;
+					else if (eUnitAI == UNITAI_ATTACK || eUnitAI == UNITAI_ATTACK_CITY)
+						iPromotionValue += 20;
+					else iPromotionValue += 8;
+				}
+				else if (kPromo.isAmphib())
+				{
+					if (eUnitAI == UNITAI_CITY_DEFENSE)
+						iPromotionValue += 4;
+					else if (eUnitAI == UNITAI_ATTACK || eUnitAI == UNITAI_ATTACK_CITY)
+					{
+						AreaAITypes eAreaAI = getArea().getAreaAIType(getTeam());
+						if (eAreaAI == AREAAI_ASSAULT_MASSING)
+							iPromotionValue += 35;
+						else if (eAreaAI == AREAAI_ASSAULT || eAreaAI == AREAAI_ASSAULT_ASSIST)
+							iPromotionValue += 20;
+						else iPromotionValue += 12;
+					}
+					else iPromotionValue += 8;
+				}
+				else if (kPromo.getCityDefensePercent() > 0)
+				{
+					if (eUnitAI == UNITAI_CITY_DEFENSE)
+						iPromotionValue += 15;
+					else if (eUnitAI == UNITAI_ATTACK || eUnitAI == UNITAI_ATTACK_CITY)
+						iPromotionValue += 4;
+					else iPromotionValue += 8;
+				}
+				else if (kPromo.getSameTileHealChange())
+				{
+					if (eUnitAI == UNITAI_ATTACK_CITY)
+						iPromotionValue += 4;
+					else iPromotionValue += 12;
+				}
+				else if (kPromo.getCombatPercent() > 0)
+					iPromotionValue += 15;
+				else iPromotionValue += 12; // generic
+			}
+		}
+
+		iValue *= (iPromotionValue + 100);
+		iValue /= 100;
+
+		if (bAsync)
+		{
+			iValue *= (GC.getASyncRand().get(50, "AI Best Unit ASYNC") + 100);
+			iValue /= 100;
+		}
+		else
+		{
+			iValue *= SyncRandNum(50) + 100;
+			iValue /= 100;
+		}
+
+
+		// K-Mod note: I've removed the happy-from-hurry calculation, because it was inaccurate and difficult to fix.
+		// (int iBestHappy = 0; ... canHurryUnit ...)
+
+		/*iValue *= (kOwner.getNumCities() * 2);
+		iValue /= (kOwner.getUnitClassCountPlusMaking((UnitClassTypes)iI) +
+				kOwner.getNumCities() + 1);*/ // BtS
+		// K-Mod
+		{
+			int iUnits = kOwner.getUnitClassCountPlusMaking(kUnit.getUnitClassType());
+			int iCities = kOwner.getNumCities();
+
+			iValue *= 6 + iUnits + 4*iCities;
+			iValue /= 3 + 3*iUnits + 2*iCities;
+			// this is a factor between 1/3 and 2. It's equal to 1 roughly when iUnits == iCities.
+		}
+		// K-Mod end
+
+		FAssert(MAX_INT / 1000 > iValue);
+		//iValue *= 1000;
+		/*  advc.001: The K-Mod code below multiplies by ProductionModifier, which
+			is at least 100. Don't need that much precision, and the results get
+			too close to MAX_INT. */
+		iValue *= 10;
+
+		bool bSuicide = GC.getInfo(eUnit).isSuicide();
+
+		if (bSuicide)
+		{
+			//much of this is compensated
+			iValue /= 3;
+		}
+
+		//iValue /= std::max(1, (getProductionTurnsLeft(eLoopUnit, 0) + (GC.getInfo(eLoopUnit).isSuicide() ? 1 : 4))); // advc.004x: Replaced by K-Mod. Also note that this would result in an integer overflow during disorder.
+		// K-Mod. The number of turns is usually not so important. What's important is how much it is going to cost us to build this unit.
+		int iProductionNeeded = getProductionNeeded(eUnit) - getUnitProduction(eUnit);
+		// note: this is a 'multiplier' rather than modifier.
+		int iProductionModifier = getBaseYieldRateModifier(YIELD_PRODUCTION, getProductionModifier(eUnit));
+		iValue *= iProductionModifier;
+		// a bit of dilution.
+		iValue /= std::max(1, iProductionNeeded +
+				getBaseYieldRate(YIELD_PRODUCTION) * iProductionModifier / 100);
+		// maybe we should have a special bonus for building it in 1 turn?  ... maybe not.
+		// K-Mod end
+
+		iValue = std::max(1, iValue);
+		if (iValue > iBestValue)
+		{
+			iBestValue = iValue;
+			eBestUnit = eUnit;
+		}
+	}
+
+	return eBestUnit;
+}
+
+
+BuildingTypes CvCityAI::AI_bestBuilding(int iFocusFlags, int iMaxTurns,
+	bool bAsync, AdvisorTypes eIgnoreAdvisor) const
+{
+	return AI_bestBuildingThreshold(iFocusFlags, iMaxTurns, /*iMinThreshold*/ 0, bAsync, eIgnoreAdvisor);
+}
+
+BuildingTypes CvCityAI::AI_bestBuildingThreshold(int iFocusFlags, int iMaxTurns,
+	int iMinThreshold, bool bAsync, AdvisorTypes eIgnoreAdvisor) const
+{
+	PROFILE_FUNC(); // advc.opt
+	CvPlayerAI const& kOwner = GET_PLAYER(getOwner()); // K-Mod
+
+	bool bAreaAlone = kOwner.AI_isAreaAlone(getArea());
+	int iProductionRank = findYieldRateRank(YIELD_PRODUCTION);
+
+	int iBestValue = 0;
+	BuildingTypes eBestBuilding = NO_BUILDING;
+
+	if (iFocusFlags & BUILDINGFOCUS_CAPITAL)
+	{
+		int iBestTurnsLeft = (iMaxTurns > 0 ? iMaxTurns : MAX_INT);
+		CvCivilization const& kCiv = getCivilization(); // advc.003w
+		for (int i = 0; i < kCiv.getNumBuildings(); i++)
+		{
+			BuildingTypes eLoopBuilding = kCiv.buildingAt(i);
+			if (GC.getInfo(eLoopBuilding).isCapital())
+			{
+				if (canConstruct(eLoopBuilding))
+				{
+					int iTurnsLeft = getProductionTurnsLeft(eLoopBuilding, 0);
+					if (iTurnsLeft <= iBestTurnsLeft)
+					{
+						eBestBuilding = eLoopBuilding;
+						iBestTurnsLeft = iTurnsLeft;
+					}
+				}
+			}
+		}
+
+		return eBestBuilding;
+	}
+
+	// K-Mote note: I've rearranged most of the code below to improve readability and efficiency.
+	// Some changes are marked, but most are not.
+	// (At least 6 huge nested 'if' blocks have been replaced with 'continue' conditions.)
+	CvCivilization const& kCiv = getCivilization(); // advc.003w
+	for (int i = 0; i < kCiv.getNumBuildings(); i++)
+	{
+		BuildingClassTypes eLoopClass = kCiv.buildingClassAt(i);
+		if (kOwner.isBuildingClassMaxedOut(eLoopClass, GC.getInfo(eLoopClass).getExtraPlayerInstances()))
+			continue;
+		BuildingTypes eLoopBuilding = kCiv.buildingAt(i);
+		if (getNumBuilding(eLoopBuilding) >= GC.getDefineINT(CvGlobals::CITY_MAX_NUM_BUILDINGS))
+			continue;
+
+		if (iFocusFlags & BUILDINGFOCUS_WORLDWONDER &&
+			!GC.getInfo(eLoopClass).isWorldWonder())
+		{
+			continue;
+		}
+		if (GC.getInfo(eLoopClass).isLimited())
+		{
+			if (isProductionAutomated())
+				continue;
+			if (iFocusFlags != 0 && !(iFocusFlags & BUILDINGFOCUS_WONDEROK))
+				continue;
+		}
+
+		CvBuildingInfo const& kBuilding = GC.getInfo(eLoopBuilding);
+
+		if (eIgnoreAdvisor != NO_ADVISOR && eIgnoreAdvisor == kBuilding.getAdvisorType())
+			continue;
+
+		if (!canConstruct(eLoopBuilding))
+			continue;
+
+		if (isProductionAutomated() &&
+			// advc.003t: Replacing loop
+			kBuilding.getPrereqNumOfBuildingClass().isAnyNonDefault())
+		{
+			continue;
+		}
+
+		int iValue = AI_buildingValue(eLoopBuilding, iFocusFlags, iMinThreshold, bAsync);
+		if (iValue <= 0)
+			continue;
+
+		//
+
+		/*if (kBuilding.getFreeBuildingClass() != NO_BUILDINGCLASS) {
+			BuildingTypes eFreeBuilding = (BuildingTypes)GC.getInfo(getCivilizationType()).getCivilizationBuildings(kBuilding.getFreeBuildingClass());
+			if (NO_BUILDING != eFreeBuilding) {
+				//iValue += (AI_buildingValue(eFreeBuilding, iFocusFlags) * (kOwner.getNumCities() - kOwner.getBuildingClassCountPlusMaking((BuildingClassTypes)kBuilding.getFreeBuildingClass())));
+				iValue += (AI_buildingValue(eFreeBuilding, iFocusFlags, 0, bAsync) * (kOwner.getNumCities() - kOwner.getBuildingClassCountPlusMaking((BuildingClassTypes)kBuilding.getFreeBuildingClass())));
+			}
+		}*/ // BtS - Moved into AI_buildingValue
+
+		// K-Mod
+		TechTypes const eObsoleteTech = kBuilding.getObsoleteTech();
+		TechTypes const eSpObsoleteTech =
+				kBuilding.getSpecialBuildingType() == NO_SPECIALBUILDING ? NO_TECH
+				: GC.getInfo(kBuilding.getSpecialBuildingType()).getObsoleteTech();
+
+		if ((eObsoleteTech != NO_TECH && kOwner.getCurrentResearch() == eObsoleteTech) ||
+			(eSpObsoleteTech != NO_TECH && kOwner.getCurrentResearch() == eSpObsoleteTech))
+		{
+			iValue /= 2;
+		}
+		// K-Mod end
+
+		int const iTurnsLeft = getProductionTurnsLeft(eLoopBuilding, 0);
+
+		// K-Mod
+		/*	Block construction of limited buildings in bad places
+			(the value check is just for efficiency.
+			1250 accounts for the possible +25 random boost) */
+		if (iFocusFlags == 0 && /* advc.004x: */ iTurnsLeft < MAX_INT &&
+			iValue * 1250 / std::max(1, iTurnsLeft + 3) >= iBestValue)
+		{
+			int iLimit = GC.getInfo(eLoopClass).getLimit();
+			if (iLimit == -1)
+			{
+				// We're not out of the woods yet. Check for prereq buildings.
+				FOR_EACH_NON_DEFAULT_PAIR(kBuilding.
+					getPrereqNumOfBuildingClass(), BuildingClass, int)
+				{
+					BuildingClassTypes const ePrereqClass = perBuildingClassVal.first;
+					// I wish this was easier to calculate...
+					int iBuilt = kOwner.getBuildingClassCount(eLoopClass);
+					int iBuilding = kOwner.getBuildingClassMaking(eLoopClass);
+					int iPrereqEach = kOwner.getBuildingClassPrereqBuilding(eLoopBuilding,
+							ePrereqClass, -iBuilt);
+					int iPrereqBuilt = kOwner.getBuildingClassCount(ePrereqClass);
+					FAssert(iPrereqEach > 0);
+					iLimit = iPrereqBuilt / iPrereqEach - iBuilt - iBuilding;
+					FAssert(iLimit > 0);
+					break; // advc (note): I.e. only support one prereq class per building
+				}
+			}
+			if (iLimit != -1)
+			{
+				const int iMaxNumWonders = (GET_PLAYER(getOwner()).isOneCityChallenge() ?
+						GC.getDefineINT(CvGlobals::MAX_NATIONAL_WONDERS_PER_CITY_FOR_OCC) :
+						GC.getDefineINT(CvGlobals::MAX_NATIONAL_WONDERS_PER_CITY));
+				if (kBuilding.isNationalWonder() && iMaxNumWonders != -1)
+				{
+					iValue *= iMaxNumWonders + 1 - getNumNationalWonders();
+					iValue /= iMaxNumWonders + 1;
+				}
+				FOR_EACH_CITYAI(pLoopCity, kOwner)
+				{
+					if (pLoopCity->canConstruct(eLoopBuilding))
+					{
+						int iLoopValue = pLoopCity->AI_buildingValue(eLoopBuilding, 0, 0, bAsync);
+						if (kBuilding.isNationalWonder() && iMaxNumWonders != -1)
+						{
+							iLoopValue *= iMaxNumWonders + 1 - pLoopCity->getNumNationalWonders();
+							iLoopValue /= iMaxNumWonders + 1;
+						}
+						if (80 * iLoopValue > 100 * iValue)
+						{
+							if (--iLimit <= 0)
+							{
+								iValue = 0;
+								break;
+							}
+						}
+					}
+				}
+				// Subtract some points from wonder value, just to stop us from wasting it
+				if (kBuilding.isNationalWonder())
+				{
+					iValue -= 40 + (iMaxNumWonders <= 0 ? 0 :
+							(60 * getNumNationalWonders()) / iMaxNumWonders);
+				}
+			}
+		}
+		// K-Mod end
+
+		if (kBuilding.isWorldWonder())
+		{
+			if (iProductionRank <= std::min(3, ((kOwner.getNumCities() + 2) / 3)))
+			{
+				// <!-- custom: getInt assert in CvRandom.h fails, fix it as advised by chatgpt 5, check if accurate, see known issue as of now 72 for details -->
+				// Assert Failed
+				// File: c:\program files (x86)\steam\steamapps\common\sid meier's civilization iv beyond the sword\beyond the sword\mods\advciv-sas\cvgamecoredll\CvRandom.h
+				// Line: 48
+				// Func: CvRandom::getInt
+				// Expression: iNum >= 0
+				// Message: getInt: range<0 (-4) msg=CvCityAI::AI_bestBuildingThreshold@L4405 d1=-2147483648 d2=-2147483648
+				//
+				// Yep—that crash is because this line can pass a negative range into the RNG:
+				// Some leaders (or your defaults) have getWonderConstructRand() <= 0 (your assert showed -4). Passing that to getSorenRandNum/SyncRandNum triggers the Debug assert.
+				// Minimal, correct fix (skip the roll when disabled)
+				// Treat <= 0 as “don’t roll / don’t do opportunistic wonder":
+				const int iWC = GC.getInfo(getPersonalityType()).getWonderConstructRand();
+				if (iWC > 0) // only roll if the range is positive
+				{
+					int iTempValue;
+					if (bAsync)
+					{
+						iTempValue = GC.getASyncRand().get(iWC, "Wonder Construction Rand ASYNC");
+					}
+					else
+					{
+						iTempValue = SyncRandNum(iWC);
+					}
+					if (bAreaAlone)
+						iTempValue *= 2;
+					iValue += iTempValue;
+				}
+			}
+		}
+
+		if (bAsync)
+		{
+			iValue *= (GC.getASyncRand().get(25, "AI Best Building ASYNC") + 100);
+			iValue /= 100;
+		}
+		else
+		{
+			iValue *= 100 + syncRand().get(25, "AI Best Building",
+					eLoopClass, m_iID); // advc.007
+			iValue /= 100;
+		}
+
+		//iValue += getBuildingProduction(eLoopBuilding);
+		iValue += getBuildingProduction(eLoopBuilding) / 4; // K-Mod
+
+		bool bValid = iMaxTurns <= 0 ? true : false;
+		if (!bValid)
+		{
+			bValid = (iTurnsLeft <= GC.AI_getGame().AI_turnsPercent(
+					iMaxTurns, GC.getInfo(GC.getGame().getGameSpeedType()).
+					getConstructPercent()));
+		}
+		if (!bValid)
+		{
+			FOR_EACH_ENUM(Hurry)
+			{
+				if (canHurryBuilding(eLoopHurry, eLoopBuilding, true) &&
+					AI_getHappyFromHurry(eLoopHurry, eLoopBuilding, true) > 0)
+				{
+					bValid = true;
+					break;
+				}
+			}
+		}
+
+		if (bValid /* advc.004x: */ && iTurnsLeft < MAX_INT)
+		{
+			FAssert(MAX_INT / 1000 > iValue);
+			iValue *= 1000;
+			iValue /= std::max(1, iTurnsLeft + 3);
+
+			iValue = std::max(1, iValue);
+			if (iValue > iBestValue)
+			{
+				iBestValue = iValue;
+				eBestBuilding = eLoopBuilding;
+			}
+		}
+	}
+	return eBestBuilding;
+}
+
+
+// <!-- custom: we have an issue of building a theatre in an unhappy cities (and possibly many) instead of a hindu temple (which would have provided actual happiness rather than culture based that we don't use since we don't want culture slider or reliably do so early in particular where we're more focused on survival), so fix this mistake by being stricter than in getAdditionalHealthByBuilding about which buildings we consider to be happiness buildings; code provided by chatgpt 5, check if accurate -->
+// Strict, reliable happy: flat, class, player, area, state religion (if applicable),
+// and resource-based IF connected (or granted by this building).
+// Excludes commerce/slider happiness and WW-modifier side-effects.
+static int AI_strictAdditionalHappy(CvCity const& c, BuildingTypes eB)
+{
+    CvBuildingInfo const& b = GC.getInfo(eB);
+    CvPlayer const& p = GET_PLAYER(c.getOwner());
+
+    int iHappy = 0;
+
+    // Flat
+    iHappy += b.getHappiness();
+    iHappy += c.getBuildingHappyChange(b.getBuildingClassType());
+    iHappy += p.getExtraBuildingHappiness(eB);
+    iHappy += b.getAreaHappiness();
+
+    // State religion gated (reliable if you currently run that state religion)
+    if (b.getReligionType() != NO_RELIGION &&
+        p.getStateReligion() == b.getReligionType())
+    {
+        iHappy += b.getStateReligionHappiness();
+    }
+
+    // Resource gated (only if connected or provided by this building; respect NoBonus)
+    FOR_EACH_NON_DEFAULT_PAIR(b.getBonusHappinessChanges(), Bonus, int)
+    {
+        BonusTypes eBonus = perBonusVal.first;
+        if ((c.hasBonus(eBonus) || b.getFreeBonus() == eBonus) &&
+            b.getNoBonus() != eBonus)
+        {
+            iHappy += perBonusVal.second;
+        }
+    }
+
+    // No Unhappiness: treat as removing the whole current anger (immediate cap lift)
+    if (b.isNoUnhappiness())
+    {
+        // if city is currently happy, this contributes 0 (which is fine)
+        iHappy += std::max(0, c.unhappyLevel());
+    }
+
+    // Excluded on purpose:
+    //  - commerce/slider-based happiness
+    //  - war-weariness modifier math
+    return iHappy;
+}
+
+// (I don't see the point of this function being separate to the "threshold" version)
+/*int CvCityAI::AI_buildingValue(BuildingTypes eBuilding, int iFocusFlags) const {
+	return AI_buildingValueThreshold(eBuilding, iFocusFlags, 0);
+}*/ // BtS
+
+/*	XXX should some of these count cities, buildings, etc. based on teams
+	(because wonders are shared...)
+	XXX in general, this function needs to be more sensitive to what makes this
+	city unique (more likely to build airports if there already is a harbor...) */
+/*	This function has been heavily edited for K-Mod
+	Scale is roughly 4 = 1 commerce / turn */
+int CvCityAI::AI_buildingValue(BuildingTypes eBuilding, int iFocusFlags,
+	int iThreshold, bool bConstCache, bool bAllowRecursion,
+	bool bIgnoreSpecialists, // advc.121b
+	bool bObsolete) const // advc.004c
+{
+	PROFILE_FUNC();
+
+	// <!-- custom: cache as eOwner as per chatgpt 5.2's recommendation to avoid reuse (not applied to things like ->getOwner() though as they look like method calls and not variables). -->
+	PlayerTypes const eOwner = getOwner();
+	CvPlayerAI const& kOwner = GET_PLAYER(eOwner);
+	// <!-- custom: use this pattern i found somewhere in the code, in case it is safer, and cache repetitive calls for performance optimization. Note: also cache GET_TEAM(getTeam()) to kTeam. Note 2: we had issues in the past in AdvCiv-SAS when caching these to a CvTeam cast (i don't know too much about these, check if accurate), that were solved using a CvTeamAI cast rather, so preferring this whenever it seems safe enough (check if accurate). I applied this to all GET_TEAM calls i spotted in this file +/- additional kOwner or kPlayer extra caching when needed, and after specifically testing this in autoplay, we get the exact same outcome vs before (t341 win, exact same score at scores it seems as well, so this also looks good to merge) -->
+	CvTeamAI const& kTeam = GET_TEAM(kOwner.getTeam()); // kekm.16
+	CvGame const& kGame = GC.getGame();
+
+	CvBuildingInfo const& kBuilding = GC.getInfo(eBuilding);
+	BuildingClassTypes const eBuildingClass = kBuilding.getBuildingClassType();
+
+	// <!-- custom: store this once since we check it many times -->
+	const bool bWorldWonder = kBuilding.isWorldWonder();
+	const bool bNationalWonder = kBuilding.isNationalWonder();
+	const bool bWonder = (bWorldWonder || bNationalWonder);
+
+	/*	K-Mod note: I've set this to ignore "food is production"
+		so that building value is not distorted by that effect. */
+	int const iFoodDifference = foodDifference(false, true);
+
+	// <!-- custom: add these by chatgpt 5 and refactor formatting or such a bit; also short term is fine -->
+	const int iHappinessSurplus = happyLevel() - unhappyLevel();
+
+	// Reduce reaction to temporary happy/health problems
+	// K-Mod
+	int const iHealthLevel = goodHealth() - badHealth() + getEspionageHealthCounter()/2;
+	// K-Mod end
+
+	int const iNumCities = kOwner.getNumCities();
+
+	// <!-- custom: note: sometimes AI_isFocusWar is used with, sometimes without in cvcityai.cpp, going for the larger one and chatgpt 5 suggests to do as such despite not knowing all our code but should be fine, and maybe we handle more cases this way, check if accurate -->
+	// bool const bWarPlan = kOwner.AI_isFocusWar(area()); // advc.105
+	bool const bWarPlan = kOwner.AI_isFocusWar();
+			//kTeam.getAnyWarPlanCount(true) > 0; // K-Mod
+
+	int const iFoodKept = kOwner.getFoodKept(eBuilding); // advc.912d
+	// <!-- custom: update: but after all as per chatgpt 5's review, may be inaccurate due to doubling count of food difference, use something else instead in an attempt to not over or understimate our expected growth; note: not changing previously defined iEstGrowth to keep old code working as intended, but as for us using this new var rather for our purpose as advised by chatgpt 5 (from another thread xd but thanks lot still, also check if accurate) -->
+
+	// Example scenarios for the growth signal:
+	// Inputs: iFoodDifference (food surplus/turn), iHealthLevel (good-bad), iHappinessSurplus
+	// Formula we use:
+	//   int iEffectiveFood = max(0, iFoodDifference) - max(0, -iHealthLevel);
+	//   if (iHappinessSurplus <= 0) iEffectiveFood = 0;
+	//   // iEstGrowthNew = iEffectiveFood
+
+	// A) Healthy, happy, solid surplus
+	//    iFoodDifference= +4, iHealthLevel= +1, iHappinessSurplus= +2
+	//    iEffectiveFood = max(0,4) - max(0, -1) = 4 - 0 = 4
+	//    (happy>0) → iEstGrowthNew = 4  // grow fast → favor Granary/health if needed
+
+	// B) Unhealthy cancels surplus
+	//    iFoodDifference= +3, iHealthLevel= -2, iHappinessSurplus= +3
+	//    iEffectiveFood = max(0,3) - max(0, 2) = 3 - 2 = 1
+	//    iEstGrowthNew = 1  // growth is slow → Granary is ok; big health buildings are valuable
+
+	// C) No food surplus, but healthy/happy
+	//    iFoodDifference= 0, iHealthLevel= +3, iHappinessSurplus= +2
+	//    iEffectiveFood = max(0,0) - max(0, -3) = 0 - 0 = 0
+	//    iEstGrowthNew = 0  // skip growth buildings; fix tiles/food first
+
+	// D) Surplus but unhappy cap blocks growth
+	//    iFoodDifference= +5, iHealthLevel= +1, iHappinessSurplus= 0
+	//    iEffectiveFood = max(0,5) - max(0, -1) = 5 - 0 = 5 → then cap sets to 0
+	//    (happy<=0) → iEstGrowthNew = 0  // prioritize happiness; Granary isn’t urgent
+
+	// E) Starving & unhealthy
+	//    iFoodDifference= -2, iHealthLevel= -3, iHappinessSurplus= +1
+	//    iEffectiveFood = max(0,-2)=0 - max(0,3)=3 → 0 - 3 = -3 → clamp to 0 conceptually
+	//    iEstGrowthNew = 0  // growth-focused buildings won’t help until food/health fixed
+
+	// food surplus we can use after health; clamp at 0
+	int iEffectiveFood = std::max(0, iFoodDifference) - std::max(0, -iHealthLevel);
+	// If you want to use that “happy gate" directly in code:
+	// use iEffectiveFood as your growth signal in the later rules
+	if (iHappinessSurplus <= 0)
+	{
+		iEffectiveFood = 0;
+	}
+
+	bool bForeignTrade = false;
+
+	// <!-- custom: removed extra scope, and reused it in this function since we do reuse it several times and even outside our advciv-sas added code-->
+	int const iNumTradeRoutes = getTradeRoutes();
+	for (int i = 0; i < iNumTradeRoutes; i++)
+	{
+		CvCity* pTradeCity = getTradeCity(i);
+		if (pTradeCity == NULL)
+			continue;
+		if (TEAMID(pTradeCity->getOwner()) != getTeam() ||
+			!sameArea(*pTradeCity))
+		{
+			bForeignTrade = true;
+			break;
+		}
+	}
+
+	// <!-- custom: moved here and added const, for reuse -->
+	const int iPop = getPopulation();
+	const int iMilitaryProductionModifier = kBuilding.getMilitaryProductionModifier();
+	const int iHammersModifier = kBuilding.getYieldModifier(YIELD_PRODUCTION);
+	// <!-- custom: rename iOwnerEra to iCurrentEra for consistency with other parts of our code -->
+	int const iCurrentEra = kOwner.getCurrentEra();
+	// <!-- custom: renamed iExistingUpkeep to iMaintenanceTimes100 -->
+	const int iMaintenanceTimes100 = getMaintenanceTimes100();
+	// <!-- custom: performance optimizations -->
+	const int iProductionRank = findBaseYieldRateRank(YIELD_PRODUCTION);
+	const int iFreeExperience = kBuilding.getFreeExperience();
+	const int iBaseHammersPerTurn = getBaseYieldRate(YIELD_PRODUCTION);
+
+	// <!-- custom: add some sanity / optimization rules of when to not build and sometimes when to always build some buildings rather than others. For example, walls are a waste of hammer at peace, or we are stronger than our ennemies, these could be used to produce almost 2 more axemen or half a settler or a worker as of now more or less, and similarly for many buildings there is a time when they are most relevant and other times when they really aren't yet AI inefficiently builds them anyway. Added these rules with chatgpt 5 thanks to my prompts and adjustments too, check if accurate, it somehow seems strongly passionate if i may say in these/its code comments hehe, sometimes mentionning K-Mod when i am not sure it is K-Mod, check if accurate xd and maybe enjoy or not or yes or etc, hopefully this makes AI a lot stronger or sharperwith its best building management, and is similarly done to how we fine-tuned with a set or pre-rules the promotions AI would choose in CvUnitAI::AI_promotionValue -->
+	const bool bMinor = kOwner.isMinorCiv();
+	const bool bBarbarian = kOwner.isBarbarian();
+
+	static const bool bSAS_AI_BUILDING_VALUE_OPTIMIZE = GC.getDefineBOOL("SAS_AI_BUILDING_VALUE_OPTIMIZE");
+
+	// <!-- custom: in autoplay AI doesn't build shrines (Mahabodhi, Pagan Shrine, etc.) until late game after world wonders ASAP fix. Shrines/corporations have iCost=-1, so no point trying to save hammers. Skip viability gates for iCost=-1; handle only buildable buildings (iCost>0), similar to CvUnitAI::AI_ChooseUnit. In autoplay this leads to more wonders by turn 300. Credit: ChatGPT 5.2. (Claude code Sonnet 4.5 (summarized)) -->
+	// <!-- custom: performance optimization - cache iXMLCost for later calls in this function. (Claude code Sonnet 4.5 (summarized)) -->
+	const int iXMLCost = kBuilding.getProductionCost(); // XML base cost (unscaled)
+	// -1 (GP-built) or weird 0-cost
+	// Only apply "hammer/turns/top-hammer-city" viability gates to normal, buildable buildings.
+	if ((iXMLCost > 0) && !bBarbarian && !bMinor && bSAS_AI_BUILDING_VALUE_OPTIMIZE)
+	{
+		// <!-- custom: per-player, per-turn cache to avoid recomputing top city scans at every call. In autoplay, leads to exact same outcome vs before (win at 341, same scores at all savepoints). Credit: ChatGPT 5.2. (Claude code Sonnet 4.5 (summarized)) -->
+		// <!-- custom: cache scope limited to bSAS_AI_BUILDING_VALUE_OPTIMIZE block; move to function scope if reused elsewhere. (Claude code Sonnet 4.5 (summarized)) -->
+		// Is this “safe enough"?
+		// 	- For Civ4’s normal single-threaded AI: yes.
+		// 	- If you ever truly run building evaluation in parallel threads: function-static caches are not thread-safe. Your current use of bConstCache strongly suggests “async mode" should not mutate caches anyway, so the pattern above is aligned with that.
+		// --- SAS: per-player, per-turn cache for empire-wide "top city" scans used in some gates.
+		// Updated only when !bConstCache (async/const-eval stays side-effect free).
+		static bool s_abTopHptValid[MAX_PLAYERS];
+		static int  s_aiTopHptTurn[MAX_PLAYERS];
+		static int  s_aiTopHptNumCities[MAX_PLAYERS];
+		static int  s_aiBestHpt[MAX_PLAYERS];
+		static int  s_aiSecondBestHpt[MAX_PLAYERS];
+		static int  s_aiThirdBestHpt[MAX_PLAYERS];
+
+		static bool s_abTopM100Valid[MAX_PLAYERS];
+		static int  s_aiTopM100Turn[MAX_PLAYERS];
+		static int  s_aiTopM100NumCities[MAX_PLAYERS];
+		static int  s_aiBestM100[MAX_PLAYERS];
+		static int  s_aiSecondBestM100[MAX_PLAYERS];
+		static int  s_aiNumCitiesHighM100[MAX_PLAYERS];
+
+		// <!-- custom: always pick these first if in this specific case especially relevant-->
+		// <!-- custom: note: previously set to 999999, but seemingly was causing a crash at turn 163, that was fixed strictly and only by changing this to 100000 it seems in autoplay, everything else being the entire/exact same it seems (including at which turn to save and which turn to start from on which save file), check to be sure and don't make this too high i would say, game outcome is preserved as well so no extra value/gain from having 999999 rather than 100000 at t200 it seems at least in large map. (note: was using WinDbg and a normal dump to debug it with a release DLL (then !analyze -v) but i don't know too much about these, although it seems to be as such and as chatgpt 5 explains but again i don't know too much to tell so check if accurate / to be sure) -->
+		// Good news / bad news: your dump is actually screaming “integer blow-up → bogus index" rather than a bad pointer to game data.
+		// Why I’m confident:
+		// - EIP is inside CvGameCoreDLL at +0x4E043 and WinDbg labels it CvCity::cheat+0x15B3, but the instruction is mov eax, [ebp+eax*4]. That pattern is classic for indexing a small local jump/lookup table with eax. Your eax is 0x618063D8 (!), so the index is astronomically out of range → AV.
+		// - Your recent edits introduce sentinel returns like AI_BUILDING_ALWAYS_PICK_FIRST = 999999 and several return AI_BUILDING_ALWAYS_PICK_FIRST +/- …;. Downstream code multiplies building values by weights and divides by small turn counts. With a 32-bit signed int, it’s easy to overflow (wrap negative) and then use the result as an index / size / switch key. The heap frames in your stack (_heap_alloc) are consistent with “someone tried to allocate/size something absurd after overflow".
+		// - This also explains why you can reproduce the crash even after removing the cache: the oversized return path still fires.
+		//
+		// Your giant sentinel (999,999) is overflowing downstream math (multiplied/divided by tiny denominators), producing a wild index that ends up as [ebp+eax*4] → AV. Cap the value (e.g., 50k), clamp the final iValue to ±200k, prefer return iThreshold+1 when you only need to “win", and fix the small inverted world-wonder filter. That should make this crash disappear.*]()
+		static const int AI_BUILDING_ALWAYS_PICK_FIRST = 100000;
+
+		// Quick threat read
+		bool const bDanger = AI_isDanger();
+		bool const bAtWar = (kTeam.getNumWars() > 0);
+
+		// Enemy power percent: sum of enemy power as % of ours.
+		// < 100  => we’re stronger; e.g., 80 means we’re ~125% of them.
+		const int iEnemyPowerPercent = kTeam.AI_getEnemyPowerPercent(true);
+
+		// Tunables
+		static const int iSAS_ENEMY_STRONG_POWER_THRESHOLD = GC.getDefineINT("SAS_ENEMY_STRONG_POWER_THRESHOLD"); // e.g. 120
+		const int iDefenseModeThreshold = iSAS_ENEMY_STRONG_POWER_THRESHOLD; // ≥120 => they’re scary <!-- custom: or strong rather xd, clearer what it means, and weak one can be scary maybe too, is less clear, but funny as in humorous -->; prefer defense
+		static const int iSAS_ENEMY_WEAK_POWER_THRESHOLD = GC.getDefineINT("SAS_ENEMY_WEAK_POWER_THRESHOLD"); // e.g. 80
+		const int iOffenseModeThreshold = iSAS_ENEMY_WEAK_POWER_THRESHOLD; // ≤80 => we’re strong enough to skip walls
+
+		const bool bEnemyStrong  = (iEnemyPowerPercent >= iDefenseModeThreshold);
+		// <!-- custom: note: be careful of enemy weak being true if we're not at war (due to enemy percent being 0, not sure it would happen but better be safe from this false positive by wrapping with an at war check to get actual enemy percent and not 0 by default but this is just a guess, check if accurate) -->
+		const bool bAtWarAndEnemyWeak = (bAtWar && (iEnemyPowerPercent <= iOffenseModeThreshold));
+
+		const bool bLandXp = (
+			(iFreeExperience >= 2) ||
+			(kBuilding.getDomainFreeExperience(DOMAIN_LAND) >= 2)
+		);
+
+		const bool bLandProd = (
+			(iMilitaryProductionModifier >= 20) ||
+			(kBuilding.getDomainProductionModifier(DOMAIN_LAND) >= 20)
+		);
+
+		// <!-- custom: general modifier not significant enough to consider it-->
+		const bool bLandUnitsBuilding = (bLandXp || bLandProd);
+
+		const int iElapsedTurns = kGame.getElapsedGameTurns();
+
+		const int iBeakersPerTurn = getCommerceRate(COMMERCE_RESEARCH);
+
+		// <!-- custom: adjust the AI's building priorities based on handicap -->
+		CvHandicapInfo const& hGame = GC.getInfo(kGame.getHandicapType());       // human’s level
+		CvHandicapInfo const& hAI   = GC.getInfo(kOwner.getHandicapType());     // this AI’s level
+
+		const int iGameSpeedMultiplier = GC.getInfo(kGame.getGameSpeedType()).getConstructPercent(); // 100, 150, 200...
+
+		// <!-- custom: then after considering building time, let's consider our expected gains, hammer modifiers (e.g forge gives +25% hammer after it is built), this is not related to modifiers that reduce time to build the forge for example, but modifiers we gain in city after city is built, as chatgpt 5 explained to me after i made the mistake so i hope this comment is helpful-->
+		// 1) Identify “ironworks-like": sum BonusYieldModifiers for PRODUCTION
+		int iTotalBonusHammersModifier = 0;
+		FOR_EACH_ENUM(Bonus)
+		{
+			int m = kBuilding.getBonusYieldModifier(eLoopBonus, YIELD_PRODUCTION);
+			if (m != 0)
+			{
+				// e.g. Coal +50, Iron +50 => 100 total
+				iTotalBonusHammersModifier += m;
+			}
+		}
+
+		// <!-- custom: also account for the base production modifiers (e.g. that the forge or factory has) to asses the building's worth/value as a production modifier building (here national wonder) type-->
+		const int iTotalHammersModifier = iHammersModifier + iTotalBonusHammersModifier;
+
+		static const bool bSAS_AI_BUILDING_VALUE_REGULAR_BUILDINGS_OPTIMIZE = GC.getDefineBOOL("SAS_AI_BUILDING_VALUE_REGULAR_BUILDINGS_OPTIMIZE");
+		static const bool bSAS_AI_BUILDING_VALUE_WONDERS_OPTIMIZE = GC.getDefineBOOL("SAS_AI_BUILDING_VALUE_WONDERS_OPTIMIZE");
+		// <!-- custom: update: in autoplay, the SAS_AI_BUILDING_VALUE_WORLD_WONDERS_OPTIMIZE check specifically greatly reduces the number of early wonders (0 wonders vs 6 wonders at turn 100 with vs without it, everything else being the same. See SAS defines XML code comments for details about it and its sub options -->
+		static const bool bSAS_AI_BUILDING_VALUE_WORLD_WONDERS_OPTIMIZE = GC.getDefineBOOL("SAS_AI_BUILDING_VALUE_WORLD_WONDERS_OPTIMIZE");
+		static const bool bSAS_AI_BUILDING_VALUE_NATIONAL_WONDERS_OPTIMIZE = GC.getDefineBOOL("SAS_AI_BUILDING_VALUE_NATIONAL_WONDERS_OPTIMIZE");
+		static const bool bSAS_AI_BUILDING_VALUE_UNKNOWN_WONDERS_OPTIMIZE = GC.getDefineBOOL("SAS_AI_BUILDING_VALUE_UNKNOWN_WONDERS_OPTIMIZE");
+
+		static const int iSAS_AI_BUILDING_VALUE_GATE_M100_REGULAR_BUILDINGS = GC.getDefineINT("SAS_AI_BUILDING_VALUE_GATE_M100_REGULAR_BUILDINGS");
+		static const int iSAS_AI_BUILDING_VALUE_GATE_M100_WONDERS = GC.getDefineINT("SAS_AI_BUILDING_VALUE_GATE_M100_WONDERS");
+
+		if (!bWonder && bSAS_AI_BUILDING_VALUE_REGULAR_BUILDINGS_OPTIMIZE)
+		{
+			const bool bCoastalBuilding = isCoastal();
+			// <!-- custom: 0); always build the harbor (or whichever buildings give food) no matter what. I have noticed many cities being stagnant and low food, or even if growing they could greatly benefit from it. Including one tile or 2 tile island cities building a needless worker or such. I don't know if our logic prevents that, but at least in very simple terms, build the harbor or any building (not wonders as hammer costly, at least if we'd add them we'd handle them elsewhere but as of now not handled specifically meaning AI will not reject them with same rules as other wonders as of now) with such an effect asap if city can, don't complicate logic with needless things otherwise. This may help island cities 1-2 tiles in particular quickly reach their potential and not astray in particular if i may say but not only the cities i mean in this case. Also ignore even war checks or conditions as AIs produce too much units as of now which is good but it is also good that this helps them mitigate it even if a bit and to not go bankrupt too soon with unit excess-->
+			// --- Fast path: water-food buildings (Harbor in AdvCiv-SAS) always first ---
+			const bool bWaterFoodBuilding = (
+				bCoastalBuilding &&
+				((kBuilding.getSeaPlotYieldChange(YIELD_FOOD) > 0) ||
+				(kBuilding.getGlobalSeaPlotYieldChange(YIELD_FOOD) > 0))
+			);
+
+			const int iWaterFoodBuildingFirstMinEnoughFood = 2;
+			if (bWaterFoodBuilding && (iFoodDifference < iWaterFoodBuildingFirstMinEnoughFood) && !isFoodProduction())
+			{
+				return AI_BUILDING_ALWAYS_PICK_FIRST;
+			}
+			// --- end fast path ---
+
+			// Is this building primarily defensive in cities (local or global) <!-- custom: e.g. walls, castle, chichen itza of the base civ4 for example too; also use a value threshold of 25 or such to remove false positives, in case a building gives small defense modifier but is not actually a defense building (e.g. not directly related to this but similar: ikhanda gives maybe like 10-15% maintenance reduction but is a military building, and skipping it based on economic criteria may be bad, so using a similar logic here with a quite high base threshold to make sure we flag actually defensive buildings) --> ?
+			const bool bDefenseBuilding = (
+				(kBuilding.getDefenseModifier() >= 25) ||
+				(kBuilding.getBombardDefenseModifier() >= 20) ||
+				(kBuilding.get(CvBuildingInfo::RaiseDefense) >= 15) ||
+				(kBuilding.getAllCityDefenseModifier() >= 10)
+			);
+
+			// 1) Defense-ish buildings: skip in peacetime; also skip in war if we <!-- custom: are stronger -->
+			if (bDefenseBuilding)
+			{
+				// No immediate pressure? Don’t sink hammers into static defense.
+				if (!bAtWar)
+				{
+					return 0;
+				}
+				else
+				{
+					// At war (or danger) but we’re clearly stronger and this city isn’t in danger? Skip.
+					if (bAtWarAndEnemyWeak && !bDanger)
+					{
+						return 0;
+					}
+					// If they’re actually scary (≥120%), <!-- custom: build walls with highest priority, we are likely to get attacked, walls or castle or such would help a lot more than any other building, but not for wonders unfortunately as it is unlikely we complete them on time before war ends or we die or we make any advantage of them (worst case we'd be building it for them, invest that hammer in units or last ditch efforts rather that may help more maybe i would say); note: the else if is a bit redundant hopefully clearer as such maybe or not or yes or etc-->
+					else if (bEnemyStrong)
+					{
+						return AI_BUILDING_ALWAYS_PICK_FIRST;
+					}
+				}
+			}
+
+			// --- Barracks-like (land XP / land production) -------------------------------
+			if (bLandUnitsBuilding)
+			{
+				// Production thresholds
+				const int iPumpGate = 8;  // min hpt to justify Barracks in war/pre-war
+				const bool bLowHammerLandUnits = (iBaseHammersPerTurn < iPumpGate);
+
+				if (!bLowHammerLandUnits)
+				{
+					if (bAtWar)
+					{
+						// <!-- custom: no time or hammer for this, try to build an extra or 2 units rather, may save our city, especially if we build a longbowman rather or such similar defensive unit, pointless to build barracks or such similar building if we're dead anyway -->
+						if (bEnemyStrong)
+						{
+							return 0;
+						}
+						// <!-- custom: i don't know if we can trust this boolean's corresponding function, but assuming it is, if we're threatened, prepare units rather in case or something else, no point if we get surprised attacked while building this and get captured without ever barely any units xd, build units rather in such cases at least simplify as such here, should most often help AI hopefully-->
+						if (bDanger)
+						{
+							return 0;
+						}
+						// <!-- custom: planning war warrants building barrack like buildings as well, since we're going to pump units anyway, and i assume guessedly that we'd only plan war if we're stronger, so build the barracks or similar building first and profit on having stronger units, it shouldn't be too expensive at this stage of the game but should make a big difference -->
+						else if (bWarPlan)
+						{
+							return AI_BUILDING_ALWAYS_PICK_FIRST;
+						}
+						// <!-- custom: spend the time to build this instead of pumping units, we are already strong, and would rather have stronger land units as well as not cripple our unit cost further short term -->
+						else if (bAtWarAndEnemyWeak)
+						{
+							return AI_BUILDING_ALWAYS_PICK_FIRST;
+						}
+					}
+				}
+				// <!-- custom: else let city handle what it wants, it is unclear that going early for barracks is the better choice, especially if low on hammer, we won't produce any units with it or barely any units, so leave free choice rather here (e.g. a granary could be better, as we grow faster so more tiles to work so more units indirectly stronger army as we want if we can grow or we'd slow more, or a library could be better so we unlock next offensive or defensive unit that will save us or make us win or gain big advantage or gain a longtemr scientific advantage/gain overall maybe too), so don't always favour barracks-like buildings, except in cases where we expect significant and quite reliable gains in this case at least i mean -->
+			}
+
+			// --- Hard rule: don't build Stables without horses/camels <!-- custom: or elephants as it noticed and suggested itself while i had forgotten as in overlooked it rather as i didn't think of it at all xd in this case -->--------------------
+			static const BuildingClassTypes eBuildingClassStable = (BuildingClassTypes)GC.getInfoTypeForString(GC.getDefineSTRING("SAS_AI_BUILDING_VALUE_MOUNTED_UNITS_EXP_BUILDINGCLASS_NAME"));
+
+			const bool bBuildingClassStable = (eBuildingClassStable != NO_BUILDINGCLASS && eBuildingClass == eBuildingClassStable);
+
+			if (bBuildingClassStable)
+			{
+				static const BonusTypes B_HORSE  = (BonusTypes)GC.getInfoTypeForString(GC.getDefineSTRING("SAS_MOUNTED_UNITS_BONUS_NAME_1"));
+				static const BonusTypes B_CAMEL  = (BonusTypes)GC.getInfoTypeForString(GC.getDefineSTRING("SAS_MOUNTED_UNITS_BONUS_NAME_2"));
+				static const BonusTypes B_ELEPHANTS  = (BonusTypes)GC.getInfoTypeForString(GC.getDefineSTRING("SAS_MOUNTED_UNITS_BONUS_NAME_3"));
+				// <!-- custom: note: using city's `hasBonus(` instead of `getNumAvailableBonuses(` in other places in the code, as recommended by chatgpt 5, check if accurate -->
+				//
+				// pCity->hasBonus(eBonus)
+				// - City-level connectivity: “Is this specific city’s plot-group connected to ≥1 of eBonus?"
+				// - Internally this is essentially city.plot().getOwnerPlotGroup()->getNumBonuses(eBonus) > 0 (null-safe).
+				// - Use this to gate a building in this city (e.g., Stable in this city).
+				//
+				// kOwner.hasBonus(eBonus)
+				// - Any connected city: loops all cities and returns true if any city’s plot-group has the bonus.
+				// - Good for empire-level boolean (“can we build mounted somewhere?"), but not for a specific city gate.
+				//
+				// kOwner.getNumAvailableBonuses(eBonus)
+				// - Capital plot-group only: counts copies on the capital’s network.
+				// - Fast O(1), but misses disconnected networks (overseas before Sailing, blockades, pillaged roads, etc.).
+				// - Don’t use this to decide if “the empire has it somewhere"; it will false-negative when a non-capital network has the resource.
+				//
+				const bool bCityHasHorse = (B_HORSE != NO_BONUS && hasBonus(B_HORSE));
+				const bool bCityHasCamel = (B_CAMEL != NO_BONUS && hasBonus(B_CAMEL));
+				const bool bCityHasElephants = (B_ELEPHANTS != NO_BONUS && hasBonus(B_ELEPHANTS));
+
+				// Mounted line tech gate (simple + cheap).
+				static const TechTypes eTechMountedCombat = (TechTypes)GC.getInfoTypeForString(GC.getDefineSTRING("SAS_MOUNTED_UNITS_TECH_NAME"));
+
+				if (eTechMountedCombat != NO_TECH && kTeam.isHasTech(eTechMountedCombat))
+				{
+					// No mounts<!-- custom: -unlocking bonuses -->connected to this city ⇒ Stable is wasted; skip it.
+					if (!bCityHasHorse && !bCityHasCamel && !bCityHasElephants)
+					{
+						return 0;
+					}
+					else
+					{
+						if (bEnemyStrong)
+						{
+							// <!-- custom: even if we can build advanced mounted units like the horse archer or such, we probably don't have the hammer to spare and simply don't want to die, go for short term immediate units / benefits in this case, at least value lowly such a building(i hope this is interpreted elsewhere as not building it rather than last else may be worse xd) -->
+							return 0;
+						}
+						else if (bAtWarAndEnemyWeak || bWarPlan)
+						{
+							// <!-- custom: if we're strong (i.e. if ennemy(ies) is weak) and we can build advanced mounted units like the horse archer or the war elephant (if not more advanced ones, maybe a check on has tech tech_mounted_combat is simplest?), consider urgently/strongly going/to gofor a stable first, we can afford to spend the time doing so, and can expect higher benefits short-mid and long term, should be much better than not building it -->
+							return AI_BUILDING_ALWAYS_PICK_FIRST;
+						}
+					}
+				}
+				// <!-- custom: no point to build it at least not yet, reevaluate later in this caseand use the hammer for more meaningful or relevant tasks -->
+				else
+				{
+					return 0;
+				}
+			}
+
+			const bool bNavalUnitsBuilding = (
+				bCoastalBuilding &&
+				((kBuilding.getDomainFreeExperience(DOMAIN_SEA) > 0) ||
+				(kBuilding.getDomainProductionModifier(DOMAIN_SEA) > 0))
+			);
+
+			if (bNavalUnitsBuilding)
+			{
+				// <!-- custom: be careful to not make this static in case reloads would cause us to treat old pangea map of last save to a pangea in new archipelago loaded or started map but check to be sure -->
+				// <!-- custom: trying to save some computing power by condtionally checking naval maps only if not land map (which also btw in most cases shouldn't be for players i think) -->
+				bool const bLandHeavyMapname = kGame.isLandHeavyMapnameCached();
+				// bool bNavalHeavyMapname = false;
+				// if (!bLandHeavyMapname)
+				// {
+				// 	bNavalHeavyMapname = kGame.isNavalHeavyMapnameCached();
+				// }
+
+				if (bLandHeavyMapname)
+				{
+					// <!-- custom: a coastal check as originally done by chatgpt 5may cause weird issues with maps that are only coast separated from other land parts/pieces, but we still want to block lake drydocks as they should be quite pointless, unless weird map with giant lake. Take a probability approach, let's build it even in lakes to cover most cases, especially giant lakes xd, as for coastal check i assume/hope the function or something handles it so we don't build an impossible building somehow, as for us just skip this check,, check if accurate as this is just a guess from me and is also to simplify, as we cover enough edge cases below to save hammer in most cases anyway, leave some leeway otherwise -->
+
+					// <!-- custom: otherwise super simple check, don't build it, save the hammer, we don't want to wate or spend too much hammer and can just build naval units slower, we want to build less of them on these maps anyway. If map is unclear, assume is not land heavy and proceed normally without this rule instead for versatility and safety, otherwise most maps should be properly excluded if our code works as intended. We'd have +/- 1 extra tank almost or 1.5 rifleman equivalent of extra hammers, in all affected cities, not negligible and nice to have, plus less as in no as of nowunhealthiness which is very important-->
+					return 0;
+				}
+			}
+
+			// <!-- custom: not 0 (but higher value instead) to exclude false positives like ikhanda or such, see as of now above code comments for details -->
+			const bool bCityMaintenanceBuilding = (kBuilding.getMaintenanceModifier() >= 25);
+
+			if (bCityMaintenanceBuilding)
+			{
+				if (iMaintenanceTimes100 < iSAS_AI_BUILDING_VALUE_GATE_M100_REGULAR_BUILDINGS) // < 6 gpt => not worth it yet
+				{
+					return 0;
+				}
+				// <!-- custom: if at war and threatened, no question to stop this -->
+				else if (bAtWar)
+				{
+					if (bEnemyStrong)
+					{
+						return 0;
+					}
+				}
+			}
+
+			// <!-- custom: extra rules in case as we still sometimes do not build much needed health buildings when we need, or build them when we shouldn't or not urgently and should rather invest our hammer elsewhere-->
+			const bool bFoodKeptBuilding = (iFoodKept >= 25);
+
+			if (bFoodKeptBuilding)
+			{
+				// <!-- custom: if we don't have enough happiness reserve, no point to build it, the food stored won't be much used (but be careful to not overdo it as with slavery we still want the combo even if seemingly close to end of city growth due to unhappiness, the granary would still help slave better / faster, but hopefully the rule is narrow enough already as in it applies to so few cities already that this simplification is most likely and hopefully fine; we only want for most to add hard rules, not the full logic, to patch cases where it's in most cases better not to build these or on the contrary highly so to do -->
+				const int iFoodKeptMinLowHappinessSurplus = 2;
+				// <!-- custom: on the contrary, if we expect a high growth, fine to give a nudge towards building it asap -->
+				const int iFoodKeptMaxHighHappinessSurplus = 3;
+				const int iFoodKeptMaxHighHappinessEffectiveFoodSurplus = 3;
+				if (iHappinessSurplus < iFoodKeptMinLowHappinessSurplus)
+				{
+					return 0;
+				}
+				// <!-- custom: if at war and threatened, no question to stop this -->
+				else if (bAtWar)
+				{
+					if (bEnemyStrong)
+					{
+						return 0;
+					}
+					// <!-- custom: else even if enemy is weak, food kept buildings could be useful to slave or grow so we have more tiles to work, either for our military goals, or simply to grow since we have no reason to go hard on war, so no reason to hard reject here in this case -->
+				}
+				else if ((iHappinessSurplus > iFoodKeptMaxHighHappinessSurplus) && iEffectiveFood > iFoodKeptMaxHighHappinessEffectiveFoodSurplus)
+				{
+					return AI_BUILDING_ALWAYS_PICK_FIRST;
+				}
+			}
+
+			// <!-- custom: i have noticed cities low in health, high or medium in happiness so growth potential, overlooking critical happiness buildings for much less relevant things like a customs house or such. To address this, if we have too much health, don't waste time building this and use the hammer for more important and urgent/effective tasks (at least other buildings maybe), and inversely if we badly need the health and can grow or can grow enough at least, rush as in favour heavily as in for us force it as best to simplify, but try to not overdo it to not kill versatility or most importantly versatility in case other strategies (war, etc) are locally better(e.g. aqueduct as of now buffed in our mod so quite good in helping a city grow quite a bit more, grocer, etc if any more) -->
+			// <!-- custom: note: if i'm not mistaken, as per chatgpt 5's explanation, iGood and iBad are returned as outer parameters by the below function, check if accurate -->
+			int iHealthGood = 0, iHealthBad = 0;
+			// NOTE: getAdditionalHealthByBuilding returns the NET health this building would give
+			// *for THIS city*, considering local bonuses, power penalties (bFuture=true), etc.
+			int const iHealthGain = getAdditionalHealthByBuilding(eBuilding, iHealthGood, iHealthBad, /*bFuture=*/true);
+			const bool bHealthBuilding = (iHealthGain > 0);
+
+			if (bHealthBuilding)
+			{
+				// 1) Too healthy (or not growing soon) → skip the health building for now.
+				const int iTooHealthyLevel = 1;
+				const int iHealthLevelEnoughWithFood = -1;
+				const int iHealthLevelEnoughWithFoodMinFood = 2;
+				if (iHealthLevel > iTooHealthyLevel || (iHealthLevel > iHealthLevelEnoughWithFood && iEffectiveFood < iHealthLevelEnoughWithFoodMinFood))
+				{
+					return 0;
+				}
+				// 2) Badly need health OR about to use it → build first (unless it’s a wonder).
+				//   - current unhealth (<= -1) → urgent
+				//   - or we have headroom to grow and the building gives meaningful health (>=2)
+				// <!-- custom: hopefully this is not too strict to be too exxcesive(ly built) nor too lax to not be relevant when needed: we want health when needed, else we don't want it and do something else in short as explained before -->
+				// <!-- custom: if at war and threatened, no question to stop this -->
+				else if (bAtWar)
+				{
+					if (bEnemyStrong)
+					{
+						return 0;
+					}
+				}
+				// <!-- custom: note: the pick first cause is "always" after the return 0, no pun if i may say or maybe yes... -->
+				else if (iHealthLevel <= 1 && iHappinessSurplus >= 2 && iEffectiveFood >= 2)
+				{
+					return AI_BUILDING_ALWAYS_PICK_FIRST;
+				}
+			}
+
+			const bool bProductionBuilding = (
+				iTotalHammersModifier >= 20 // || // Forge/Factory <!-- custom: or weird variants if some mods implement bonus based hammer modifiers in regular buildings (as the ironworks does for example), so account for that as well -->
+				// <!-- custom: for now only tweak the early game as is most important and where most gains can be made i think, later production should be high enough and civilization developped enough to be able to more freely choose without too much consequences -->
+				//kBuilding.isPower() ||                                  // Plant gives power
+				//kBuilding.isAreaCleanPower()
+			);
+
+			// <!-- custom: don't build a theatre instead of a much better hindu temple if city is unhappy (generic theatre (i.e. non-civ-specific ones) doesn't give reliable happiness) see code comment at AI_strictAdditionalHappy for details -->
+			// // Expected local happiness the building would add (includes resource synergies).
+			// int iHappyGood=0, iHappyBad=0;
+			// const int iHappinessGain = getAdditionalHappinessByBuilding(eBuilding, iHappyGood, iHappyBad);
+			//
+			const int iStrictHappinessGain = AI_strictAdditionalHappy(*this, eBuilding);
+
+			// <!-- custom: now also account for unhappy citizens that would become happy after the building is built (inspired from our code in bestcitybuild (with variable as of now named iFoodConsumedBySpecialistOrAngryCitizens) that uncounts food consumed by unhappy citizens), as kish city was unhappy and stagnant so the effective food check as of now >= 2 would block the happiness building being built, even if we'd gain food from freeing unhappiness into more workable happy citizen tiles (not guaranteed to be grass land or 2 food tiles but assumed as such to simplify and favour a bit happiness buildings when relevant at least not prevent it), so remove from food effective food the food consumed by unhappy citizens which would then become happy after the happiness building is built -->
+			// <!-- custom: results: extremely good!!! Now resuming from same save file at turn 100, Kish city of gilgamesh ai is now pop 13 at turn 150 instead of pop 10, and has built walls (that give 1 happiness in our mod since gilgamesh is protective if i'm not mistaken, so it's great AIs can now dynamically (i.e. they adapt to this xml change we made not in hardcoded way hehe super nice) leverage this!!), which is great too because we sent a signal to not build walls if stronger, which gilgamesh ai is (strongest military power at turn 150 so i'd guess so at turn 100 although i didn't check), as well as a colosseum and a market (since gilgamesh has some of the matching bonuses i guess). His military power didn't suffer too much as he is still strongest after these changes now but with more mid and late game potential (so the small short term cost is probably much less important than long term gain), see known issue as of now 48.2 for details -->
+			// ---- Effective food AFTER curing anger with this building -------------------
+			const int iFoodPerPop   = GC.getFOOD_CONSUMPTION_PER_POPULATION();
+			const int iAngryNow     = angryPopulation(); // (= max(0, -iHappinessSurplus)) in practice
+			const int iCuredAngry   = std::min(iAngryNow, iStrictHappinessGain);
+			// Simple regain: give back their food
+			const int iEffectiveFoodAfterBuiltHappy = iEffectiveFood + (iCuredAngry * iFoodPerPop);
+
+			if (bProductionBuilding)
+			{
+				// <!-- custom: don't build a forge early if our city has low hammer and can't be expected to grow, except if a lot of happiness can be gained from it and we have enough food to make it matter; else don't be too strict, this only to prevent early stunting growth builds, and early game is the critical part to best optimize in order to have an as smooth as possible late game; the 3 extra swordsmen and some more hammer can be a matter of life and death, do not give them up unless strong reward otherwise -->
+				// Early window (scaled to speed)
+				const int iEarlyTurnsProductionNormal = 100; // @Normal
+				const int iEarlyTurnsProductionAdjusted = iEarlyTurnsProductionNormal * iGameSpeedMultiplier / 100;
+				const bool bEarlyTurnsProduction = (iElapsedTurns < iEarlyTurnsProductionAdjusted);
+
+				// ✅ Rule:
+				// If the city is low-production (≤12 hpt)
+				// AND it can't really grow soon (food ≤1 OR no happy headroom)
+				// AND the building adds little/no happiness (≤2)
+				// → skip it for now.
+				const int iMinHammerProduction = 13;
+				const int iMinGrowthProductionFoodDiff = 2;
+				const int iMinGrowthProductionHappinessSurplus = 1;
+				const int iMinHappinessBoost = 3;
+				const bool bLowHammerProduction = (iBaseHammersPerTurn < iMinHammerProduction);
+				const bool bLowGrowthProduction = (iFoodDifference < iMinGrowthProductionFoodDiff || iHappinessSurplus < iMinGrowthProductionHappinessSurplus);
+				const bool bWeakHappinessBoost = (iStrictHappinessGain < iMinHappinessBoost);
+
+				if (bEarlyTurnsProduction)
+				{
+					if (bLowHammerProduction && bLowGrowthProduction && bWeakHappinessBoost)
+					{
+						return 0; // let units/settlers/other buildings take priority
+					}
+					// <!-- custom: else/otherwise no strong rule, just prevent city from building it if really not best move -->
+				}
+				// <!-- custom: if at war and threatened, no question to stop this -->
+				else if (bAtWar)
+				{
+					if (bEnemyStrong)
+					{
+						return 0;
+					}
+				}
+			}
+
+			// <!-- custom: if a building gives happiness to all cities, purposely let it slip through our net, perhaps it is good to build it, especially and here only handling it if it is not a wonder (so would be fast to build in this case i mean) -->
+			const bool bHappinessBuilding = (
+				(iStrictHappinessGain > 0)
+			);
+
+			if (bHappinessBuilding)
+			{
+				// If we’re already comfortably happy and not growing fast, skip the extra happy.
+				// (Prevents monuments/temples/colosseums <!-- custom: and etc as really it's a rule we can apply the whole game, always better to have one more rifleman than uneeded happiness building--> when we have plenty of headroom.)
+				const int iHappinessBuildingEnoughHappinessSurplus = 2;
+				const int iHappinessBuildingEnoughFoodDiff = 2;
+				if (iHappinessSurplus > iHappinessBuildingEnoughHappinessSurplus && (iFoodDifference < iHappinessBuildingEnoughFoodDiff))
+				{
+					return 0;
+				}
+				// <!-- custom: a bit harder to tell if short term would unlock us much needed yields, but favour survivability rather, should be better and more efficient for AIs in most cases, but upon further consideration, if we are strong enough we probably don't need it as much and may be fine developping our cities rather as per previous rule of happiness buildings, also not to sink our unit costs xd, however if we're losing it's no question to skip everything else not giga or ultra mandatory if i may say in this caseto build more units ideally so we don't die (at least not more buildings), we can look at / worry about happiness later after the war (if we don't die), else commit all efforts into surviving if i may say in this case, don't build a colosseum xd, hopefully helps AI be more efficient and strategic at handling war if not already done-->
+				else if (bAtWar)
+				{
+					if (bEnemyStrong)
+					{
+						return 0;
+					}
+				}
+				// If we’re at/over the cap and can actually use the happy soon, strongly prefer it
+				// (but don’t force for wonders).
+				const int iHappinessBuildingNeedHappinessSurplus = 1;
+				const int iHappinessBuildingNeedHappinessGain = 0;
+				const int iHappinessBuildingNeedFoodGain = 1;
+				if ((iHappinessSurplus < iHappinessBuildingNeedHappinessSurplus) && (iStrictHappinessGain > iHappinessBuildingNeedHappinessGain) && (iEffectiveFoodAfterBuiltHappy > iHappinessBuildingNeedFoodGain))
+				{
+					return AI_BUILDING_ALWAYS_PICK_FIRST; // optional: comment out if you want “no force"
+				}
+			}
+
+			const int iFlatBeakersPerTurnFromBuilding = (kBuilding.getCommerceChange(COMMERCE_RESEARCH) + kBuilding.getObsoleteSafeCommerceChange(COMMERCE_RESEARCH));
+
+			static const SpecialistTypes eScientist = (SpecialistTypes)GC.getInfoTypeForString("SPECIALIST_SCIENTIST", true);
+
+			// --- Science-like (research %) ------------------------------------------------
+			const bool bScienceBuilding = (
+				(kBuilding.getCommerceModifier(COMMERCE_RESEARCH) >= 20) ||
+				(iFlatBeakersPerTurnFromBuilding > 0) ||
+				(kBuilding.getSpecialistCount(eScientist) > 0) ||
+				(kBuilding.getFreeSpecialistCount(eScientist) > 0)
+			);
+
+			// <!-- custom: science buildings can be very important, and it is hard to gauge how important they can be, maybe we'll gain a longterm science or economic or such advantage, or we'll unlock our most important offensive or defensive unit to save us or help us win, maybe we need the culture as well even though has been reduced as of now in our mod but also indirectly through new buildings or wonders. Do not limit this too hard, as it is unclear if opening with a granary is always better than say a library, let the function or whichever codes is responsible for this choose, but as for us add the edge cases where it's really not the priority, most important of them being being at war (repetition xd but i think it is gramatically correct) or about to be or something similar, then we'd rather have 3 axemen than a library in a city we'd lose anyway, or to help us win our rush
+			if (bScienceBuilding)
+			{
+				if (bAtWar)
+				{
+					// <!-- custom: no time for this, try to survive rather and instead or do whatever is more urgent, and even if we are stronger, still press on other war urgent matters rather although maybe not always best but hopefully often enough for AIs i mean -->
+					return 0;
+				}
+				// <!-- custom: similar reasoning even if out of war, if urgent enough to skip it-->
+				else
+				{
+					if (bDanger)
+					{
+						return 0;
+					}
+					// <!-- custom: else it is hard to tell really but consider delaying, should help especially early let's try that and see how our AI behave, hopefully it would improve early rushing potential at the cos tfo slightly slower science prgoession mid game, but maybe gaining an extra city or not losing one offsets that especially long term, and not just in science gains terms-->
+					else if (bWarPlan)
+					{
+						return 0;
+					}
+				}
+			}
+
+			// <!-- custom: note: among remaining buildings, the effects get more often intertwinned if i may say in this case, so i meanexecute this before last such buildings (but before the final unknown or uncovered buildings tail after it) so that we don't classify other buildings as cultural ones for example (e.g. as of now the spain civ-specific castle) if they happen to have culture in them as many buildings do but it would not be their main function and may interfere with our previous rules, so do these last and excluding previously covered ones just to be safe about this -->
+			const bool bPreviousBuildings = (
+				bWaterFoodBuilding ||
+				bDefenseBuilding ||
+				bCityMaintenanceBuilding ||
+				bFoodKeptBuilding ||
+				bHealthBuilding ||
+				bProductionBuilding ||
+				bHappinessBuilding ||
+				bNavalUnitsBuilding ||
+				bLandUnitsBuilding ||
+				bScienceBuilding ||
+				// <!-- custom: even if is building class we can still check the boolean i think for our purpose of excluding previously processed buildings -->
+				bBuildingClassStable
+			);
+
+			// --- Economic (gold) buildings ------------------------------------------------
+			// Market/Grocer/Bank tier
+
+			const int iFlatGoldPerTurnFromBuilding = kBuilding.getCommerceChange(COMMERCE_GOLD) + kBuilding.getObsoleteSafeCommerceChange(COMMERCE_GOLD);
+
+			const bool bHighEnoughGoldModifier = (kBuilding.getCommerceModifier(COMMERCE_GOLD) >= 20);
+
+			static const SpecialistTypes eSpecialistMerchant = (SpecialistTypes)GC.getInfoTypeForString("SPECIALIST_MERCHANT", true);
+
+			const bool bEconomyBuilding = (
+				bHighEnoughGoldModifier ||
+				(iFlatGoldPerTurnFromBuilding > 0) ||
+				(kBuilding.getSpecialistCount(eSpecialistMerchant) > 0) ||
+				(kBuilding.getFreeSpecialistCount(eSpecialistMerchant) > 0)
+			);
+
+			const bool bEconomyOnlyBuilding = (
+				bEconomyBuilding &&
+				!bPreviousBuildings
+			);
+
+			// <!-- custom: similarly hard to tell long term effects of which, especially if these have nested effects like health or such, but we handled excluding misclassified e.g. health buildings like the grocer that happen to give gold, and we treated them as health buildings to assess their importance to build or reject them, so now for economy buildings not handled before, use an about same logic as for/inscience ones, but with a bit more leeway, as short term is a bit stronger to consider as an alternative vs only more gold right now (unlike vs science which is stronger) -->
+			if (bEconomyOnlyBuilding)
+			{
+				if (bAtWar)
+				{
+					// <!-- custom: no time for this, try to survive rather and instead or do whatever is more urgent, and even if we are stronger, still press on other war urgent matters rather although maybe not always best but hopefully often enough for AIs i mean -->
+					return 0;
+				}
+				// <!-- custom: similar reasoning even if out of war, if urgent enough to skip it-->
+				else
+				{
+					if (bDanger)
+					{
+						return 0;
+					}
+					// <!-- custom: else it is hard to tell really but consider delaying, should help especially early let's try that and see how our AI behave, hopefully it would improve early rushing potential at the cos tfo slightly slower science prgoession mid game, but maybe gaining an extra city or not losing one offsets that especially long term, and not just in science gains terms-->
+					else if (bWarPlan)
+					{
+						return 0;
+					}
+					else
+					{
+						if (bHighEnoughGoldModifier)
+						{
+							// City’s actual gold/turn (slider + tiles + specialists etc.)
+							const int iCityGoldRate = getCommerceRate(COMMERCE_GOLD);
+
+							// <!-- custom: low ROI expected, go for something else at least for now then reevaluate later (note: the happiness part, e.g. of the market, or the health part for example, e.g. of the grocer, have been evaluated before, now we're only evaluating remaining building on economic criteria), let this function or others hadnle more fine-grained cases, as for us we only want to cover most blatant ones but anyways (building a bank with 1 city gold rate for example), hopefully helps the AI while being versatile and reliable, to be stronger and sharper in its building choices-->
+							const int iMinCityGoldRate = 6;
+							if (iCityGoldRate < iMinCityGoldRate)
+							{
+								return 0;
+							}
+						}
+						// <!-- custom: else flat gold per turn is fine if all other/previous conditions don't make it low priority -->
+					}
+				}
+			}
+
+			// --- Trade-route economy (Customs House / <!-- custom: Lighthouse with our changes as of now-->-like) --------------------
+
+			// <!-- custom: a bit weird coding but i think is simple and effective in making sure we don't forget to check previous ones from not being checked again at the ambiguous remaining buildings stage such as below as well-->
+			const bool bPreviousBuildings2 = (
+				// <!-- custom: note: bNot etc... is already a negative boolean, don't renegae it unless needed -->
+				bPreviousBuildings ||
+				bEconomyBuilding
+			);
+
+			const int iTradeYield = getTradeYield(YIELD_COMMERCE); // current trade commerce in THIS city
+
+			const int iTotalTradeRoutesAdded = (kBuilding.getTradeRoutes() + kBuilding.getCoastalTradeRoutes() + kBuilding.getAreaTradeRoutes());
+			const bool bTradeRouteAdder = (iTotalTradeRoutesAdded > 0);
+
+			const bool bTradeRouteModifier = (kBuilding.getTradeRouteModifier() > 0);
+			const bool bHasAnyForeignTradeRouteModifier = (kBuilding.getForeignTradeRouteModifier() > 0);
+			const bool bHasAnyTradeRouteModifier = (
+				bTradeRouteModifier ||
+				bHasAnyForeignTradeRouteModifier
+			);
+
+			const bool bTradeBuilding = (
+				bTradeRouteAdder ||
+				bHasAnyTradeRouteModifier
+			);
+
+			const bool bTradeOnlyBuilding = (
+				bTradeBuilding &&
+				!bPreviousBuildings2
+			);
+
+			if (bTradeOnlyBuilding)
+			{
+				// 0) War / danger: same policy as other econ/science
+				if (bAtWar || bDanger || bWarPlan)
+				{
+					return 0;
+				}
+
+				// 1) Foreign % only helps if we actually have foreign trade in THIS city <!-- custom: and if no routes are added otherwise as chatgpt 5 added after i asked it about it hehe thanks still but really i mean thanks anwyays etc hehe thanks -->
+				// ...but don't veto here if the building ALSO adds routes; let ROI check handle it.
+				// <!-- custom: reuse bForeignTrade as recommended by chatgpt 5 (in another thread but thanks still), as indeed we can know people but not have open borders with them, so no trade then. I'm a bit reluctant to use it in case it is inaccurate, but may as well do so and whatever happens xd, at worse we won't reject the building so shouldn't harm too much ideally -->
+				// Right now you use iHasMetCount > 0. That doesn’t guarantee foreign trade (you still need connection / open borders). You already computed bForeignTrade earlier—use it.
+				if (bHasAnyForeignTradeRouteModifier && !bForeignTrade && !bTradeRouteAdder)
+				{
+					return 0;
+				}
+
+				// 2) Flat “don’t bother if there’s basically no trade here"
+				//    (lets genuine trade cities build them; starved cities skip)
+				bool const bHasAnyEffectiveTradeRouteModifier = (
+					bTradeRouteModifier ||
+					(bHasAnyForeignTradeRouteModifier && bForeignTrade)
+				);
+
+				// <!-- custom: low ROI, better skip -->
+				// pure % mods with tiny base are weak
+				// <!-- custom: update: also take to be added by this building trade yield as part of the ROI calculation as well as recommended nicely thanks by chatgpt 5 (from another thread xd but thanks still, also check if accurate) -->
+				// If the building adds routes (bTradeRouteAdder), a low current iTradeYield is precisely when it can be good.
+				// <!-- custom: small correction, beyond >= 3 (say from 4+), we are already beyond ROI so no need to early reject the building here anymore -->
+				const int iMinTradeYield = 4;
+				if (iTradeYield < iMinTradeYield)
+				{
+					int iBase = iTradeYield;
+					if (bHasAnyEffectiveTradeRouteModifier)
+					{
+						iBase += 1; // ‘virtual’ route from % mods
+					}
+
+					// If base >= 4, ROI is already fine → no veto here.
+					if (iBase < iMinTradeYield)
+					{
+						const int iMinTradeRoutesBase = 3;
+						const int iMinTradeRoutesBaseNeedIfClose = 1;
+						const int iMinTradeRoutesBaseNeedIfFar = 2;
+						int iRequired = ((iBase == iMinTradeRoutesBase) ? iMinTradeRoutesBaseNeedIfClose : iMinTradeRoutesBaseNeedIfFar); // ==3 needs +1, <=2 needs +2
+						if (iTotalTradeRoutesAdded < iRequired)
+						{
+							return 0; // skip for now
+						}
+					}
+				}
+			}
+
+			// --- Espionage (Jail / Intelligence Agency / Security Bureau) ----------------
+
+			const bool bPreviousBuildings3 = (
+				// <!-- custom: note: bNot etc... is already a negative boolean, don't renegae it unless needed -->
+				bPreviousBuildings2 ||
+				bTradeOnlyBuilding
+			);
+
+			const int iFlatEspionagePerTurnFromBuilding = kBuilding.getCommerceChange(COMMERCE_ESPIONAGE) + kBuilding.getObsoleteSafeCommerceChange(COMMERCE_ESPIONAGE);
+
+			const bool bHighEnoughEspionageModifier = (kBuilding.getCommerceModifier(COMMERCE_ESPIONAGE) >= 20);
+
+			static const SpecialistTypes eSpecialistSpy = (SpecialistTypes)GC.getInfoTypeForString("SPECIALIST_SPY", true);
+
+			const bool bMostEspionageSourcesBuilding = (
+				(iFlatEspionagePerTurnFromBuilding > 0) ||
+				(kBuilding.getSpecialistCount(eSpecialistSpy) > 0) ||
+				(kBuilding.getFreeSpecialistCount(eSpecialistSpy) > 0)
+			);
+
+			const bool bEspionageSourceBuilding = (
+				bHighEnoughEspionageModifier ||
+				bMostEspionageSourcesBuilding
+			);
+
+			const bool bHighEnoughEspionageDefenseModifier = (kBuilding.getEspionageDefenseModifier() >= 20);
+
+			const bool bEspionageBuilding = (
+				bEspionageSourceBuilding ||
+				bHighEnoughEspionageDefenseModifier
+			);
+
+			const bool bEspionageOnlyBuilding = (
+				bEspionageBuilding &&
+				!bPreviousBuildings3
+			);
+
+			// <!-- custom: similar reasoning than for economy buildings but with more leeway, as espionage and here espionage buildings are less important relatively, and may be valuable in different times; as for AI at higher difficulties they don't need to spend so much on spying, they can just coast ahead due to their handicap advantages at higher difficulties, but at lower difficulties, they may have to -->
+			if (bEspionageOnlyBuilding)
+			{
+				if (bAtWar)
+				{
+					// <!-- custom: no time for this, try to survive rather and instead or do whatever is more urgent, and even if we are stronger, still press on other war urgent matters rather although maybe not always best but hopefully often enough for AIs i mean -->
+					return 0;
+				}
+				// <!-- custom: similar reasoning even if out of war, if urgent enough to skip it-->
+				else
+				{
+					if (bDanger)
+					{
+						return 0;
+					}
+					else if (bWarPlan)
+					{
+						return 0;
+					}
+					// <!-- custom: at higher difficulties (from say immortal+, as emperor is maybe doable without relying too much if at all (source: me xd) on spying), AIs don't need to worry too much about espionage as they have handicap advantages, but they need to thwart human espionage attempts and perhaps of other AI players to a bigger extent as well maybe too so to have good espionage defense buildings; as for lower difficulties (say chieftain and below), AIs need to engage more in spying to compensate their penalties so no spy defense buildings (nothing to steal xd they should be behind in tech for most at least not urgent or skip entirely to simplify) but spy offensive buildings should help-->
+					else
+					{
+						// --- Difficulty skew (research cost gap: human% - this AI%) --------------------
+						// Positive => AI advantage (human pays more); Negative => AI disadvantage.
+						const int iHumanResearchPercent = hGame.getResearchPercent();
+						const int iAIResearchPercent    = hAI.getAIResearchPercent();
+
+						const int iResearchPercentGap = iHumanResearchPercent - iAIResearchPercent; // +: AI advantage, −: AI disadvantage
+
+						// Tunables
+						const int iEPOffGap = -20; // AI pays ≥20% more → lean into EP offense
+						const int iEPDefGap =  30; // human pays ≥30% more → hedge against human EP (defense)
+
+						// Convenience flags
+						const bool bWePayMuchMoreForResearch = (iResearchPercentGap <= iEPOffGap);
+						const bool bWePayMuchLessForResearch = (iResearchPercentGap >= iEPDefGap);
+
+						// Difficulty-skewed priorities (AI-centric)
+						// Offense: we’re paying more for tech → EP can help compensate.
+						if (bWePayMuchLessForResearch)
+						{
+							if (bHighEnoughEspionageDefenseModifier)
+							{
+								// <!-- custom: in case other buildings are tied e.g. the acqueduct and we need it just as much, then build the acqueduct first -->
+								return AI_BUILDING_ALWAYS_PICK_FIRST - 1000 ;
+							}
+						}
+						else if (bWePayMuchMoreForResearch)
+						{
+							if (bEspionageSourceBuilding)
+							{
+								// <!-- custom: in case other buildings are tied e.g. the acqueduct and we need it just as much, then build the acqueduct first -->
+								return AI_BUILDING_ALWAYS_PICK_FIRST - 1000;
+							}
+						}
+					}
+				}
+			}
+
+			// <!-- custom: then for culture buildings (e.g. monument, theatre, coliseum, etc if any more), we only want to strongly discourage and tell the AI to really not build thme i case it is clearly detrimental to do so. In other cases, being too harsh with these may result in too low culture, or it is uncertain whether other buildings are better. We only want, here, to reserve the hammer for more urgent buildings, and perhaps units incases where it is more urgent to do so, especially early. A collosseum is +/- 3 swordsmen, so if we don't strongly need it, consider ditching it for efficiency for example. If we have have our BFC already, we're about good for the early game, look at other priorities or better use of the hammer when relevant or more urgent to do so -->
+
+			const bool bPreviousBuildings4 = (
+				bPreviousBuildings3 ||
+				bEspionageBuilding
+			);
+
+			const int iFlatCulturePerTurnFromBuilding = kBuilding.getCommerceChange(COMMERCE_CULTURE) + kBuilding.getObsoleteSafeCommerceChange(COMMERCE_CULTURE);
+
+			const bool bCultureBuilding = (
+				(iFlatCulturePerTurnFromBuilding > 0) ||
+				(kBuilding.getCommerceModifier(COMMERCE_CULTURE) > 0)
+			);
+
+			// “Pure" culture (don’t touch if it was already classified elsewhere)
+			const bool bCultureOnlyBuilding = (
+				bCultureBuilding &&
+				!bPreviousBuildings4
+			);
+
+			if (bCultureOnlyBuilding)
+			{
+				// <!-- custom: use a larger window than some previous buildings as culture buildings can be more often and longer in terms of game turns not urgent, and freeing the hammer in such cases may be more important for more turns, especially if we're not chasing a cultural victory, nor are we badly pressed at our borders, consider the short term value of the hammers as well hehe -->
+				const int iEarlyMidTurnsCultureNormal = 125; // @Normal
+				const int iEarlyMidTurnsCultureAdjusted = iEarlyMidTurnsCultureNormal * iGameSpeedMultiplier / 100;
+				const bool bEarlyMidTurnsCulture = (iElapsedTurns < iEarlyMidTurnsCultureAdjusted);
+
+				// Do we still need the BFC? (K-Mod already boosts such buildings later.)
+				const bool bNeedCultureForBFC = AI_needsCultureToWorkFullRadius();
+
+				if (!bNeedCultureForBFC)
+				{
+					if (bEarlyMidTurnsCulture)
+					{
+						const int iEnoughEarlyCulturePerTurn = 2;
+						const bool bEnoughEarlyCulturePerTurn = (getCommerceRate(COMMERCE_CULTURE) >= iEnoughEarlyCulturePerTurn);
+						// delay fluff culture; let units/settlers/other buildings through
+						if (bEnoughEarlyCulturePerTurn)
+						{
+							return 0;
+						}
+					}
+				}
+			}
+			// <!-- custom: unknown or uncovered building (no wonders here, they are below), assume it's a useless building, at least in terms of war, skip it during war or war-like times; note: this doesn't handle previously covered buildings which should have their own war rules for better flexibility (some buildings are very good at war, some not at all, some so so, some depend, so adjust there rather and keep the final war-tail here as chatgpt 5 calls it and which i like the name of xd -->
+			else
+			{
+				// <!-- custom: military rules in particular may even ovveride our BFC needs in times of urgency (being at war, on the defensive in particular, and even more so if we are weaker, but even just being at war is enough to warrant skipping these i would say, strongly redirect towards unit or such, at least do not value this building here if it also excludes it from choosing it at all (i didn't check if it does) -->
+				if (bAtWar || bEnemyStrong || bDanger)
+				{
+					return 0;
+				}
+				else if (bWarPlan)
+				{
+					return 0;
+				}
+			}
+		}
+		// <!-- custom: wonders (i.e. world + national) -->
+		else if (bSAS_AI_BUILDING_VALUE_WONDERS_OPTIMIZE)
+		{
+			// <!-- custom: no great wall or any wonder with the barbarian blocking at borders after a certain era (e.g. medieval or higher, not much barbarians left if at all then, not worth the hammer) feature as it is pointless then -->
+			// Barbarian-barrier WW special-case (Great Wall: bBorderObstacle=1)
+			static const bool bSAS_AI_BUILDING_VALUE_ANTI_BARBARIAN_BORDER_WONDER_LATE_ENABLE = GC.getDefineBOOL("SAS_AI_BUILDING_VALUE_ANTI_BARBARIAN_BORDER_WONDER_LATE_ENABLE");
+			if (!kGame.isOption(GAMEOPTION_NO_BARBARIANS) && !bSAS_AI_BUILDING_VALUE_ANTI_BARBARIAN_BORDER_WONDER_LATE_ENABLE)
+			{
+				if (kBuilding.isAreaBorderObstacle())
+				{
+					static const int iSAS_AI_BUILDING_VALUE_ANTI_BARBARIAN_BORDER_WONDER_LATE_MAX_ERA = GC.getDefineINT("SAS_AI_BUILDING_VALUE_ANTI_BARBARIAN_BORDER_WONDER_LATE_MAX_ERA");
+
+					if (iCurrentEra > iSAS_AI_BUILDING_VALUE_ANTI_BARBARIAN_BORDER_WONDER_LATE_MAX_ERA)
+					{
+						return 0;
+					}
+				}
+			}
+
+			const int iCost = getProductionNeeded(eBuilding);
+
+			// <!-- custom: save some computation by processing this early-on -->
+			// too weak to justify any wonder now
+			// <!-- custom: see SAS defines to specifically tune its suboptions rather. Code added with the help of chatgpt 5.2 thanks -->
+			if (bWorldWonder && bSAS_AI_BUILDING_VALUE_WORLD_WONDERS_OPTIMIZE)
+			{
+				// <!-- custom: update: in autoplay, the SAS_AI_BUILDING_VALUE_WORLD_WONDERS_OPTIMIZE check specifically greatly reduces the number of early wonders (0 wonders vs 6 wonders at turn 100 with vs without it. As for later wonders, thanks to our era based very cheap world wonder checks, we eventually catch up later and build most, just not early when hammer is most valuable). Default advciv-sas behaviour (enabled) allows to maximize hammer efficiency early, while disabling this or alternatively its sub-knob(s) rather restores a more base AdvCiv-like heavy world wonder building profile. Adjust as you see fit. Code added with the help of chatgpt 5.2 thanks -->
+				// Cheap World Wonder grab policy: per-era iCost caps (XML-cost gates).
+				// Compare raw iCost vs raw cap (no game-speed scaling) since XML cost is game-speed independent.
+				// Era index assumed: 0=Ancient, 1=Classical, 2=Medieval, 3=Renaissance, 4=Industrial, 5=Modern, 6=Future.
+
+				static const int iCheapWWCapAncientNormal     = GC.getDefineINT("SAS_AI_BUILDING_VALUE_WORLD_WONDERS_CHEAP_ICOST_CAP_ANCIENT_NORMAL");
+				static const int iCheapWWCapClassicalNormal   = GC.getDefineINT("SAS_AI_BUILDING_VALUE_WORLD_WONDERS_CHEAP_ICOST_CAP_CLASSICAL_NORMAL");
+				static const int iCheapWWCapMedievalNormal    = GC.getDefineINT("SAS_AI_BUILDING_VALUE_WORLD_WONDERS_CHEAP_ICOST_CAP_MEDIEVAL_NORMAL");
+				static const int iCheapWWCapRenaissanceNormal = GC.getDefineINT("SAS_AI_BUILDING_VALUE_WORLD_WONDERS_CHEAP_ICOST_CAP_RENAISSANCE_NORMAL");
+				static const int iCheapWWCapIndustrialNormal  = GC.getDefineINT("SAS_AI_BUILDING_VALUE_WORLD_WONDERS_CHEAP_ICOST_CAP_INDUSTRIAL_NORMAL");
+				static const int iCheapWWCapModernNormal      = GC.getDefineINT("SAS_AI_BUILDING_VALUE_WORLD_WONDERS_CHEAP_ICOST_CAP_MODERN_NORMAL");
+				static const int iCheapWWCapFutureNormal      = GC.getDefineINT("SAS_AI_BUILDING_VALUE_WORLD_WONDERS_CHEAP_ICOST_CAP_FUTURE_NORMAL");
+
+				int iCheapWWCapNormal = iCheapWWCapFutureNormal;
+				switch (iCurrentEra)
+				{
+					case 0: iCheapWWCapNormal = iCheapWWCapAncientNormal; break;
+					case 1: iCheapWWCapNormal = iCheapWWCapClassicalNormal; break;
+					case 2: iCheapWWCapNormal = iCheapWWCapMedievalNormal; break;
+					case 3: iCheapWWCapNormal = iCheapWWCapRenaissanceNormal; break;
+					case 4: iCheapWWCapNormal = iCheapWWCapIndustrialNormal; break;
+					case 5: iCheapWWCapNormal = iCheapWWCapModernNormal; break;
+					default: iCheapWWCapNormal = iCheapWWCapFutureNormal; break; // includes era 6 and any later eras
+				}
+
+				// Final flag: cheap enough to consider as "grab it"
+				const bool bCheapWorldWonder = (iCost <= iCheapWWCapNormal);
+				// If cheap, push it hard (so it doesn't get ignored by other builds).
+				if (bCheapWorldWonder)
+				{
+					// <!-- custom: minimal danger check since the risk is worth it as the wonder is so cheap -->
+					if (!bDanger)
+					{
+						return AI_BUILDING_ALWAYS_PICK_FIRST + 3000;
+					}
+				}
+
+				static const int iMinBaseHammers = GC.getDefineINT("SAS_AI_BUILDING_VALUE_WORLD_WONDERS_MIN_BASE_HAMMERS");
+				static const int iMinExtraHammersPerEra = GC.getDefineINT("SAS_AI_BUILDING_VALUE_WORLD_WONDERS_MIN_EXTRA_HAMMERS_PER_ERA");
+
+				if (iBaseHammersPerTurn < (iMinBaseHammers + (iCurrentEra * iMinExtraHammersPerEra)))
+				{
+					return 0;
+				}
+			}
+			else if (bNationalWonder && bSAS_AI_BUILDING_VALUE_NATIONAL_WONDERS_OPTIMIZE)
+			{
+				static const int iMinBaseHammers = GC.getDefineINT("SAS_AI_BUILDING_VALUE_NATIONAL_WONDERS_MIN_BASE_HAMMERS");
+				static const int iMinExtraHammersPerEra = GC.getDefineINT("SAS_AI_BUILDING_VALUE_NATIONAL_WONDERS_MIN_EXTRA_HAMMERS_PER_ERA");
+
+				if (iBaseHammersPerTurn < (iMinBaseHammers + (iCurrentEra * iMinExtraHammersPerEra)))
+				{
+					return 0;
+				}
+			}
+			else if (!bWorldWonder && !bNationalWonder && bSAS_AI_BUILDING_VALUE_UNKNOWN_WONDERS_OPTIMIZE)
+			{
+				static const int iMinBaseHammers = GC.getDefineINT("SAS_AI_BUILDING_VALUE_UNKNOWN_WONDERS_MIN_BASE_HAMMERS");
+				static const int iMinExtraHammersPerEra = GC.getDefineINT("SAS_AI_BUILDING_VALUE_UNKNOWN_WONDERS_MIN_EXTRA_HAMMERS_PER_ERA");
+
+				if (iBaseHammersPerTurn < (iMinBaseHammers + (iCurrentEra * iMinExtraHammersPerEra)))
+				{
+					return 0;
+				}
+			}
+
+			// <!-- custom: e.g. building our build 25% faster with stone (not related to yields/hammers gained after building is completed!) -->
+			// Full production modifier (traits, resources, state religion, etc.)
+			const int iProductionModifier = getProductionModifier(eBuilding);
+			// “Can we realistically <!-- custom: build as i assume this is about starting new buildings --> it?" (turn cap)
+			// Use a simple time-to-build gate rather than only a flat hpt cut. It auto-scales with cost and modifiers.
+			int const iWWMul100  = 100 + iProductionModifier; // 100 + (traits/stone/marble/religion/etc.)
+			// Estimated turns (ceil): cost / (hpt * (1+mods))
+			/*
+			Examples:
+			A) cost=300, hpt=10, modifier=+25% (iWWMul100=125)
+			Turns = ceil(300 / (10*1.25)) = ceil(300/12.5) = ceil(24.0) = 24
+			Integer: (300*100 + 10*125 - 1) / (10*125) = (30000+1250-1)/1250 = 31249/1250 = 24
+			//
+			B) cost=275, hpt=8, modifier=0% (iWWMul100=100)
+			Turns = ceil(275 / (8*1.0)) = ceil(34.375) = 35
+			Integer: (27500 + 800 - 1) / (800) = 28300/800 = 35
+			//
+			C) cost=450, hpt=15, modifier=+50% (iWWMul100=150)
+			Turns = ceil(450 / (15*1.5)) = ceil(450/22.5) = 20
+			Integer: (45000 + 15*150 - 1) / (2250) = (45000+2250-1)/2250 = 47249/2250 = 20
+			*/
+			int const iTurnsWW = (iCost * 100 + iBaseHammersPerTurn * iWWMul100 - 1) / (std::max(1, iBaseHammersPerTurn) * iWWMul100);
+			// Window scales by speed a bit
+			// <!-- custom: 20 turns at normal seem fine, any time more and we may spend too much time on it instead of doing something else, or a rival may beat us to it -->
+			static const int iSAS_AI_BUILDING_VALUE_WONDERS_MAX_BASE_TURNS_NORMAL_TO_BUILD = GC.getDefineINT("SAS_AI_BUILDING_VALUE_WONDERS_MAX_BASE_TURNS_NORMAL_TO_BUILD");  // @Normal
+			int iSoftTurnCapNormal = iSAS_AI_BUILDING_VALUE_WONDERS_MAX_BASE_TURNS_NORMAL_TO_BUILD; // @Normal
+			// <!-- custom: adjust based on game difficulty: on lower difficulties, we have penalties, so unlikely we compete with the human players, so use our hammers conservatively and more towards self-preservation, so do not increase turn time allowed to complete this, but at higher difficulties, we have more leeway and enough discounts, unlikely the human can compete with us, however it would be strange that we would spend too much time on wonders despite our discounts, which would mean most likely we are doing something inefficient or wrong, so don't build the wonder with a tighter window if is beyond this window -->
+			// AdvCiv: no human WCP <!-- custom: at least i didn't find it easily with a global search vs code so hopefully accurate enough as such as provided by chatgpt 5 but check if accurate and if my guess of doing as such as well is fine as i didn't check further-->; treat as 100%
+			const int iHumanWCPDefine = 100;
+			int const iHumanWCP = iHumanWCPDefine;
+			int const iAIWCP    = hAI.getAIWorldConstructPercent();
+			// Gap is "human% - ai%". Bigger positive => AI has bigger production edge.
+			int const iConstructGap = iHumanWCP - iAIWCP;
+			// <!-- custom: e.g. iHuman 100, iAI 68, so 32% higher costs for AI (maybe this is immortal or some higher difficulty (imaginary numbers)) -->
+			const int iMaxConstructGap = 20;
+			const int iMaxConstructGapMult = 9;
+			const int iMaxConstructGapDiv = std::max(1, 10);
+			if (iConstructGap >= iMaxConstructGap)
+			{
+				iSoftTurnCapNormal = (iSoftTurnCapNormal * iMaxConstructGapMult) / iMaxConstructGapDiv;
+			}
+			// <!-- custom: then in all cases adjust based on game speed -->
+			int const iSoftTurnCapAdjusted = iSoftTurnCapNormal * iGameSpeedMultiplier / 100;
+			// <!-- custom: note: this also handles turn to build calculation for production bonus based wonders if i'm not mistakensuch as the ironworks -->
+			// If it's going to sit in the queue forever, skip.
+			if (iTurnsWW > iSoftTurnCapAdjusted)
+			{
+				return 0;
+			}
+
+			// <!-- custom: may save a lot of computation by checking this early and forwarding the early rejects (note: make sure to not push ahead / forward the always pick first blocks else it may alter history (unless is as you want it)), since we'll reject anyway later (especialyl for the loop code). -->
+			// <!-- custom: more early checks to save computation before the loop computation -->
+			// <!-- custom: especially if losing, don't build wonder for our ennemies, do something else instead useful to help us survive. Note: there is a code somewhere that i saw that tells the AI to not ditch a wonder being built if >= a certain percentage of completion, which i think is 50%, if i find it heavily tighten it as well, even at 50% completion, we can still produce several longbowmen or such instead that may increase our odds a lot, ideally don't start the wonder at all, but if didn't see it (surprise war, etc), then don't continue building it somewhere as well if i find where again, as for this code only handles new buildings to start, and tightening it heavily here in war or war-related context; update: i found it and tweaked it there as well, it's as of now in CvCityAI::AI_chooseProduction (ctrl+f "completion" to find it xd luckily found it again thankfully maybe rather i should say to myself xd or chatgpt 5 i'm tlaking to in this case) -->
+			// hard skips: don’t throw the game to build a shiny thing
+			if (bWorldWonder && bSAS_AI_BUILDING_VALUE_WORLD_WONDERS_OPTIMIZE)
+			{
+				// <!-- custom: don't be too strict here, we need the heroic epic still even if enemy is strong, so save some computation but not at the cost of worse gameplay or competitiveness. Chatgpt 5 also suggests this or something similar so doing as such -->
+				if (!bLandUnitsBuilding)
+				{
+					if (bAtWar || bDanger || bWarPlan || bEnemyStrong)
+					{
+						return 0;
+					}
+				}
+				else
+				{
+					// <!-- custom: world wonders are generally costlier, so don't build them if danger but also if at war -->
+					if (bAtWar || bDanger)
+					{
+						return 0;
+					}
+				}
+
+				// <!-- custom: even if we don't have bonuses early, we may get a lucky stonehenge if rivals have not connected their stone yet or we got lucky with our start that would have high production maybe so give it a try in these early turns for wonders cases, else don't risk wasting precious early hammer on incompleted wonder vs say units or anything else instead (a granary + barracks + worker for example more or less); note: modifiers are not only bonuses, a civic or religion modifier may be equal or even stronger than the bonus one, even if we don't have the bonus, so look rather at the final modifier no matetr where it comes from -->
+				// Early window (scaled to speed)
+				const int iEarlyTurnsNoModifierNormal = 35; // @Normal
+				const int iEarlyTurnsNoModifierAdjusted = iEarlyTurnsNoModifierNormal * iGameSpeedMultiplier / 100;
+				const bool bEarlyTurnsNoModifier = (iElapsedTurns < iEarlyTurnsNoModifierAdjusted);
+				if (!bEarlyTurnsNoModifier)
+				{
+					// <!-- custom: our rivals will beat us (most likely, but assume so for efficiency) to it, better build something else than end up with a lot of wasted hammer -->
+					if (iProductionModifier < 25) // no stone/marble/trait/religion oomph? skip
+					{
+						return 0;
+					}
+					// <!-- custom: else don't incentivize it either, wonders are not necessarily the better choice, keep as is as per AI selection in other parts of the code wherever it is handled at least as of now-->
+				}
+
+				// <!-- custom: note: cannot try to save computation by checking bCoastalBuilding, as in some weird xml mod mods or such (or maybe we would too or would not), maybe a non-coastal city would give a coastal cities scaling effect, so do not check bCoastalBuilding to avoid overlooking these as chatgpt 5 advised/noted if i understood it correctly -->
+				// --- Naval / Coastal-scaling WW: require a real coastline -----------------
+				// // 1) City-local coastal wonders (benefit tied to THIS city’s water/naval use)
+				// const bool bCoastalLeaningWonder = (
+				// 	(kBuilding.getSeaPlotYieldChange(YIELD_FOOD) > 0) ||
+				// 	(kBuilding.getSeaPlotYieldChange(YIELD_PRODUCTION) > 0) ||
+				// 	(kBuilding.getSeaPlotYieldChange(YIELD_COMMERCE) > 0) ||
+				// 	(kBuilding.getDomainFreeExperience(DOMAIN_SEA) > 0) ||
+				// 	(kBuilding.getDomainProductionModifier(DOMAIN_SEA) > 0)
+				// );
+				// Why this helps
+				// - Colossus-type (city-local): allowed even with a single coastal city, as long as that city really leverages water tiles.
+				// - Great-Lighthouse-type (empire-scaling): requires multiple coastal cities; otherwise it’s usually a trap.
+				// 2) Empire-scaling coastal wonders (benefit grows with # of coastal cities)
+				const bool bCoastalScalingWonder = (
+					((kBuilding.getCoastalTradeRoutes() > 0) ||
+					(kBuilding.getGlobalSeaPlotYieldChange(YIELD_FOOD) > 0) ||
+					(kBuilding.getGlobalSeaPlotYieldChange(YIELD_PRODUCTION) > 0) ||
+					(kBuilding.getGlobalSeaPlotYieldChange(YIELD_COMMERCE) > 0))
+				);
+				// <!-- custom: forwarding this precheck could bypass our bLandUnitsBuilding always priority later, so in case some mod mod or us make a wonder that is bLandUnitsBuilding true, do not reject it so soon even if coastal leaning if i understand it correctly-->
+				if (bCoastalScalingWonder && !bLandUnitsBuilding)
+				{
+					// Flat rule: need at least 3 coastal cities empire-wide <!-- custom: regardless of map size, should be easier as such and covering most cases, although a bit inaccurate for small map sizes but maybe fine as naval wonders should overall be less important in most cases unless we have many naval cities which hopefully overlaps fine or fine enough with this; also in our mod moai or such are not critical anymore at least for moai, as the port replaces this per city as an individual building as of now, and moai appear much later -->.
+					const int iCoastalCities = kOwner.countNumCoastalCities();
+					const int iMinCoastalCitiesCoastalWonder = 3;
+					if (iCoastalCities < iMinCoastalCitiesCoastalWonder)
+					{
+						return 0;
+					}
+				}
+			}
+			else if (bNationalWonder && bSAS_AI_BUILDING_VALUE_NATIONAL_WONDERS_OPTIMIZE)
+			{
+				// <!-- custom: don't be too strict here, we need the heroic epic still even if enemy is strong, so save some computation but not at the cost of worse gameplay or competitiveness. Chatgpt 5 also suggests this or something similar so doing as such -->
+				// <!-- custom: as a side effect, may indirectly reduce early spam in favour of betting on a higher unit production late game, where multipliers help more, economy is stronger to sustain it, tech lead higher to not fall behind if we produce a bit more units maybe, and scaling is important to face rivals. It may also indirectly slightly improve early economy and reduce bankruptcy risk / imrpvoe economical performance. If one AI is running away, it may give it an extra lead while rivals build heroic epics, possibly (i guess and happened in autoplay map i tried it on it seems), however if the game is closer, this should improve mid and late game performance and competitiveness of the AI (i think/guess). And if an AI is running away, not sure avoiding the heroic epic would ultimately help prevent that, although a short term patch-up strategy may help salvage things sometimes possibly, but generally i think encouraging AIs to build more often and earlier heroic epics (or whichever wonder in your xml) should generally, in theory help, but i didn't test it too much to be sure, check if accurate -->
+				// Short version: I agree with the direction. Earlier HE in the right city usually improves mid-/late-game military tempo and doesn’t hurt runaways (your war/danger caps already prevent self-sabotage). I’d just tone down a couple causal claims in the comment.
+				// What I agree with
+				// 	- Tradeoff is real: a short early tempo dip (hammers into HE) for higher sustained unit throughput later. That’s the key benefit.
+				// 	- Economy side-effect: if it replaces early unit spam, upkeep pressure eases a bit. That’s a side-effect, not a guarantee.
+				// 	- Runaway leader: this change won’t stop one; it’s mostly neutral there because of your danger/enemy-strong skips.
+				// 	- Closer games: more AIs placing HE early in real pump cities raises their floor. Net effect: tougher midgame wars.
+				// What I’d soften in the comment
+				// 	- “tech lead higher" and “economy stronger to sustain it" aren’t direct effects of HE; they’re contingent on building fewer early units or getting safer growth windows. I’d state those as may and keep the mechanism explicit: fewer early units → lower upkeep → sometimes more budget for research.
+				// <!-- custom: after testing it ingame, it seems effect is very good and impressive: despite being behind early, we still build an early heroic epic, and stay relevant despite enemy being stronger, until they win, but our empire didnt collapse and bounced back multiple times (they delayed a bit their heroic epics but there are enough among other rivals' empires). I don't know how much randomness influences this, but in this other autoplay map i autoplayed (redundant), it seems to greatly help so left as such, hopefully helps other AIs as well-->
+				if (!bLandUnitsBuilding)
+				{
+					// Don’t invest if we’re about to get rolled
+					if (bEnemyStrong || bDanger)
+					{
+						return 0;
+					}
+				}
+				else
+				{
+					if (bDanger)
+					{
+						return 0;
+					}
+				}
+			}
+			else if (!bWorldWonder && !bNationalWonder && bSAS_AI_BUILDING_VALUE_UNKNOWN_WONDERS_OPTIMIZE)
+			{
+				if (!bLandUnitsBuilding)
+				{
+					// Don’t invest if we’re about to get rolled
+					if (bEnemyStrong || bDanger)
+					{
+						return 0;
+					}
+				}
+				else
+				{
+					if (bDanger)
+					{
+						return 0;
+					}
+				}
+			}
+
+			// <!-- custom: common logic for unhealthiness removing wonders (world + national) -->
+			// --- National Park style (skip when already healthy / too small ) -------------
+			// Detect NP by either “no pop unhealthiness"
+			const bool bUnhealthinessReducerWonder = kBuilding.getUnhealthyPopulationModifier() <= -50;
+
+			// <!-- custom: forwarding this precheck could bypass our bLandUnitsBuilding always priority later, so in case some mod mod or us make a wonder that is bLandUnitsBuilding true, do not reject it so soon even if it is unhealthiness reducer as intended as per this check, if i understand it correctly (so add a bLandUnitsBuilding exclusion i mean to avoid that)-->
+			if (bUnhealthinessReducerWonder && !bLandUnitsBuilding)
+			{
+				// Don’t do this under pressure
+				if (bAtWar || bDanger || bWarPlan || bEnemyStrong)
+				{
+					return 0;
+				}
+
+				// <!-- custom: ideally we could use for some of this computation the `rank(` helpers, as according to grok ai they compare cities in our empire only, and according to which ranking is not shared among all players unlike what chatgpt 5 claimed, check if accurate -->
+				// Research suggests that these rank calculation methods are empire-wide, meaning they compare cities only within the same player's control. It seems likely that this design supports AI decision-making focused on internal empire management rather than global comparisons.
+				const int iPopulationRank = findPopulationRank();
+				const bool bTop2Population = (iPopulationRank <= 2);
+
+				// <!-- custom: worth considering the health gains if city is big enough and has enough unhealthiness from population already; also note: as clarified to chatgpt 5, this logic is a bit too simplistic in case population doesn't provide enough some unheathiness in some mod or scenairo or such to justify building this, but htis should still be a fine approximation, as high enough pop cities should generally have other sources of unheathiness that may make this a recommendable building to build. As for us not suggesting such here, but making sure we don't build it if not efficient, else let other functions handle that -->
+				// <!-- custom: unlikely to have enough gains if we build this in our city size 12 when we have a city size 20 that could build it instead, at least in most cases so go with this; also note: < not <= so if city 3 or city 4 exactly have same pop as city 2 or city 1, then build in any as i clarified to chatgpt 5 hehe, don't reject these cities -->
+				const int iUnhealthinessReducerWonderMinPop = 12;
+				if ((iPop < iUnhealthinessReducerWonderMinPop) || !bTop2Population)
+				{
+					return 0;
+				}
+				const int iUnhealthinessReducerWonderMaxHealthLevel = 1;
+				// <!-- custom: city is healthy enough for now, no need to build this -->
+				if (iHealthLevel > iUnhealthinessReducerWonderMaxHealthLevel)
+				{
+					return 0;
+				}
+				// else: let normal scoring handle it <!-- custom: (don't prioritize here, just make sure we don't build it when inefficient) -->
+			}
+
+			// <!-- custom: ideally we could use for some of this computation the `rank(` helpers, as according to grok ai they compare cities in our empire only, and according to which ranking is not shared among all players unlike what chatgpt 5 claimed, check if accurate -->
+			// Research suggests that these rank calculation methods are empire-wide, meaning they compare cities only within the same player's control. It seems likely that this design supports AI decision-making focused on internal empire management rather than global comparisons.
+			// const bool bTop1Hammer = (iProductionRank == 1);
+			const bool bTop2Hammer = (iProductionRank <= 2);
+			// const bool bTop3Hammer = (iProductionRank <= 3);
+
+			// <!-- custom: add cache to avoid recomputation at every call with the help of chatgpt 5.2 thanks -->
+			const int iCurrentTurn = kGame.getGameTurn();
+
+			int iBestHpt = 0, iSecondBestHpt = 0, iThirdBestHpt = 0;
+
+			const bool bHammerCacheValid =
+				s_abTopHptValid[eOwner] &&
+				s_aiTopHptTurn[eOwner] == iCurrentTurn &&
+				s_aiTopHptNumCities[eOwner] == iNumCities;
+
+			if (bHammerCacheValid)
+			{
+				iBestHpt = s_aiBestHpt[eOwner];
+				iSecondBestHpt = s_aiSecondBestHpt[eOwner];
+				iThirdBestHpt = s_aiThirdBestHpt[eOwner];
+			}
+			else
+			{
+				int b1 = 0, b2 = 0, b3 = 0;
+				FOR_EACH_CITY(pLoopCity, kOwner)
+				{
+					const int h = pLoopCity->getBaseYieldRate(YIELD_PRODUCTION);
+					if (h > b1) { b3 = b2; b2 = b1; b1 = h; }
+					else if (h > b2) { b3 = b2; b2 = h; }
+					else if (h > b3) { b3 = h; }
+				}
+
+				iBestHpt = b1; iSecondBestHpt = b2; iThirdBestHpt = b3;
+
+				if (!bConstCache)
+				{
+					s_abTopHptValid[eOwner] = true;
+					s_aiTopHptTurn[eOwner] = iCurrentTurn;
+					s_aiTopHptNumCities[eOwner] = iNumCities;
+					s_aiBestHpt[eOwner] = b1;
+					s_aiSecondBestHpt[eOwner] = b2;
+					s_aiThirdBestHpt[eOwner] = b3;
+				}
+			}
+			// const bool bTop2Hammer = (iBaseHammersPerTurn >= iSecondBestHpt);
+			// <!-- custom: note: if we have only one city, second best is 0, handle that as per your own logic depending on what you want to do -->
+
+			// <!-- custom: if we have top 1 hammer city at 200 hammers somehow for example, and top 2 city at 90 hammers + top 3 city at 85 hammers, then top 4 city at 84 hammers, then the top 4 city is still good enough, so use the leeway formula of a top as an alternative (frees top city for unit production if it is busy or prioritizing doing so or unavailable for some reason or another (helps versatiltiy i guess / would say)) -->
+			const int iTopHammerLeeway = 5;
+			// <!-- custom: min percent of top1hammer -->
+			const int iMinPercentOfTop1HammerSlack = 70;
+			// <!-- custom: cover the case where cities are less than iHammerLeeway from best to worst, don't reject good cities if they are just 1-2 hammer apart, use an alternative condition for that case as well -->
+			// <!-- custom: e.g. if top city is 60 hammers, then our city candidate needs to have at least 60 hammers * 70 / 100  = 42 hammers (i.e. 70% of best hammer city hammers) strictly, so at least 43 hammers, which is good enough to replace our best cities if previous fail -->
+			const bool bEnoughHammersVsTop1Hammers = ((iBaseHammersPerTurn * 100) > (iBestHpt * iMinPercentOfTop1HammerSlack));
+			const bool bTop2HammerLeeway = ((iBaseHammersPerTurn + iTopHammerLeeway >= iSecondBestHpt) || bEnoughHammersVsTop1Hammers);
+			const bool bTop3HammerLeeway = ((iBaseHammersPerTurn + iTopHammerLeeway >= iThirdBestHpt) || bEnoughHammersVsTop1Hammers);
+
+			// <!-- custom: for production modifier wonders (e.g city increases by +25% hammer or such), only do so in top cities. Note: could handle other yields but would be tedious and we don't necessarily have too many if at all such wonders -->
+			const bool bProductionWonder = (
+				iTotalHammersModifier >= 20 // || // Forge/Factory <!-- custom: or weird variants if some mods implement bonus based hammer modifiers in regular buildings (as the ironworks does for example), so account for that as well -->
+				// <!-- custom: for now only tweak the early game as is most important and where most gains can be made i think, later production should be high enough and civilization developped enough to be able to more freely choose without too much consequences -->
+				//kBuilding.isPower() ||                                  // Plant gives power
+				//kBuilding.isAreaCleanPower()
+			);
+			// <!-- custom: forwarding this precheck could bypass our bLandUnitsBuilding always priority later, so in case some mod mod or us make a wonder that is bLandUnitsBuilding true, do not reject it so soon even if it is unhealthiness reducer as intended as per this check, if i understand it correctly (so add a bLandUnitsBuilding exclusion i mean to avoid that)-->
+			if (bProductionWonder && !bLandUnitsBuilding)
+			{
+				// <!-- custom: for scaling hammer wonders (world and national), pick best or among best hammer cities for best scaling of benefits -->
+				if (!bTop2HammerLeeway)
+				{
+					return 0;
+				}
+			}
+
+			// <!-- custom: note: ideally should handle commerce modifier wonders, but hopefully the hammer minimum requirements filter out most of the cities, still it is possible that a city is low hammer and high gold for example or vice versa, in such case it would be bad to build the wrong of each, but left as is for now if not always or not as bit tedious; there is also a risk they may never be built since we are already restricting enough, hopefully commerce and hammer overlap nicely or nicely enough, else maybe fine all in all considered to leave as such -->
+
+			// <!-- custom: note: cultural wonders (world and national) not handled, let AI decide if it wants them or not; may skew too much the balance or gameplay otherwise, and is less code to code (repetition) too (not that i would mind too much had purpose in this case i mean) -->
+
+			if (bWorldWonder && bSAS_AI_BUILDING_VALUE_WORLD_WONDERS_OPTIMIZE)
+			{
+				// <!-- custom: for world wonders, make sure we win the race, use top 2 as base -->
+				// <!-- custom: update: I thought this was the cause of less wonders but not; still, it is valuable to keep: in our mod as of now only ai capitals build settlers for efficiency, but since they are most likely highest hammer, it means only 1 city can fit, and if it is busy, less wonders i guess. We already have some wonder gates, so maybe we can be more lenient here, at least early. Code added with the help of chatgpt 5.2 thanks (although i did core logic and code myself hehe it helped for review and corrections and talk and such i mean if i may say thanks again xd thanks). -->
+				static const int iSAS_AI_BUILDING_VALUE_WORLD_WONDERS_LOWER_HAMMER_OK_AT_EXPANSION_PHASE_TURN_NORMAL = GC.getDefineINT("SAS_AI_BUILDING_VALUE_WORLD_WONDERS_LOWER_HAMMER_OK_AT_EXPANSION_PHASE_TURN_NORMAL");
+				const int iTurnExpansionPhaseAdjusted = (iSAS_AI_BUILDING_VALUE_WORLD_WONDERS_LOWER_HAMMER_OK_AT_EXPANSION_PHASE_TURN_NORMAL * iGameSpeedMultiplier) / 100;
+				const bool bExpansionPhaseAdjusted = (iElapsedTurns < iTurnExpansionPhaseAdjusted);
+
+				if (!bExpansionPhaseAdjusted && !bTop2HammerLeeway)
+				{
+					return 0;
+				}
+
+				// <!-- custom: skip wonder if many rivals can build it, most likely we won't finish it on time, better assume so in most cases should be efficient and help AI not build unbuildable wonders, if not already handled by code elsewhere but added to be safe and to not check all their code; note: in autoplay i did notice wonder races, i don't know if far from completing them rivals would attempt them or if it's only for close calls, but adding an extra safety to prevent inefficient ones just in case -->
+				// “Race pressure" (how many rivals can build it?)
+				// Super-simple "are rivals eligible already?" gate.
+				// If >=3 MET rival teams have the core (AND) tech, assume a hot race and skip.
+				// <!-- custom: update: I thought this was the cause of less wonders but not; still, it is valuable to keep: in our mod as of now only ai capitals build settlers for efficiency, but since they are most likely highest hammer, it means only 1 city can fit, and if it is busy, less wonders i guess. We already have some wonder gates, so maybe we can be more lenient here, at least early. Code added with the help of chatgpt 5.2 thanks (although i did core logic and code myself hehe it helped for review and corrections and talk and such i mean if i may say thanks again xd thanks). -->
+				static const bool bSAS_AI_BUILDING_VALUE_WORLD_WONDERS_DONT_BUILD_IF_RIVALS_KNOW_TECH = GC.getDefineBOOL("SAS_AI_BUILDING_VALUE_WORLD_WONDERS_DONT_BUILD_IF_RIVALS_KNOW_TECH");
+				if (bSAS_AI_BUILDING_VALUE_WORLD_WONDERS_DONT_BUILD_IF_RIVALS_KNOW_TECH)
+				{
+					TechTypes eAndTech = NO_TECH;
+					eAndTech = kBuilding.getPrereqAndTech();
+
+					if (eAndTech != NO_TECH)
+					{
+						// <!-- custom: to simplify don't check if the or additional prereqs in the XML's TechTypes in tech info is/are met or not, check if accurate or is best or satisfying enough and effective enough approach, it was simplest for me to write with chatgpt 5's help hehe and my limited understanding or rather as well knowledge of this if i may say for most -->
+						int iRivalsWhoCanStart = 0;
+						static const int iSAS_AI_BUILDING_VALUE_WORLD_WONDERS_DONT_BUILD_IF_RIVALS_KNOW_NUM = GC.getDefineINT("SAS_AI_BUILDING_VALUE_WORLD_WONDERS_DONT_BUILD_IF_RIVALS_KNOW_NUM");
+						// Only teams we've actually met (cheap + avoids false positives)
+						for (TeamIter<CIV_ALIVE,KNOWN_TO> it(getTeam()); it.hasNext(); ++it)
+						{
+							TeamTypes eRival = it->getID();
+							if (eRival == getTeam()) continue;            // skip us
+							if (GET_TEAM(eRival).isHasTech(eAndTech))    // has the gate tech
+							{
+								if (++iRivalsWhoCanStart >= iSAS_AI_BUILDING_VALUE_WORLD_WONDERS_DONT_BUILD_IF_RIVALS_KNOW_NUM)            // simple fixed cap
+									return 0;
+							}
+						}
+					}
+				}
+			}
+			else if (bNationalWonder && bSAS_AI_BUILDING_VALUE_NATIONAL_WONDERS_OPTIMIZE)
+			{
+				// <!-- custom: for national wonders, no risk to lose the race, use top 2 or top 3 as base or such depending on if the national wonder is a scaling one or not -->
+				if (!bTop3HammerLeeway)
+				{
+					return 0;
+				}
+
+				// <!-- custom: military national wonders, in particular heroic epic, etc if any more -->
+				if (bLandUnitsBuilding)
+				{
+					// <!-- custom: this is one of the scaling national wonders where we really want top hammer to take best benefits from it, so use tighter requirement with some leeway-->
+					if (!bTop2HammerLeeway)
+					{
+						return 0;
+					}
+
+					if (bWarPlan || bAtWarAndEnemyWeak)
+					{
+						if (bTop2Hammer)
+						{
+							// commit when pressing <!-- custom: with a positive nudge to really motivate for it as we expect nice rewards from it -->
+							return AI_BUILDING_ALWAYS_PICK_FIRST + 1000;
+						}
+					}
+
+					// otherwise, let normal scoring decide
+				}
+
+				// --- Government Center (Forbidden Palace <!-- custom: etc if any more (as of now versailles is a world wonder and does not even have this effect anymore so not included here -->) -----------------------
+				// <!-- custom: cover the one city empire case as chatgpt 5 nicely advised and that i thought of hehe but then forgot xd or didn't know how to easily do or forgot to do itthanks; in that case no need to move our government center since we only have one city and are already at government center unless mod mods change the logic/buildings somehow then they should also change this as well -->
+				if (iNumCities > 1)
+				{
+					const bool bGovCenter = kBuilding.isGovernmentCenter();
+					// <!-- custom: note: this is not the barbarian block so fine but check to be sure -->
+					static const BuildingClassTypes eBuildingClassPalace = (BuildingClassTypes)GC.getInfoTypeForString(GC.getDefineSTRING("SAS_AI_BUILDING_VALUE_GOVERNMENT_CENTER_PALACE_BUILDINGCLASS_NAME"));
+					const bool bPalaceBuildingClass = (eBuildingClass == eBuildingClassPalace);
+
+					if (!bPalaceBuildingClass)
+					{
+						if (bGovCenter)
+						{
+							const int iMinNumCitiesPalace = 7;
+							const int iMinNumCitiesHighM100 = 2;
+							// Empire needs to be somewhat large; tiny empires rarely benefit.
+							if (iNumCities < iMinNumCitiesPalace)
+							{
+								return 0;
+							}
+							// <!-- custom: note since chatgpt 5 asks about it many times: the code seems to not/never at least sometimes not check for null here so we don't, no need to complicate in this case, if there is an error they'll run into it as well, if not fine, and we don't risk causing any weird behavioru as such maybe -->
+							// don’t drop it in the capital; almost no benefit
+							if (isCapital())
+							{
+								return 0;
+							}
+							// still respect pressure gates
+							if (bAtWar || bWarPlan || bDanger)
+							{
+								return 0;
+							}
+
+							// <!-- custom: save computation by computing this only when/where we need it, as of now only in this block -->
+							// Yep—smartest path is to compute heavy stuff only when a candidate actually needs it, and only for the duration of the single AI_buildingValue call (no cross-call cache).
+							// Minimal patch sketch (lazy, per-call only)
+							// <!-- custom: add cache to avoid recomputation at every call with the help of chatgpt 5.2 thanks -->
+							int iBestM100 = 0, iSecondBestM100 = 0;
+							int iNumCitiesHighM100 = 0;
+
+							const bool bM100CacheValid =
+								s_abTopM100Valid[eOwner] &&
+								s_aiTopM100Turn[eOwner] == iCurrentTurn &&
+								s_aiTopM100NumCities[eOwner] == iNumCities;
+
+							if (bM100CacheValid)
+							{
+								iBestM100 = s_aiBestM100[eOwner];
+								iSecondBestM100 = s_aiSecondBestM100[eOwner];
+								iNumCitiesHighM100 = s_aiNumCitiesHighM100[eOwner];
+							}
+							else
+							{
+								int b1 = 0, b2 = 0, nHigh = 0;
+								FOR_EACH_CITY(pLoopCity, kOwner)
+								{
+									const int m100 = pLoopCity->getMaintenanceTimes100();
+									if (m100 > b1) { b2 = b1; b1 = m100; }
+									else if (m100 > b2) { b2 = m100; }
+
+									if (m100 >= iSAS_AI_BUILDING_VALUE_GATE_M100_WONDERS)
+										++nHigh;
+								}
+
+								iBestM100 = b1; iSecondBestM100 = b2; iNumCitiesHighM100 = nHigh;
+
+								if (!bConstCache)
+								{
+									s_abTopM100Valid[eOwner] = true;
+									s_aiTopM100Turn[eOwner] = iCurrentTurn;
+									s_aiTopM100NumCities[eOwner] = iNumCities;
+									s_aiBestM100[eOwner] = b1;
+									s_aiSecondBestM100[eOwner] = b2;
+									s_aiNumCitiesHighM100[eOwner] = nHigh;
+								}
+							}
+
+							if (iNumCitiesHighM100 > iMinNumCitiesHighM100)
+							{
+								// <!-- custom: don't build in highest hammer cities, they may already be low maintenance so no need especially if capital, build instead in highest maintenance city -->
+								// <!-- custom: note: capital not in these checks as should be naturally excluded due to having lowest maintenance but just in case, and also as advised by chatgpt 5 as well, we could have handled mods reverting logic (e.g. capital causing higher costs) but maybe tedious, so i hope if some mod someday is based on ours and somehow implements this, they remember to change building picking logic or rather pre-picking logic -->
+								if (iMaintenanceTimes100 >= iSecondBestM100)
+								{
+									// <!-- custom: small negative nudge as tie breaker as this is a long to build building (redundant word) -->
+									return AI_BUILDING_ALWAYS_PICK_FIRST - 1000;
+								}
+							}
+						}
+					}
+					// <!-- custom: palace moving logic: if a city has >= 1.5x base hammers per turn or >= 1.5x base beakers per turn, we should maybe move our palace there, but there is a risk of oscillation if city A is higher hammer while city B is higher beaker, so require both conditions rather. To begin with, capital locations are gnerally very good, and if not as of now we told AI settlers to move to a better location even if takes several turns, so the new capital needs to be significantly better on both ends, else probably not so worth it to move anyway (considering the cost of such as well and possible unintended consequences) -->
+					else
+					{
+						if (bAtWar || bWarPlan || bDanger || bEnemyStrong)
+						{
+							return 0; // don’t mess with this under pressure
+						}
+
+						// <!-- custom: don't build palace too early, focus on early invasion or growth rather; also it should be way faster to build later, use the hammer early for something else -->
+						// Early window (scaled to speed)
+						const int iEarlyTurnsPalaceNormal = 100; // @Normal
+						const int iEarlyTurnsPalaceAdjusted = iEarlyTurnsPalaceNormal * iGameSpeedMultiplier / 100;
+						const bool bEarlyTurnsPalace = (iElapsedTurns < iEarlyTurnsPalaceAdjusted);
+
+						const int iEnoughCitiesToConsiderPalace = 4;
+						const bool bEnoughCitiesToConsiderPalace = (iNumCities >= iEnoughCitiesToConsiderPalace);
+
+						if (bEnoughCitiesToConsiderPalace && !bEarlyTurnsPalace)
+						{
+							CvCityAI const* pCapital = kOwner.AI_getCapital();
+
+							if (pCapital != NULL)
+							{
+								// Raw bases (no multipliers)
+								int const iCapitalBaseHammersPerTurn  = pCapital->getBaseYieldRate(YIELD_PRODUCTION);
+								int const iCapitalBeakersPerTurn  = pCapital->getCommerceRate(COMMERCE_RESEARCH);
+
+								// Require BOTH to be clearly better (1.5×). This kills oscillation.
+								const int iPalaceHammersBetterPer100 = 150;
+								const int iPalaceHammersBeakersPer100 = 150;
+								bool const bBeatsCurrentCapitalHammers = ((iBaseHammersPerTurn * 100) >= (iCapitalBaseHammersPerTurn * iPalaceHammersBetterPer100));
+								bool const bBeatsCurrentCapitalBeakers = ((iBeakersPerTurn * 100) >= (iCapitalBeakersPerTurn * iPalaceHammersBeakersPer100));
+
+								if (!bBeatsCurrentCapitalHammers || !bBeatsCurrentCapitalBeakers)
+								{
+									return 0;
+								}
+								else
+								{
+									// Gentle <!-- custom: negative --> nudge so it can win ties without steamrolling urgent stuff
+									return AI_BUILDING_ALWAYS_PICK_FIRST - 500;
+								}
+							}
+						}
+					}
+				}
+
+				// <!-- custom: note: ironworks like buildings (bonus based production modifiers) already handled as part of the generic all wonders (world + national) production modifier calculation as of now above in the common wonder scope/block -->
+				// <!-- custom: note 2: same for national park so not handled here see before/above -->
+			}
+			// <!-- custom: if we somehow still don't know what this unidentified building is, not a normal building that is not a world wonder nor a national wonder, nor a world wonder, nor a national wonder, and somehow still have to decide about this unidentified building, then proceed with base war heuristics just in case i.e. to not build it if in danger or and such, i don't think we should ever land here or extremely rarely if at all, but just in case; i may be mistaken about the need for this as i don't know too much about these, check if accurate. -->
+			else if (!bWorldWonder && !bNationalWonder && bSAS_AI_BUILDING_VALUE_UNKNOWN_WONDERS_OPTIMIZE)
+			{
+				// <!-- custom: don't be too strict here, we need the heroic epic still even if enemy is strong, so save some computation but not at the cost of worse gameplay or competitiveness. Chatgpt 5 also suggests this or something similar so doing as such -->
+				if (!bLandUnitsBuilding)
+				{
+					// <!-- custom: fallback to war heuristics general checks otherwise -->
+					if (bAtWar || bDanger || bWarPlan || bEnemyStrong)
+					{
+						return 0;
+					}
+				}
+				else
+				{
+					// <!-- custom: this code should never be reached if i'm not mistaken, i think, but just in case-->
+					if (bAtWar || bDanger)
+					{
+						return 0;
+					}
+				}
+			}
+		}
+	}
+
+	// <!-- custom: moved these below our pre-checks / pre-filtering out since we don't use them and they may interfere with our logic or cost performance needlessly -->
+	// <!-- custom: beginning of moved block -->
+	int const iCitizenValue = AI_citizenValue(); // advc
+
+	int const iLimitedWonderLimit = GC.getInfo(eBuildingClass).getLimit();
+	bool const bLimitedWonder = (iLimitedWonderLimit >= 0);
+
+	bool const bProvidesPower = (kBuilding.isPower() ||
+			(kBuilding.getPowerBonus() != NO_BONUS &&
+			hasBonus(kBuilding.getPowerBonus())) ||
+			kBuilding.isAreaCleanPower());
+	int const iTotalPopulation = kOwner.getTotalPopulation();
+
+	int const iNumCitiesInArea = getArea().getCitiesPerPlayer(eOwner);
+	// <K-Mod>
+	int const iCitiesTarget = GC.getInfo(GC.getMap().getWorldSize()).
+			getTargetNumCities(); // </K-Mod>
+
+	bool const bHighProductionCity = (iProductionRank <=
+			std::max(3, iNumCities / 2));
+
+	// <!-- custom: renamed iCultureRank to iCultureRateRank for consistency with other variables in this function -->
+	const int iCultureRateRank = findCommerceRateRank(COMMERCE_CULTURE);
+	// <!-- custom: performance optimizations -->
+	const int iGoldRateRank = findCommerceRateRank(COMMERCE_GOLD);
+
+	int const iCulturalVictoryNumCultureCities = kGame.culturalVictoryNumCultureCities();
+
+	bool const bFinancialTrouble = kOwner.AI_isFinancialTrouble();
+
+	// BETTER_BTS_AI_MOD, Victory Strategy AI, 03/08/10, jdog5000: START
+	bool const bCulturalVictory1 = kOwner.AI_atVictoryStage(AI_VICTORY_CULTURE1);
+	bool const bCulturalVictory2 = kOwner.AI_atVictoryStage(AI_VICTORY_CULTURE2);
+	bool const bCulturalVictory3 = kOwner.AI_atVictoryStage(AI_VICTORY_CULTURE3);
+	bool const bSpaceVictory1 = kOwner.AI_atVictoryStage(AI_VICTORY_SPACE1);
+	// BETTER_BTS_AI_MOD: END
+
+	bool const bCanPopRush = /*kOwner.*/canPopRush(); // advc.912d
+
+	// <advc.131>
+	int iTotalBonusYieldMod = 0;
+	int iTotalImprFreeSpecialists = 0;
+	bool bAnySeaPlotYieldChange = false; // </advc.131>
+
+	// <K-Mod>
+	/*	This new value, iPriorityFactor, is used to boost the value of
+		productivity buildings without overvaluing productivity.
+		The point is to get the AI to build productiviy buildings quickly,
+		but not if they come with large negative side effects.
+		I may use it for other adjustments in the future. */
+	int iPriorityFactor = 100;
+
+	/*	bRemove means that we're evaluating the cost of losing this building
+		rather than adding it. the definition used here is just a kludge because
+		there currently isn't any other way to tell the difference.
+		Currently, bRemove is only in a few parts of the evaluation
+		where it is particularly important; for example, bRemove is critical for
+		calculating the lost value of obsoleting walls and castles.
+		There are several sections which could, in the future, be improved
+		using bRemove - but I don't see it as a high priority. */
+	bool const bRemove = (getNumBuilding(eBuilding) >=
+			GC.getDefineINT(CvGlobals::CITY_MAX_NUM_BUILDINGS));
+	// advc.004c: bRemove && !bObsolete is OK; that means spy attack.
+	FAssert(!bObsolete || bRemove);
+
+	/*	Veto checks: return zero if the building is not suitable.
+		Note: these checks are essentially the same as in the original code,
+		they've just been moved. */
+	if (iFocusFlags & BUILDINGFOCUS_WORLDWONDER)
+	{
+		if (!bWorldWonder ||
+			iProductionRank <= 3)
+		{
+			/*	Note / TODO: the production condition is from the original BtS code.
+				I intend to remove / change that condition in the future. */
+			return 0;
+		}
+	}
+
+	if (kBuilding.isCapital())
+		return 0;
+	
+	// <advc.014>
+	if(GET_TEAM(eOwner).isCapitulated() && bWorldWonder &&
+		kBuilding.getHolyCity() == NO_RELIGION)
+	{
+		return 0;
+	} // </advc.014>
+	FOR_EACH_NON_DEFAULT_PAIR(kBuilding.
+		getReligionChange(), Religion, int)
+	{
+		if (perReligionVal.second > 0 &&
+			!kTeam.hasHolyCity(perReligionVal.first))
+		{
+			return 0;
+		}
+	}
+	// Construction value cache.
+	/*	Note: the WONDEROK and WORLDWONDER flags should not affect
+		the final value - and so cache should not be disabled by those flags. */
+	bool const bNeutralFlags = (iFocusFlags &
+			~(BUILDINGFOCUS_WONDEROK | BUILDINGFOCUS_WORLDWONDER)) == 0;
+	bool const bUseConstructionValueCache = (bNeutralFlags && iThreshold == 0);
+	if (bUseConstructionValueCache && m_aiConstructionValue[eBuildingClass] != -1)
+		return m_aiConstructionValue[eBuildingClass];
+	// </K-Mod>
+
+	ReligionTypes const eStateReligion = kOwner.getStateReligion();
+
+	bool const bAreaAlone = kOwner.AI_isAreaAlone(getArea());
+	int const iHasMetCount = kTeam.getHasMetCivCount(true);
+	// <!-- custom: end of moved block -->
+
+	// Reduce reaction to temporary happy/health problems
+	// K-Mod
+	int const iHappinessLevel = iHappinessSurplus + getEspionageHappinessCounter()/2 - getMilitaryHappiness()/2;
+	// K-Mod end
+
+	// <!-- custom: make these static const for performance optimization as advised by chatgpt 5 too. -->
+	// <!-- custom: code/performance optimization: hoist -->
+	static const SpecialistTypes eDefaultSpecialist = (SpecialistTypes)GC.getDEFAULT_SPECIALIST();
+
+	int iValue = 0;
+	for (int iPass = 0; iPass < 2; iPass++)
+	{
+		/*	K-Mod. This entire block was originally wrapped with the following condition:
+			if ((iFocusFlags == 0) || (iValue > 0) || (iPass == 0))
+			I've moved this condition to the end of the block
+			and tweaked it for better readability. */
+
+		if ((iFocusFlags & BUILDINGFOCUS_DEFENSE) || iPass > 0)
+		{
+			// <advc> Moved into new function
+			iValue += AI_defensiveBuildingValue(eBuilding, bAreaAlone, bWarPlan,
+					iNumCities, iNumCitiesInArea, bRemove, bObsolete); // </advc>
+		}
+
+		if ((iFocusFlags & BUILDINGFOCUS_ESPIONAGE) || iPass > 0)
+		{
+			iValue += kBuilding.getEspionageDefenseModifier() / 8;
+		}
+
+		if (((iFocusFlags & BUILDINGFOCUS_HAPPY) || iPass > 0) && !isNoUnhappiness())
+		{
+			int iBestHappy = 0;
+			FOR_EACH_ENUM(Hurry)
+			{
+				if (canHurryBuilding(eLoopHurry, eBuilding, true))
+				{
+					int iHappyFromHurry = AI_getHappyFromHurry(eLoopHurry, eBuilding, true);
+					if (iHappyFromHurry > iBestHappy)
+						iBestHappy = iHappyFromHurry;
+				}
+			}
+			iValue += iBestHappy * 10;
+
+			if (kBuilding.isNoUnhappiness())
+			{
+				//iValue += ((iAngryPopulation * 10) + iPop);
+				// K-Mod
+				int const iEstGrowth = iFoodDifference + std::max(0, -iHealthLevel + iFoodDifference);
+				iValue += std::max(0,
+						(iPop - std::max(0, 2*iHappinessLevel)) *
+						2 + std::max(0, -iHappinessLevel) * 6 +
+						std::max(0, -iHappinessLevel+iEstGrowth) * 4);
+				// K-Mod end
+			}
+			int iGood=0, iBad=0;
+			int iBuildingActualHappiness = getAdditionalHappinessByBuilding(
+					eBuilding,iGood,iBad);
+			// K-Mod
+			int iAngerDelta = std::max(0, -iHappinessLevel + iBuildingActualHappiness)
+					-std::max(0, -iHappinessLevel);
+			// High value for any immediate change in anger.
+			iValue -= iAngerDelta * 4 * iCitizenValue;
+			// some extra value if we are still growing (this is a positive change bias)
+			if (iAngerDelta < 0 && iFoodDifference > 1)
+				iValue -= 10 * iAngerDelta;
+			// finally, a little bit of value for happiness which gives us some padding
+			int iHappyModifier = 10 * iCitizenValue /
+					(3 + std::max(0, iHappinessLevel+  iBuildingActualHappiness) +
+					std::max(0, iHappinessLevel) + std::max(0, -iHealthLevel));
+			iValue += std::max(0, iBuildingActualHappiness) * iHappyModifier;
+			/*	The "iHappinessModifer" is used for some percentage-based happy effects.
+				(note. this not the same magnitude as the original definition.) */
+
+			if (iHappinessLevel >= 10)
+			{
+				iHappyModifier = 1;
+			}
+			// K-Mod end
+
+			iValue += (-kBuilding.getHurryAngerModifier() * getHurryPercentAnger()) / 100;
+
+			FOR_EACH_ENUM(Commerce)
+			{
+				//iValue += (kBuilding.getCommerceHappiness(eLoopCommerce) * iHappyModifier) / 4;
+				// K-Mod (note, commercehappiness already counted by iBuildingActualHappiness)
+				iValue += kBuilding.getCommerceHappiness(eLoopCommerce) * iHappyModifier / 50;
+			}
+
+			int iWarWearinessModifer = kBuilding.getWarWearinessModifier();
+			if (iWarWearinessModifer != 0)
+			{
+				//iValue += (-iWarWearinessModifer * iHappyModifier) / 16;
+				// K-Mod (again, the immediate effects of this are already counted)
+				iValue += -iWarWearinessModifer * iPop * iHappyModifier /
+						(bWarPlan ? 400 : 1000);
+			}
+
+			/*iValue += (kBuilding.getAreaHappiness() * (iNumCitiesInArea - 1) * 8);
+			iValue += (kBuilding.getGlobalHappiness() * iNumCities * 8);*/
+			// K-Mod - just a tweak.. nothing fancy.
+			iValue += kBuilding.getAreaHappiness() * (iNumCitiesInArea + iCitiesTarget/3) *
+					iCitizenValue;
+			iValue += kBuilding.getGlobalHappiness() * (iNumCities + iCitiesTarget/2) *
+					iCitizenValue;
+			// K-Mod end
+
+			int iWarWearinessPercentAnger = kOwner.getWarWearinessPercentAnger();
+			int iGlobalWarWearinessModifer = kBuilding.getGlobalWarWearinessModifier();
+			if (iGlobalWarWearinessModifer != 0)
+			{
+				/* iValue += (-(((iGlobalWarWearinessModifer * iWarWearinessPercentAnger / 100) / GC.getPERCENT_ANGER_DIVISOR())) * iNumCities);
+				iValue += (-iGlobalWarWearinessModifer * iHappyModifier) / 16; */
+				// <K-Mod>
+				iValue += iCitizenValue * iNumCities * -iGlobalWarWearinessModifer *
+						(iWarWearinessPercentAnger +
+						GC.getPERCENT_ANGER_DIVISOR() / (bWarPlan ? 10 : 20)) /
+						(100 * GC.getPERCENT_ANGER_DIVISOR()); // </K-Mod>
+			}
+			FOR_EACH_NON_DEFAULT_PAIR(kBuilding.
+				getBuildingHappinessChanges(), BuildingClass, int)
+			{
+				iValue += (perBuildingClassVal.second *
+						kOwner.getBuildingClassCount(perBuildingClassVal.first) * 8);
+			}
+		}
+
+		if ((iFocusFlags & BUILDINGFOCUS_HEALTHY) || iPass > 0)
+			//&& !isNoUnhealthyPopulation() // K-Mod: commented out
+		{
+			int iGood = 0, iBad = 0; // advc: Better initialize these
+			int iBuildingActualHealth = getAdditionalHealthByBuilding(eBuilding,
+					iGood, iBad, /* <advc.001h>: */ true);
+			int iFutureHealthLevel = iHealthLevel;
+			/*  Pretend that we have one less health than we actually do (b/c the
+				future holds electrical power and other baddies) */
+			if (iCurrentEra >= CvEraInfo::AI_getAgeOfPollution() && !isPower())
+			{	// NB: POWER_HEALTH_CHANGE is negative
+				iFutureHealthLevel += GC.getDefineINT(CvGlobals::POWER_HEALTH_CHANGE) / 2;
+			}
+			/*  And replaced four instances of iHealthLevel with iFutureHealthLevel
+				in this block of code ... */
+			// </advc.001h>
+			/*	K-Mod. I've essentially rewritten this evaluation of health;
+				but there may still be some bbai code / original bts code. */
+			int iWasteDelta = std::max(0, -iFutureHealthLevel - iBuildingActualHealth) -
+					std::max(0, -iFutureHealthLevel);
+			// High value for change in our food deficit.
+			iValue -= (fixp(2.5) * // advc.001h: Increased from 2 to 2.5
+					iCitizenValue * (std::max(0, -(iFoodDifference - iWasteDelta)) -
+					// advc.001h: Added +futureHealthLevel-iHealthLevel
+					std::max(0, -(iFoodDifference + iFutureHealthLevel
+					- iHealthLevel)))).round();
+			// medium value for change in waste
+			//iValue -= iCitValue * iWasteDelta;
+			// <advc.001h> Replacing the above; be more afraid of high iWasteDelta
+			if(iWasteDelta <= 0)
+				iValue -= iCitizenValue * iWasteDelta; // </advc.001h>
+			else iValue -= (iCitizenValue * scaled(iWasteDelta).pow(fixp(1.3))).round();
+			/*	some extra value if the change will help us grow
+				(this is a positive change bias) */
+			if (iWasteDelta < 0 && iHappinessLevel > 0)
+				iValue -= iCitizenValue * iWasteDelta;
+			// finally, a little bit of value for health which gives us some padding
+			// advc.001h: Reduced first factor from 10 to 8 (minor balancing)
+			iValue += 8 * iCitizenValue * std::max(0, iBuildingActualHealth)/
+					(6 + std::max(0, iFutureHealthLevel + iBuildingActualHealth) +
+					std::max(0, iFutureHealthLevel));
+
+			/*	If the GW threshold has been reached,
+				add some additional value for pollution reduction
+				Note. health benefits have already been evaluated */
+			if (iBad < 0 && kGame.getGlobalWarmingIndex() > 0)
+			{
+				int iCleanValue = -2 * iBad;
+				iCleanValue *= (100 + 5 * kOwner.getGwPercentAnger());
+				iCleanValue /= 100;
+				FAssert(iCleanValue >= 0);
+				iValue += iCleanValue;
+			}
+			// K-Mod end
+
+			iValue += kBuilding.getAreaHealth() * (iNumCitiesInArea-1) * 4;
+			iValue += kBuilding.getGlobalHealth() * iNumCities * 4;
+		}
+
+		if (iFocusFlags & BUILDINGFOCUS_EXPERIENCE || iPass > 0)
+		{
+			/*	K-Mod (note). currently this new code matches the functionality
+				of the old (deleted) code exactly, except that the value is
+				reduced in cities that we don't expect to be building troops in. */
+			int iWeight = 12;
+			iWeight /= iHasMetCount > 0 ? 1 : 2;
+			iWeight /= (bWarPlan || (bHighProductionCity &&
+					// <advc.017> Avoid Barracks before first Settler
+					(isBarbarian() || iNumCities > 1 ||
+					kOwner.AI_getNumAIUnits(UNITAI_SETTLE) > 0 ||
+					kOwner.AI_getNumCitySites() <= 0)) ? 1 : 4); // </advc.017>
+			iValue += iFreeExperience * iWeight;
+
+			FOR_EACH_NON_DEFAULT_PAIR(kBuilding.
+				getUnitCombatFreeExperience(), UnitCombat, int)
+			{
+				if (canTrain(perUnitCombatVal.first))
+					iValue += (perUnitCombatVal.second * iWeight) / 2;
+			}
+
+			FOR_EACH_ENUM(Domain)
+			{
+				int iDomainXPValue = kBuilding.getDomainFreeExperience(eLoopDomain);
+				switch (eLoopDomain)
+				{
+				case DOMAIN_LAND:
+					iDomainXPValue *= iWeight; // full weight
+					break;
+				case DOMAIN_SEA:
+					// advc.041: No longer guaranteed by the building's MinAreaSize
+					if(isCoastal(GC.getDefineINT(CvGlobals::MIN_WATER_SIZE_FOR_OCEAN) * 2))
+					{
+						/*	special case. Don't use 'iWeight' because, for sea,
+							bHighProductionCity may be too strict. */
+						iDomainXPValue *= 7;
+					}
+					break;
+				default:
+					iDomainXPValue *= iWeight;
+					iDomainXPValue /= 2;
+				}
+				iValue += iDomainXPValue;
+			}
+			// K-Mod end
+		}
+
+		// since this duplicates BUILDINGFOCUS_EXPERIENCE checks, do not repeat on pass 1
+		if ((iFocusFlags & BUILDINGFOCUS_DOMAINSEA))
+		{
+			iValue += (iFreeExperience * (iHasMetCount > 0 ? 16 : 8));
+			CvCivilization const& kCiv = getCivilization(); // advc.003w
+			for (int i = 0; i < kCiv.getNumUnits(); i++)
+			{
+				UnitTypes eUnit = kCiv.unitAt(i);
+				CvUnitInfo& kUnitInfo = GC.getInfo(eUnit);
+				UnitCombatTypes eCombatType = kUnitInfo.getUnitCombatType();
+				// <advc.rom4> Avoid canTrain call; credits: alberts2 (C2C).
+				if(eCombatType == NO_UNITCOMBAT ||
+					kUnitInfo.getDomainType() != DOMAIN_SEA ||
+					kBuilding.getUnitCombatFreeExperience(eCombatType) == 0)
+				{
+					continue;
+				} // </advc.rom4>
+				if(canTrain(eUnit))
+				{
+					iValue += (kBuilding.getUnitCombatFreeExperience(eCombatType) *
+							(iHasMetCount > 0 ? 6 : 3));
+				}
+			}
+			iValue += (kBuilding.getDomainFreeExperience(DOMAIN_SEA) *
+					(iHasMetCount > 0 ? 16 : 8));
+			// advc.041: No longer guaranteed by the building's MinAreaSize
+			if(isCoastal(GC.getDefineINT(CvGlobals::MIN_WATER_SIZE_FOR_OCEAN) * 2))
+				iValue += (kBuilding.getDomainProductionModifier(DOMAIN_SEA) / 4);
+		}
+
+		if ((iFocusFlags & BUILDINGFOCUS_MAINTENANCE) ||
+			(iFocusFlags & BUILDINGFOCUS_GOLD) || (iPass > 0))
+		{
+			/*	K-Mod, bugfix. getMaintenanceTimes100 is the total,
+				with modifiers already applied.
+				(note. ideally we'd use "calculateBaseMaintenanceTimes100",
+				and that would a avoid problem caused by "we love the X day".
+				but doing it this way is slightly faster.) */
+			if (kBuilding.getMaintenanceModifier())
+			{
+				int iBaseMaintenance = 100 * iMaintenanceTimes100 /
+						std::max(1, 100 + getMaintenanceModifier());
+				int iNewUpkeep = (iBaseMaintenance * std::max(0,
+						100 + getMaintenanceModifier() +
+						kBuilding.getMaintenanceModifier())) / 100;
+				// slightly more then 4x savings, just to accommodate growth.
+				int iTempValue = (iMaintenanceTimes100 - iNewUpkeep) / 22;
+				// We want absolute savings, including inflation.
+				iTempValue = iTempValue * (100+kOwner.calculateInflationRate()) / 100;
+				/*	(note, not just for this particular city -
+					because this isn't direct gold production) */
+				/* iTempValue *= kOwner.AI_commerceWeight(COMMERCE_GOLD, 0);
+				iTempValue /= 100; */
+
+				if (bFinancialTrouble)
+					iTempValue = iTempValue*2;
+
+				iValue += iTempValue;
+			}
+			// K-Mod end
+		}
+
+		if (/* advc.121b: */ !bIgnoreSpecialists &&
+			((iFocusFlags & BUILDINGFOCUS_SPECIALIST) || iPass > 0))
+		{
+			// K-Mod. (original code deleted)
+			int iSpecialistsValue = 0;
+			//int iUnusedSpecialists = 0;
+			
+			int iAvailableWorkers = iFoodDifference / 2;
+			if (eDefaultSpecialist != NO_SPECIALIST)
+				iAvailableWorkers += getSpecialistCount(eDefaultSpecialist);
+			FOR_EACH_ENUM(Specialist)
+			{
+				if (eLoopSpecialist == eDefaultSpecialist)
+					continue;
+
+				int iLimit = kOwner.isSpecialistValid(eLoopSpecialist) ?
+						iPop :
+						std::max(0, getMaxSpecialistCount(eLoopSpecialist)
+						-getSpecialistCount(eLoopSpecialist));
+				/*	in rare situations, this function can be called while citizens are
+					incorrectly assigned. So I've forced the min condition in the line above. */
+				FAssert(iLimit >= 0);
+				//iUnusedSpecialists += iLimit;
+
+				if (kBuilding.getSpecialistCount(eLoopSpecialist) > 0 && iLimit <= 2)
+				{
+					int iTempValue = AI_specialistValue(eLoopSpecialist, false, false);
+
+					iTempValue *= (iLimit == 0 ? 60 : 0) + 40 * std::min<int>(iAvailableWorkers,
+							kBuilding.getSpecialistCount(eLoopSpecialist));
+					/*	I'm choosing not to reduce 'iAvailableWorkers'...
+						It's a tough call. Either way, the answer is going to be wrong! */
+					iTempValue /= 100 + 200 * iLimit;
+					iSpecialistsValue += iTempValue / 100;
+				}
+			}
+			if (iSpecialistsValue > 0)
+				iValue += iSpecialistsValue;
+			// K-Mod end
+		}
+
+		if ((iFocusFlags & (BUILDINGFOCUS_GOLD | BUILDINGFOCUS_RESEARCH)) || iPass > 0)
+		{
+			// trade routes
+			// K-Mod. (original code deleted)
+			int iTotalTradeModifier = totalTradeModifier();
+			int iTempValue = kBuilding.getTradeRoutes() *
+					(iNumTradeRoutes > 0 ?
+					5 * getTradeYield(YIELD_COMMERCE) / iNumTradeRoutes :
+					5 * (iPop / 5 + 1) * iTotalTradeModifier / 100);
+			//int iGlobalTradeValue = (6 * iTotalPopulation / (5 * iNumCities) + 1) * kOwner.AI_averageYieldMultiplier(YIELD_COMMERCE) / 100;
+			/*	1.2 * average population seems wrong. Instead, do something
+				roughly comparable to what's used in CvPlayerAI::AI_civicValue.*/
+			int iGlobalTradeValue = (bForeignTrade ? 5 : 3) *
+					(2 * (iCurrentEra + 1) + GC.getNumEraInfos()) / GC.getNumEraInfos();
+
+			iTempValue += 5 * kBuilding.getTradeRouteModifier() *
+					getTradeYield(YIELD_COMMERCE) / std::max(1, iTotalTradeModifier);
+			if (bForeignTrade)
+			{
+				iTempValue += 3 * kBuilding.getForeignTradeRouteModifier() *
+						getTradeYield(YIELD_COMMERCE) /
+						std::max(1, iTotalTradeModifier+getForeignTradeRouteModifier());
+			}
+
+			iTempValue *= AI_yieldMultiplier(YIELD_COMMERCE);
+			iTempValue /= 100;
+			{
+				int const iCoastalTradeRoutes = kBuilding.getCoastalTradeRoutes();
+				if (iCoastalTradeRoutes != 0)
+				{
+					int const iCoastalCities = kOwner.countNumCoastalCities();
+					// <advc.131>
+					scaled rCoastalCitySites;
+					int const iCitySites = kOwner.AI_getNumCitySites();
+					for (int i = 0; i < iCitySites; i++)
+					{
+						if (kOwner.AI_getCitySite(i).isCoastalLand(-1))
+						{	/*	Less likely to claim lower-priority sites;
+								and it'll take longer. */
+							rCoastalCitySites += 1 - scaled(i, iCitySites);
+						}
+					}
+					// K-Mod formula:
+					//std::max((iCitiesTarget+1)/2, kOwner.countNumCoastalCities())
+					int iProjectedCoastalCities = (iCoastalCities + rCoastalCitySites +
+							/*	City placement will favor the coast more once we have
+								extra trade routes */
+							scaled(iCoastalTradeRoutes, 2)).uround();
+					// </advc.131>
+					iTempValue += iCoastalTradeRoutes * iProjectedCoastalCities *
+							iGlobalTradeValue;
+				}
+			}
+			// <advc.310>
+			iTempValue += kBuilding.getAreaTradeRoutes() *
+					// Same formula as for AreaHappiness (Notre Dame)
+					(iNumCitiesInArea + iCitiesTarget / 3) // </advc.310>
+					//std::max(iCitiesTarget, iNumCities)
+					* iGlobalTradeValue;
+			// K-Mod end
+
+			if (bFinancialTrouble)
+				iTempValue *= 2;
+			if (kOwner.isNoForeignTrade())
+				iTempValue /= 2; // was /3
+
+			iValue += iTempValue;
+		}
+
+		if (iPass > 0)
+		{
+			/*	K-Mod. The value of golden age buildings.
+				(This was not counted by the original AI.) */
+			{
+				int iGoldenPercent =  0;
+				if (kBuilding.isGoldenAge())
+					iGoldenPercent += 100;
+				if (kBuilding.getGoldenAgeModifier() != 0)
+				{
+					iGoldenPercent *= kBuilding.getGoldenAgeModifier();
+					iGoldenPercent /= 100;
+					/*	It's difficult to estimate the value of the golden age modifier.
+						Firstly, we don't know how many golden ages we are going to have;
+						but that's a relatively minor problem. We can just guess that.
+						A bigger problem is that the value of a golden age can change a lot
+						depending on the state of the civilzation.
+						The upshot is that the value here is going to be rough... */
+					iGoldenPercent += 3 * kBuilding.getGoldenAgeModifier() *
+							(GC.getNumEraInfos() - iCurrentEra) / (GC.getNumEraInfos() + 1);
+				}
+				if (iGoldenPercent > 0)
+				{
+					/*	note, the value returned by AI_calculateGoldenAgeValue is roughly
+						in units of commerce points; whereas, iValue in this function is
+						roughly in units of 4 * commerce / turn.
+						I'm just going to say 44 points of golden age commerce is roughly
+						worth 1 commerce per turn. (so conversion is 4/44) */
+					iValue += (kOwner.AI_calculateGoldenAgeValue(false) *
+							iGoldenPercent) / (100 * 11);
+				}
+			}
+			// K-Mod end
+
+			// BETTER_BTS_AI_MOD, City AI, 02/24/10, jdog5000 & Afforess: START
+			if (kBuilding.isAreaCleanPower() && !getArea().isCleanPower(getTeam()))
+			{
+				FOR_EACH_CITY(pLoopCity, kOwner)
+				{
+					if (sameArea(*pLoopCity))
+					{
+						if (pLoopCity->isDirtyPower())
+							iValue += 12;
+						else if (!pLoopCity->isPower())
+						{
+							//iValue += 8;
+							/*	K-Mod. Giving power should be more valuable
+								than replacing existing power! */
+							iValue += 24;
+						}
+					}
+				}
+			}
+
+			if (kBuilding.getDomesticGreatGeneralRateModifier() != 0)
+				iValue += (kBuilding.getDomesticGreatGeneralRateModifier() / 10);
+
+			if (kBuilding.isAreaBorderObstacle() &&
+				!getArea().isBorderObstacle(getTeam()) &&
+				// advc.001n: AI_getNumAreaCitySites might cache FoundValue
+				!bConstCache)
+			{	// <advc.310>
+				int iGameEra = kGame.getCurrentEra();
+				/*  A check for GAMEOPTION_NO_BARBARIANS is unnecessary
+					b/c the Great Wall ability is then disabled via CvInfos. */
+				if (!GC.getInfo((EraTypes)iGameEra).isNoBarbUnits() ||
+					getArea().getCitiesPerPlayer(BARBARIAN_PLAYER) > iGameEra)
+				{	//  Available city sites should correlate with nearby barb activity.
+					int iDummy=-1;
+					int iAreaCitySites = kOwner.AI_getNumAreaCitySites(getArea(), iDummy);
+					if(kGame.isOption(GAMEOPTION_RAGING_BARBARIANS))
+						iAreaCitySites *= 2;
+					iValue += 6 * iAreaCitySites;
+					// BBAI code:
+					/* if(!g.isOption(GAMEOPTION_NO_BARBARIANS)) {
+						iValue += (iNumCitiesInArea);
+						if(g.isOption(GAMEOPTION_RAGING_BARBARIANS))
+							iValue += (iNumCitiesInArea);
+					} */ // </advc.310>
+				}
+			} // BETTER_BTS_AI_MOD: END
+
+			if (kBuilding.isGovernmentCenter())
+			{
+				FAssert(!kBuilding.isCapital());
+				//iValue += ((calculateDistanceMaintenance() - 3) * iNumCitiesInArea);
+				// K-mod. More bonus for colonies, because it reduces that extra maintenance too.
+				int iTempValue = 2*(calculateDistanceMaintenance() - 2) * iNumCitiesInArea;
+				if (!kOwner.hasCapital() || !sameArea(*kOwner.getCapital()))
+					iTempValue *= 2;
+				iValue += iTempValue;
+				// K-Mod end
+			}
+
+			if (kBuilding.isMapCentering())
+				iValue++;
+
+			if (kBuilding.getFreeBonus() != NO_BONUS)
+			{
+				iValue += kOwner.AI_bonusVal((BonusTypes)kBuilding.getFreeBonus(), 1) *
+						((kOwner.getNumTradeableBonuses(
+						(BonusTypes)kBuilding.getFreeBonus()) == 0) ? 2 : 1) *
+						(iNumCities + //kBuilding.getNumFreeBonuses()
+						// advc.001: Based on the Mongoose Mod changelog (15 Feb 2013)
+						kGame.getNumFreeBonuses(eBuilding));
+			}
+
+			if (kBuilding.getNoBonus() != NO_BONUS)
+				iValue -= kOwner.AI_bonusVal(kBuilding.getNoBonus(), /* K-Mod: */ 0);
+
+			if (kBuilding.getFreePromotion() != NO_PROMOTION)
+			{
+				//iValue += ((iHasMetCount > 0) ? 100 : 40); // XXX some sort of promotion value???
+				// K-Mod.
+				/*	Ideally, we'd use AI_promotionValue to work out what the promotion
+					is worth, but, unfortunately, that function requires a target unit,
+					and I can't think of a good way to choose a suitable unit for evaluation.
+					So.. I'm just going to do a really basic kludge to stop the Dun
+					from being worth more than Red Cross */
+				CvPromotionInfo const& kInfo = GC.getInfo(kBuilding.getFreePromotion());
+				bool const bAdvanced = (kInfo.getPrereqPromotion() != NO_PROMOTION ||
+						kInfo.getPrereqOrPromotion1() != NO_PROMOTION ||
+						kInfo.getPrereqOrPromotion2() != NO_PROMOTION ||
+						kInfo.getPrereqOrPromotion3() != NO_PROMOTION);
+				int iTemp = (bAdvanced ? 200 : 40);
+				int iProduction = getYieldRate(YIELD_PRODUCTION);
+				iTemp *= 2*iProduction;
+				iTemp /= 30 + iProduction;
+				iTemp *= getFreeExperience() + 1;
+				iTemp /= getFreeExperience() + 2;
+				iValue += iTemp;
+				// cf. iValue += (iFreeExperience * ((iHasMetCount > 0) ? 12 : 6));
+				// K-Mod end
+			}
+
+			CivicOptionTypes const eCivicOption = kBuilding.getCivicOption();
+			if (eCivicOption != NO_CIVICOPTION)
+			{	// k146 (Todo): compare to current civics!
+				// <advc.131> Will do:
+				scaled rCivicOptionValue;
+				/*	Should actually be 4(!), but I don't think it's good for game balance
+					to make the AI that interested in the Pyramids. */
+				scaled const rScaleAdjustment = fixp(2.5);
+				scaled rCurrentCivicValue = rScaleAdjustment *
+						kOwner.AI_civicValue(kOwner.getCivics(eCivicOption));
+				scaled rBestNewCivicValue = scaled::min(0, rCurrentCivicValue);
+				FOR_EACH_ENUM(Civic)
+				{
+					if (GC.getInfo(eLoopCivic).getCivicOptionType() != eCivicOption ||
+						kOwner.canDoCivics(eLoopCivic))
+					{
+						continue; // advc
+					}
+					//iValue += (kOwner.AI_civicValue(eLoopCivic) / 10);
+					scaled rCivicValue = rScaleAdjustment *
+							kOwner.AI_civicValue(eLoopCivic);
+					if (rCivicValue > 0)
+					{
+						// Devalue civics that we'll soon unlock anyway
+						TechTypes eTech = GC.getInfo(eLoopCivic).getTechPrereq();
+						if (!kTeam.isHasTech(eTech) && 
+							GC.getInfo(eTech).getEra() <= iCurrentEra)
+						{
+							rCivicValue /= 2;
+						}
+						// Having choices is good; even if they're not the best right now.
+						rCivicOptionValue += rCivicValue / 12;
+					}
+					rBestNewCivicValue.increaseTo(rCivicValue);
+				}
+				rCivicOptionValue += rBestNewCivicValue - rCurrentCivicValue;
+				iValue += rCivicOptionValue.round();
+				// </advc.131>
+			}
+
+			int iGreatPeopleRateModifier = kBuilding.getGreatPeopleRateModifier();
+			if (iGreatPeopleRateModifier > 0)
+			{
+				int iGreatPeopleRate = getBaseGreatPeopleRate();
+				// advc.131: was 10 flat
+				int const iTargetGPRate = 5 + 2 * std::max(1, iCurrentEra);
+
+				// either not a wonder, or a wonder and our GP rate is at least the target rate
+				if (!bLimitedWonder || iGreatPeopleRate >= iTargetGPRate)
+				{	/*  advc.131: Divisor was 16. I think GPP are worth more than that,
+						and need to account for future growth. */
+					iValue += (iGreatPeopleRateModifier * iGreatPeopleRate) / 9;
+				}
+				/*	otherwise, this is a limited wonder (aka National Epic),
+					we _really_ do not want to build this here.
+					subtract from the value.
+					(if this wonder has a lot of other stuff, we still might build it.) */
+				else
+				{
+					iValue -= (iGreatPeopleRateModifier *
+							(iTargetGPRate - iGreatPeopleRate)) / 12;
+				}
+			}
+
+			iValue += (kBuilding.getGlobalGreatPeopleRateModifier() * iNumCities) / 8;
+			iValue -= kBuilding.getAnarchyModifier() / 4;
+			iValue -= kBuilding.getGlobalHurryModifier() * 2;
+			iValue += kBuilding.getGlobalFreeExperience() * iNumCities *
+					(iHasMetCount > 0 ? 6 : 3);
+
+			/*if (bCanPopRush)
+				iValue += iFoodKept / 2;*/ // BtS
+			// (moved to where the rest of foodKept is valued)
+
+			/*iValue += kBuilding.getAirlift() * (iPop*3 + 10);
+			int iAirDefense = -kBuilding.getAirModifier();
+			if (iAirDefense > 0) {
+				if (((kOwner.AI_totalUnitAIs(UNITAI_DEFENSE_AIR) > 0) && (kOwner.AI_totalUnitAIs(UNITAI_ATTACK_AIR) > 0)) || (kOwner.AI_totalUnitAIs(UNITAI_MISSILE_AIR) > 0))
+					iValue += iAirDefense / ((iHasMetCount > 0) ? 2 : 4);
+			}
+			iValue += kBuilding.getAirUnitCapacity() * (iPop * 2 + 10);
+			iValue += (-(kBuilding.getNukeModifier()) / ((iHasMetCount > 0) ? 10 : 20));*/ // BtS
+			// (This stuff is already counted in the defense section.)
+			// <K-Mod>
+			iValue += std::max(0, kBuilding.getAirUnitCapacity() -
+					getPlot().airUnitSpaceAvailable(getTeam())/2) *
+					(iPop + 12); // </K-Mod>
+
+			/*iValue += (kBuilding.getFreeSpecialist() * 16);
+			iValue += (kBuilding.getAreaFreeSpecialist() * iNumCitiesInArea * 12);
+			iValue += (kBuilding.getGlobalFreeSpecialist() * iNumCities * 12);*/ // BtS
+			// K-Mod. Still very rough, but a bit closer to true value.  (this is for the Statue of Liberty)
+			{
+				int iFreeSpecialists = kBuilding.getFreeSpecialist() +
+						kBuilding.getAreaFreeSpecialist() * iNumCitiesInArea +
+						kBuilding.getGlobalFreeSpecialist() * iNumCities;
+				if (iFreeSpecialists > 0)
+				{
+					int iSpecialistValue = 20 * 100; // rough base value
+					// additional bonuses
+					FOR_EACH_ENUM(Commerce)
+					{
+						if (kOwner.getSpecialistExtraCommerce(eLoopCommerce))
+						{
+							iSpecialistValue +=
+									kOwner.getSpecialistExtraCommerce(eLoopCommerce) *
+									4 * kOwner.AI_commerceWeight(eLoopCommerce);
+						}
+					}
+					iSpecialistValue += 8 * std::max(0,
+							kOwner.AI_averageGreatPeopleMultiplier() - 100);
+					iValue += iFreeSpecialists * iSpecialistValue / 100;
+				}
+			}
+			// K-Mod end
+
+			iValue += ((kBuilding.getWorkerSpeedModifier() *
+					kOwner.AI_getNumAIUnits(UNITAI_WORKER)) / 10);
+
+			if (iHasMetCount > 0 && iMilitaryProductionModifier > 0)
+			{
+				// either not a wonder, or a wonder and we are a high production city
+				if (!bLimitedWonder || bHighProductionCity)
+				{
+					iValue += iMilitaryProductionModifier / 4;
+					// if a wonder, then pick one of the best cities
+					if (bLimitedWonder)
+					{
+						// if one of the top 3 production cities, give a big boost
+						if (iProductionRank <=
+							2 + iLimitedWonderLimit)
+						{
+							iValue += (2 * iMilitaryProductionModifier) /
+									(2 + iProductionRank);
+						}
+					}
+					// otherwise, any of the top half of cities will do
+					else if (bHighProductionCity)
+						iValue += iMilitaryProductionModifier / 4;
+					iValue += (iMilitaryProductionModifier *
+							(getFreeExperience() + getSpecialistFreeExperience())) / 10;
+				}
+				/*	otherwise, this is a limited wonder (aka Heroic Epic),
+					we _really_ do not want to build this here
+					subtract from the value (if this wonder has a lot of other stuff,
+					we still might build it) */
+				else
+				{
+					iValue -= (iMilitaryProductionModifier *
+							iProductionRank) / 5;
+				}
+			}
+
+			iValue += (kBuilding.getSpaceProductionModifier() / 5);
+			iValue += ((kBuilding.getGlobalSpaceProductionModifier() * iNumCities) / 20);
+
+			// advc.020: Handled later now
+			/*if (kBuilding.getGreatPeopleUnitClass() != NO_UNITCLASS)
+				iValue++; // XXX improve this for diversity...*/
+
+			/*	prefer to build great people buildings in places
+				that already have some GP points */
+			//iValue += (kBuilding.getGreatPeopleRateChange() * 10) * (1 + (getBaseGreatPeopleRate() / 2));
+			/*	K-Mod... here's some code like the specialist value function.
+				Kind of long, but much better. */
+			{
+				// everything seems to be x4 around here
+				int iTempValue = 100 * kBuilding.getGreatPeopleRateChange() * 2 * 4;
+				UnitClassTypes eGPClass = kBuilding.getGreatPeopleUnitClass();
+				// <advc.020>
+				if(iTempValue > 0 && eGPClass != NO_UNITCLASS)
+				{
+					UnitTypes eGPUnit = getCivilization().getUnit(eGPClass);
+					if(eGPUnit != NO_UNIT)
+					{
+						/*	Just adding a flavor bonus may overrate GPP in general.
+							Apply a small malus when the flavor does not match. */
+						int iFlavorModifier = -1;
+						FOR_EACH_ENUM(Flavor)
+						{
+							// Mostly 5 or 2, occasionally 10
+							iFlavorModifier += std::min(GC.getInfo(kOwner.
+									getPersonalityType()).getFlavorValue(eLoopFlavor),
+									// GP flavor is at most 1
+									5 * GC.getInfo(eGPUnit).getFlavorValue(eLoopFlavor));
+						}
+						iTempValue += iFlavorModifier *
+								kBuilding.getGreatPeopleRateChange() * 100;
+					}
+				} // </advc.020>
+				int iCityRate = getGreatPeopleRate();
+				int iHighestRate = 0;
+				FOR_EACH_CITY(pLoopCity, kOwner)
+				{
+					int x = pLoopCity->getGreatPeopleRate();
+					if (x > iHighestRate)
+						iHighestRate = x;
+				}
+				if (iHighestRate > iCityRate)
+				{
+					iTempValue *= 100;
+					iTempValue /= (2 * 100 * (iHighestRate + 3)) / (iCityRate + 3) - 100;
+				}
+				iTempValue *= getTotalGreatPeopleRateModifier();
+				iTempValue /= 100;
+				iValue += iTempValue / 100;
+			}
+			// K-Mod end
+			if (!bAreaAlone)
+				iValue += (kBuilding.getHealRateChange() / 2);
+			iValue += kBuilding.getGlobalPopulationChange() * iNumCities * 4;
+			// iValue += (kBuilding.getFreeTechs() * 80);
+			/*	K-Mod. A slightly more nuanced evaluation of free techs
+				(but still very rough) */
+			if (kBuilding.getFreeTechs() > 0)
+			{
+				int iTotalTechValue = 0;
+				int iMaxTechValue = 0;
+				int iTechCount = 0;
+
+				FOR_EACH_ENUM(Tech)
+				{
+					if (kOwner.canResearch(eLoopTech, false, true)) // advc
+					{
+						int iTechValue = kTeam.getResearchCost(eLoopTech);
+						iTotalTechValue += iTechValue;
+						iTechCount++;
+						iMaxTechValue = std::max(iMaxTechValue, iTechValue);
+					}
+				}
+				if (iTechCount > 0)
+				{
+					int iTechValue = ((iTotalTechValue / iTechCount) + iMaxTechValue) / 2;
+
+					/*  It's hard to measure an instant boost with units of
+						commerce per turn... So I'm just going to divide it by
+						(k146) ~12.5, scaled by game speed */
+					// <!-- custom: use cached kGame for performance optimization or such i mean -->
+					iValue += iTechValue * 8 / GC.getInfo(kGame.getGameSpeedType()).
+							getResearchPercent();
+				}
+				// else: If there is nothing to research, a free tech is worthless.
+			}
+
+			iValue += kBuilding.getEnemyWarWearinessModifier() / 2;
+			FOR_EACH_NON_DEFAULT_PAIR(kBuilding.
+				getFreeSpecialistCount(), Specialist, int)
+			{
+				iValue += AI_permanentSpecialistValue(
+						perSpecialistVal.first/*, false, false*/) * // K-Mod
+						perSpecialistVal.second / /* K-Mod: was 50 */ 100;
+			}
+			FOR_EACH_NON_DEFAULT_PAIR(kBuilding.
+				getImprovementFreeSpecialist(), Improvement, int)
+			{
+				iValue += countNumImprovedPlots(perImprovementVal.first, true) * 50 *
+						perImprovementVal.second;
+				iTotalImprFreeSpecialists += perImprovementVal.second; // advc.131
+			}
+			FOR_EACH_ENUM(Domain)
+			{
+				iValue += (kBuilding.getDomainProductionModifier(eLoopDomain) / 5);
+				if (bHighProductionCity)
+					iValue += kBuilding.getDomainProductionModifier(eLoopDomain) / 5;
+			}
+
+			FOR_EACH_ENUM(Unit)
+			{
+				if (GC.getInfo(eLoopUnit).getPrereqBuilding() == eBuilding)
+				{
+					// BBAI TODO: Smarter monastery construction, better support for mods
+
+					if (kOwner.AI_totalAreaUnitAIs(getArea(),
+						GC.getInfo(eLoopUnit).getDefaultUnitAIType()) == 0)
+					{
+						iValue += iNumCitiesInArea;
+					}
+					iValue++;
+					ReligionTypes const eReligion = GC.getInfo(eLoopUnit).getPrereqReligion();
+					if (eReligion != NO_RELIGION)
+					{
+						//encouragement to get some minimal ability to train special units
+						if (bCulturalVictory1 || isHolyCity(eReligion) || isCapital())
+							iValue += (2 + iNumCitiesInArea);
+
+						if (bCulturalVictory2 &&
+							GC.getInfo(eLoopUnit).getReligionSpreads(eReligion))
+						{
+							/*	this gives a very large extra value - if the religion is
+								(nearly) unique - to no extra value for a fully spread religion.
+								I'm torn between huge boost and enough to bias towards
+								the best monastery type. */
+							int iReligionCount = kOwner.getHasReligionCount(eReligion);
+							iValue += (100 * (iNumCities - iReligionCount)) /
+									(iNumCities * (iReligionCount + 1));
+						}
+					}
+				}
+			}
+
+			// is this building needed to build other buildings?
+
+			// K-Mod
+			// (I've deleted the original code for this section.)
+			if (bAllowRecursion)
+			{	// (moved from AI_bestBuildingThreshold)
+				BuildingClassTypes eFreeClass = kBuilding.getFreeBuildingClass();
+				if (eFreeClass != NO_BUILDINGCLASS)
+				{
+					BuildingTypes eFreeBuilding = getCivilization().getBuilding(eFreeClass);
+					if (NO_BUILDING != eFreeBuilding)
+					{	/*  K-Mod note: this is actually a pretty poor approximation
+							because the value of the free building is
+							likely to be different in the other cities. also,
+							if the free building is very powerful, then our
+							other cities will probably build it themselves
+							before they get the freebie!
+							(that's why I reduce the city count below) */
+						int iFreeBuildingValue = std::min(
+								AI_buildingValue(eFreeBuilding, 0, 0, bConstCache, false),
+								kOwner.getProductionNeeded(eFreeBuilding) / 2);
+						iValue += iFreeBuildingValue *
+								(std::max(iCitiesTarget, iNumCities*2/3) -
+								kOwner.getBuildingClassCountPlusMaking(eFreeClass));
+					}
+				}
+				CvCivilization const& kCiv = getCivilization(); // advc.003w
+				for (int i = 0; i < kCiv.getNumBuildings(); i++)
+				{
+					BuildingTypes eLoopBuilding = kCiv.buildingAt(i);
+					BuildingClassTypes eLoopClass = kCiv.buildingClassAt(i);
+					int iPrereqBuildings = 0; // number of eBuilding required by eLoopBuilding
+					CvBuildingInfo const& kLoopBuilding = GC.getInfo(eLoopBuilding);
+					int const iLimitForLoopBuilding = GC.getInfo(eLoopClass).getLimit();
+					int const iPrereqNumOfBuildingClass = kLoopBuilding.
+							getPrereqNumOfBuildingClass(eBuildingClass);
+					if ((iPrereqNumOfBuildingClass <= 0 &&
+						!kLoopBuilding.isBuildingClassNeededInCity(eBuildingClass)) ||
+						(iLimitForLoopBuilding > 0 &&
+						// advc.opt: Was getBuildingClassMaking; no need to call canConstruct for that.
+						kOwner.getBuildingClassCountPlusMaking(eLoopClass) >= iLimitForLoopBuilding) ||
+						!kOwner.canConstruct(eLoopBuilding, false, true, false))
+					{
+						/*	either we don't need eBuilding in order to build eLoopBuilding,
+							or we can't construct eLoopBuilding anyway */
+						/*  NOTE: the above call to canConstruct will return true even
+							if the city already has the maximum number of national wonders.
+							This is a minor flaw in the AI. */
+						continue;
+					}
+
+					if (iPrereqNumOfBuildingClass > 0)
+					{	/*	calculate how many more of eBuilding we actually need,
+							given that we might be constructing some eLoopBuilding already. */
+						iPrereqBuildings = kOwner.getBuildingClassPrereqBuilding(
+								eLoopBuilding, eBuildingClass,
+								kOwner.getBuildingClassMaking(eLoopClass));
+						FAssert(iPrereqBuildings > 0);
+						/*	subtract the number of eBuildings we have already.
+							(Note, both BuildingClassCount and BuildingClassMaking
+							are cached. This is fast.) */
+						iPrereqBuildings -= kOwner.getBuildingClassCount(eBuildingClass);
+					}
+
+					/*	only score the local building requirement
+						if the civ-wide requirement is already met */
+					if (kLoopBuilding.isBuildingClassNeededInCity(eBuildingClass) &&
+						getNumBuilding(eBuilding) == 0 && iPrereqBuildings <= 0)
+					{
+						// <!-- custom: also cache later calls in this function for performance optimization or clarity or such i mean -->
+						const int iLoopXMLCost = kLoopBuilding.getProductionCost(); // XML base cost (unscaled)
+
+						if (iXMLCost > 0 &&
+							iLoopXMLCost > 0)
+						{
+							int iTempValue = AI_buildingValue(
+									eLoopBuilding, 0, 0, bConstCache, false);
+							if (iTempValue > 0)
+							{
+								/*	scale the bonus value by a rough approximation of
+									how likely we are the build the thing (note. the
+									combined production cost is essentially the cost of completing
+									kLoopBuilding given our current position.) */
+								iTempValue *= 2 * iXMLCost;
+								iTempValue /= 2 * iXMLCost +
+										3 * iLoopXMLCost;
+								iValue += iTempValue;
+							}
+						}
+					}
+
+					if (iPrereqBuildings <= 0 || iPrereqBuildings > iNumCities)
+						continue;
+					/*	We've already subtracted the number of eBuilding
+						that are already built. Now we subtract the number of eBuilding
+						that we are currently constructing. */
+					iPrereqBuildings -= kOwner.getBuildingClassMaking(eBuildingClass);
+							// (keep it simple)
+							//- (getFirstBuildingOrder(eBuilding) < 0 ? 0 : 1);
+					if (iPrereqBuildings <= 0)
+						continue;
+					/*	Now we work out how valuable it would be
+						to enable eLoopBuilding; and then scale that value
+						by how many more eBuildings we need. */
+					int iCanBuildPrereq = 0;
+					FOR_EACH_CITY(pLoopCity, kOwner)
+					{
+						if (pLoopCity->canConstruct(eBuilding) &&
+							pLoopCity->getProductionBuilding() != eBuilding)
+						{
+							iCanBuildPrereq++;
+						}
+					}
+					if (iCanBuildPrereq < iPrereqBuildings)
+						continue;
+					int iHighestValue = 0;
+					FOR_EACH_CITYAI(pLoopCity, kOwner)
+					{
+						if (pLoopCity->getProductionBuilding() != eLoopBuilding &&
+						/*  advc (comment): bVisible=true means: check only if the building
+							appears in the production list. In particular, prereq buildings
+							aren't checked, which is good. However, the national wonder limit
+							also isn't checked, which is bad.
+							Same problem a bit higher up in this function (K-Mod comment:
+							"This is a minor flaw in the AI.") */
+							pLoopCity->canConstruct(eLoopBuilding, false, true))
+						{
+							iHighestValue = std::max(
+									pLoopCity->AI_buildingValue(
+									eLoopBuilding, 0, 0, bConstCache, false),
+									iHighestValue);
+						}
+					}
+					int iTempValue = iHighestValue;
+					iTempValue *= iCanBuildPrereq + 3 * iPrereqBuildings;
+					iTempValue /= (iPrereqBuildings + 1) *
+							(3 * iCanBuildPrereq + iPrereqBuildings);
+					/*	That's between 1/(iPrereqBuildings+1) and 1/3*(iPrereqBuildings+1),
+						depending on # needed and # buildable */
+					iValue += iTempValue;
+				}
+			}
+			// K-Mod end (prereqs)
+
+			FOR_EACH_ENUM2(VoteSource, eVS)
+			{
+				if(kBuilding.getVoteSourceType() != eVS)
+					continue; // advc
+				// BETTER_BTS_AI_MOD, City AI, Victory Strategy AI, 05/24/10, jdog5000: START
+				int iTempValue = 0;
+				if (kBuilding.isStateReligion())
+				{
+					int iShareReligionCount = 0;
+					int iOtherPlayers = 0;
+					for(PlayerIter<MAJOR_CIV> itOther; itOther.hasNext(); ++itOther)
+					{
+						if (itOther->getID() == eOwner)
+							continue;
+						iOtherPlayers++;
+						if (kOwner.getStateReligion() == itOther->getStateReligion())
+							iShareReligionCount++;
+					}
+					//iTempValue += (200 * (1 + iShareReligionCount)) / (1 + iPlayerCount);
+					// <advc.178>
+					iTempValue += ((125 *
+							/*  Don't need everyone to share the religion
+								(but at least someone) */
+							scaled::min(scaled(iOtherPlayers, 2), iShareReligionCount)) /
+							std::max(1, iOtherPlayers)).round(); // </advc.178>
+				}
+				else
+				{
+					//iTempValue += 100;
+					iTempValue += 75; // advc.115b
+				}
+				// BETTER_BTS_AI_MOD: END
+				// <advc.115b>
+				int iDiploStage = 0;
+				if(kOwner.AI_atVictoryStage(AI_VICTORY_DIPLOMACY1))
+					iDiploStage++;
+				/*  Don't want to push AP as much b/c the victory stage is (so far)
+					hardly meaningful for that */
+				if(!kBuilding.isStateReligion() &&
+					kOwner.AI_atVictoryStage(AI_VICTORY_DIPLOMACY2))
+				{
+					iDiploStage++;
+				}
+				// (3 and 4 aren't possible without the respective vote source)
+				//iValue += iTempValue * 3 * diploStage;
+				iTempValue *= 3 * iDiploStage;
+				/*  K-Mod code didn't factor in AI_VICTORY_DIPLOMACY2 b/c that
+					stage wasn't used at the time */
+				//iValue += (iTempValue * (kOwner.AI_atVictoryStage(AI_VICTORY_DIPLOMACY1) ? 5 : 1));
+				// Don't pave the way for rival victory
+				int iMaxRivalStage = 0;
+				bool bHumanRival = false;
+				for (PlayerAIIter<FREE_MAJOR_CIV,KNOWN_POTENTIAL_ENEMY_OF> it(getTeam());
+					it.hasNext(); ++it)
+				{
+					CvPlayerAI const& kRival = *it;
+					int iRivalStage = 0;
+					if(kRival.AI_atVictoryStage(AI_VICTORY_DIPLOMACY1))
+						iRivalStage++;
+					if(!kBuilding.isStateReligion() &&
+						kOwner.AI_atVictoryStage(AI_VICTORY_DIPLOMACY2))
+					{
+						iRivalStage++;
+					}
+					if(iRivalStage > iMaxRivalStage ||
+						(iRivalStage >= iMaxRivalStage && kRival.isHuman()))
+					{
+						iMaxRivalStage = iRivalStage;
+						bHumanRival = kRival.isHuman();
+					}
+				}
+				if(iMaxRivalStage > iDiploStage ||
+					(bHumanRival && iMaxRivalStage >= iDiploStage))
+				{
+					iTempValue = 0;
+					if(iMaxRivalStage >= 3)
+						return 0;
+				}
+				iValue += iTempValue;
+				// </advc.115b>  <advc.179>
+				if (kBuilding.isStateReligion() && kOwner.isStateReligion())
+				{
+					std::vector<BuildingTypes> aeReligionBuildings;
+					FOR_EACH_ENUM(Building)
+					{
+						if (GC.getInfo(eLoopBuilding).getReligionType() == eStateReligion)
+							aeReligionBuildings.push_back(eBuilding);
+					}
+					scaled rOurBuildings = AI_estimateReligionBuildings(
+							kOwner.getID(), eStateReligion, aeReligionBuildings);
+					scaled rTempValue = rOurBuildings;
+					scaled rRivalFactor = fixp(1.5) *
+							scaled(kGame.countCivPlayersAlive()).sqrt();
+					int const iEverAlive = kGame.getCivPlayersEverAlive();
+					for (PlayerIter<CIV_ALIVE,KNOWN_TO> it(getTeam()); it.hasNext(); ++it)
+					{
+						CvPlayer const& kBrother = *it; // Brothers in the faith
+						if(kBrother.getID() == kOwner.getID() ||
+							kBrother.getStateReligion() != eStateReligion)
+						{
+							continue;
+						}
+						AttitudeTypes eTowardThem = ATTITUDE_FURIOUS;
+						if(!kBrother.isMinorCiv())
+						{
+							if (!isHuman())
+							{
+								eTowardThem = kOwner.AI_getAttitude(kBrother.getID());
+								if(kTeam.AI_getWarPlan(
+									kBrother.getTeam()) != NO_WARPLAN)
+								{
+									eTowardThem = std::min(eTowardThem, ATTITUDE_ANNOYED);
+								}
+							}
+							else eTowardThem = kOwner.AI_getAttitude(kBrother.getID());
+						}
+						bool bTheyAhead = (kGame.getPlayerRank(kBrother.getID()) <
+								std::min<int>(kGame.getPlayerRank(kOwner.getID()),
+								iEverAlive / 2));
+						// Don't care if they benefit from ReligionYield then
+						if(!bTheyAhead && eTowardThem <= ATTITUDE_CAUTIOUS &&
+							eTowardThem > ATTITUDE_FURIOUS)
+						{
+							continue;
+						}
+						scaled rLoopBuildings = AI_estimateReligionBuildings(
+								kBrother.getID(), eStateReligion, aeReligionBuildings);
+						// Don't want to help competitors win; let _them_ produce eBuilding.
+						if(bTheyAhead && eTowardThem < ATTITUDE_FRIENDLY)
+							rLoopBuildings.flipSign();
+						else 
+						{
+							rLoopBuildings.decreaseTo(rOurBuildings);
+							rLoopBuildings /= rRivalFactor;
+						}
+						rTempValue += rLoopBuildings;
+					}
+					FOR_EACH_ENUM(Yield)
+					{
+						int iChange = GC.getInfo(eVS).getReligionYield(eLoopYield);
+						if(iChange == 0)
+							continue;
+						/*  Would be nicer to use CvPlayerAI::AI_commerceWeight,
+							but that would have to be applied earlier. */
+						rTempValue *= iChange * (eLoopYield == YIELD_COMMERCE ? 4 : 8);
+					}
+					iValue += rTempValue.round();
+				}
+			} // </advc.179>
+			// BETTER_BTS_AI_MOD, City AI, Victory Strategy AI, 05/24/10, jdog5000: START
+			FOR_EACH_ENUM2(VoteSource, eVS)
+			{	// advc: some refactoring in this block
+				if (!kGame.isDiploVote(eVS) || !kOwner.isLoyalMember(eVS))
+					continue;
+				// Value religion buildings based on AP gains
+				ReligionTypes eReligion = kGame.getVoteSourceReligion(eVS);
+				if (eReligion != NO_RELIGION && isHasReligion(eReligion) &&
+					kBuilding.getReligionType() == eReligion)
+				{	// advc: Renamed "iTempValue" in the two loops below - name clash
+					FOR_EACH_ENUM(Yield)
+					{
+						int iChange = GC.getInfo(eVS).getReligionYield(eLoopYield);
+						// K-Mod
+						int iYieldVal = iChange * 4; // was 6
+						iYieldVal *= AI_yieldMultiplier(eLoopYield);
+						//iYieldVal /= 100; // advc: Increase precision
+						// advc.001 (loop variables were mixed up here)
+						if (eLoopYield == YIELD_PRODUCTION)
+						{
+							/*	priority += 2.8% per 1% in production increase.
+								roughly. More when at war. */
+							iPriorityFactor += std::min(100,
+									(bWarPlan ? 320 : 280) * iYieldVal /
+									// (advc: divisor times 100)
+									(100 * std::max(1,
+									4 * getYieldRate(YIELD_PRODUCTION))));
+						} // K-Mod end
+						iYieldVal *= kOwner.AI_yieldWeight(eLoopYield, this);
+						iYieldVal /= /*100*/10000; // advc
+						iValue += iYieldVal;
+					}
+					FOR_EACH_ENUM(Commerce)
+					{
+						int iChange = GC.getInfo(eVS).getReligionCommerce(eLoopCommerce);
+						int iCommerceVal = iChange * 4;
+						// K-Mod
+						if (iCommerceVal == 0)
+							continue;
+						iCommerceVal *= getTotalCommerceRateModifier(eLoopCommerce);
+						//iCommerceVal /= 100; // advc: Increase precision
+						// K-Mod end
+						iCommerceVal *= kOwner.AI_commerceWeight(eLoopCommerce, this);
+						/*	+99 mirrors code below, I think because commerce weight
+							can be pretty small. (It's so it rounds up, not down. - K-Mod) */
+						iCommerceVal = (iCommerceVal + /*99*/9900) / /*100*/10000; // advc
+						iValue += iCommerceVal;
+					}
+				}
+				// BETTER_BTS_AI_MOD: END
+			}
+		}
+
+		if (iPass > 0)
+		{
+			/*	K-Mod, I've moved this from inside the yield types loop;
+				and I've increased the value to compensate. */
+			if (iFoodDifference > 0 && iFoodKept != 0)
+			{
+				//iValue += iFoodKept / 2;
+				iValue += (std::max(0,
+						2 * (std::max(4, AI_getTargetPopulation()) - iPop) +
+						(bCanPopRush ? 3 : 1)) * iFoodKept) / 4;
+			} // K-Mod end
+
+			FOR_EACH_ENUM(Yield)
+			{
+				// K-Mod - I've shuffled some parts of this code around.
+				int iTempValue = 0;
+
+				/*iTempValue += ((kBuilding.getYieldModifier(eLoopYield) * getBaseYieldRate(eLoopYield)) / 10);
+				iTempValue += ((kBuilding.getPowerYieldModifier(eLoopYield) * getBaseYieldRate(eLoopYield)) / ((bProvidesPower || isPower()) ? 12 : 15));*/
+				// K-Mod
+				// +2 just to represent potential growth.
+				int iBaseRate = getBaseYieldRate(eLoopYield) + 2;
+				iTempValue += kBuilding.getYieldModifier(eLoopYield) * iBaseRate / 25;
+				iTempValue += kBuilding.getPowerYieldModifier(eLoopYield) * iBaseRate /
+						(bProvidesPower || isPower() ? 27 : 50);
+
+				if (bProvidesPower && !isPower())
+				{
+					iTempValue += (getPowerYieldRateModifier(eLoopYield) * iBaseRate) /
+							27; // was 12
+				}
+
+				FOR_EACH_NON_DEFAULT_PAIR(kBuilding.
+					getBonusYieldModifier(), Bonus, YieldPercentMap)
+				{
+					if (hasBonus(perBonusVal.first))
+					{
+						int iBonusYieldMod = perBonusVal.second[eLoopYield];
+						iTempValue += (iBonusYieldMod * iBaseRate) /
+								27; // was 12
+						iTotalBonusYieldMod += iBonusYieldMod; // advc.131
+					}
+				}
+
+				/*	if this is a limited wonder, and we are not in the top 4
+					of this category, subtract the value - we do _not_ want this here
+					(unless the value was small anyway) */
+				//if (bLimitedWonder && (findBaseYieldRateRank(eLoopYield) > (3 + iLimitedWonderLimit)))
+				/*	K-Mod: lets say top 1/3 instead. There are now other mechanisms
+					to stop us from wasting buildings. */
+				if (bLimitedWonder &&
+					findBaseYieldRateRank(eLoopYield) >
+					iNumCities/3 + 1 + iLimitedWonderLimit)
+				{
+					iTempValue *= -1;
+				}
+
+				/*	(K-Mod)...and now the things that should not depend
+					on whether or not we have a good yield rank */
+				int iRawYieldValue = 0;
+				/*	K-Mod, don't count trade commerce here, because that has already
+					been counted earlier... (the systme is a mess, I know.) */
+				if (eLoopYield != YIELD_COMMERCE)
+				{
+					iRawYieldValue += ((kBuilding.getTradeRouteModifier() *
+							getTradeYield(eLoopYield)) / 26); // was 12 (and 'iValue')
+					//if (bForeignTrade)
+					if (bForeignTrade && !kOwner.isNoForeignTrade()) // K-Mod
+					{
+						iRawYieldValue += ((kBuilding.getForeignTradeRouteModifier() *
+								getTradeYield(eLoopYield)) / 35); // was 12 (and 'iValue')
+					}
+				}
+
+				/*if (iFoodDifference > 0)
+					iValue += iFoodKept / 2;*/ // BtS
+				// (We're inside a yield types loop. This would be triple counted here!)
+
+				// advc.131: was >
+				if (kBuilding.getSeaPlotYieldChange(eLoopYield) != 0)
+				{
+					iRawYieldValue += kBuilding.getSeaPlotYieldChange(eLoopYield) *
+							//AI_buildingSpecialYieldChangeValue(eBuilding, eLoopYield);
+							// <K-Mod>
+							AI_buildingSeaYieldChangeWeight(eBuilding,
+							iFoodDifference > 0 && iHappinessLevel > 0); // </K-Mod>
+					bAnySeaPlotYieldChange = true; // advc.131
+				}
+				// advc.131: was >
+				if (kBuilding.getRiverPlotYieldChange(eLoopYield) != 0)
+				{
+					iRawYieldValue += kBuilding.getRiverPlotYieldChange(eLoopYield) *
+							countNumRiverPlots() * 3; // was 4
+				}
+				iRawYieldValue += kBuilding.getYieldChange(eLoopYield) * 4; // was 6
+
+				iRawYieldValue *= AI_yieldMultiplier(eLoopYield);
+				iRawYieldValue /= 100;
+				iTempValue += iRawYieldValue;
+				FOR_EACH_NON_DEFAULT_PAIR(kBuilding.
+					getSpecialistYieldChange(), Specialist, YieldChangeMap)
+				{
+					iTempValue += (perSpecialistVal.second[eLoopYield] *
+							iTotalPopulation) / 5;
+				}
+				iTempValue += kBuilding.getGlobalSeaPlotYieldChange(eLoopYield) *
+						kOwner.countNumCoastalCities() * 8;
+				iTempValue += (kBuilding.getAreaYieldModifier(eLoopYield) *
+						iNumCitiesInArea) / 3;
+				iTempValue += (kBuilding.getGlobalYieldModifier(eLoopYield) *
+						iNumCities) / 3;
+				if (iTempValue != 0)
+				{
+					/*if (bFinancialTrouble && iI == YIELD_COMMERCE)
+						iTempValue *= 2;*/ // BtS (this is rolled into AI_yieldWeight)
+
+					// K-Mod
+					if (eLoopYield == YIELD_PRODUCTION)
+					{
+						// priority += 2.4% per 1% in production increase. roughly. More when at war.
+						iPriorityFactor += std::min(100, (bWarPlan ? 280 : 240) *
+								iTempValue/std::max(1, 4*getYieldRate(YIELD_PRODUCTION)));
+					} // K-Mod end
+					iTempValue *= kOwner.AI_yieldWeight(eLoopYield, this);
+					iTempValue /= 100;
+					// (limited wonder condition use to be here. I've moved it. - Karadoc)
+					iValue += iTempValue;
+				}
+			}
+		}
+		else
+		{
+			if (iFocusFlags & BUILDINGFOCUS_FOOD)
+			{
+				iValue += iFoodKept;
+				// advc.131: was >
+				if (kBuilding.getSeaPlotYieldChange(YIELD_FOOD) != 0)
+				{
+					int iTempValue = kBuilding.getSeaPlotYieldChange(YIELD_FOOD) *
+							//AI_buildingSpecialYieldChangeValue(eBuilding, YIELD_FOOD)
+							// <K-Mod>
+							AI_buildingSeaYieldChangeWeight(eBuilding,
+							iFoodDifference > 0 && iHappinessLevel > 0); // </K-Mod>
+					if (iTempValue < 8 && iPop > 3)
+					{
+						// don't bother
+					}
+					else iValue += (iTempValue * 4) / std::max(2, iFoodDifference);
+				}
+				// advc.131: was >
+				if (kBuilding.getRiverPlotYieldChange(YIELD_FOOD) != 0)
+				{
+					iValue += (kBuilding.getRiverPlotYieldChange(YIELD_FOOD) *
+							countNumRiverPlots() * 4);
+				}
+			}
+			if (iFocusFlags & BUILDINGFOCUS_PRODUCTION)
+			{
+				int iTempValue = (iHammersModifier *
+						iBaseHammersPerTurn) / 20;
+				iTempValue += (kBuilding.getPowerYieldModifier(YIELD_PRODUCTION) *
+						iBaseHammersPerTurn) /
+						((bProvidesPower || isPower()) ? 24 : 30);
+				if (kBuilding.getSeaPlotYieldChange(YIELD_PRODUCTION) > 0)
+				{
+					int iNumWaterPlots = countNumWaterPlots();
+					if (!bLimitedWonder || iNumWaterPlots > NUM_CITY_PLOTS / 2)
+					{
+						iTempValue += kBuilding.getSeaPlotYieldChange(YIELD_PRODUCTION) *
+								iNumWaterPlots;
+					}
+				}
+				// advc.131: was >
+				if (kBuilding.getRiverPlotYieldChange(YIELD_PRODUCTION) != 0)
+				{
+					iTempValue += (kBuilding.getRiverPlotYieldChange(YIELD_PRODUCTION) *
+							countNumRiverPlots() * 4);
+				}
+				if (bProvidesPower && !isPower())
+				{
+					iTempValue += (getPowerYieldRateModifier(YIELD_PRODUCTION) *
+							//iBaseHammersPerTurn) / 12;
+							iBaseHammersPerTurn) / 24; // K-Mod, consistency
+				}
+
+				/*	if this is a limited wonder, and we are not in the top 4
+					of this category, subtract the value -  we do _not_ want this here
+					(unless the value was small anyway) */
+				if (bLimitedWonder &&
+					iProductionRank >
+					3 + iLimitedWonderLimit)
+				{
+					iTempValue *= -1;
+				}
+				iValue += iTempValue;
+			}
+
+			if (iFocusFlags & BUILDINGFOCUS_GOLD)
+			{
+				int iTempValue = (kBuilding.getYieldModifier(YIELD_COMMERCE) *
+						getBaseYieldRate(YIELD_COMMERCE));
+				iTempValue *= kOwner.getCommercePercent(COMMERCE_GOLD);
+				if (bFinancialTrouble)
+					iTempValue *= 2;
+				iTempValue /= 3000;
+
+				/*if (MAX_INT == aiCommerceRank[COMMERCE_GOLD])
+					aiCommerceRank[COMMERCE_GOLD] = iGoldRateRank;*/
+
+				/*	if this is a limited wonder, and we are not in the top 4
+					of this category, subtract the value -  we do _not_ want this here
+					(unless the value was small anyway) */
+				if (bLimitedWonder &&
+					iGoldRateRank >
+					3 + iLimitedWonderLimit)
+				{
+					iTempValue *= -1;
+				}
+				iValue += iTempValue;
+			}
+		}
+		if (iPass > 0)
+		{
+			FOR_EACH_ENUM(Commerce)
+			{
+				int iTempValue = kBuilding.getCommerceChange(eLoopCommerce) * 4;
+				iTempValue += kBuilding.getObsoleteSafeCommerceChange(eLoopCommerce) * 4;
+				// BETTER_BTS_AI_MOD, City AI, 03/13/10, jdog5000: START
+				if (kBuilding.getReligionType() != NO_RELIGION &&
+					kBuilding.getReligionType() == kOwner.getStateReligion())
+				{
+					iTempValue += kOwner.getStateReligionBuildingCommerce(eLoopCommerce) * 3;
+				}
+				// BETTER_BTS_AI_MOD END
+				// Moved from below (K-Mod)
+				iTempValue += ((kBuilding.getSpecialistExtraCommerce(eLoopCommerce) *
+						iTotalPopulation) / 3);
+				//iTempValue *= 100 + kBuilding.getCommerceModifier(eLoopCommerce);
+				// K-Mod. Note that getTotalCommerceRateModifier() includes the +100.
+				iTempValue *= getTotalCommerceRateModifier(eLoopCommerce) +
+						kBuilding.getCommerceModifier(eLoopCommerce);
+				iTempValue /= 100;
+				int const iCommerceChangeDoubleTime = kBuilding.
+						getCommerceChangeDoubleTime(eLoopCommerce);
+				if (iCommerceChangeDoubleTime > 0)
+				{
+					if (kBuilding.getCommerceChange(eLoopCommerce) > 0)
+					{	//iTempValue += (1000 / kBuilding.getCommerceChangeDoubleTime(eLoopCommerce));
+						// K-Mod (still very rough...):
+						iTempValue += (iTempValue * 250) / iCommerceChangeDoubleTime;
+					}
+					if (kBuilding.getObsoleteSafeCommerceChange(eLoopCommerce) > 0)
+					{
+						iTempValue += (iTempValue * 250) /
+								// <advc.098>
+								(GC.getDefineBOOL(CvGlobals::DOUBLE_OBSOLETE_BUILDING_COMMERCE) ?
+								1000 : // </advc.098>
+								iCommerceChangeDoubleTime);
+					}
+				}
+				bool bExpandBorders = false; // advc.192
+				if (eLoopCommerce == COMMERCE_CULTURE)
+				{
+					if (bCulturalVictory1)
+						iTempValue *= 2;
+					/*	K-Mod. Build culture buildings quickly to pop our borders
+						(but not wonders / special buildings) */
+					if (iTempValue > 0 && !bLimitedWonder &&
+						iXMLCost > 0 &&
+						AI_needsCultureToWorkFullRadius())
+					{
+						iPriorityFactor += 25;
+						//iTempValue += 16;
+						/*	<advc.192> (This will execute mostly in the early game.
+							We have time for some computations.) */
+						bExpandBorders = true; // Remember for later
+						int iClaimedBonuses = 0;
+						int iClaimedBonusVal = 0;
+						for (CityPlotIter itPlot(*this, false); itPlot.hasNext(); ++itPlot)
+						{
+							if (itPlot->getOwner() == kOwner.getID() ||
+								!itPlot->isRevealed(kOwner.getTeam()))
+							{
+								continue;
+							}
+							BonusTypes eBonus = itPlot->getNonObsoleteBonusType(kOwner.getTeam());
+							if (eBonus != NO_BONUS)
+							{
+								iClaimedBonuses++;
+								FOR_EACH_ENUM(Build)
+								{
+									if (kOwner.doesImprovementConnectBonus(
+										GC.getInfo(eLoopBuild).getImprovement(), eBonus) &&
+										kOwner.canBuild(*itPlot, eLoopBuild,
+										false, true)) // To allow unowned plots
+									{
+										iClaimedBonusVal += kOwner.AI_bonusVal(eBonus, 1);
+										break;
+									}
+								}
+							}
+						}
+						int iClaimValue = 0;
+						if (iClaimedBonuses > 0)
+						{
+							/*	All cities could benefit ... possibly, and we'll need
+								a worker; therefore halve the value. */
+							iClaimValue += (iClaimedBonusVal * iNumCities) / 2;
+							iClaimValue += (9 * scaled(iClaimedBonuses).
+									pow(fixp(0.75))).uround();
+						}
+						iClaimValue += 7;
+						/*	Prefer to expand soon - also to be consistent with preferential
+							treatment for fast expansion in AI_chooseProduction. */
+						if (!AI_isSwiftBorderExpansion(getProductionTurnsLeft(eBuilding, 0)))
+							iClaimValue /= 2;
+						iTempValue += iClaimValue;
+						//</advc.192>
+					} // K-Mod end
+				}
+
+				/*	K-Mod. the getCommerceChangeDoubleTime bit use to be here.
+					I moved it up to be before the culture value boost. */
+
+				// add value for a commerce modifier
+				int iCommerceModifier = kBuilding.getCommerceModifier(eLoopCommerce);
+				int iBaseCommerceRate = getBaseCommerceRate(eLoopCommerce);
+				// <advc.131> CapitalYieldRate is not included in BaseCommerceRate
+				if(isCapital())
+				{
+					iBaseCommerceRate *= 100 + kOwner.
+							getCapitalYieldRateModifier(YIELD_COMMERCE);
+					iBaseCommerceRate /= 100;
+				} // Anticipate growth and techs that increase yield
+				iBaseCommerceRate = (iBaseCommerceRate * scaled::max(1,
+						fixp(4/3.) - kGame.gameTurnProgress() / 2)).
+						round(); // </advc.131>
+				{ // K-Mod.
+					/*  inflate the base commerce rate, to account for the fact
+						that commerce multipliers give us flexibility. */
+					/*  <k146> But not for espionage. Because... reasons.
+						(Espionage gets a priority bonus later. That's good
+						enough.) */
+					int x = std::max(eLoopCommerce == COMMERCE_ESPIONAGE ? 0 : 5,
+							kOwner.getCommercePercent(eLoopCommerce));
+					// </k146>
+					if (eLoopCommerce == COMMERCE_CULTURE)
+					{
+						x += x <= 45 && bCulturalVictory1 ? 10 : 0;
+						x += x <= 45 && bCulturalVictory2 ? 10 : 0;
+						x += x <= 45 && bCulturalVictory3 ? 10 : 0;
+					}
+					iBaseCommerceRate += getYieldRate(YIELD_COMMERCE) * x *
+							(100 - x) / 10000;
+				} // K-Mod end
+
+				int iCommerceMultiplierValue = iCommerceModifier * iBaseCommerceRate;
+				if (eLoopCommerce == COMMERCE_CULTURE && iCommerceModifier != 0)
+				{	/*	K-Mod: bug fix, and improvement.
+						(the old code was missing /= 100, and it was too conditional) */
+					/*	(disabled indefinitely. culture pressure is counted in other ways;
+						so I want to test without this boost.) */
+					//iCommerceMultiplierValue *= culturePressureFactor() + 100;
+					//iCommerceMultiplierValue /= 200;
+					// K-Mod end
+
+					/*	K-Mod. the value of culture is now boosted primarily
+						inside AI_commerceWeight so I've decreased the value boost
+						in the following block. */
+					if (bCulturalVictory1)
+					{
+						/*	if this is one of our top culture cities,
+							then we want to build this here first! */
+						if (iCultureRateRank <= iCulturalVictoryNumCultureCities)
+						{
+							iCommerceMultiplierValue /= 15; // was 8
+
+							// if we at culture level 3, then these need to get built asap
+							if (bCulturalVictory3)
+							{
+								int iHighestRate = 0;
+								FOR_EACH_CITY(pLoopCity, kOwner)
+								{
+									iHighestRate = std::max(iHighestRate,
+											pLoopCity->getCommerceRate(COMMERCE_CULTURE));
+								}
+								FAssert(iHighestRate >= getCommerceRate(COMMERCE_CULTURE));
+								/*	it's most important to build in the lowest rate city,
+									but important everywhere */
+								iCommerceMultiplierValue += (iHighestRate -
+										getCommerceRate(COMMERCE_CULTURE)) *
+										iCommerceModifier / 15; // was 8
+							}
+						}
+						else
+						{
+							//int iCountBuilt = kOwner.getBuildingClassCountPlusMaking(eBuildingClass);
+							/*	K-Mod (to match the number used by
+								getBuildingClassPrereqBuilding) */
+							int iCountBuilt = kOwner.getBuildingClassCount(eBuildingClass);
+
+							// do we have enough buildings to build extras?
+							bool bHaveEnough = true;
+
+							/*	if its limited and the limit is less than the
+								number we need in culture cities, do not build here */
+							if (bLimitedWonder &&
+								iLimitedWonderLimit <= iCulturalVictoryNumCultureCities)
+							{
+								bHaveEnough = false;
+							}
+							FOR_EACH_ENUM(BuildingClass)
+							{
+								// K-Mod: bug fix.
+								/*// count excess the number of prereq buildings which do not have this building built for yet
+								int iPrereqBuildings = kOwner.getBuildingClassPrereqBuilding(eBuilding, eLoopBuildingClass, -iCountBuilt);
+								// do we not have enough built (do not count ones in progress)
+								if (iPrereqBuildings > 0 && kOwner.getBuildingClassCount(eLoopBuildingClass) < iPrereqBuildings)
+									bHaveEnough = false;*/ // BtS
+								// Whatever that code was meant to do, I'm pretty sure it was wrong.
+								int iPrereqBuildings = kOwner.getBuildingClassPrereqBuilding(
+										eBuilding, eLoopBuildingClass,
+										iCulturalVictoryNumCultureCities - iCountBuilt);
+								if (kOwner.getBuildingClassCount(eLoopBuildingClass) <
+									iPrereqBuildings)
+								{
+									break;
+								} // K-Mod end
+							}
+
+							/*	if we have enough and our rank is close to the top,
+								then possibly build here too */
+							if (bHaveEnough &&
+								(iCultureRateRank - iCulturalVictoryNumCultureCities) <= 3)
+							{
+								iCommerceMultiplierValue /= 20; // was 12
+							}
+							// otherwise, we really do not want to build this here
+							else iCommerceMultiplierValue /= 50; // was 30
+						}
+					}
+					else
+					{
+						iCommerceMultiplierValue /= 25; // was 15
+
+						// increase priority if we need culture oppressed city
+						/*	K-Mod: moved this to outside of the current "if".
+							It should still apply even when going for a cultural victory! */
+						//iCommerceMultiplierValue *= (100 - calculateCulturePercent(eOwner));
+					}
+				}
+				else
+				{
+					iCommerceMultiplierValue /= 25; // was 15
+				}
+				iTempValue += iCommerceMultiplierValue;
+
+				// K-Mod. help get the ball rolling on espionage.
+				if (eLoopCommerce == COMMERCE_ESPIONAGE && iTempValue > 0 &&
+					!kGame.isOption(GAMEOPTION_NO_ESPIONAGE))
+				{
+					/*	priority += 1% per 1% increase in total espionage,
+						more for big espionage strategy */
+					iPriorityFactor += std::min(100,
+							(kOwner.AI_isDoStrategy(AI_STRATEGY_BIG_ESPIONAGE) ? 150 : 100) *
+							iTempValue/std::max(1, 4 *
+							kOwner.getCommerceRate(COMMERCE_ESPIONAGE)));
+				}
+
+				/*	... and increase the priority of research buildings
+					if aiming for a space victory. */
+				if (eLoopCommerce == COMMERCE_RESEARCH && bSpaceVictory1)
+					iPriorityFactor += std::min(25, iTempValue/2);
+				// K-Mod end
+
+				iTempValue += (kBuilding.getGlobalCommerceModifier(eLoopCommerce) * iNumCities) / 4;
+				// moved up (K-Mod)
+				// iTempValue += ((kBuilding.getSpecialistExtraCommerce(eLoopCommerce) * iTotalPopulation) / 3);
+
+				/*if (eStateReligion != NO_RELIGION)
+					iTempValue += (kBuilding.getStateReligionCommerce(eLoopCommerce) * kOwner.getHasReligionCount(eStateReligion) * 3);
+				*/ // BtS
+				/*	K-Mod. A more accurate calculation of the value from
+					increasing commerce on all state religion buildings. (eg. Sankore) */
+				if (eStateReligion != NO_RELIGION &&
+					kBuilding.getStateReligionCommerce(eLoopCommerce) != 0)
+				{
+					int iCount = 0;
+					CvCivilization const& kCiv = getCivilization(); // advc.003w
+					for (int i = 0; i < kCiv.getNumBuildings(); i++)
+					{
+						BuildingTypes eLoopBuilding = kCiv.buildingAt(i);
+						if (GC.getInfo(eLoopBuilding).getReligionType() == eStateReligion &&
+						// <!-- custom: cache as the existing kTeam (check if accurate as i don't know too much about these) -->
+							!kTeam.isObsoleteBuilding(eLoopBuilding))
+						{
+							iCount += kOwner.getBuildingClassCountPlusMaking(
+									kCiv.buildingClassAt(i));
+						}
+					}
+					iCount = std::max(iCount, kOwner.getHasReligionCount(eStateReligion));
+					iTempValue += iCount * 35 *
+							kOwner.AI_averageCommerceMultiplier(eLoopCommerce) / 1000;
+				}
+				// K-Mod end
+				ReligionTypes const eGlobalCommerceReligion = kBuilding.
+						getGlobalReligionCommerce();
+				if (eGlobalCommerceReligion != NO_RELIGION)
+				{
+					/*iTempValue += (GC.getInfo((ReligionTypes)(kBuilding.getGlobalReligionCommerce())).getGlobalReligionCommerce(eLoopCommerce) * g.countReligionLevels((ReligionTypes)kBuilding.getGlobalReligionCommerce()) * 2);
+					if (eStateReligion == (ReligionTypes)(kBuilding.getGlobalReligionCommerce()))
+						iTempValue += 10;*/
+					// K-Mod
+					int iExpectedSpread = kGame.countReligionLevels(eGlobalCommerceReligion);
+					iExpectedSpread += ((//GC.getNumEraInfos() - iCurrentEra +
+							// <advc.erai> Current era plus subsequent eras
+							1 + CvEraInfo::normalizeEraNum(
+							GC.getNumEraInfos() - iCurrentEra - 1) + // </advc.erai>
+							(eStateReligion == eGlobalCommerceReligion ? 2 : 0)) *
+							//GC.getInfo(GC.getMap().getWorldSize()).getDefaultPlayers()
+							kGame.getRecommendedPlayers()).round(); // advc.137
+					iTempValue += GC.getInfo(eGlobalCommerceReligion).
+							getGlobalReligionCommerce(eLoopCommerce) * iExpectedSpread * 4;
+				}
+				/*	K-Mod: I've moved the corporation stuff that use to be here
+					to outside this loop so that it isn't quadriple counted */
+				if (kBuilding.isCommerceFlexible(eLoopCommerce) &&
+					!kOwner.isCommerceFlexible(eLoopCommerce))
+				{
+					iTempValue += 40;
+				}
+				if (kBuilding.isCommerceChangeOriginalOwner(eLoopCommerce))
+				{
+					if (kBuilding.getCommerceChange(eLoopCommerce) > 0 ||
+						kBuilding.getObsoleteSafeCommerceChange(eLoopCommerce) > 0)
+					{
+						iTempValue++;
+					}
+				}
+				// <!-- custom: performance optimizations -->
+				const int iLoopCommerceRateRank1 = findCommerceRateRank(eLoopCommerce);
+				if (iTempValue != 0)
+				{
+					if (bFinancialTrouble && eLoopCommerce == COMMERCE_GOLD)
+						iTempValue *= 2;
+					/*	advc.192: Culture weight doesn't account for additional
+						workable plots. If that's what we're after, we should
+						ignore the weight (which is going to be small). */
+					if (!bExpandBorders || eLoopCommerce != COMMERCE_CULTURE)
+					{
+						iTempValue *= kOwner.AI_commerceWeight(eLoopCommerce, this);
+						iTempValue = intdiv::uceil(iTempValue, 100);
+					}
+					/*	if this is a limited wonder, and we are not in the top 4
+						of this category, subtract the value - we do _not_ want this here
+						(unless the value was small anyway) */
+					/*if (MAX_INT == aiCommerceRank[eLoopCommerce])
+						aiCommerceRank[eLoopCommerce] = iLoopCommerceRateRank1;*/
+					/*if (bLimitedWonder && aiCommerceRank[eLoopCommerce] > 3 + iLimitedWonderLimit)
+						|| (bCulturalVictory1 && eLoopCommerce == COMMERCE_CULTURE && aiCommerceRank[eLoopCommerce] == 1))
+					{
+						iTempValue *= -1;
+						// for culture, just set it to zero, not negative, just about every wonder gives culture
+						if (eLoopCommerce == COMMERCE_CULTURE)
+						{
+							iTempValue = 0;
+						}
+					}*/ // BtS
+					/*	K-Mod, let us build culture wonders to defend
+						against culture pressure. also, lets say top 1/3 instead.
+						There are now other mechanisms to stop us from wasting buildings. */
+					if (bLimitedWonder)
+					{
+						if (eLoopCommerce == COMMERCE_CULTURE)
+						{
+							if (bCulturalVictory1 &&
+								((bCulturalVictory2 &&
+								iLoopCommerceRateRank1 == 1) ||
+								iLoopCommerceRateRank1 >
+								iNumCities/3 + 1 + iLimitedWonderLimit))
+							{
+								iTempValue = 0;
+							}
+						}
+						else if (iLoopCommerceRateRank1 >
+							iNumCities/3 + 1 + iLimitedWonderLimit)
+						{
+							iTempValue *= -1;
+						}
+					} // K-Mod end
+					iValue += iTempValue;
+				}
+			}
+			// corp evaluation moved here, and rewritten for K-Mod
+			{
+				CorporationTypes const eCorporation = kBuilding.getFoundsCorporation();
+				int iCorpValue = 0;
+				int iExpectedSpread = (kOwner.AI_atVictoryStage4() ? 45 :
+						(70 - (bWarPlan ? 10 : 0))); // advc: parentheses added for clarity
+				/*	note: expected spread starts as percent (for precision),
+					but is later converted to # of cities. */
+				if (kOwner.isNoCorporations())
+					iExpectedSpread = 0;
+				if (eCorporation != NO_CORPORATION && iExpectedSpread > 0)
+				{
+					//iCorpValue = kOwner.AI_corporationValue(eCorporation, this);
+					// K-Mod: consider the corporation for the whole civ, not just this city.
+					iCorpValue = kOwner.AI_corporationValue(eCorporation);
+					FOR_EACH_ENUM(Corporation)
+					{
+						if (eLoopCorporation != eCorporation &&
+							kOwner.hasHeadquarters(eLoopCorporation) &&
+							kGame.isCompetingCorporation(eCorporation, eLoopCorporation))
+						{
+							/*	This new corp is no good to us if our competing corp
+								is already better. note: evaluation of the competing corp
+								for this particular city is ok. */
+							if (kOwner.AI_corporationValue(eLoopCorporation, this) > iCorpValue)
+							{
+								iExpectedSpread = 0;
+								break;
+							}
+							// expect to spread the corp to fewer cities.
+							iExpectedSpread /= 2;
+						}
+					}
+					// convert spread from percent to # of cities
+					iExpectedSpread = iExpectedSpread * iNumCities / 100;
+
+					// scale corp value by the expected spread
+					iCorpValue *= iExpectedSpread;
+					/*	Rescale from 100x commerce down to 4x commerce.
+						(AI_corporationValue returns roughly 100x commerce) */
+					iCorpValue *= 4;
+					iCorpValue /= 100;
+				}
+				if (kBuilding.getGlobalCorporationCommerce() != NO_CORPORATION)
+				{
+					iExpectedSpread += kGame.countCorporationLevels(
+							kBuilding.getGlobalCorporationCommerce());
+					if (iExpectedSpread > 0)
+					{
+						// <!-- custom: note: be careful, this is from another loop so increment variable name and redefine it as a new variable -->
+						const int iLoopCommerceRateRank2 = findCommerceRateRank(eLoopCommerce);
+						FOR_EACH_ENUM(Commerce)
+						{
+							int iHqValue = 4 * GC.getInfo(
+									kBuilding.getGlobalCorporationCommerce()).
+									getHeadquarterCommerce(eLoopCommerce) * iExpectedSpread;
+							if (iHqValue != 0)
+							{
+								iHqValue *= getTotalCommerceRateModifier(eLoopCommerce);
+								iHqValue *= kOwner.AI_commerceWeight(eLoopCommerce, this);
+								iHqValue /= 10000;
+							}
+							/*	use rank as a tie-breaker...
+								with number of national wonders thrown in to,
+								(I'm trying to boost the chance that the
+								AI will put wallstreet with its corp HQs.) */
+							if (iHqValue > 0)
+							{
+								iHqValue *= 3*iNumCities
+										- iLoopCommerceRateRank2
+										- getNumNationalWonders() / 2;
+								iHqValue /= 2*iNumCities;
+							}
+							iCorpValue += iHqValue;
+						}
+					}
+				}
+				if (iCorpValue > 0)
+					iValue += iCorpValue;
+			}
+			// K-Mod end (corp)
+			FOR_EACH_NON_DEFAULT_PAIR(kBuilding.
+				getReligionChange(), Religion, int)
+			{
+				ReligionTypes const eLoopReligion = perReligionVal.first;
+				int iReligionChange = perReligionVal.second;
+				if (iReligionChange > 0 &&
+					kTeam.hasHolyCity(eLoopReligion))
+				{
+					if (eStateReligion == eLoopReligion)
+						iReligionChange *= 10;
+					iValue += iReligionChange;
+				}
+			}
+			if (kBuilding.getVoteSourceType() != NO_VOTESOURCE)
+				iValue += 100;
+		}
+		else
+		{
+			if (iFocusFlags & BUILDINGFOCUS_GOLD)
+			{
+				int iTempValue = ((kBuilding.getCommerceModifier(COMMERCE_GOLD) *
+						getBaseCommerceRate(COMMERCE_GOLD)) / 40);
+				if (iTempValue != 0)
+				{
+					if (bFinancialTrouble)
+						iTempValue *= 2;
+
+					/*if (MAX_INT == aiCommerceRank[COMMERCE_GOLD])
+						aiCommerceRank[COMMERCE_GOLD] = iGoldRateRank;*/
+
+					/*	if this is a limited wonder, and we are not one of the top 4 in
+						this category, subtract the value. we do _not_ want to build this here.
+						(unless the value was small anyway) */
+					if (bLimitedWonder &&
+						iGoldRateRank > 3 + iLimitedWonderLimit)
+					{
+						iTempValue *= -1;
+					}
+					iValue += iTempValue;
+				}
+
+				iValue += (kBuilding.getCommerceChange(COMMERCE_GOLD) * 4);
+				iValue += (kBuilding.getObsoleteSafeCommerceChange(COMMERCE_GOLD) * 4);
+			}
+
+			if (iFocusFlags & BUILDINGFOCUS_RESEARCH)
+			{
+				int iTempValue = ((kBuilding.getCommerceModifier(COMMERCE_RESEARCH) *
+						getBaseCommerceRate(COMMERCE_RESEARCH)) / 40);
+				if (iTempValue != 0)
+				{
+					/*if (MAX_INT == aiCommerceRank[COMMERCE_RESEARCH])
+						aiCommerceRank[COMMERCE_RESEARCH] = findCommerceRateRank(COMMERCE_RESEARCH);*/
+
+					// (see comment above)
+					if (bLimitedWonder &&
+						findCommerceRateRank(COMMERCE_RESEARCH) > 3 + iLimitedWonderLimit)
+					{
+						iTempValue *= -1;
+					}
+					iValue += iTempValue;
+				}
+				iValue += kBuilding.getCommerceChange(COMMERCE_RESEARCH) * 4;
+				iValue += kBuilding.getObsoleteSafeCommerceChange(COMMERCE_RESEARCH) * 4;
+			}
+
+			if (iFocusFlags & BUILDINGFOCUS_CULTURE)
+			{
+				int iTempValue = (kBuilding.getCommerceChange(
+						COMMERCE_CULTURE) * 3);
+				iTempValue += (kBuilding.getObsoleteSafeCommerceChange(
+						COMMERCE_CULTURE) * 3);
+				if (kGame.isOption(GAMEOPTION_NO_ESPIONAGE))
+				{
+					iTempValue += kBuilding.getCommerceChange(
+							COMMERCE_ESPIONAGE) * 3;
+					iTempValue += kBuilding.getObsoleteSafeCommerceChange(
+							COMMERCE_ESPIONAGE) * 3;
+				}
+				//if ((getCommerceRate(COMMERCE_CULTURE) == 0) && (AI_calculateTargetCulturePerTurn() == 1))
+				if (iTempValue >= 3 && AI_needsCultureToWorkFullRadius())
+					iTempValue += 7;
+				// K-Mod, this stuff was moved from below
+				iTempValue += ((kBuilding.getCommerceModifier(COMMERCE_CULTURE) *
+						getBaseCommerceRate(COMMERCE_CULTURE)) / 15);
+				if (kGame.isOption(GAMEOPTION_NO_ESPIONAGE))
+				{
+					iTempValue += ((kBuilding.getCommerceModifier(COMMERCE_ESPIONAGE) *
+							getBaseCommerceRate(COMMERCE_ESPIONAGE)) / 15);
+				} // K-Mod end
+				if (iTempValue != 0)
+				{
+					/*if (MAX_INT == aiCommerceRank[COMMERCE_CULTURE])
+						aiCommerceRank[COMMERCE_CULTURE] = iCultureRateRank;*/
+
+					/*	if this is a limited wonder, and we are not one of the top 4
+						in this category, do not count the culture value.
+						we probably do not want to build this here (but we might). */
+					/*if (bLimitedWonder && (iCultureRateRank > (3 + iLimitedWonderLimit)))
+						iTempValue  = 0;*/ // BtS
+					/*	K-Mod. The original code doesn't take prereq buildings into account,
+						and it was in the wrong place. To be honest, I think this
+						"building focus" flag system is pretty bad; but I'm fixing it anyway. */
+					if (iCultureRateRank > iCulturalVictoryNumCultureCities)
+					{
+						bool bAvoid = false;
+						if (bLimitedWonder &&
+							iCultureRateRank
+							- iLimitedWonderLimit >= iCulturalVictoryNumCultureCities)
+						{
+							bAvoid = true;
+						}
+						for (int iJ = 0; !bAvoid && iJ < GC.getNumBuildingClassInfos(); iJ++)
+						{
+							int iPrereqBuildings = kOwner.getBuildingClassPrereqBuilding(
+									eBuilding, (BuildingClassTypes)iJ,
+									iCulturalVictoryNumCultureCities
+									- kOwner.getBuildingClassCount(eBuildingClass));
+							if (kOwner.getBuildingClassCount((BuildingClassTypes)iJ) <
+								iPrereqBuildings)
+							{
+								bAvoid = true;
+							}
+						}
+						if (bAvoid)
+							iTempValue = 0;
+					}
+					// K-Mod end
+					iValue += iTempValue;
+				}
+
+				/*iValue += ((kBuilding.getCommerceModifier(COMMERCE_CULTURE) * getBaseCommerceRate(COMMERCE_CULTURE)) / 15);
+				if (kGame.isOption(GAMEOPTION_NO_ESPIONAGE))
+					iValue += ((kBuilding.getCommerceModifier(COMMERCE_ESPIONAGE) * getBaseCommerceRate(COMMERCE_ESPIONAGE)) / 15);*/ // BtS
+				// (K-Mod has moved this stuff up to be before the limited wonder checks.)
+			}
+
+			if (iFocusFlags & BUILDINGFOCUS_BIGCULTURE)
+			{
+				int iTempValue = kBuilding.getCommerceModifier(COMMERCE_CULTURE) / 5;
+				if (iTempValue != 0)
+				{
+					/*if (MAX_INT == aiCommerceRank[COMMERCE_CULTURE])
+						aiCommerceRank[COMMERCE_CULTURE] = iCultureRateRank;*/
+
+					// (see comment above)
+					if (bLimitedWonder &&
+						iCultureRateRank >
+						3 + iLimitedWonderLimit)
+					{
+						iTempValue  = 0;
+					}
+
+					iValue += iTempValue;
+				}
+			}
+			//if (iFocusFlags & BUILDINGFOCUS_ESPIONAGE || (g.isOption(GAMEOPTION_NO_ESPIONAGE) && (iFocusFlags & BUILDINGFOCUS_CULTURE)))
+			/*	K-Mod: the "no espionage" stuff is already taken into account
+				in the culture section. */
+			if (iFocusFlags & BUILDINGFOCUS_ESPIONAGE &&
+				!kGame.isOption(GAMEOPTION_NO_ESPIONAGE))
+			{	// BETTER_BTS_AI_MOD, City AI, 01/09/10, jdog5000: START
+				// K-Mod, changed this section.
+				int iTempValue = ((kBuilding.getCommerceModifier(COMMERCE_ESPIONAGE) *
+						getBaseCommerceRate(COMMERCE_ESPIONAGE)) / 50);
+				if (iTempValue != 0)
+				{
+					/*	if this is a limited wonder, and we are not one of the top 4
+						in this category, subtract the value.
+						we do _not_ want to build this here (unless the value was small anyway). */
+					if (bLimitedWonder &&
+						findCommerceRateRank(COMMERCE_ESPIONAGE) > 3 + iLimitedWonderLimit)
+					{
+						iTempValue *= -1;
+					}
+
+					iValue += iTempValue;
+				}
+				iTempValue = kBuilding.getCommerceChange(COMMERCE_ESPIONAGE) * 4;
+				iTempValue += kBuilding.getObsoleteSafeCommerceChange(COMMERCE_ESPIONAGE) * 4;
+				iTempValue *= 100 + getTotalCommerceRateModifier(COMMERCE_ESPIONAGE) +
+						kBuilding.getCommerceModifier(COMMERCE_ESPIONAGE);
+				iValue += iTempValue / 100;
+				// BETTER_BTS_AI_MOD: END
+			}
+		}
+
+		/*if ((iThreshold > 0) && (iPass == 0))
+		{
+			if (iValue < iThreshold)
+				iValue = 0;
+		}*/ // BtS
+		// K-Mod
+		if (!bNeutralFlags && iValue <= iThreshold)
+		{
+			iValue = 0;
+			break;
+		} // K-Mod end
+	}
+	iValue = std::max(0, iValue);
+	// K-Mod
+	if (iValue > 0)
+	{
+		// priority factor
+		if (bWorldWonder)
+		{
+			/*	this could be adjusted based on iWonderConstructRand,
+				or on rival's tech, or whatever... */
+			iPriorityFactor += 20;
+		}
+		if (iXMLCost > 0)
+		{
+			iValue *= iPriorityFactor;
+			iValue /= 100;
+		}
+
+		// flavour factor. (original flavour code deleted)
+		if (!isHuman())
+		{
+			iValue += kBuilding.getAIWeight();
+			if (iValue > 0 &&
+				// K-Mod. Only use flavour adjustments for constructing ordinary buildings.
+				iXMLCost > 0 && !bRemove)
+			{
+				int iFlavour = 0;
+				FOR_EACH_NON_DEFAULT_PAIR(kBuilding.
+					getFlavorValue(), Flavor, int)
+				{
+					//iValue += (kOwner.AI_getFlavorValue(eLoopFlavor) * kBuilding.getFlavorValue(eLoopFlavor));
+					// <K-Mod>
+					iFlavour += std::min(kOwner.AI_getFlavorValue(perFlavorVal.first),
+							perFlavorVal.second); // </K-Mod>
+				}
+				// K-Mod. (This will give +100% for 10-10 flavour matchups.)
+				//iValue = iValue * (10 + iFlavour) / 10;
+				iValue = iValue * (8 + iFlavour) / 12; // advc.020
+			}
+		}
+	} // <advc.131>
+	if (iValue > 0 &&
+		bNationalWonder && isCapital() &&
+		kOwner.AI_getCurrEraFactor() < fixp(3.5) &&
+		iTotalImprFreeSpecialists <= 0 &&
+		iTotalBonusYieldMod < 40 &&
+		kBuilding.getGreatGeneralRateModifier() < 40 &&
+		kBuilding.getMilitaryProductionModifier() < 40 &&
+		iFreeExperience < 4)
+	{
+		int iTotalCommerceMod = 0;
+		FOR_EACH_ENUM(Commerce)
+			iTotalCommerceMod += kBuilding.getCommerceModifier(eLoopCommerce);
+		if (iTotalCommerceMod < 40)
+		{
+			int iSlotsLeft = getNumNationalWondersLeft();
+			// Special treatment for Moai
+			if (iSlotsLeft == 2 && bAnySeaPlotYieldChange)
+				iSlotsLeft--;
+			scaled rSlotMod = scaled::min(1, scaled(iSlotsLeft + 1, 4));
+			iValue = (iValue * rSlotMod).uround();
+			FAssert(iSlotsLeft >= 0);
+			/*  0 is also bad, but can happen if canConstruct was only checked
+				with bTestVisible=true. */
+			if (iSlotsLeft == 0)
+				iValue = 0;
+		}
+	} // </advc.131>
+	// constructionValue cache
+	if (bUseConstructionValueCache && !bConstCache)
+		m_aiConstructionValue[eBuildingClass] = iValue;
+	// K-Mod end
+
+	return iValue;
+}
+
+/*  advc: Cut from AI_buildingValue.
+	bRemove means that eBuilding needs to be evaluated under the assumption
+	that eBuilding isn't already present. So it should generally be a
+	positive value; see also the comment above AI_buildingValue. */
+int CvCityAI::AI_defensiveBuildingValue(BuildingTypes eBuilding,
+	bool bAreaAlone, bool bWarPlan, int iNumCities, int iNumCitiesInArea,
+	bool bRemove, bool bObsolete) const
+{
+	// <!-- custom: performance optimization: cache repetitive calls -->
+	CvGame const& kGame = GC.getGame();
+	
+	// <!-- custom: cache to kTeam for perf opt if i'm not mistaken. See note at CvCityAI::AI_buildingValue. -->
+	CvPlayerAI const& kOwner = GET_PLAYER(getOwner());
+	CvTeamAI const& kTeam = GET_TEAM(kOwner.getTeam()); // kekm.16
+
+	int r = 0;
+	CvBuildingInfo const& kBuilding = GC.getInfo(eBuilding);
+	if (!bAreaAlone && (kGame.getBestLandUnit() == NO_UNIT ||
+		!GC.getInfo(kGame.getBestLandUnit()).isIgnoreBuildingDefense()))
+	{
+		int const iBombardMod = kBuilding.getBombardDefenseModifier();
+		int const iDefMod = kBuilding.getDefenseModifier();
+		// <advc.004c>
+		int const iDefRaise = kBuilding.get(CvBuildingInfo::RaiseDefense);
+		if (iDefMod != 0 || iBombardMod != 0 || iDefRaise > 0)
+		{
+			int const iOwnerDefMod = kOwner.getCityDefenseModifier();
+			/*  Defense abilities don't go obsolete. Looks like K-Mod had gotten that wrong.
+				Tagging advc.001 (bugfix). */
+			bool bRemoveDef = (bRemove && !bObsolete);
+			if (bRemoveDef)
+			{
+				// Spy attack; don't know by whom. They don't know our preparations.
+				bWarPlan = (kTeam.getNumWars() > 0);
+			} // </advc.004c>
+			// defence bonus
+			/*r += std::max(0, std::min(kBuilding.getDefenseModifier(),
+					(bRemoveDef ? 0 : kBuilding.getDefenseModifier()) +
+					getBuildingDefense() - getNaturalDefense() - 10)) / 4;*/
+			/*  <advc.004c> Don't quite see the logic behind the above. Might be pretty
+				good but idk how to extend it. */
+			int iOldDefenseModifier = getTotalDefense(false);
+			int iNewDefenseModifier = iOldDefenseModifier;
+			if (bRemoveDef)
+			{
+				if (iDefMod != 0)
+				{
+					iNewDefenseModifier = std::max(getNaturalDefense(),
+							iNewDefenseModifier - iDefMod) + iOwnerDefMod;
+				}
+				if (iDefRaise > 0)
+				{
+					// Don't bother checking if there'll be other defensive buildings left
+					iNewDefenseModifier = getNaturalDefense() + iOwnerDefMod;
+				}
+				std::swap(iOldDefenseModifier, iNewDefenseModifier);
+			}
+			else
+			{
+				iNewDefenseModifier = std::max(iDefRaise, std::max(getNaturalDefense(),
+						iNewDefenseModifier + iDefMod + iOwnerDefMod));
+			}
+			r += (iNewDefenseModifier - iOldDefenseModifier) / 4;
+			if (iBombardMod != 0) // </advc.004c>
+			{
+				// bombard reduction
+				int iOldBombardMod = getBuildingBombardDefense() - (bRemoveDef ? iBombardMod : 0);
+				r += /*std::max(getNaturalDefense(),
+						(bRemove ? 0 : iDefMod) + getBuildingDefense())*/
+						iNewDefenseModifier * // advc.004c
+						std::min(iBombardMod, 100 - iOldBombardMod) /
+						std::max(80, 8 * (100 - iOldBombardMod));
+			}
+			r *= (bWarPlan ? 3 : 2);
+			r /= 3;
+		}
+	}
+	// K-Mod. I've merged and modified the code from here and the code
+	// from higher up. [advc: i.e. from above the call location in AI_buildingValue]
+	r += kBuilding.getAllCityDefenseModifier() * iNumCities / (bWarPlan ? 4 : 5);
+	r += kBuilding.getAirlift() * 10 + (iNumCitiesInArea < iNumCities &&
+			kBuilding.getAirlift() > 0 ? getPopulation() + 25 : 0);
+	int iAirDefense = -kBuilding.getAirModifier();
+	if (iAirDefense > 0)
+	{
+		int iTemp = iAirDefense;
+		iTemp *= std::min(200, 100 * kTeam.AI_getRivalAirPower() /
+				std::max(1, kTeam.AI_getAirPower() + 4 * iNumCities));
+		iTemp /= 200;
+		r += iTemp;
+	}
+	//r += -kBuilding.getNukeModifier() / (g.isNukesValid() && !g.isNoNukes() ? 4 : 40);
+	// K-Mod end
+	// <kekm.16> Replacing the line above.
+	// DarkLunaPhantom - "Bomb Shelters should be of much higher value, I copied and adjusted rough estimates from AI_projectValue()."
+	int iNukeDefense = -kBuilding.getNukeModifier();
+	if (iNukeDefense > 0)
+	{
+		int iNukeEvasionProbability = 0;
+		int iNukeUnitTypes = 0;
+		FOR_EACH_ENUM(Unit)
+		{
+			CvUnitInfo const& kLoopUnit = GC.getInfo(eLoopUnit);
+			if (kLoopUnit.isNuke() &&
+				kLoopUnit.getProductionCost() > 0) // advc
+			{
+				iNukeEvasionProbability += kLoopUnit.getEvasionProbability();
+				iNukeUnitTypes++;
+			}
+		}
+		iNukeEvasionProbability /= std::max(1, iNukeUnitTypes);
+		int iTargetValue = AI_nukeEplosionValue();
+		/*  "Lazy attempt to estimate the value of the strongest
+			unit stack this shelter might defend." */
+		int iStackValue = 0;
+		for (MemberIter itMember(getTeam()); itMember.hasNext(); ++itMember)
+		{
+				iStackValue += getArea().getPower(itMember->getID());
+		}
+		iStackValue *= 7;
+		iStackValue /= 20;
+		int iTempValue = iNukeDefense * (iStackValue + iTargetValue);
+		iTempValue /= 100;
+		iTempValue *= 10000 - kTeam.getNukeInterception() *
+				(100 - iNukeEvasionProbability);
+		iTempValue /= 10000;
+		iTempValue /= kOwner.AI_nukeDangerDivisor();
+		r += iTempValue;
+	} // </kekm.16>
+	return r;
+}
+
+// This function has been significantly modified for K-Mod
+ProjectTypes CvCityAI::AI_bestProject(int* piBestValue, /* advc.001n: */ bool bAsync) /* advc: */ const
+{
+	// <!-- custom: cache to kTeam for perf opt if i'm not mistaken. See note at CvCityAI::AI_buildingValue. -->
+	CvPlayerAI const& kOwner = GET_PLAYER(getOwner());
+	CvTeamAI const& kTeam = GET_TEAM(kOwner.getTeam()); // kekm.16
+
+	// <advc.014>
+	if(GET_TEAM(getOwner()).isCapitulated())
+		return NO_PROJECT;
+	// </advc.014>
+
+	// <!-- custom: performance optimization: cache repetitive calls -->
+	CvGame const& kGame = GC.getGame();
+
+	int iProductionRank = findYieldRateRank(YIELD_PRODUCTION);
+	ProjectTypes eBestProject = NO_PROJECT;
+	int iBestValue = 0;
+	FOR_EACH_ENUM2(Project, eProject)
+	{
+		if (!canCreate(eProject))
+			continue; // can't build it. skip to the next project.
+		CvProjectInfo const& kProject = GC.getInfo(eProject);
+
+		int iTurnsLeft = getProductionTurnsLeft(eProject, 0);
+		// <advc.004x>
+		if(iTurnsLeft == MAX_INT)
+			continue; // </advc.004x>
+		int iRelativeTurns = (100 * iTurnsLeft + 50) /
+				GC.getInfo(kGame.getGameSpeedType()).getCreatePercent();
+		if (iRelativeTurns > 10 && kProject.getMaxTeamInstances() > 0 &&
+			kTeam.isHuman())
+		{
+			// not fast enough to risk blocking our human allies from building it.
+			continue;
+		}
+		if (iRelativeTurns > 20 &&
+			iProductionRank > std::max(3, kOwner.getNumCities() / 2))
+		{
+			// not fast enough to risk blocking our more productive cities from building it.
+			continue;
+		}
+		// otherwise, the project is something we can consider building!
+
+		int iValue = AI_projectValue(eProject);
+
+		/*	give a small chance of building global projects
+			regardless of strategy, just for a bit of variety. */
+		if (kProject.getEveryoneSpecialUnit() != NO_SPECIALUNIT ||
+			kProject.getEveryoneSpecialBuilding() != NO_SPECIALBUILDING ||
+			kProject.isAllowsNukes())
+		{	// <advc.001n>
+			if ((bAsync ?
+				GC.getASyncRand().get(100, "Project Everyone ASYNC") : // </advc.001n>
+				SyncRandNum(100)) == 0)
+			{
+				iValue++;
+			}
+		}
+		if (iValue <= 0)
+			continue; // the project is worthless. Skip it.
+
+		bool bVictory = false;
+		bool bGoodFit = false;
+
+		if (kOwner.AI_atVictoryStage(AI_VICTORY_SPACE3))
+		{
+			FOR_EACH_ENUM2(Victory, eProjVictory)
+			{
+				if (!kGame.isVictoryValid(eProjVictory) ||
+					kProject.getVictoryThreshold(eProjVictory) <= 0)
+				{
+					continue;
+				}
+				bVictory = true;
+				/*	count the total number of projects we still require
+					for this type of victory. */
+				int iNeededPieces = 0;
+				FOR_EACH_ENUM2(Project, eAnyProject)
+				{
+					iNeededPieces += std::max(0,
+							GC.getInfo(eAnyProject).getVictoryThreshold(eProjVictory)
+							- kTeam.getProjectCount(eAnyProject));
+				}
+				if (kTeam.getProjectCount(eProject) <
+					kProject.getVictoryThreshold(eProjVictory))
+				{
+					// we need more of this project. ie. it is a high priority.
+					FAssert(iNeededPieces > 0);
+					bGoodFit = bGoodFit || iProductionRank <= iNeededPieces;
+				}
+				else
+				{
+					/*	build this with high priority, but save our best cities
+						for the projects that we still need. */
+					bGoodFit = bGoodFit || iProductionRank > iNeededPieces;
+				}
+			}
+		}
+		if (!bVictory)
+		{
+			// work out how many of this project we can still build
+			int iLimit = -1;
+			if (kProject.getMaxGlobalInstances() >= 0) // global limit
+			{
+				int iRemaining = std::max(0, kProject.getMaxGlobalInstances()
+						- kGame.getProjectCreatedCount(eProject)
+						- kTeam.getProjectMaking(eProject));
+				if (iLimit < 0 || iRemaining < iLimit)
+					iLimit = iRemaining;
+			}
+			if (kProject.getMaxTeamInstances() >= 0) // team limit
+			{
+				int iRemaining = std::max(0, kProject.getMaxTeamInstances()
+						- kTeam.getProjectCount(eProject)
+						- kTeam.getProjectMaking(eProject));
+				if (iLimit < 0 || iRemaining < iLimit)
+					iLimit = iRemaining;
+			}
+			bGoodFit = iProductionRank <= iLimit;
+		}
+		if (bGoodFit)
+		{
+			// building the project in this city is probably a good idea.
+			iValue += getProjectProduction(eProject);
+			if (bVictory)
+				iValue += getProductionNeeded(eProject) / 4 + iValue / 2;
+		}
+		else
+		{
+			if (bVictory)
+			{
+				iValue *= 3;
+				iValue /= iRelativeTurns + 3;
+			}
+			else
+			{
+				iValue *= 5;
+				iValue /= iRelativeTurns + 5;
+			}
+		}
+		if (iValue > iBestValue)
+		{
+			iBestValue = iValue;
+			eBestProject = eProject;
+		}
+	}
+	if (piBestValue) // note: piBestValue is set even if there is no best project.
+		*piBestValue = iBestValue;
+	return eBestProject;
+}
+
+/*	This function has been completely rewritten for K-Mod.
+	The return value is roughly in units of 4 * commerce per turn,
+	to match AI_buildingValue. However, note that most projects don't actually
+	give commerce per turn - so the evaluation is quite rough. */
+int CvCityAI::AI_projectValue(ProjectTypes eProject) /* advc: */ const
+{
+	CvPlayerAI const& kOwner = GET_PLAYER(getOwner());
+	// <!-- custom: cache to kTeam for perf opt if i'm not mistaken. See note at CvCityAI::AI_buildingValue. -->
+	CvTeamAI const& kTeam = GET_TEAM(kOwner.getTeam());
+	CvProjectInfo const& kProject = GC.getInfo(eProject);
+	// <!-- custom: performance optimization: cache repetitive calls -->
+	CvGame const& kGame = GC.getGame();
+
+	int iValue = 0;
+
+	if (kProject.getTechShare() > 0)
+	{
+		if (kProject.getTechShare() < //kTeam.getHasMetCivCount(/*bIgnoreMinors=*/true)
+			// kekm.38: (Minors can spread tech - but are unlikely to have good tech)
+			PlayerIter<MAJOR_CIV,OTHER_KNOWN_TO>::count(kTeam.getID()) &&
+			!kOwner.AI_avoidScience())
+		{
+			//iValue += 20 / kProject.getTechShare(); // BtS (this was all)
+			TechTypes eSampleTech = kOwner.getCurrentResearch();
+			if (eSampleTech == NO_TECH)
+			{	// advc (comment): Use costliest tech that we have
+				int iMaxCost = 0;
+				FOR_EACH_ENUM(Tech)
+				{
+					if (!kTeam.isHasTech(eLoopTech))
+						continue;
+					int iLoopCost = GC.getInfo(eLoopTech).getResearchCost();
+					if (iLoopCost > iMaxCost)
+					{
+						eSampleTech = eLoopTech;
+						iMaxCost = iLoopCost;
+					}
+				}
+			}
+			if (eSampleTech != NO_TECH)
+			{
+				int iRelativeTechScore = kTeam.getBestKnownTechScorePercent();
+				int iTechValue = 50 * kTeam.getResearchCost(eSampleTech) /
+						std::max(1, iRelativeTechScore);
+				// again, for emphasis.
+				iTechValue = 100 * iTechValue / std::max(1, iRelativeTechScore);
+				iTechValue *= (2 * GC.getNumEraInfos() - kOwner.getCurrentEra());
+				iTechValue /= std::max(1,
+						2 * GC.getNumEraInfos() - kGame.getStartEra());
+				iValue += iTechValue;
+			}
+			else FAssert(eSampleTech != NO_TECH);
+		}
+	}
+
+	// SDI
+	if (kProject.getNukeInterception() > 0)
+	{
+		//iValue += (GC.getInfo(eProject).getNukeInterception() / 10);
+		int iForeignNukes = 0;
+		PlayerIter<CIV_ALIVE,KNOWN_POTENTIAL_ENEMY_OF> itRival(getTeam());
+		for (; itRival.hasNext(); ++itRival)
+		{	// advc.650:
+			if (!GET_TEAM(itRival->getTeam()).AI_isAvoidWar(getTeam()))
+				iForeignNukes += kOwner.AI_estimateNukeCount(itRival->getID());
+		}
+		// advc.650: Was misleadingly named "iTeamsMet". Now only counts dangerous players.
+		int const iMet = itRival.nextIndex();
+		if (!kGame.isNoNukes() || iForeignNukes > iMet)
+		{
+			int iTargetValue = AI_nukeEplosionValue();
+			int iEstimatedNukeAttacks = (iForeignNukes * (2 + iMet)) / (2 + 2 * iMet) +
+					(kGame.isNoNukes() ? 0 :
+					2 + kGame.getNukesExploded() / (2 + iMet));
+			iValue += kProject.getNukeInterception() * iEstimatedNukeAttacks *
+					iTargetValue / 100;
+		}
+	}
+	// Manhattan project
+	if (kProject.isAllowsNukes() && !kGame.isNoNukes())
+	{
+		/*	evaluating this is difficult, because it enables the nukes for enemies.
+			In general, I want the AI to lean in favour of -not- building the
+			Manhattan project, so that the human players generally get to decide
+			whether or not the game will have nukes.
+			But I do want the AI to build it if it will be particular adventageous
+			for them. eg. when they want a conquest victory, and they know
+			that their enemies don't have uranium... */
+		//if (kOwner.AI_isDoStrategy(AI_STRATEGY_CRUSH | AI_STRATEGY_DAGGER) || kOwner.AI_atVictoryStage(AI_VICTORY_CONQUEST4))
+		// <advc.650>
+		TeamTypes eWinningTeam = NO_TEAM;
+		/*	This loop overlaps with KingMaking::addWinning, which, however,
+			is difficult to separate from the UWAI component. */
+		int iBestScore = 0;
+		int iOurScore = 0;
+		for (TeamAIIter<FREE_MAJOR_CIV,KNOWN_TO> itTeam(kTeam.getID());
+			itTeam.hasNext(); ++itTeam)
+		{
+			int iScore = kGame.getTeamScore(itTeam->getID());
+			if (itTeam->AI_anyMemberAtVictoryStage3())
+			{
+				iScore *= 140;
+				iScore /= 100;
+				if (itTeam->AI_anyMemberAtVictoryStage4())
+				{
+					iScore *= 155;
+					iScore /= 100;
+				}
+			}
+			if (iScore > iBestScore)
+			{
+				iBestScore = iScore;
+				eWinningTeam = itTeam->getID();
+			}
+			if (&*itTeam == &kTeam)
+				iOurScore = iScore;
+		}
+		if (!kTeam.AI_anyMemberAtVictoryStage4() &&
+			kTeam.getID() != eWinningTeam && eWinningTeam != NO_TEAM &&
+			// If it's close, then focus on our own victory strategy.
+			100 * iOurScore < 95 * iBestScore &&
+			// Willing to thwart victory through nuclear war?
+			(((4 * iOurScore > 3 * iBestScore ||
+			10 * kTeam.getPower(true) > 7 * GET_TEAM(eWinningTeam).getPower(false)) &&
+			kTeam.AI_noWarAttitudeProb((AttitudeTypes)std::min(NUM_ATTITUDE_TYPES - 1,
+			kTeam.AI_getAttitude(eWinningTeam) + 1)) < 100) ||
+			/*	Need defensive nukes? (When already losing a war,
+				then getting nukes will take too long.) */
+			kTeam.AI_countMembersWithStrategy(AI_STRATEGY_ALERT1) > 0 ||
+			(GET_TEAM(eWinningTeam).AI_anyMemberAtVictoryStage(AI_VICTORY_MILITARY3) &&
+			GET_TEAM(eWinningTeam).AI_getAttitude(kTeam.getID()) <
+			(GET_TEAM(eWinningTeam).AI_anyMemberAtVictoryStage(AI_VICTORY_MILITARY4) ?
+			ATTITUDE_PLEASED : ATTITUDE_CAUTIOUS))))
+			// </advc.650>
+		{
+			int iNukeValue = 0;
+			int const iCivsAlive = PlayerIter<CIV_ALIVE>::count(); // advc.650
+			FOR_EACH_ENUM(Unit)
+			{
+				CvUnitInfo const& kLoopUnit = GC.getInfo(eLoopUnit);
+				if (!kLoopUnit.isNuke() || kLoopUnit.getProductionCost() < 0)
+					continue; // either not a unit, or not normally buildable
+				for (PlayerAIIter<CIV_ALIVE,KNOWN_TO> itLoopPlayer(kTeam.getID());
+					itLoopPlayer.hasNext(); ++itLoopPlayer)
+				{
+					CvPlayerAI const& kLoopPlayer = *itLoopPlayer;
+					CvTeamAI const& kLoopTeam = GET_TEAM(kLoopPlayer.getTeam());
+					if (!kLoopTeam.isCapitulated() && // advc.130v
+						// advc.650: These have too much to lose from nukes
+						!kLoopTeam.AI_anyMemberAtVictoryStage4() &&
+						kLoopPlayer.getCivilization().getUnit(
+						kLoopUnit.getUnitClassType()) == eLoopUnit)
+					{
+						int iTemp=0; // advc
+						if (kLoopPlayer.getID() == kOwner.getID())
+						{
+							iTemp = GC.getInfo(kOwner.getPersonalityType()).
+									/*	victory weight is between 0 and 100. (usually around 30).
+										(advc, note: Just for flavor, don't check whether
+										conquest is actually possible.) */
+									getConquestVictoryWeight() / 2
+									/*  advc.650: Was just 85. More civs =>
+										more targets to choose from. */
+									+ 70 + 2 * iCivsAlive;
+						}
+						else if (kLoopPlayer.getTeam() == kOwner.getTeam())
+							iTemp = 90;
+						else if (kTeam.AI_getWarPlan(kLoopPlayer.getTeam()) != NO_WARPLAN ||
+							kLoopPlayer.isHuman()) // advc.650
+						{
+							iTemp = -100;
+						}
+						else
+						{
+							iTemp = std::max(-100,
+									(kOwner.AI_getAttitudeWeight(kLoopPlayer.getID()) - 125) /
+									3); // advc.650: was 2
+						}
+						// tech prereqs.  reduce the value for each missing prereq
+						if (!kLoopTeam.isHasTech(kLoopUnit.getPrereqAndTech()))
+						{
+							iTemp /= 2;
+							if (!kLoopPlayer.canResearch(kLoopUnit.getPrereqAndTech()))
+								iTemp /= 3;
+						}
+						for (int k = 0; k < kLoopUnit.getNumPrereqAndTechs(); k++)
+						{
+							TechTypes const ePrereqTech = kLoopUnit.getPrereqAndTechs(k);
+							if (!kLoopTeam.isHasTech(ePrereqTech))
+							{
+								iTemp /= 2;
+								if (!kLoopPlayer.canResearch(ePrereqTech))
+									iTemp /= 3;
+							}
+						}
+
+						// resource prereq.
+						BonusTypes ePrereqBonus = kLoopUnit.getPrereqAndBonus();
+						if (ePrereqBonus != NO_BONUS && !kLoopPlayer.hasBonus(ePrereqBonus) &&
+							!kLoopPlayer.AI_isAnyOwnedBonus(ePrereqBonus))
+						{
+							iTemp /= 5;
+						}
+						iTemp *= 3 * kLoopPlayer.getPower();
+						iTemp /= std::max(1, 2 * kOwner.getPower() + kLoopPlayer.getPower());
+						iNukeValue += iTemp;
+					}
+				}
+			}
+			if (iNukeValue > 0)
+			{
+				/*	ok. At this point, the scale of iNukeValue is roughly a percentage
+					of the number of different nuke units which would be helpful to us...
+					kind of. It's very likely to be to be less than 100. In a situation
+					where nukes would be very helpful, I estimate that iNukeValue
+					would currently be around 30.
+					I'm just going to do a very rough job or rescaling it to be
+					more like the other project values. But first, I want to make
+					a few more situational adjustments to the value. */
+				iNukeValue *= (2 + //kTeam.getAnyWarPlanCount(true));
+						//(kOwner.AI_isFocusWar() ? 1 : 0) // advc.105
+						/*	<advc.650> All other war plans need faster action or
+							aren't serious enough */
+						kTeam.AI_getNumWarPlans(WARPLAN_PREPARING_TOTAL) +
+						kTeam.AI_countMembersWithStrategy(AI_STRATEGY_ALERT1));
+						// </advc.650>
+				iNukeValue /= 2;
+				iNukeValue *= AI_nukeEplosionValue();
+				iNukeValue /= 25;
+				iValue += iNukeValue;
+			}
+		}
+	}
+
+	// Space victory
+	/*	How am I meant to gauge the value of a direct step towards victory?
+		It just doesn't conform to the usual metrics...
+		this is going to be very arbitrary...
+		-- and it will be based on the original BtS code! */
+	int iSpaceValue = 0;
+
+	// a project which enables other projects... i.e. the Apollo Program
+	FOR_EACH_ENUM(Project)
+	{
+		iSpaceValue += 8 * std::max(0, // was *10
+				GC.getInfo(eLoopProject).getProjectsNeeded(eProject)
+				- kTeam.getProjectCount(eProject)); 
+	}
+	if (kOwner.AI_atVictoryStage(AI_VICTORY_SPACE1))
+	{
+		// a boost to compound with the other boosts lower down.
+		iSpaceValue = (3 * iSpaceValue) / 2;
+	}
+	/*	projects which are required components for victory.
+		(ie. components of the spaceship) */
+	FOR_EACH_NON_DEFAULT_PAIR(kProject.
+		getVictoryThreshold(), Victory, int)
+	{
+		VictoryTypes const eLoopVictory = perVictoryVal.first;
+		if (!kGame.isVictoryValid(eLoopVictory))
+			continue;
+		/*iSpaceValue += 20;
+		iSpaceValue += std::max(0, kProject.getVictoryThreshold(eLoopVictory) - kTeam.getProjectCount(eProject)) * 20;*/
+		iSpaceValue += 15;
+		iSpaceValue += std::max(0,
+				kProject.getVictoryMinThreshold(eLoopVictory)
+				- kTeam.getProjectCount(eProject)) *
+				(kOwner.AI_atVictoryStage(AI_VICTORY_SPACE4) ? 60 : 30);
+		iSpaceValue += kProject.getSuccessRate();
+		iSpaceValue += kProject.getVictoryDelayPercent() /
+				(4 * perVictoryVal.second);
+	}
+
+	if (kOwner.AI_atVictoryStage(AI_VICTORY_SPACE4))
+		iSpaceValue *= 4;
+	else if (kOwner.AI_atVictoryStage(AI_VICTORY_SPACE3))
+		iSpaceValue *= 3;
+	else if (kOwner.AI_atVictoryStage(AI_VICTORY_SPACE2))
+		iSpaceValue *= 2;
+	else if (!kOwner.AI_atVictoryStage(AI_VICTORY_SPACE1) && kOwner.AI_atVictoryStage4())
+		iSpaceValue = (2 * iSpaceValue) / 3;
+
+	if (getArea().getAreaAIType(kOwner.getTeam()) != AREAAI_NEUTRAL)
+	{
+		iSpaceValue = getArea().getAreaAIType(kOwner.getTeam()) == AREAAI_DEFENSIVE ?
+				iSpaceValue/2 : 2*iSpaceValue/3;
+	}
+	// <advc.115> Check if we have remotely enough production capacity for SS parts
+	if(iSpaceValue > 0 && kOwner.calculateTotalYield(YIELD_PRODUCTION) <
+		GC.getInfo(kGame.getGameSpeedType()).getCreatePercent())
+	{
+		iSpaceValue = 0;
+	} // </advc.115>
+	iValue += iSpaceValue;
+
+	return iValue;
+}
+
+/*	advc.650: K-Mod code cut from CvCityAI::AI_projectValue
+	(used there repeatedly). K-Mod comments:
+	"a very rough estimate of the cost of being nuked"
+	"roughly in units of 4 * commerce per turn"
+	It's also used for estimating the usefulness of nukes against
+	enemy cities. Really shouldn't be a CvCityAI function because the
+	city creating a nuke-related project isn't necessarily a
+	typical city in terms of its economic output. Still, I'm leaving the
+	logic as in K-Mod because this might provide a useful incentive for
+	producing nuke-related projects in a high-yield city. These tend to be
+	pretty important projects. */
+int CvCityAI::AI_nukeEplosionValue() const
+{
+	return 10 +
+		(getYieldRate(YIELD_PRODUCTION) * 5 +
+		getYieldRate(YIELD_COMMERCE) * 3) / 2;
+}
+
+ProcessTypes CvCityAI::AI_bestProcess(CommerceTypes eCommerceType) const
+{
+	ProcessTypes eBestProcess = NO_PROCESS;
+	int iBestValue = 0;
+	FOR_EACH_ENUM(Process)
+	{
+		if (canMaintain(eLoopProcess))
+		{
+			int iValue = AI_processValue(eLoopProcess, eCommerceType);
+			if (iValue > iBestValue)
+			{
+				iBestValue = iValue;
+				eBestProcess = eLoopProcess;
+			}
+		}
+	}
+	return eBestProcess;
+}
+
+/*	K-Mod. I've rearranged / rewritten most of this function.
+	units of ~4x commerce */
+int CvCityAI::AI_processValue(ProcessTypes eProcess, CommerceTypes eCommerceType) const
+{
+	CvPlayerAI const& kOwner = GET_PLAYER(getOwner());
+	bool bValid = (eCommerceType == NO_COMMERCE);
+	int iValue = 0;
+
+	/* if (GC.getInfo(eProcess).getProductionToCommerceModifier(COMMERCE_GOLD) && GET_PLAYER(getOwner()).AI_isFinancialTrouble())
+	{
+		iValue += GC.getInfo(eProcess).getProductionToCommerceModifier(COMMERCE_GOLD);
+	} */
+
+	// pop borders
+	if (getCultureLevel() <= 1)
+		iValue += GC.getInfo(eProcess).getProductionToCommerceModifier(COMMERCE_CULTURE);
+
+	int iAdjustFactor = 0;
+	FOR_EACH_ENUM(Commerce)
+	{
+		iAdjustFactor += kOwner.getCommercePercent(eLoopCommerce) *
+				kOwner.AI_averageCommerceMultiplier(eLoopCommerce);
+	}
+	iAdjustFactor /= 100;
+
+	FOR_EACH_ENUM(Commerce)
+	{
+		int iTempValue = GC.getInfo(eProcess).
+				getProductionToCommerceModifier(eLoopCommerce);
+		if (iTempValue == 0)
+			continue;
+		if (eLoopCommerce == eCommerceType && iTempValue > 0)
+		{
+			bValid = true;
+			iTempValue *= 2;
+		}
+
+		// K-Mod. Calculate the quantity of commerce produced.
+		iTempValue *= getYieldRate(YIELD_PRODUCTION);
+		//iTempValue /= 100; // keep this factor of 100 for now.
+		/*	Culture is local, the other commerce types are non-local.
+			We don't want the non-local commerceWeights in this function
+			because maintaining a process is just a short-term arrangement. */
+		iTempValue *= kOwner.AI_commerceWeight(eLoopCommerce,
+				eLoopCommerce == COMMERCE_CULTURE ? this : 0);
+		iTempValue /= 100;
+		// K-Mod end
+
+		/* iTempValue *= GET_PLAYER(getOwner()).AI_averageCommerceExchange(eLoopCommerce);
+		iTempValue /= 60; */
+		/*	K-Mod. Amplify the value of commerce processes with
+			low average multipliers so that we can run higher percentages
+			in commerce types with high average multipliers. */
+		if (kOwner.isCommerceFlexible(eLoopCommerce) &&
+			kOwner.getCommercePercent(eLoopCommerce) > 0)
+		{
+			/*iTempValue *= 100 + kOwner.getCommercePercent(eLoopCommerce) * (iAdjustFactor - 100) / 100;
+			iTempValue /= std::max(100, 100 + kOwner.getCommercePercent(eLoopCommerce) *
+					(kOwner.AI_averageCommerceMultiplier(eLoopCommerce) - 100) / 100);*/
+			// (that wasn't a strong enough effect)
+			iTempValue *= iAdjustFactor * std::max(100,
+					200 - 2*kOwner.getCommercePercent(eLoopCommerce)) / 100;
+			iTempValue /= std::max(100,
+					kOwner.AI_averageCommerceMultiplier(eLoopCommerce) +
+					iAdjustFactor * std::max(0,
+					100 - kOwner.getCommercePercent(eLoopCommerce)) / 100);
+		}
+		// K-Mod end
+
+		iValue += iTempValue;
+	}
+
+	// note, currently iValue has units of 100x commerce. We want to return 4x commerce.
+	return (bValid ? iValue / 25 : 0);
+}
+
+
+// <!-- custom: currently we produce a few more workboats than we need (and workers a bit too but that's another issue), we need to check how much water bonuses are unimproved in our cultural borders (for the health or such we gain even if not in city radius, but careful to not overlap with other cities too), and among them how much are within reach (e.g. ocean fish not until tech_astronomy as of now if i'm not mistaken, but coast fish at tech_fishing can be improved (and already reachable before or if not very soon)). Count only the workboats we need right now, not all workboats we'll need when we can navigate ocean and whatnot i mean; fixed with chatgpt 5's help and my prompts and ideas too of feeding it code sample of other functions listed here or not, check to be sure if accurate -->
+int CvCityAI::AI_neededSeaWorkers() /* advc: */ const
+{
+	int iNeededSeaWorkers = 0;
+
+	/*  <advc.305> Normally counted per area, but a Barbarian city should only
+		train workers for its own needs.
+		(Partially based on code in CvPlayer::AI_countUnimprovedBonuses.) */
+	if(isBarbarian())
+	{
+		FOR_EACH_ADJ_PLOT(getPlot())
+		{
+			if(!pAdj->isWater())
+				continue;
+			BonusTypes eBonus = pAdj->getNonObsoleteBonusType(getTeam());
+			if(eBonus != NO_BONUS && !GET_PLAYER(getOwner()).
+				doesImprovementConnectBonus(pAdj->getImprovementType(), eBonus))
+			{
+				iNeededSeaWorkers++;
+			}
+		}
+		return iNeededSeaWorkers;
+	} // </advc.305>
+
+	// <!-- custom: info by chatgpt 5, check if accurate, replace old values in the code below from 5 to 0 and refactor a bit to make it a iLookAhead variable and such if any other change; udpate: i showed AI_isUnimprovedBonus 's code and this function's code to claude ai as well which agrees with it if my understanding of it is not mistaken, so changing it from 5 to 0 as they both advise and see, we now have 1 extra workboat in city to ideally avoid producing, check if accurate still though their / these AIs info i mean (or my observation maybe too)-->
+	// Key detail: AI_countUnimprovedBonuses(..., iLookAhead) uses AI_isUnimprovedBonus which, when iLookAhead > 0, sets bCheckPath = false and calls canBuild(..., /*bTestVisible=*/true, ...). That ignores tech/prereqs and pathing (used for UI “you’ll be able to later" style checks). That’s why you were getting boats for ocean whales you can’t reach yet.
+	// So the minimal, C++03-safe fix is just: stop looking ahead. Pass 0 instead of 5 in both calls. That makes it count only bonuses that are owned, reachable (path exists), and buildable now (tech/prereqs satisfied).
+	// If you still want a touch of lookahead (e.g., first ring pop only), use 1 instead of 0, but be aware that any positive value switches canBuild into “testVisible" mode and will again allow some future-tech tiles to sneak in. So for strict “buildable now", 0 is the correct value.
+	// <!-- custom: and when i asked if this also counts bonuses not just in city radius but also cultural borders as we'd want the health from say fish coast (or to trade it btw i just the idea xd i'm quite rusty should play again later or not maybe but i enjoy modding too if i may say perhaps even a bit more but maybe i'd play or not as i want but in all cases) and it replied/clarified (check if accurate): -->
+	// Yep—switching iLookAhead to 0 still counts all owned tiles in the same water area, not just the city’s workable radius
+	// <!-- custom: etc skip explanation until this: -->
+	// So: coast fish that are already inside your borders (even if outside the city radius) will be counted and get boats. Fish in the ocean ring you don’t own yet won’t be counted until borders/tech make them actually buildable—which is exactly the behavior you wanted.
+	// <!-- custom: setting it to 0, no more excess workboats in (some) cities yay! Or at least less it seems as some cities still have, but i hope this helps AI be more efficient with its production, but check to be sure. -->
+	const int iLookAhead = 0;
+
+	// BETTER_BTS_AI_MOD, Worker AI, 01/01/09, jdog5000: START
+	CvArea* pWaterArea = waterArea(true);
+	if (pWaterArea == NULL)
+		return 0;
+	iNeededSeaWorkers += GET_PLAYER(getOwner()).AI_countUnimprovedBonuses(*pWaterArea, plot(), iLookAhead); // advc.042
+	// Check if second water area city can reach was any unimproved bonuses
+
+	pWaterArea = secondWaterArea();
+	if (pWaterArea != NULL)
+	{
+		iNeededSeaWorkers += GET_PLAYER(getOwner()).AI_countUnimprovedBonuses(*pWaterArea, plot(), iLookAhead); // advc.042
+	}
+	// BETTER_BTS_AI_MOD: END
+	return iNeededSeaWorkers;
+}
+
+// advc.110: Replacing AI_isDefended
+int CvCityAI::AI_countExcessDefenders() const
+{
+	PROFILE_FUNC();
+	// XXX check for other team's units?
+	return (getPlot().plotCount(PUF_canDefendGroupHead, -1, -1, getOwner(), NO_TEAM, PUF_isCityAIType) -
+			AI_neededDefenders());
+}
+
+/*bool CvCityAI::AI_isAirDefended(int iExtra) {
+	PROFILE_FUNC();
+	return ((getPlot().plotCount(PUF_canAirDefend, -1, -1, getOwner(), NO_TEAM, PUF_isDomainType, DOMAIN_AIR) + iExtra) >= AI_neededAirDefenders()); // XXX check for other team's units?
+}*/ // BtS
+// BETTER_BTS_AI_MOD, Air AI, 10/17/08, jdog5000: START  (disabled by K-Mod)
+// Function now answers question of whether city has enough ready air defense, no longer just counts fighters
+/* bool CvCityAI::AI_isAirDefended(bool bCountLand, int iExtra) {
+	PROFILE_FUNC();
+	int iAirDefenders = iExtra;
+	int iAirIntercept = 0;
+	int iLandIntercept = 0;
+	CvUnit* pLoopUnit;
+	CLLNode<IDInfo>* pUnitNode = getPlot().headUnitNode();
+	while (pUnitNode != NULL) {
+		pLoopUnit = ::getUnit(pUnitNode->m_data);
+		pUnitNode = getPlot().nextUnitNode(pUnitNode);
+		if ((pLoopUnit->getOwner() == getOwner())) {
+			if (pLoopUnit->canAirDefend()) {
+				if (pLoopUnit->getDomainType() == DOMAIN_AIR) {
+					// can find units which are already air patrolling using group activity
+					if (pLoopUnit->getGroup()->getActivityType() == ACTIVITY_INTERCEPT)
+						iAirIntercept += pLoopUnit->currInterceptionProbability();
+					else {
+						// Count air units which can air patrol
+						if (pLoopUnit->getDamage() == 0 && !pLoopUnit->hasMoved()) {
+							if (pLoopUnit->AI_getUnitAIType() == UNITAI_DEFENSE_AIR)
+								iAirIntercept += pLoopUnit->currInterceptionProbability();
+							else iAirIntercept += pLoopUnit->currInterceptionProbability()/3;
+						}
+					}
+				}
+				else if (pLoopUnit->getDomainType() == DOMAIN_LAND)
+					iLandIntercept += pLoopUnit->currInterceptionProbability();
+			}
+		}
+	}
+	iAirDefenders += (iAirIntercept/100);
+	if (bCountLand)
+		iAirDefenders += (iLandIntercept/100);
+	int iNeededAirDefenders = AI_neededAirDefenders();
+	bool bHaveEnough = (iAirDefenders >= iNeededAirDefenders);
+	return bHaveEnough;
+}*/ // BETTER_BTS_AI_MOD: END
+
+/*	K-Mod. I've reverted AI_isAirDefended back to its original simple functionality.
+	I've done this because my new version of AI_neededAirDefenders is
+	not suitable for use in the bbai version of AI_isAirDefended.
+	I may put some more work into this stuff in the future
+	if I ever work through CvUnitAI::AI_defenseAirMove.
+	function signature changed to match bbai usage. */
+bool CvCityAI::AI_isAirDefended(
+	bool bCountLand, // advc (note): Either way, only aircraft are currently counted.
+	int iExtra) /* advc: */ const
+{
+	PROFILE_FUNC();
+	return (getPlot().plotCount(PUF_isAirIntercept, -1, -1, getOwner()) + iExtra >=
+			AI_neededAirDefenders());
+}
+
+// BETTER_BTS_AI_MOD, War strategy AI, Barbarian AI, 04/25/10, jdog5000:
+int CvCityAI::AI_neededDefenders(/* advc.139: */ bool bIgnoreEvac,
+	bool bConstCache) const // advc.001n
+{
+	PROFILE_FUNC();
+
+	bool const bOffenseWar = (getArea().getAreaAIType(getTeam()) == AREAAI_OFFENSIVE ||
+			getArea().getAreaAIType(getTeam()) == AREAAI_MASSING);
+	bool const bDefenseWar = (getArea().getAreaAIType(getTeam()) == AREAAI_DEFENSIVE);
+	CvGameAI const& kGame = GC.AI_getGame();
+	CvPlayerAI const& kOwner = GET_PLAYER(getOwner());
+
+	// <!-- custom: cache to kTeam for perf opt if i'm not mistaken. See note at CvCityAI::AI_buildingValue. -->
+	CvTeamAI const& kTeam = GET_TEAM(kOwner.getTeam()); // kekm.16
+
+	int iDefenders = 1;
+	if (isBarbarian())
+	{
+		iDefenders = GC.getInfo(kGame.getHandicapType()).getBarbarianInitialDefenders();
+		// advc.300: Numerator was pop+2
+		iDefenders += (getPopulation() + kOwner.getCurrentEra()) / 7;
+		// <advc.300> Extra defenders when far behind in tech, especially early New World.
+		int const iAreaCities = getArea().getCitiesPerPlayer(getOwner());
+		iDefenders += std::max(0, kGame.AI_getCurrEra() - kOwner.AI_getCurrEra()
+				- (iAreaCities > 1 && getArea().getNumCivCities() * 3 <= iAreaCities ?
+				0 : 1)); // </advc.300>
+		return iDefenders;
+	} // advc.003n: Switched the order of these two branches
+	if (!kTeam.AI_isWarPossible())
+		return iDefenders;
+
+	if (hasActiveWorldWonder() || isCapital() || isHolyCity())
+	{
+		iDefenders++;
+		if(kOwner.AI_isDoStrategy(AI_STRATEGY_ALERT1) ||
+			kOwner.AI_isDoStrategy(AI_STRATEGY_TURTLE))
+		{
+			iDefenders++;
+		}
+	}
+	/*  advc.300: When Barbarians are a big threat and civs aren't, free up units
+		for fog-busting (CvUnitAI::AI_guardCitySite) and guarding food bonuses. */
+	if (!kOwner.AI_isDefenseFocusOnBarbarians(getArea()))
+	{
+		/*if (!GET_PLAYER(getOwner()).AI_isDoStrategy(AI_STRATEGY_CRUSH))
+			iDefenders += AI_neededFloatingDefenders();
+		else iDefenders += (AI_neededFloatingDefenders() + 2) / 4;*/
+		/*  <advc.139> Replacing the above. No functional change other than passing
+			along bIgnoreEvac and (advc.001n) bConstCache */
+		int iNeededFloating = AI_neededFloatingDefenders(bIgnoreEvac, bConstCache,
+				true); // advc.099c: To save time (avoid calling AI_neededCultureDefenders 2x)
+		if (kOwner.AI_isDoStrategy(AI_STRATEGY_CRUSH))
+			iNeededFloating = intdiv::uround(iNeededFloating, 4);
+		iDefenders += iNeededFloating;
+		// </advc.139>
+	}
+
+	if (bDefenseWar || kOwner.AI_isDoStrategy(AI_STRATEGY_ALERT2))
+	{
+		if (!getPlot().isHills())
+			iDefenders++;
+	}
+
+	if (kGame.getGameTurn() - getGameTurnAcquired() < 10)
+	{	/*if (bOffenseWar) {
+			if (!hasActiveWorldWonder() && !isHolyCity()) {
+				iDefenders /= 2;
+				iDefenders = std::max(1, iDefenders);
+			}
+		} if (kGame.getGameTurn() - getGameTurnAcquired() < 10) {
+			iDefenders = std::max(2, iDefenders);
+			if (AI_isDanger())
+				iDefenders ++;
+			if (bDefenseWar)
+				iDefenders ++;
+		}*/ // BtS
+		iDefenders = std::max(2, iDefenders);
+
+		if (bOffenseWar && getTotalDefense(true) > 0 &&
+			!hasActiveWorldWonder() && !isHolyCity())
+		{
+			iDefenders /= 2;
+		}
+		if (!bConstCache && // advc.001n: Can lead to an update of the border danger cache
+			AI_isDanger())
+		{
+			iDefenders++;
+		}
+		if (bDefenseWar)
+			iDefenders++;
+	}
+
+	if (kOwner.AI_isDoStrategy(AI_STRATEGY_LAST_STAND))
+		iDefenders += 5; // advc.107: From MNAI; was 10.
+
+	if (kOwner.AI_atVictoryStage(AI_VICTORY_CULTURE3))
+	{
+		if (findCommerceRateRank(COMMERCE_CULTURE) <=
+			kGame.culturalVictoryNumCultureCities())
+		{
+			iDefenders += 2; // advc.107: From MNAI; was 4 in BtS, 1 in MNAI.
+			if (bDefenseWar /* cdtw: */ || isCoastal())
+				iDefenders += 2;
+		}
+	}
+
+	if(kOwner.AI_atVictoryStage(AI_VICTORY_SPACE3))
+	{	// advc.107: Added bOffenseWar clause
+		if((isCapital() || isProductionProject()) && !bOffenseWar)
+		{
+			iDefenders += 2; // advc.107: was +=4
+			if(bDefenseWar)
+				iDefenders += 3;
+		}
+		if(isCapital() && kOwner.AI_atVictoryStage(AI_VICTORY_SPACE4))
+			iDefenders += 6;
+	}
+
+	/*	advc (note): Take into account finances? (Idea from MNAI, which
+		halves iDefenders when in financial trouble - but seems excessive to me.) */
+
+	iDefenders = std::max(iDefenders, AI_neededCultureDefenders()); // advc.099c
+	iDefenders = std::max(iDefenders, AI_minDefenders());
+
+	return iDefenders;
+}
+
+
+int CvCityAI::AI_minDefenders() const
+{
+	// <!-- custom: performance optimization: cache repetitive calls -->
+	CvGame const& kGame = GC.getGame();
+
+	/*	advc: Could afford to check CvPlayerAI::AI_feelsSafe here and
+		then not add the 3rd defender in coastal cities. But this function
+		does get called somewhat frequently, so, maybe not worth it. */
+	PROFILE_FUNC();
+	CvPlayerAI const& kOwner = GET_PLAYER(getOwner());
+	int iDefenders = 1;
+	{
+		//if (kOwner.getCurrentEra() > 0)
+		/*	<advc.107> Chosen so that the extra defender comes in the Medieval era
+			on Immortal and Deity and in Renaissance otherwise. That said,
+			the training modifier decreases as the game progresses, so things get
+			a little fuzzy (which is fine with me). */
+		scaled rExtraDefenderEraFactor = fixp(2.5);
+		scaled rTrainModifier = kOwner.trainingModifierFromHandicap() /
+				kOwner.AI_trainUnitSpeedAdustment(); // advc.253
+		if (rTrainModifier < 1)
+			rExtraDefenderEraFactor *= SQR(rTrainModifier);
+		if (kOwner.AI_getCurrEraFactor() > rExtraDefenderEraFactor)
+		{	// </advc.107>
+			iDefenders++;
+		}
+	}
+	int const iEra = kOwner.getCurrentEra();
+	if (//iEra - kGame.getStartEra() / 2 >= GC.getNumEraInfos() / 2 &&
+		// <advc.107>
+		iEra > kGame.getStartEra() &&
+		iEra >= CvEraInfo::AI_getAgeOfExploration() &&
+		getPopulation() > 2 + iEra && // </advc.107>
+		// advc.107: Times 2 - a small water area doesn't justify an extra defender.
+		isCoastal(2 * GC.getDefineINT(CvGlobals::MIN_WATER_SIZE_FOR_OCEAN)))
+	{
+		iDefenders++;
+	}
+
+	// <!-- custom: now that this seems mostly fixed, but check if accurate, disable this for later turns where barbarians should no longer be a threat, and total units of players higher making it even more costly for lesser purpose; i hope that cities are defended well enough by then to hopefully allow/permit this computation savig; also as a side effect if theoretically this would make AIs a bit reluctant to attack or somehow mess their offense tempo, hopefully this also helps that? Although we could lose the benefit of it better guarding cities possibly maybe, trying to disable it past a certain amount of turns for expected performance gains and perhaps indirectly other gains as well if no losses, chatgpt 5 said it's also fine, check if accurate to be sure -->
+	const int iMaxTurnDefendWeakerCitiesHarderNormal = 120;
+	const int iMaxTurnDefendWeakerCitiesHarderAdjusted = (iMaxTurnDefendWeakerCitiesHarderNormal * GC.getInfo(kGame.getGameSpeedType()).getTrainPercent()) / 100;
+	if (kGame.getElapsedGameTurns() <= iMaxTurnDefendWeakerCitiesHarderAdjusted)
+	{
+		// <!-- custom: not sure how exactly this works or effective it is, but in autoplay it doesn't seem worse at least, maybe even a bit better although may be fluctuation so kept as such, code provided thanks to chatgpt 5 also too and my prompts too, as for its notes/explaantions check if accurate, and thanks for them too if i may say in this case; see known issue as of now 49 for details -->
+		// It raises the need only where it actually helps, so overstocked cities feel a pull from frontier/new cities.
+		// --- Early anti-barb buffer: conditional 3rd defender where it matters ---
+		if (!kGame.isOption(GAMEOPTION_NO_BARBARIANS))
+		{
+			if (kOwner.AI_isDefenseFocusOnBarbarians(getArea()))
+			{
+				// ~10 turns, speed-scaled
+				const int iNewCityWindow = 10 * GC.getInfo(kGame.getGameSpeedType()).getTrainPercent() / 100;
+
+				const bool bNewCity  = (kGame.getGameTurn() - getGameTurnAcquired() < iNewCityWindow);
+				const bool bFrontier = (getCultureLevel() <= 1) || (getPlot().calculateCulturePercent(kOwner.getID()) < 60);
+				const bool bThreat   = (AI_cityThreat() > 0);
+
+				if (!isCapital() && (bNewCity || bFrontier || bThreat))
+					iDefenders++; // bumps typical vulnerable cities to 3
+			}
+		}
+	}
+
+	return iDefenders;
+}
+
+
+int CvCityAI::AI_neededFloatingDefenders(/* <advc.139> */ bool bIgnoreEvac,
+	bool bConstCache, // advc.001n
+	bool bIgnoreCulture) const // advc.099c
+{
+	if(!bIgnoreEvac && AI_isEvacuating())
+		return 0; // </advc.139>
+
+	// <!-- custom: performance optimization: cache repetitive calls -->
+	CvGame const& kGame = GC.getGame();
+
+	int iR = m_iNeededFloatingDefenders;
+	if(m_iNeededFloatingDefendersCacheTurn != kGame.getGameTurn())
+	{
+		iR = AI_calculateNeededFloatingDefenders(bConstCache, // advc.001n
+				bIgnoreCulture); // advc.099c
+	}
+	return iR;
+}
+
+int CvCityAI::AI_calculateNeededFloatingDefenders(bool bConstCache,
+	bool bIgnoreCulture) const // advc.099c
+{
+	// <!-- custom: performance optimization: cache repetitive calls -->
+	CvGame const& kGame = GC.getGame();
+
+	CvPlayerAI const& kOwner = GET_PLAYER(getOwner());
+
+	int iFloatingDefenders = kOwner.AI_getTotalFloatingDefendersNeeded(getArea());
+	iFloatingDefenders -= getArea().getCitiesPerPlayer(getOwner());
+	// advc.107: (Can perhaps already be negative in BtS - on small islands)
+	iFloatingDefenders = std::max(0, iFloatingDefenders);
+	{
+		int iLocalThreat = AI_cityThreat();
+		int iTotalThreat = std::max(1, kOwner.AI_getTotalAreaCityThreat(getArea()));
+		iFloatingDefenders = intdiv::uround(iFloatingDefenders * iLocalThreat, iTotalThreat);
+	}
+	// <advc.099c>
+	if (!bIgnoreCulture)
+	{
+		int iCultureDefendersNeeded = AI_neededCultureDefenders() - AI_minDefenders();
+		iFloatingDefenders = std::max(iFloatingDefenders, iCultureDefendersNeeded);
+	} // </advc.099c>
+
+	if (!bConstCache) // advc.001n
+	{
+		m_iNeededFloatingDefenders = iFloatingDefenders;
+		m_iNeededFloatingDefendersCacheTurn = kGame.getGameTurn();
+	}
+	return iFloatingDefenders; // advc.001n
+}
+
+// advc.099c:
+int CvCityAI::AI_neededCultureDefenders() const
+{
+	CvPlayerAI const& kOwner = GET_PLAYER(getOwner());
+	if (getPlot().calculateCulturePercent(kOwner.getID()) >= 50)
+		return 0; // To save time
+	PlayerTypes const eCulturalOwner = calculateCulturalOwner();
+	if(eCulturalOwner == kOwner.getID() || revoltProbability(true, true) <= 0)
+		return 0;
+
+	int const iPop = getPopulation();
+	bool const bWillFlip = canCultureFlip(eCulturalOwner);
+	scaled rTargetProb = scaled::max(0, 50 - iPop) / 1000;
+	if (bWillFlip)
+		rTargetProb = 0;
+	else if (getNumRevolts(eCulturalOwner) > 0)
+		rTargetProb /= 4;
+	int const iCultureStr = cultureStrength(eCulturalOwner,
+			false, true); // advc.023
+	// Based on the formula in CvCity::revoltProbability
+	scaled rTargetGarrisonStr = iCultureStr - iCultureStr * rTargetProb /
+			scaled::max(per100(1), getRevoltTestProbability());
+
+	scaled const rAIEraFactor = kOwner.AI_getCurrEraFactor();
+	scaled r = rTargetGarrisonStr / scaled::max(3,
+			(rAIEraFactor + fixp(0.5)) * (rAIEraFactor < fixp(3.5) ? 3 : 4));
+	if (r > scaled::max(iPop, 3 + rAIEraFactor))
+		return 0; // Not worth it
+	if (isOccupation())
+		r++;
+	else if (kOwner.AI_isFocusWar(area()) &&
+		// Don't move out units until war is imminent
+		!GET_TEAM(kOwner.getTeam()).AI_isSneakAttackPreparing())
+	{
+		if (!bWillFlip)
+			r /= 2;
+		else
+		{
+			int iWSRating = range(GET_TEAM(kOwner.getTeam()).
+					AI_getWarSuccessRating(), -100, 100);
+			r *= fixp(0.75) + scaled(iWSRating, 400);
+		}
+	}
+	return r.round();
+}
+
+// This function has been completely rewritten for K-Mod. (The original code has been deleted.)
+// My version is still very simplistic, but it has the advantage of being consistent with other AI calculations.
+int CvCityAI::AI_neededAirDefenders(/* advc.001n: */ bool bConstCache) /* advc: */ const
+{
+	CvPlayerAI const& kOwner = GET_PLAYER(getOwner());
+
+	if (!GET_TEAM(kOwner.getTeam()).AI_isWarPossible())
+		return 0;
+
+	const int iRange = 5;
+
+	// Essentially I'm going to bootstrap off the hard work already done in AI_neededFloatingDefenders.
+	// We'll just count the number of floating defenders needed in nearby cities; and use this to
+	// calculate what proportion of our airforce we should deploy here.
+	int iNearbyFloaters = 0;
+	int iNearbyCities = 0;
+	int iTotalFloaters = 0;
+
+	// Note: checking the nearby plots directly to look for cities may scale better than this
+	//		 on very large maps; but that would make it harder to work out iTotalFloaters.
+	FOR_EACH_CITYAI(pLoopCity, kOwner)
+	{
+		int iFloaters = pLoopCity->AI_neededFloatingDefenders(
+				false, bConstCache); // advc.001n
+		iTotalFloaters += iFloaters;
+		if (plotDistance(plot(), pLoopCity->plot()) <= iRange)
+		{
+			iNearbyCities++;
+			iNearbyFloaters += iFloaters;
+			// Note: floaters for this city really should be divided by the number of cities near
+			// pLoopCity rather than thenumber near 'this'. But that would be a longer calculation.
+		}
+	}
+	FAssert(iNearbyCities > 0);
+	// 'iNearbyFloaters / iTotalFloaters' is the proportion of our air defenders we should use in this city.
+	// ie. a proportion of the total air defenders for our civ we already have or expect to have.
+	int iNeeded = (std::max(kOwner.AI_getTotalAirDefendersNeeded(),
+			kOwner.AI_getNumAIUnits(UNITAI_DEFENSE_AIR)) * iNearbyFloaters +
+			(iNearbyCities * iTotalFloaters)/2) /
+			std::max(1, iNearbyCities * iTotalFloaters);
+	return std::min(iNeeded, getAirUnitCapacity(kOwner.getTeam())); // Capped at the air capacity of the city.
+
+	//Note: because of the air capacity cap, and rounding, and the shortcut used for the nearbyFloater averaging,
+	// the sum of AI_neededAirDefenders for each city won't necessarily equal our intended total.
+}
+
+bool CvCityAI::AI_isDanger() /* advc: */ const
+{
+	// BETTER_BTS_AI_MOD, City AI, Efficiency, 08/20/09, jdog5000: was AI_getPlotDanger
+	return GET_PLAYER(getOwner()).AI_isAnyPlotDanger(getPlot(), 2, false);
+}
+
+// <advc.139>
+void CvCityAI::AI_updateSafety(bool bUpdatePerfectSafety)
+{
+	PROFILE_FUNC();
+	m_eSafety = CITYSAFETY_SAFE;
+	CvPlayerAI const& kOwner = GET_PLAYER(getOwner());
+	if(kOwner.getNumCities() <= 1)
+		return;
+
+	// <!-- custom: cache to kTeam for perf opt if i'm not mistaken. See note at CvCityAI::AI_buildingValue. -->
+	CvTeamAI const& kTeam = GET_TEAM(kOwner.getTeam()); // kekm.16
+
+	/*  iRange = 1 b/c I want to be sure that an attack is imminent. Won't work
+		against fast attackers, but usually dangerous attack stacks involve some
+		slow units. More important not to declare cities lost that still
+		have a realistic chance. */
+	int iAttackers = 0;
+	int iAttStrength = kOwner.AI_localAttackStrength(plot(), NO_TEAM,
+			DOMAIN_LAND, 1, true, false, false, &iAttackers);
+	bool bSafe = true;
+	int iDefenders = -1;
+	int iDefStrength = -1;
+	if (iAttStrength > 0) // To save time
+	{
+		iDefStrength = kOwner.AI_localDefenceStrength(plot(), getTeam(),
+				DOMAIN_LAND, 3, true, /*bCheckMoves=*/true,
+				false, /*bPredictPromotions=*/true);
+		/*  Could let AI_localDefenceStrength do the counting, but I don't want
+			to rely on defenders that could possibly(!) be rallied too much. */
+		iDefenders = getPlot().getNumDefenders(getOwner());
+		// Check if we'll finish a defender at the end of our turn
+		if (iDefenders > 0 && isProductionUnit() && getProductionTurnsLeft() == 1)
+		{
+			CvUnitInfo const& kProductionUnit = GC.getInfo(getProductionUnit());
+			if (kProductionUnit.getCombat() > 0) // Assume an average defender
+				iDefStrength = (iDefStrength * (iDefenders + 1)) / iDefenders;
+		}
+		bSafe = (iAttStrength * 2 < iDefStrength);
+		// Potentially expensive
+		if(bSafe && kTeam.getNumWars(false, true) > 0)
+		{
+			int iAttStrengthWiderRange = kOwner.AI_localAttackStrength(
+					plot(), NO_TEAM, DOMAIN_LAND, 3);
+			bSafe = (iAttStrengthWiderRange * 2 < iDefStrength);
+		}
+	}
+	if (bSafe)
+	{	// <advc.ctr>
+		if (bUpdatePerfectSafety &&
+			!getPlot().isVisibleEnemyCityAttacker(kOwner.getID(), NO_TEAM, 2))
+		{
+			m_eSafety = CITYSAFETY_PERFECT; // </advc.ctr>
+		}
+		return;
+	}
+	FAssert(iDefenders >= 0 && iDefStrength >= 0);
+	bool bEvac = false;
+	// Only bail if they can take the city in one turn or almost
+	if (iAttackers + 1 >= iDefenders)
+	{
+		// <!-- custom: make these static const for performance optimization as advised by chatgpt 5 too. -->
+		static const int iAIEvacuationThresh = GC.getDefineINT("AI_EVACUATION_THRESH");
+
+		static scaled const rAI_EVACUATION_THRESH = per100(
+				iAIEvacuationThresh);
+		scaled rThresh = rAI_EVACUATION_THRESH;
+		//  Higher threshold for important cities
+		scaled rRelativeCityVal = per100(AI_getCityValPercent());
+		if (rRelativeCityVal > fixp(0.5))
+			rThresh *= fixp(0.5) + rRelativeCityVal;
+		if (kOwner.getNumCities() <= 2 && isCapital())
+			rThresh *= 2;
+		bEvac = (scaled(iAttStrength, iDefStrength + 1) > rThresh);
+	}
+	if (bEvac)
+		m_eSafety = CITYSAFETY_EVACUATING;
+	else m_eSafety = CITYSAFETY_THREATENED;
+}
+
+
+void CvCityAI::AI_setCityValPercent(int iValue)
+{
+	FAssert(iValue <= 101);
+	m_iCityValPercent = iValue;
+} // </advc.139>
+
+// K-Mod (advc: Moved from CvCity)
+int CvCityAI::AI_culturePressureFactor() const
+{
+	int iAnswer = 0;
+	const int iDivisor = 60;
+
+	// <!-- custom: very nice optimization with the help of chatgpt 5 -->
+	// Inside the nested player/plot loop, pull PlayerTypes eOwner = getOwner(); TeamTypes eTeam = getTeam(); once outside the loops, and reuse int ourPlotCulture = kPlot.getCulture(eOwner); inside—then you do one getCulture per rival instead of two per rival. It’s minor, but this is an O(numTiles × numPlayers) routine.
+	const PlayerTypes eOwner = getOwner();
+	const TeamTypes eTeam = getTeam();
+
+	// <!-- custom: performance optimization: cache repetitive calls -->
+	CvGame const& kGame = GC.getGame();
+
+	for (CityPlotIter itPlot(*this); itPlot.hasNext(); ++itPlot)
+	{
+		CvPlot const& kPlot = *itPlot;
+		if (!kPlot.isWithinCultureRange(eOwner))
+			continue;
+
+		// <!-- custom: very nice optimization with the help of chatgpt 5 -->
+		const int ourPlotCulture = kPlot.getCulture(eOwner);
+
+		for (PlayerIter<CIV_ALIVE,NOT_SAME_TEAM_AS> it(eTeam); it.hasNext(); ++it)
+		{
+			CvPlayer const& kPlayer = *it;
+			int iForeignCulture = kPlot.getCulture(kPlayer.getID());
+			// scale it by how it compares to our culture
+			iForeignCulture = (100 * iForeignCulture) /
+					std::max(1, iForeignCulture + ourPlotCulture);
+			iForeignCulture *= 2;
+			iForeignCulture /= 2 +
+					// lower the value if the foreign culture is not allowed take control of the plot
+					((!kPlot.isWithinCultureRange(kPlayer.getID()) ||
+					GET_TEAM(kPlayer.getTeam()).isVassal(getTeam())) ? 2 : 0) +
+					// lower the value if the foreign culture is not allowed to flip the city
+					(!canCultureFlip(kPlayer.getID()) ? 1 : 0);
+			iAnswer += iForeignCulture * iForeignCulture;
+		}
+	}
+	// dull the effects in the late-game.
+	/*iAnswer *= GC.getNumEraInfos();
+	iAnswer /= GET_PLAYER(eOwner).getCurrentEra() + GC.getNumEraInfos();*/
+	iAnswer *= kGame.getEstimateEndTurn();
+	iAnswer /= kGame.getGameTurn() + kGame.getEstimateEndTurn();
+	// capped to avoid overly distorting the value of buildings and great people points.
+	return std::min(500, 100 + iAnswer / iDivisor);
+}
+
+
+CvCityAI* CvCityAI::AI_getRouteToCity() const // advc.003u: return type was CvCity*
+{
+	return AI_getCity(m_routeToCity);
+}
+
+
+void CvCityAI::AI_updateRouteToCity()
+{
+	PROFILE_FUNC(); // advc.opt
+
+	gDLL->getFAStarIFace()->ForceReset(&GC.getRouteFinder());
+
+	int iBestValue = MAX_INT;
+	CvCity const* pBestCity = NULL;
+
+	for (MemberIter itMember(getTeam()); itMember.hasNext(); ++itMember)
+	{
+		FOR_EACH_CITY(pLoopCity, *itMember)
+		{
+			if(pLoopCity == this || !sameArea(*pLoopCity))
+				continue;
+			/*	advc (note): This calls CvPlayer::getBestRoute
+				(via routeValid in CvGameCoreUtils.cpp) to determine whether
+				railroads are available */
+			if (!gDLL->getFAStarIFace()->GeneratePath(&GC.getRouteFinder(),
+				getX(), getY(), pLoopCity->getX(),
+				pLoopCity->getY(), false, getOwner(), true))
+			{
+				int iValue = plotDistance(getX(), getY(),
+						pLoopCity->getX(), pLoopCity->getY());
+				if (iValue < iBestValue)
+				{
+					iBestValue = iValue;
+					pBestCity = pLoopCity;
+				}
+			}
+		}
+	}
+	if(pBestCity != NULL)
+		m_routeToCity = pBestCity->getIDInfo();
+	else m_routeToCity.reset();
+}
+
+
+int CvCityAI::AI_getEmphasizeYieldCount(YieldTypes eIndex) const
+{
+	FAssertMsg(eIndex >= 0, "eIndex is expected to be non-negative (invalid Index)");
+	FAssertMsg(eIndex < NUM_YIELD_TYPES, "eIndex is expected to be within maximum bounds (invalid Index)");
+	return m_aiEmphasizeYieldCount[eIndex];
+}
+
+
+bool CvCityAI::AI_isEmphasizeYield(YieldTypes eIndex) const
+{
+	return (AI_getEmphasizeYieldCount(eIndex) > 0);
+}
+
+
+int CvCityAI::AI_getEmphasizeCommerceCount(CommerceTypes eIndex) const
+{
+	FAssertMsg(eIndex >= 0, "eIndex is expected to be non-negative (invalid Index)");
+	FAssertMsg(eIndex < NUM_COMMERCE_TYPES, "eIndex is expected to be within maximum bounds (invalid Index)");
+	return (m_aiEmphasizeCommerceCount[eIndex] > 0);
+}
+
+
+bool CvCityAI::AI_isEmphasizeCommerce(CommerceTypes eIndex) const
+{
+	return (AI_getEmphasizeCommerceCount(eIndex) > 0);
+}
+
+
+bool CvCityAI::AI_isEmphasize(EmphasizeTypes eIndex) const
+{
+	FAssertMsg(eIndex >= 0, "eIndex is expected to be non-negative (invalid Index)");
+	FAssertMsg(eIndex < GC.getNumEmphasizeInfos(), "eIndex is expected to be within maximum bounds (invalid Index)");
+	FAssertMsg(m_pbEmphasize != NULL, "m_pbEmphasize is not expected to be equal with NULL");
+	return m_pbEmphasize[eIndex];
+}
+
+
+void CvCityAI::AI_setEmphasize(EmphasizeTypes eIndex, bool bNewValue)
+{
+	FAssert(eIndex >= 0);
+	FAssert(eIndex < GC.getNumEmphasizeInfos());
+
+	if (AI_isEmphasize(eIndex) == bNewValue)
+		return;
+
+	m_pbEmphasize[eIndex] = bNewValue;
+	/*	advc.131d: Re-evaluate whether strong emphasis is appropriate each time that
+		emphasis settings change */
+	m_bStrongEmphasis = false;
+
+	if (GC.getInfo(eIndex).isAvoidGrowth())
+	{
+		m_iEmphasizeAvoidGrowthCount += (AI_isEmphasize(eIndex) ? 1 : -1);
+		FAssert(AI_getEmphasizeAvoidGrowthCount() >= 0);
+		// <advc.002f> Can affect label of the food bar or city bar icon
+		gDLL->UI().setDirty(gDLL->UI().isCityScreenUp() ?
+				CityScreen_DIRTY_BIT : CityInfo_DIRTY_BIT, true); // </advc.002f>
+	}
+
+	if (GC.getInfo(eIndex).isGreatPeople())
+	{
+		m_iEmphasizeGreatPeopleCount += (AI_isEmphasize(eIndex) ? 1 : -1);
+		FAssert(AI_getEmphasizeGreatPeopleCount() >= 0);
+	}
+
+	FOR_EACH_ENUM(Yield)
+	{
+		if (GC.getInfo(eIndex).getYieldChange(eLoopYield))
+		{
+			m_aiEmphasizeYieldCount[eLoopYield] += (AI_isEmphasize(eIndex) ? 1 : -1);
+			FAssert(AI_getEmphasizeYieldCount(eLoopYield) >= 0);
+		}
+	}
+
+	FOR_EACH_ENUM(Commerce)
+	{
+		if (GC.getInfo(eIndex).getCommerceChange(eLoopCommerce))
+		{
+			m_aiEmphasizeCommerceCount[eLoopCommerce] += (AI_isEmphasize(eIndex) ? 1 : -1);
+			FAssert(AI_getEmphasizeCommerceCount(eLoopCommerce) >= 0);
+		}
+	}
+
+	AI_assignWorkingPlots(/* advc.131d: */ bNewValue);
+	if (isActiveOwned() && isCitySelected())
+		gDLL->UI().setDirty(SelectionButtons_DIRTY_BIT, true);
+}
+
+// advc.131d:
+void CvCityAI::AI_setStrongEmphasis(bool bStrongEmphasis)
+{
+	if (m_bStrongEmphasis == bStrongEmphasis)
+		return;
+	m_bStrongEmphasis = bStrongEmphasis;
+	AI_assignWorkingPlots();
+}
+
+// advc.003j: Added in BtS, was never used as far as I can tell.
+/*void CvCityAI::AI_forceEmphasizeCulture(bool bNewValue)
+{
+	if (m_bForceEmphasizeCulture != bNewValue)
+	{
+		m_bForceEmphasizeCulture = bNewValue;
+
+		m_aiEmphasizeCommerceCount[COMMERCE_CULTURE] += (bNewValue ? 1 : -1);
+		FAssert(m_aiEmphasizeCommerceCount[COMMERCE_CULTURE] >= 0);
+	}
+}*/
+
+
+int CvCityAI::AI_totalBestBuildValue(CvArea const& kArea) /* advc:  */ const
+{
+	int iTotalValue = 0;
+	for (CityPlotIter itPlot(*this, false); itPlot.hasNext(); ++itPlot)
+	{
+		if (itPlot->isArea(kArea) && !GET_PLAYER(getOwner()).isAutomationSafe(*itPlot))
+			iTotalValue += AI_getBestBuildValue(itPlot.currID());
+	}
+	return iTotalValue;
+}
+
+
+int CvCityAI::AI_clearFeatureValue(CityPlotTypes ePlot) const
+{
+	// <!-- custom: performance optimization: cache repetitive calls -->
+	CvGame const& kGame = GC.getGame();
+
+	CvPlot const& kPlot = *plotCity(getX(), getY(), ePlot);
+	CvFeatureInfo const& kFeature = GC.getInfo(kPlot.getFeatureType());
+
+	// <!-- custom: cache to kTeam for perf opt if i'm not mistaken. See note at CvCityAI::AI_buildingValue. -->
+	CvPlayerAI const& kOwner = GET_PLAYER(getOwner());
+	CvTeamAI const& kTeam = GET_TEAM(kOwner.getTeam()); // kekm.16
+
+	/*int iValue = 0;
+	iValue += kFeature.getYieldChange(YIELD_FOOD) * 100;
+	iValue += kFeature.getYieldChange(YIELD_PRODUCTION) * 60;
+	iValue += kFeature.getYieldChange(YIELD_COMMERCE) * 40;
+	if (iValue > 0 && kPlot.isBeingWorked()) {
+		iValue *= 3;
+		iValue /= 2;
+	}
+	if (iValue != 0) {
+		BonusTypes eBonus = kPlot.getBonusType(getTeam());
+		if (eBonus != NO_BONUS) {
+			iValue *= 3;
+			if (kPlot.getImprovementType() != NO_IMPROVEMENT) {
+				if (GC.getInfo(kPlot.getImprovementType()).isImprovementBonusTrade(eBonus))
+					iValue *= 4;
+			}
+		}
+	}*/ // BtS
+	// K-Mod. All that yield change stuff is taken into account by the improvement evaluation function anyway.
+	// ... except the bit about keeping good features on top of bonuses
+	int iValue = 0;
+	{
+		BonusTypes const eBonus = kPlot.getNonObsoleteBonusType(getTeam());
+		if (eBonus != NO_BONUS &&
+			!kTeam.isHasTech(GC.getInfo(eBonus).getTechCityTrade()))
+		{
+			iValue += kFeature.getYieldChange(YIELD_FOOD) * 100;
+			iValue += kFeature.getYieldChange(YIELD_PRODUCTION) * 80; // was 60
+			iValue += kFeature.getYieldChange(YIELD_COMMERCE) * 40;
+			iValue *= 2;
+			/*	that should be enough incentive to keep good features
+				until we have the tech to decide on the best improvement. */
+		}
+	} // K-Mod end
+	{
+		int iHealthValue = 0;
+		if (kFeature.getHealthPercent() != 0)
+		{
+			int iHealth = goodHealth() - badHealth();
+			/*iHealthValue += (6 * kFeature.getHealthPercent()) / std::max(3, 1 + iHealth);
+			if (iHealthValue > 0 && !kPlot.isBeingWorked()) {
+				iHealthValue *= 3;
+				iHealthValue /= 2;
+			}*/ // BtS
+			// K-Mod start
+			iHealthValue += (iHealth < 0 ? 100 : 400 / (4 + iHealth)) +
+					100 * kPlot.getPlayerCityRadiusCount(getOwner());
+			iHealthValue *= kFeature.getHealthPercent();
+			iHealthValue /= 100;
+			/*  note: health is not any more valuable when we aren't working it.
+				That kind of thing should be handled by the chop code. */
+			// K-Mod end
+		}
+		iValue += iHealthValue;
+	}
+	// K-Mod
+	// We don't want defensive features adjacent to our city
+	if (ePlot < NUM_INNER_PLOTS)
+		iValue -= kFeature.getDefenseModifier() / 2;
+	if (kGame.getGwEventTally() >= 0) // if GW Threshold has been reached
+	{
+		iValue += kFeature.getWarmingDefense() *
+				(150 + 5 * kOwner.getGwPercentAnger()) / 100;
+	} // K-Mod end
+	if (iValue > 0)
+	{
+		if (kPlot.isImproved() &&
+			GC.getInfo(kPlot.getImprovementType()).isRequiresFeature())
+		{
+			iValue += 500;
+		}
+		if (kOwner.getAdvancedStartPoints() >= 0)
+			iValue += 400;
+	}
+	return -iValue;
+}
+
+// K-Mod. if aiYields == 0, then it will be calculated based on the 'best build' of the plot.
+bool CvCityAI::AI_isGoodPlot(CityPlotTypes ePlot, int* aiYields) const // advc.enum: CityPlotTypes
+{
+	int tempArray[NUM_YIELD_TYPES];
+
+	/*	it doesn't matter if this assert is wrong.
+		I just don't expect to ever want this for the center plot. */
+	FAssert(ePlot != CITY_HOME_PLOT);
+	CvPlot* pPlot = getCityIndexPlot(ePlot);
+
+	if (pPlot == NULL || pPlot->getWorkingCity() != this)
+	{
+		FAssertMsg(aiYields == NULL, "yields specified for non-existent plot");
+		return false;
+	}
+
+	if (aiYields == NULL)
+	{
+		aiYields = tempArray;
+
+		BuildTypes eBuild = NO_BUILD;
+		if (m_aeBestBuild[ePlot] != NO_BUILD && m_aiBestBuildValue[ePlot] > 50)
+			eBuild = m_aeBestBuild[ePlot];
+
+		if (eBuild != NO_BUILD)
+		{
+			FOR_EACH_ENUM(Yield)
+				aiYields[eLoopYield] = pPlot->getYieldWithBuild(eBuild, eLoopYield, true);
+		}
+		else
+		{
+			FOR_EACH_ENUM(Yield)
+				aiYields[eLoopYield] = pPlot->getYield(eLoopYield);
+		}
+	}
+	// the numbers used here are arbitrary; and I want to make sure high food tiles count as 'good'.
+	FAssert((1 + GC.getFOOD_CONSUMPTION_PER_POPULATION()) * 10 > 27);
+	return aiYields[YIELD_FOOD] * 10 + aiYields[YIELD_PRODUCTION] * 7 +
+			aiYields[YIELD_COMMERCE] * 4 > (pPlot->isWater() ? 27 : 21);
+}
+// K-Mod end
+
+// K-Mod rewritten to use my new function - AI_isGoodPlot.
+int CvCityAI::AI_countGoodPlots() const
+{
+	int iCount = 0;
+	for (CityPlotTypes ePlot = FIRST_ADJACENT_PLOT; ePlot < NUM_CITY_PLOTS; ++ePlot)
+		iCount += AI_isGoodPlot(ePlot) ? 1 : 0;
+	return iCount;
+}
+
+int CvCityAI::AI_countWorkedPoorPlots() const
+{
+	int iCount = 0;
+	for (CityPlotTypes ePlot = FIRST_ADJACENT_PLOT; ePlot < NUM_CITY_PLOTS; ++ePlot)
+		iCount += (isWorkingPlot(ePlot) && !AI_isGoodPlot(ePlot) ? 1 : 0);
+	return iCount;
+}
+
+// K-Mod, based on BBAI ideas
+int CvCityAI::AI_getTargetPopulation() const
+{
+	int iHealth = goodHealth() - badHealth();
+			/*  advc.120e: Considering that this function isn't used for
+				short-term evaluation (like juggling citizens),
+				temporary penalties from espionage should be ignored. */
+			// + getEspionageHealthCounter();
+	int iTargetSize = AI_countGoodPlots() + std::max(0, getSpecialistPopulation() - totalFreeSpecialists() - 1);
+	if (GET_PLAYER(getOwner()).AI_getFlavorValue(FLAVOR_GROWTH) > 0)
+		iTargetSize += iTargetSize / 6; // specialists.
+
+	iTargetSize = std::min(iTargetSize, 2 + getPopulation() + iHealth/2);
+
+	if (iTargetSize < getPopulation())
+	{
+		iTargetSize = std::max(iTargetSize, getPopulation() - AI_countWorkedPoorPlots() + std::min(0, iHealth/2));
+	}
+
+	iTargetSize = std::min(iTargetSize, 1 + getPopulation()+(happyLevel()-unhappyLevel()));
+			// advc.120e: Commented out
+			//+getEspionageHappinessCounter()));
+
+	return iTargetSize;
+}
+
+/*	K-Mod note: This function was once used for Debug only,
+	but I've made it the one and only way to get the yield multipliers.
+	This way we don't have to put up with duplicated code.
+	This function has been mostly rewritten for K-Mod.
+	Some parts of the original code still exist (particularly near the end),
+	but most of the old code is gone. */
+void CvCityAI::AI_getYieldMultipliers(int &iFoodMultiplier, int &iProductionMultiplier,
+	int &iCommerceMultiplier, int &iDesiredFoodChange) const
+{
+	PROFILE_FUNC();
+
+	iFoodMultiplier = 100;
+	iCommerceMultiplier = 100;
+	iProductionMultiplier = 100;
+
+	int aiUnworkedYield[NUM_YIELD_TYPES] = {};
+	int aiWorkedYield[NUM_YIELD_TYPES] = {};
+	int iUnworkedPlots = 0;
+	int iWorkedPlots = 0;
+
+	CvPlayerAI& kPlayer = GET_PLAYER(getOwner());
+
+	int iGoodTileCount = 0;
+
+	for (WorkablePlotIter it(*this, false); it.hasNext(); ++it)
+	{
+		CvPlot const& kPlot = *it;
+		CityPlotTypes const ePlot = it.currID();
+
+		BuildTypes eBuild = NO_BUILD;
+		if (m_aeBestBuild[ePlot] != NO_BUILD && m_aiBestBuildValue[ePlot] > 50)
+			eBuild = m_aeBestBuild[ePlot];
+
+		int aiPlotYields[NUM_YIELD_TYPES];
+		if (eBuild != NO_BUILD)
+		{
+			FOR_EACH_ENUM(Yield)
+				aiPlotYields[eLoopYield] = kPlot.getYieldWithBuild(eBuild, eLoopYield, true);
+		}
+		else
+		{
+			// K-Mod note. unfortunately, this counts GA yield whereas getYieldWithBuild does not.
+			FOR_EACH_ENUM(Yield)
+				aiPlotYields[eLoopYield] = kPlot.getYield(eLoopYield);
+		}
+
+		bool const bGoodPlot = AI_isGoodPlot(ePlot, aiPlotYields);
+		if (bGoodPlot)
+		{
+			iGoodTileCount++;
+			// note: worked plots are already counted.
+			if (!kPlot.isBeingWorked())
+			{
+				FOR_EACH_ENUM(Yield)
+					aiUnworkedYield[eLoopYield] += aiPlotYields[eLoopYield];
+				iUnworkedPlots++;
+				// note. this can count plots that are low on food.
+			}
+		}
+
+		if (kPlot.isBeingWorked())
+		{
+			FOR_EACH_ENUM(Yield)
+				aiWorkedYield[eLoopYield] += aiPlotYields[eLoopYield];
+			iWorkedPlots++;
+		}
+	}
+
+	/*	I'd like to use AI_getTargetPopulation here, to avoid code duplication,
+		but that would result in us doing a bunch of unneccessary recalculations. */
+	int iSpecialistCount = getSpecialistPopulation() - totalFreeSpecialists();
+	int iHealth = goodHealth() - badHealth();
+			// advc.120e: Mustn't de-emphasize food in response to spy attack!
+			//+ getEspionageHealthCounter();
+	int iTargetSize = iGoodTileCount + std::max(0, iSpecialistCount - 1);
+	if (kPlayer.AI_getFlavorValue(FLAVOR_GROWTH) > 0)
+		iTargetSize += iGoodTileCount / 6;
+	iTargetSize = std::min(iTargetSize, //2 + getPopulation() + iHealth/2);
+			/*  advc.120e: The above grows a bit too readily into bad health.
+				E.g. if the city is size 8 and already has 1 bad health,
+				TargetSize would be capped at 10, resulting in 3 bad health once the
+				city gets there. My formula sets TargetSize to 9 in this example.
+				1.55 to ensure that we round up when Health is even. */
+			(fixp(1.55) + getPopulation() + scaled(iHealth, 2)).round());
+
+	if (iTargetSize < getPopulation())
+	{
+		iTargetSize = std::max(iTargetSize, getPopulation() -
+				AI_countWorkedPoorPlots() + std::min(0, iHealth/2));
+	}
+
+	iTargetSize = std::min(iTargetSize, 1 + getPopulation()+(happyLevel()-unhappyLevel()));
+			// <advc.120e> Commented out
+			//+getEspionageHappinessCounter()));
+	// Never shrink aggressively
+	if(iTargetSize < getPopulation())
+		iTargetSize = std::max(iTargetSize, getPopulation() - 2); // </advc.120e>
+	// <advc.300> Make Barbarians a little less afraid of angry citizens
+	if(isBarbarian())
+		iTargetSize++; // </advc.300>
+
+	// total food and production include yield from buildings, corporations, specialists, and so on.
+	int iFoodTotal = getBaseYieldRate(YIELD_FOOD);
+	int iProductionTotal = getBaseYieldRate(YIELD_PRODUCTION);
+
+	int iFutureFoodAdjustment = 0;
+	if (iUnworkedPlots > 0)
+	{
+		/*	calculate approximately how much extra food we could work
+			if we used our specialists and our extra population. */
+		iFutureFoodAdjustment = (std::min(iUnworkedPlots,
+				iSpecialistCount + std::max(0, iTargetSize - getPopulation())) *
+				aiUnworkedYield[YIELD_FOOD]) / iUnworkedPlots;
+	}
+	iFoodTotal += iFutureFoodAdjustment;
+	iProductionTotal += aiUnworkedYield[YIELD_PRODUCTION];
+
+	/*	advc (note): Changes to the food targets here may have to be evened out
+		in AI_getImprovementValue to avoid oscillation */
+	int iExtraFoodForGrowth = 0;
+	if (iTargetSize > getPopulation())
+	{
+		/* <advc.121> As far as I understand, ExtraFoodForGrowth says how much
+		   food surplus is desirable. The original formula doesn't seem to grow
+		   the cities fast enough. (The proper TargetSize is a different
+		   question, but if you want to grow, do so quickly.) */
+		int iDelta = iTargetSize - getPopulation() - 1; /*  TargetSize is often
+				one greater than what the current happiness supports. Not what I
+				want here, so subtract 1. */
+		if(iDelta <= 3)
+			iExtraFoodForGrowth = std::max(0, iDelta + 1);
+		else iExtraFoodForGrowth = iDelta;
+		// K-Mod formula now only for Barbarians:
+		if(isBarbarian()) // advc.300:
+			iExtraFoodForGrowth = (iTargetSize - getPopulation())/2 + 1;
+		// </advc.121>
+	}
+
+	int iFoodDifference = iFoodTotal - (iTargetSize *
+			GC.getFOOD_CONSUMPTION_PER_POPULATION() + iExtraFoodForGrowth);
+
+	iDesiredFoodChange = -iFoodDifference + std::max(0, -iHealth);
+	//
+
+	/*if (iFoodDifference < 0)
+		iFoodMultiplier +=  -iFoodDifference * 4;
+	if (iFoodDifference > 4)
+		iFoodMultiplier -= 8 + 4 * iFoodDifference;*/
+
+	int iProductionTarget = 1 + std::max(getPopulation(), iTargetSize * 3 / 5);
+	// <advc.300> +50% production target
+	if(isBarbarian())
+	{
+		iProductionTarget *= 150;
+		iProductionTarget /= 100;
+	} // </advc.300>
+
+	if (iProductionTotal < iProductionTarget)
+	{
+		iProductionMultiplier += 8 * (iProductionTarget - iProductionTotal);
+	}
+
+	// K-Mod.
+	if (kPlayer.AI_getFlavorValue(FLAVOR_PRODUCTION) > 0 ||
+		kPlayer.AI_getFlavorValue(FLAVOR_MILITARY) >= 10 ||
+		isBarbarian()) // advc.300
+	{
+		/* iProductionMultiplier *= 113 + 2 * kPlayer.AI_getFlavorValue(FLAVOR_PRODUCTION) + kPlayer.AI_getFlavorValue(FLAVOR_MILITARY);
+		iProductionMultiplier /= 100; */
+		iCommerceMultiplier *= 100;
+		iCommerceMultiplier /= 113 + 2 * kPlayer.AI_getFlavorValue(FLAVOR_PRODUCTION) +
+				kPlayer.AI_getFlavorValue(FLAVOR_MILITARY);
+	}
+	// K-Mod end
+	// <advc.300>
+	if (isBarbarian())
+	{
+		int iCommerceToProductionShift = AI_commerceToProductionMultiplierShift();
+		iProductionMultiplier += iCommerceToProductionShift;
+		iCommerceMultiplier -= iCommerceToProductionShift;
+		return;
+	} // </advc.300>
+
+	int iNetCommerce = kPlayer.AI_getAvailableIncome(); // K-Mod
+	int iNetExpenses = kPlayer.calculateInflatedCosts() +
+			std::max(0, -kPlayer.getGoldPerTurn()); // unofficial patch
+
+	int iRatio = (100 * iNetExpenses) / std::max(1, iNetCommerce);
+
+	if (iRatio > 40)
+	{
+		//iCommerceMultiplier += (33 * (iRatio - 40)) / 60;
+		// K-Mod, just a bit steeper
+		iCommerceMultiplier += (50 * (iRatio - 40)) / 60;
+	}
+
+	int iProductionAdvantage = 100 * AI_yieldMultiplier(YIELD_PRODUCTION);
+	iProductionAdvantage /= kPlayer.AI_averageYieldMultiplier(YIELD_PRODUCTION);
+	iProductionAdvantage *= kPlayer.AI_averageYieldMultiplier(YIELD_COMMERCE);
+	iProductionAdvantage /= AI_yieldMultiplier(YIELD_COMMERCE);
+
+	// adjust based on # of cities. (same as the original bts code)
+	int iNumCities = kPlayer.getNumCities();
+	FAssert(iNumCities > 0);
+	iProductionAdvantage = (iProductionAdvantage * (iNumCities - 1) + 200) / (iNumCities + 1);
+
+	iProductionMultiplier *= iProductionAdvantage;
+	iProductionMultiplier /= 100;
+
+	iCommerceMultiplier *= 100;
+	iCommerceMultiplier /= iProductionAdvantage;
+
+	/* int iGreatPeopleAdvantage = 100 * getTotalGreatPeopleRateModifier();
+	iGreatPeopleAdvantage /= kPlayer.AI_averageGreatPeopleMultiplier();
+	iGreatPeopleAdvantage = (iGreatPeopleAdvantage * (iNumCities - 1) + 200) / (iNumCities + 1);
+	iGreatPeopleAdvantage += 200; // dilute
+	iGreatPeopleAdvantage /= 3;
+
+	//With great people we want to slightly increase food priority at the expense of commerce
+	//this gracefully handles both wonder and specialist based GPP...
+	iCommerceMultiplier *= 100;
+	iCommerceMultiplier /= iGreatPeopleAdvantage;
+	iFoodMultiplier *= iGreatPeopleAdvantage;
+	iFoodMultiplier /= 100; */
+
+	// Note: the AI does not use this kind of emphasis
+	if (isHuman())
+	{
+		/*if (AI_isEmphasizeYield(YIELD_FOOD)) {
+			iFoodMultiplier *= 140; // was 130
+			iFoodMultiplier /= 100;
+		}*/ // moved lower
+		if (AI_isEmphasizeYield(YIELD_PRODUCTION))
+		{
+			iProductionMultiplier *= 130 // was 140
+					+ (AI_isStrongEmphasis() ? 25 : 0); // advc.131d
+			iProductionMultiplier /= 100;
+			// K-Mod
+			if (!AI_isEmphasizeYield(YIELD_COMMERCE))
+			{
+				iCommerceMultiplier *= 80
+						- (AI_isStrongEmphasis() ? 13 : 0); // advc.131d
+				iCommerceMultiplier /= 100;
+			} // K-Mod end
+		}
+		if (AI_isEmphasizeYield(YIELD_COMMERCE))
+		{
+			iCommerceMultiplier *= 140
+					+ (AI_isStrongEmphasis() ? 33 : 0); // advc.131d
+			iCommerceMultiplier /= 100;
+		}
+	}
+	else
+	{
+		// K-Mod. strategy / personality modifiers.
+		// <advc> Moved into subroutine
+		{
+			int iCommerceToProductionShift = AI_commerceToProductionMultiplierShift();
+			iProductionMultiplier += iCommerceToProductionShift;
+			iCommerceMultiplier -= iCommerceToProductionShift;
+		} // </advc>
+		if (kPlayer.AI_getFlavorValue(FLAVOR_PRODUCTION) > 0)
+			iProductionMultiplier += 5 + 2*kPlayer.AI_getFlavorValue(FLAVOR_PRODUCTION);
+		if (kPlayer.AI_isDoStrategy(AI_STRATEGY_ECONOMY_FOCUS))
+		{
+			iProductionMultiplier -= 10;
+			iCommerceMultiplier += 20;
+		}
+		/* else if (kPlayer.AI_getFlavorValue(FLAVOR_SCIENCE) + kPlayer.AI_getFlavorValue(FLAVOR_GOLD) > 2)
+			iCommerceMultiplier += 5 + kPlayer.AI_getFlavorValue(FLAVOR_SCIENCE) + kPlayer.AI_getFlavorValue(FLAVOR_GOLD);*/
+		// K-Mod end
+	}
+	if (iProductionMultiplier < 100)
+		iProductionMultiplier = 10000 / (200 - iProductionMultiplier);
+	if (iCommerceMultiplier < 100)
+		iCommerceMultiplier = 10000 / (200 - iCommerceMultiplier);
+
+	// K-Mod. experimental food value
+	//iFoodMultiplier = (80 * iProduction + 40 * iCommerce) / (food needed for jobs)  * (Food needed for jobs + growth) / (food have total)
+	//iFoodMultiplier = (80 * iProductionMultiplier * iProductionTotal + 40 * iCommerceMultiplier * iCommerceTotal) * (iFoodTotal + iDesiredFoodChange) / std::max(1, 100 * iTargetSize * GC.getFOOD_CONSUMPTION_PER_POPULATION() * iFoodTotal);
+
+	/*	emphasise the yield that we are working, so that
+		the weakest of the 'good' plots don't drag down the average quite so much.
+		note: the multipliers on production and commerce
+		should match the numbers used in AI_getImprovementValue. */
+	iFoodMultiplier = 80 * iProductionMultiplier *
+			(aiUnworkedYield[YIELD_PRODUCTION] + aiWorkedYield[YIELD_PRODUCTION] * 2) *
+			(iUnworkedPlots + iWorkedPlots);
+	iFoodMultiplier += 40 * iCommerceMultiplier *
+			(aiUnworkedYield[YIELD_COMMERCE] + aiWorkedYield[YIELD_COMMERCE] * 2) *
+			(iUnworkedPlots + iWorkedPlots);
+	iFoodMultiplier /= 100 * std::max(1, iUnworkedPlots + 2*iWorkedPlots);
+	iFoodMultiplier += 160 * iDesiredFoodChange;
+	iFoodMultiplier = std::max(iFoodMultiplier, 200); // (a minimum yield value for small cities.)
+
+	//iFoodMultiplier *= iTargetSize;
+	//iFoodMultiplier /= std::max(iTargetSize, getPopulation() + iUnworkedPlots - std::max(0, iDesiredFoodChange));
+
+	iFoodMultiplier *= (iFoodTotal + iDesiredFoodChange);
+	iFoodMultiplier /= std::max(1, (iUnworkedPlots + iWorkedPlots) *
+			GC.getFOOD_CONSUMPTION_PER_POPULATION() *
+			(iFoodTotal-iExtraFoodForGrowth));
+	/*	advc.121: I've seen this go above 60000. I guess the formulas above
+		don't deal well with tiny cities that are supposed to grow big. */
+	iFoodMultiplier = std::min(iFoodMultiplier, 5000);
+
+	// Note: this food multiplier calculation still doesn't account for possible food yield multipliers. Sorry.
+
+	if (isHuman() && AI_isEmphasizeYield(YIELD_FOOD))
+	{
+		iFoodMultiplier *= 140
+				+ (AI_isStrongEmphasis() ? 33 : 0); // advc.131d
+		iFoodMultiplier /= 100;
+	}
+	// K-Mod end
+
+	if (iFoodMultiplier < 100)
+		iFoodMultiplier = 10000 / (200 - iFoodMultiplier);
+}
+
+// advc: Cut from AI_getImprovementValue
+namespace
+{
+	scaled AI_bonusDiscoverRandVal(ImprovementTypes eImprov)
+	{
+		scaled r;
+		FOR_EACH_ENUM(Bonus)
+		{
+			if (GC.getInfo(eImprov).getImprovementBonusDiscoverRand(eLoopBonus) > 0)
+				r++;
+		}
+		return r;
+	}
+}
+
+// <!-- custom: update: disabling it entirely throws off workboats that use this too, then they stay parked in city, so updated this to disable it functionally only for land workers as we want them to use our optimized AI worker logic, but as for sea workers, fine if they do as such as long as works-functions; added thanks to claude ai and my prompt too etc -->
+// <!-- custom: since we handle all this ourselves now in CvUnitAI::AI_bestCityBuild, we don't want any interference, disabled as part of trying to solve spices plains forcibly irrigated despite our code controlling most of the ai worker build decisions now, as well as flood plains or flatland grass as well very inefficiently farmed when city is not even starved, let us handle it ourselves rather there as we seem to already do for most, added by chatgpt o3 and adjusted or not or yes or etc by me too; update: this solved the farm on spices plains issue and also unwanted as well farm on flood plains, AI workers chose to go for production economy for some reason xd, but our best improvements are still chosen reliably it seems (e.g. cottage on flood plains or nothing unless we are starved, see CvUnitAI::AI_bestCityBuild for details) -->
+// advc (note): K-Mod function based on AI_updateBestBuild
+int CvCityAI::AI_getImprovementValue(CvPlot const& kPlot, ImprovementTypes eImprovement,
+	int iFoodPriority, int iProductionPriority, int iCommercePriority, int iDesiredFoodChange,
+	int iClearFeatureValue, bool bEmphasizeIrrigation, BuildTypes* peBestBuild) const
+{
+	// <!-- custom: performance optimization: cache repetitive calls -->
+	CvGame const& kGame = GC.getGame();
+
+	// <!-- custom: cache to kTeam for perf opt if i'm not mistaken. See note at CvCityAI::AI_buildingValue. -->
+	CvPlayerAI const& kOwner = GET_PLAYER(getOwner()); // K-Mod
+	CvTeamAI const& kTeam = GET_TEAM(kOwner.getTeam()); // kekm.16
+
+	// <!-- custom: add this as a conditional early exit check for land plots only rather, this also saves computing power by not using it for land plots which are most while not removing it for water units that use/need it it seems-->
+	if (!kPlot.isWater())
+	{
+		// This is a land plot - disable the vanilla evaluator for land workers
+		// Clean, non-crashing ways to "turn off" the vanilla evaluator
+		if (peBestBuild)
+		{
+			*peBestBuild = NO_BUILD;
+		}
+		// "don't bother" - let our custom AI_bestCityBuild handle land improvements
+		return 0;
+	}
+
+	BonusTypes eBonus = kPlot.getBonusType(getTeam());
+	BonusTypes eNonObsoleteBonus = kPlot.getNonObsoleteBonusType(getTeam());
+
+	BuildTypes eBestTempBuild = NO_BUILD;
+	// first check if the improvement is valid on this plot
+	// this also allows us work out whether or not the improvement will remove the plot feature...
+	bool bValid = false;
+	bool bIgnoreFeature = false;
+	if (eImprovement == kPlot.getImprovementType())
+		bValid = true;
+	else
+	{
+		int iBestTempBuildValue = 0;
+		FOR_EACH_ENUM(Build)
+		{
+			if (GC.getInfo(eLoopBuild).getImprovement() != eImprovement)
+				continue;
+			if (kOwner.canBuild(kPlot, eLoopBuild, false))
+			{
+				int iValue = 10000;
+				iValue /= (GC.getInfo(eLoopBuild).getTime() + 1);
+				// XXX feature production???  // (advc: I think the chop decision in AI_updateBestBuild will handle that)
+				if (iValue > iBestTempBuildValue)
+				{
+					iBestTempBuildValue = iValue;
+					eBestTempBuild = eLoopBuild;
+				}
+			}
+		}
+		if (eBestTempBuild != NO_BUILD)
+		{
+			bValid = true;
+			if (kPlot.isFeature() &&
+				GC.getInfo(eBestTempBuild).isFeatureRemove(kPlot.getFeatureType()))
+			{
+				bIgnoreFeature = true;
+				if (GC.getInfo(kPlot.getFeatureType()).getYieldChange(YIELD_PRODUCTION) > 0 &&
+					eNonObsoleteBonus == NO_BONUS)
+				{
+					if (kOwner.isHumanOption(PLAYEROPTION_LEAVE_FORESTS))
+						bValid = false;
+					else if (healthRate() < 0 &&
+						GC.getInfo(kPlot.getFeatureType()).getHealthPercent() > 0)
+					{
+						bValid = false;
+					}
+					else if (kOwner.getFeatureHappiness(kPlot.getFeatureType()) > 0)
+						bValid = false;
+				}
+			}
+		}
+	}
+	if (!bValid)
+	{
+		if (peBestBuild != NULL)
+			*peBestBuild = NO_BUILD;
+		return 0;
+	}
+
+	// Now get the value of the improvement itself.
+	ImprovementTypes eFinalImprovement = CvImprovementInfo::finalUpgrade(eImprovement);
+	if (eFinalImprovement == NO_IMPROVEMENT)
+		eFinalImprovement = eImprovement;
+
+	scaled rValue;
+	//int aiDiffYields[NUM_YIELD_TYPES]; // removed by K-Mod (replaced by time-weighted yields!)
+	//int aiFinalYields[NUM_YIELD_TYPES];
+
+	if (eBonus != NO_BONUS && eNonObsoleteBonus != NO_BONUS)
+	{
+		//if (GC.getInfo(eFinalImprovement).isImprovementBonusTrade(eNonObsoleteBonus))
+		if (kOwner.doesImprovementConnectBonus(eFinalImprovement, eNonObsoleteBonus))
+		{
+			// K-Mod
+			rValue += kOwner.AI_bonusVal(eNonObsoleteBonus, 1) * 50;
+			rValue += 100;
+			// K-Mod end
+			/*	<advc.121> Kludge to force the AI to prefer improvements with yields
+				over forts. Don't want to rule out forts altogether b/c of gems in a
+				jungle -- w/o IW, a fort is the only way to connect the resource. */
+			int iImprYieldChange = 0;
+			FOR_EACH_ENUM(Yield)
+			{
+				iImprYieldChange += kPlot.calculateImprovementYieldChange(
+						eImprovement, eLoopYield, kOwner.getID());
+			}
+			if (iImprYieldChange <= 0 && kPlot.getWorkingCity() != NULL)
+				// <!-- custom: trying to make extra extra sure we don't build forts as they are very inefficient (long time to build, yield less than improvements, and unlikely a human or other player would ideally attack units garrisoned there), they could have some uses (maybe prebuilding connection, allowing naval units to pass/cross land), but more often than not they should not benefit the AI, and currently the AI often spends a lot of time undoing existing improvements in base advciv as i have noticed many times. I don't know too much how to fix this, but with chatgpt's help i am adding a few bits of code that try to prevent that, here is one of them, see the Main Changes Guide or some similar or related or other docs in our mod for update status rather than here. -->
+				//rValue /= 3;
+				rValue /= 10;
+			// </advc.121>
+		}
+		else
+		{
+			// K-Mod, bug fix. (original code deleted now.)
+			/*  Presumably the original author wanted to subtract 1000 if eBestBuild would
+				take away the bonus; not ... the nonsense they actually wrote. */
+			if (kOwner.doesImprovementConnectBonus(kPlot.getImprovementType(), eNonObsoleteBonus))
+			{
+				// By the way, AI_bonusVal is typically 10 for the first bonus, and 2 for subsequent.
+				rValue -= kOwner.AI_bonusVal(eNonObsoleteBonus, -1) * 50;
+				rValue -= 100;
+			}
+		}
+	}
+	else if (eFinalImprovement != kPlot.getImprovementType()) // advc.121 (save time)
+	{
+		rValue += AI_bonusDiscoverRandVal(eFinalImprovement);
+		// <advc.121> Prefer to use only differences in this upper part
+		if (kPlot.isImproved())
+			rValue -= AI_bonusDiscoverRandVal(kPlot.getImprovementType());
+		// </advc.121>
+	}
+	//if (rValue >= 0) // disabled by K-Mod. (maybe the yield will be worth it!)
+
+	EagerEnumMap<YieldTypes,scaled> weightedFinalYields;
+	EagerEnumMap<YieldTypes,scaled> weightedYieldDiffs;
+	{
+		// K-Mod. Get a weighted average of the yields for improvements which upgrade (eg. cottages).
+		int iTimeScale = 60;
+		if (10 * kGame.getElapsedGameTurns() < 3 * kGame.getEstimateEndTurn())
+			iTimeScale += 10;
+		if (kOwner.AI_atVictoryStage4())
+			iTimeScale -= 30;
+		else if (10 * kGame.getElapsedGameTurns() >
+			7 * kGame.getEstimateEndTurn())
+		{
+			iTimeScale -= 10;
+		}
+		// advc.001: was AI_isDoVictoryStrategy
+		if (kOwner.AI_isDoStrategy(AI_STRATEGY_ECONOMY_FOCUS))
+			iTimeScale += 50;
+		if (kTeam.AI_getNumWarPlans(WARPLAN_TOTAL) +
+			// advc.001: Surely(?) preparations should count here as well
+			kTeam.AI_getNumWarPlans(WARPLAN_PREPARING_TOTAL) > 0)
+		{
+			iTimeScale -= 20;
+		}
+		else if (kOwner.AI_getFlavorValue(FLAVOR_MILITARY) > 0)
+			iTimeScale -= 10;
+		if (eNonObsoleteBonus != NO_BONUS &&
+			!kOwner.doesImprovementConnectBonus(eImprovement, eNonObsoleteBonus))
+		{
+			iTimeScale = std::min(30, iTimeScale);
+		}
+		iTimeScale = std::max(iTimeScale, 20);
+		// Other adjustments?
+
+		// Adjustments to match calculation in CvPlot::doImprovement
+		iTimeScale *= GC.getInfo(kGame.getGameSpeedType()).getImprovementPercent();
+		iTimeScale /= 100;
+		iTimeScale *= GC.getInfo(kGame.getStartEra()).getImprovementPercent();
+		iTimeScale /= 100;
+		{
+			int iUpgrRate = kOwner.getImprovementUpgradeRate();
+			// <advc.912f>
+			if (iUpgrRate == 0)
+				iTimeScale = 0;
+			else
+			{	/*	<advc.001> This fraction was flipped. Pretty sure that this was wrong.
+					The ImprovementPercentModifiers apply to the time needed for an upgrade,
+					whereas the upgrade rate applies to the time spent working the tile.
+					A higher upgrade rate means that we should be more interested in
+					delayed rewards, which is what a high iTimeScale value does. Note that
+					the upgrade rate factors into the evaluation at no other point. */
+				iTimeScale *= iUpgrRate;
+				iTimeScale /= 100; // </advc.001>
+				// </advc.912f>
+			}
+		}
+
+		/*	Getting the time-weighted yields for the new and old improvements;
+			then use them to calculate the final yield and yield difference. */
+		AI_timeWeightedImprovementYields(kPlot, eImprovement,
+				iTimeScale, weightedFinalYields);
+		AI_timeWeightedImprovementYields(kPlot, kPlot.getImprovementType(),
+				iTimeScale, weightedYieldDiffs);
+	}
+	FOR_EACH_ENUM(Yield)
+	{
+		weightedFinalYields.add(eLoopYield,
+				kPlot.calculateNatureYield(eLoopYield, getTeam(), bIgnoreFeature));
+		weightedYieldDiffs.set(eLoopYield, weightedFinalYields.get(eLoopYield) -
+				(weightedYieldDiffs.get(eLoopYield) +
+				kPlot.calculateNatureYield(eLoopYield, getTeam())));
+	}
+
+	// K-Mod
+	/*  If this improvement results in a change in food, then building it
+		will result in a change in the food multiplier.
+		We should try to preempt that change to prevent best-build from oscillating.
+		In our situation, we have
+		iDesiredFoodChange ~= -iFoodDifference and
+		aiDiffYields[0] == 2 * food change from the improvement.
+		Unfortunately, it's a bit of a lengthy calculation to work out
+		all of the factors involved in iFoodPriority. So I'll just use a
+		very rough approximation. Hopefully it will be better than nothing. */
+	int iCorrectedFoodPriority = iFoodPriority;
+	if (weightedYieldDiffs.get(YIELD_FOOD) != 0 && isWorkingPlot(kPlot))
+	{
+		/*	16 is arbitrary. It would be possible to get something better
+			using targetPop and so on, but that would be slower... */
+		/*	advc.121: Try 8 (twice the impact), also with changes in
+			AI_getYieldMultipliers in mind. */
+		int iTotalFood = 8 * GC.getFOOD_CONSUMPTION_PER_POPULATION();
+		iCorrectedFoodPriority = (iCorrectedFoodPriority *
+				(iTotalFood - weightedYieldDiffs.get(YIELD_FOOD)) /
+				std::max(1, iTotalFood)).round();
+	}
+	FAssert(iCorrectedFoodPriority == iFoodPriority ||
+			((iCorrectedFoodPriority < iFoodPriority) ==
+			(weightedYieldDiffs.get(YIELD_FOOD) > 0)));
+	// This corrected priority isn't perfect, but I think it will be better than nothing.
+	// K-Mod end
+	{
+		YieldPercentMap weights;
+		weights.set(YIELD_FOOD, iCorrectedFoodPriority);
+		// Was 60% in BtS, now 80%.
+		weights.set(YIELD_PRODUCTION, (iProductionPriority * 102) / 128);
+		weights.set(YIELD_COMMERCE, (iCommercePriority * 51) / 128);
+		FOR_EACH_ENUM(Yield)
+			rValue += weightedYieldDiffs.get(eLoopYield) * weights.get(eLoopYield);
+		// <advc.131>, advc.005a: Personality moved up
+		if (!isHuman())
+		{
+			int iPersonalityModifier = GC.getInfo(getPersonalityType()).
+					getImprovementWeightModifier(eFinalImprovement);
+			// This would not help the current improvement
+			/*rValue *= std::max(0, 200 + iPersonalityModifier);
+			rValue /= 200;*/ // BtS
+			// Cleaner based on the difference in modifiers
+			iPersonalityModifier -=
+					(kPlot.isImproved() ? GC.getInfo(getPersonalityType()).
+					getImprovementWeightModifier(kPlot.getImprovementType()) : 0);
+			if (iPersonalityModifier != 0) // save time
+			{
+				/*	Let a 100% personality modifier be as weighty as one unit of
+					the least important yield type (probably commerce). Typical
+					modifiers in XML are 20 to 30%. */
+				scaled rMinWeight = scaled::MAX;
+				FOR_EACH_ENUM(Yield)
+					rMinWeight.decreaseTo(weights.get(eLoopYield));
+				rValue += scaled(iPersonalityModifier, 100) * rMinWeight;
+			}
+		} // </advc.131>
+	}
+	/*	K-Mod. If we're going to have too much food
+		regardless of the improvement on this plot, then reduce the food value */
+	if (iDesiredFoodChange < 0 && -iDesiredFoodChange >=
+		weightedFinalYields.get(YIELD_FOOD) - weightedYieldDiffs.get(YIELD_FOOD))
+	{
+		 // reduce the weight of food. (cf. values above.)
+		rValue -= weightedYieldDiffs.get(YIELD_FOOD) * iCorrectedFoodPriority * fixp(0.4);
+	} // K-Mod end
+
+	if (rValue > 0)
+	{
+		// this is mainly to make it improve better tiles first
+		//flood plain > grassland > plain > tundra
+		rValue += weightedFinalYields.get(YIELD_FOOD) * 8; // was 10
+		rValue += weightedFinalYields.get(YIELD_PRODUCTION) * 7; // was 6
+		rValue += weightedFinalYields.get(YIELD_COMMERCE) * 4;
+
+		if (weightedFinalYields.get(YIELD_FOOD) >=
+			GC.getFOOD_CONSUMPTION_PER_POPULATION())
+		{
+			//this is a food yielding tile
+			if (iCorrectedFoodPriority > 100)
+				rValue.mulDiv(100 + iCorrectedFoodPriority, 200);
+			if (iDesiredFoodChange > 0)
+			{
+				//iValue += (10 * (1 + aiDiffYields[YIELD_FOOD]) * (1 + aiFinalYields[YIELD_FOOD] - GC.getFOOD_CONSUMPTION_PER_POPULATION()) * iDesiredFoodChange * iCorrectedFoodPriority) / 100;
+				// <K-Mod>
+				rValue += (10 * (1 + weightedYieldDiffs.get(YIELD_FOOD)) *
+						(1 + weightedFinalYields.get(YIELD_FOOD)
+						- GC.getFOOD_CONSUMPTION_PER_POPULATION()) *
+						std::min(1 + iDesiredFoodChange / 3, 4) *
+						iCorrectedFoodPriority) / 100; // </K-Mod>
+			}
+			if (iCommercePriority > 100)
+			{
+				//iValue *= 100 + (((iCommercePriority - 100) * aiDiffYields[YIELD_COMMERCE]) / 2);
+				//iValue /= 100;
+				rValue += (rValue * ((iCommercePriority - 100) *
+						weightedYieldDiffs.get(YIELD_COMMERCE))) / 200;
+			}
+		}
+		/* else if (aiFinalYields[YIELD_FOOD] < GC.getFOOD_CONSUMPTION_PER_POPULATION()) {
+			if ((aiDiffYields[YIELD_PRODUCTION] > 0) && (aiFinalYields[YIELD_FOOD]+aiFinalYields[YIELD_PRODUCTION] > 3)) {
+				if (iCorrectedFoodPriority < 100 || kOwner.getCurrentEra() < 2) {
+					//value booster for mines on hills
+					iValue *= (100 + 25 * aiDiffYields[YIELD_PRODUCTION]);
+					iValue /= 100;
+				}
+			}
+		}*/
+
+		if (iCorrectedFoodPriority < 100 && iProductionPriority > 100)
+		{
+			rValue *= 200 + (iProductionPriority - 100) *
+					weightedFinalYields.get(YIELD_PRODUCTION);
+			rValue /= 200;
+		}
+		if (eNonObsoleteBonus == NO_BONUS)
+		{
+			if (iDesiredFoodChange > 0)
+			{
+				//We want more food.
+				rValue *= 2 + scaled::max(0, weightedYieldDiffs.get(YIELD_FOOD));
+				rValue /= 2 * (1 + scaled::max(0, -weightedYieldDiffs.get(YIELD_FOOD)));
+			}
+		}
+	}
+
+	if (bEmphasizeIrrigation &&
+		GC.getInfo(eFinalImprovement).isCarriesIrrigation())
+	{
+		rValue += 400; // advc.131: was 500
+	}
+	if (getImprovementFreeSpecialists(eFinalImprovement) > 0)
+		// advc.131: Was 2000. That beats crucial strategic resources too easily.
+		rValue += 1200;
+	if (kOwner.getAdvancedStartPoints() < 0)
+	{	// <advc.901> Code moved into (recursive) auxiliary function
+		rValue += AI_healthHappyImprovementValue(kPlot, eImprovement,
+				eFinalImprovement, bIgnoreFeature, false); // </advc.901>
+	}
+	// (advc.131: Leader personality moved up)
+	if (!kPlot.isImproved())
+	{
+		if (kPlot.isBeingWorked() &&
+			// K-Mod. (don't boost the value if it means removing a good feature.)
+			(iClearFeatureValue >= 0 || eBestTempBuild == NO_BUILD ||
+			!GC.getInfo(eBestTempBuild).isFeatureRemove(kPlot.getFeatureType())))
+		{
+			rValue *= 5;
+			rValue /= 4;
+		}
+		/*if (eBestTempBuild != NO_BUILD) {
+			if (kPlot.isFeature()) {
+				if (GC.getInfo(eBestTempBuild).isFeatureRemove(kPlot.getFeatureType())) {
+					CvCity* pCity;
+					iValue += kPlot.getFeatureProduction(eBestTempBuild, getTeam(), &pCity) * 2;
+					FAssert(pCity == this);
+					iValue += iClearFeatureValue;
+				}
+			}
+		}*/ // K-Mod. I've moved this out of the if statement, because it should apply regardless of whether there is already an improvement on the plot.
+	}
+	else
+	{
+		// cottage/villages (don't want to chop them up if turns have been invested)
+		ImprovementTypes eImprovementDowngrade = GC.getInfo(kPlot.getImprovementType()).
+				getImprovementPillage();
+		/*while (eImprovementDowngrade != NO_IMPROVEMENT) {
+			CvImprovementInfo& kImprovementDowngrade = GC.getInfo(eImprovementDowngrade);
+			iValue -= kImprovementDowngrade.getUpgradeTime() * 8;
+			eImprovementDowngrade = (ImprovementTypes)kImprovementDowngrade.getImprovementPillage();
+		}*/ // BtS
+		// K-Mod. Be careful not to get trapped in an infinite loop of improvement downgrades.
+		if (eImprovementDowngrade != NO_IMPROVEMENT)
+		{
+			std::set<ImprovementTypes> cited_improvements;
+			while (eImprovementDowngrade != NO_IMPROVEMENT &&
+				cited_improvements.insert(eImprovementDowngrade).second)
+			{
+				CvImprovementInfo const& kImprovementDowngrade = GC.getInfo(eImprovementDowngrade);
+				rValue -= kImprovementDowngrade.getUpgradeTime() * 8;
+				eImprovementDowngrade = kImprovementDowngrade.getImprovementPillage();
+			}
+		} // K-Mod end
+
+		if (GC.getInfo(kPlot.getImprovementType()).getImprovementUpgrade() != NO_IMPROVEMENT)
+		{
+			rValue -= scaled(8 * kPlot.getUpgradeProgress() *
+					GC.getInfo(kPlot.getImprovementType()).getUpgradeTime(),
+					100 * std::max(1,
+					kGame.getImprovementUpgradeTime(kPlot.getImprovementType())));
+		}
+		if (eNonObsoleteBonus == NO_BONUS)
+		{
+			if (isWorkingPlot(kPlot))
+			{
+				if ((iCorrectedFoodPriority < 100 &&
+					weightedFinalYields.get(YIELD_FOOD) >=
+					GC.getFOOD_CONSUMPTION_PER_POPULATION()) ||
+					GC.getInfo(kPlot.getImprovementType()).getImprovementPillage() != NO_IMPROVEMENT)
+				{
+					rValue -= 70;
+					rValue.mulDiv(2, 3);
+				}
+			}
+		}
+		if (kOwner.isHumanOption(PLAYEROPTION_SAFE_AUTOMATION) &&
+			rValue.isPositive()) // advc.001
+		{
+			rValue /= 4; // Greatly prefer builds which are legal.
+		}
+	}
+	// K-Mod. Feature value. (moved from the 'no improvement' block above.)
+	if (kPlot.isFeature() && eBestTempBuild != NO_BUILD &&
+		GC.getInfo(eBestTempBuild).isFeatureRemove(kPlot.getFeatureType()))
+	{
+		/*CvCity* pCity; iValue += kPlot.getFeatureProduction(eBestTempBuild, getTeam(), &pCity) * 2;
+		FAssert(pCity == this);*/ // handle chop value elsewhere
+		rValue += iClearFeatureValue;
+	} // K-Mod end
+	if (peBestBuild != NULL)
+	{	// advc: Caller relies on no build being returned for present improvement
+		FAssert(eImprovement != kPlot.getImprovementType() || eBestTempBuild == NO_BUILD);
+		*peBestBuild = eBestTempBuild;
+	}
+	return rValue.round();
+}
+
+/*  advc.901: Cut from AI_getImprovementValue so that benefits for nearby team cities
+	can be taken into account (through recursive calls). */
+int CvCityAI::AI_healthHappyImprovementValue(CvPlot const& kPlot,
+	ImprovementTypes eImprovement, ImprovementTypes eFinalImprovement,
+	bool bIgnoreFeature, bool bIgnoreOtherCities) const
+{
+	PROFILE_FUNC(); // advc.901: To be tested: see if the recursive calls are a problem
+	int r = 0;
+	// <advc.901>
+	int iHappyChange, iHealthChange, iHealthPercentChange;
+	// Complicated calculation (and also needed for the UI) -> another auxiliary function
+	calculateHealthHappyChange(kPlot, eFinalImprovement, kPlot.getImprovementType(),
+			bIgnoreFeature, iHappyChange, iHealthChange, iHealthPercentChange);
+	// </advc.901>
+	if (iHappyChange != 0)
+	{
+		//int iHappyLevel = iHappyAdjust + (happyLevel() - unhappyLevel(0));
+		int iHappyLevel = happyLevel() - unhappyLevel(); // iHappyAdjust isn't currently being used.
+		if (eImprovement == kPlot.getImprovementType())
+			iHappyLevel -= iHappyChange;
+		bool const bCanGrow = true;// (getYieldRate(YIELD_FOOD) > foodConsumption());
+		/*int iHealthLevel = goodHealth() - badHealth(false, 0);
+		if (iHappyLevel <= iHealthLevel)
+			iHappyValue += 200 * std::max(0, (bCanGrow ? std::min(6, 2 + iHealthLevel - iHappyLevel) : 0) - iHappyLevel);
+		else*/ // BtS code commented out by K-Mod
+		int iHappyValue = 200 * std::max(0, (bCanGrow ? 1 : 0) - iHappyLevel);
+		if (iHappyLevel <= 0) // advc: moved down
+			iHappyValue += 400;
+		iHappyValue = std::max(iHappyValue, 5); // advc.901: Count at least a marginal value
+		if (!kPlot.isBeingWorked())
+		{
+			iHappyValue *= 4;
+			iHappyValue /= 3;
+		}
+		//iHappyValue += std::max(0, kPlot.getCityRadiusCount() - 1) * (iHappyValue > 0 ? iHappyLevel / 2 : 200); // BtS
+		/*iHappyValue *= (kPlot.getPlayerCityRadiusCount(getOwner()) + 1);
+		iHappyValue /= 2;*/ // K-Mod (advc.901: Replaced with recursive call at the end)
+		r += iHappyValue * iHappyChange;
+	}  // <advc.901> Similar treatment for health (but the fractions complicate things)
+	if (iHealthPercentChange != 0)
+	{
+		// The fractional health lost to rounding (don't treat that as having 0 value)
+		int iHealthTendency = 0;
+		int iDeltaPercent = iHealthPercentChange - 100 * iHealthChange;
+		if (iDeltaPercent >= 0)
+			iHealthTendency = iDeltaPercent % 100;
+		else iHealthTendency = -(-iDeltaPercent % 100);
+		/*  Health changes from clearing features are already taken into account by
+			AI_clearFeatureValue. That function can't deal with rounding, but it's
+			needed for chop evaluation, which doesn't currently involve _this_ function.
+			Perhaps the way to untangle this would be to use AI_getImprovementValue
+			also for evaluating chopping (with eImprovement=NO_IMPROVEMENT). For now,
+			let's at least subtract the double-counted health from the tendency value. */
+		if (bIgnoreFeature)
+		{
+			FeatureTypes const eFeature = kPlot.getFeatureType();
+			if (eFeature != NO_FEATURE)
+				iHealthTendency += GC.getInfo(eFeature).getHealthPercent();
+			FAssert(eFeature != NO_FEATURE); // Caller arguably shouldn't set bIgnoreFeature otherwise
+		}
+
+		int iHealthLevel = goodHealth() - badHealth();
+		if (eImprovement == kPlot.getImprovementType())
+			iHealthLevel -= iHealthChange;
+		int iHealthValue = 75 * std::max(0, 1 - iHealthLevel);
+		if (iHealthLevel <= 0)
+			iHealthValue += 150;
+		iHealthValue = std::max(iHealthValue, 2);
+		if (!kPlot.isBeingWorked())
+		{
+			iHealthValue *= 4;
+			iHealthValue /= 3;
+		}
+		r += (iHealthValue * (iHealthChange * 400 + iHealthTendency)) / 400;
+	}
+	// Other affected team cities matter just as much
+	if (!bIgnoreOtherCities && r != 0) // Slightly reckless; for performance.
+	{
+		for (CityPlotIter it(kPlot, false); it.hasNext(); ++it)
+		{
+			CvCityAI* pCity = it->AI_getPlotCity();
+			if (pCity == NULL || pCity == this || pCity->getTeam() != getTeam())
+				continue;
+			r += AI_healthHappyImprovementValue(kPlot, eImprovement,
+					eFinalImprovement, bIgnoreFeature);
+		}
+	} // </advc.901>
+	return r;
+}
+
+
+BuildTypes CvCityAI::AI_getBestBuild(CityPlotTypes ePlot) const // advc.enum: CityPlotTypes
+{
+	// <advc.opt> Now also store the best build among all city plots
+	if(ePlot == NO_CITYPLOT)
+		return m_eBestBuild; // </advc.opt>
+	FAssertEnumBounds(ePlot);
+	return m_aeBestBuild[ePlot];
+}
+
+
+int CvCityAI::AI_countBestBuilds(CvArea const& kArea) const
+{
+	int iCount = 0;
+	for (CityPlotIter it(*this, false); it.hasNext(); ++it)
+	{
+		if (it->isArea(kArea) && AI_getBestBuild(it.currID()) != NO_BUILD)
+			iCount++;
+	}
+	return iCount;
+}
+
+// Note: this function has been somewhat mangled by K-Mod
+void CvCityAI::AI_updateBestBuild()
+{
+	PROFILE_FUNC(); // advc
+	CvPlayerAI& kOwner = GET_PLAYER(getOwner()); // K-Mod
+
+	int iFoodMultiplier, iProductionMultiplier, iCommerceMultiplier, iDesiredFoodChange;
+	AI_getYieldMultipliers(iFoodMultiplier, iProductionMultiplier, iCommerceMultiplier, iDesiredFoodChange);
+
+	/* I've disabled these for now
+	int iHappyAdjust = 0;
+	int iHealthAdjust = 0; */
+
+	bool bChop = false;
+
+	if (getProductionProcess() == NO_PROCESS) // K-Mod. (never chop if building a process.)
+	{
+		if (!bChop)
+		{
+			ProjectTypes eProductionProject = getProductionProject();
+			if (eProductionProject != NO_PROJECT && AI_projectValue(eProductionProject) > 0)
+				bChop = true;
+		}
+		if (!bChop)
+		{
+			BuildingTypes eProductionBuilding = getProductionBuilding();
+			if (eProductionBuilding != NO_BUILDING &&
+				GC.getInfo(eProductionBuilding).isWorldWonder())
+			{
+				bChop = true;
+			}
+		}
+		/*if (!bChop)
+			bChop = ((getArea().getAreaAIType(getTeam()) == AREAAI_OFFENSIVE) || (getArea().getAreaAIType(getTeam()) == AREAAI_DEFENSIVE) || (getArea().getAreaAIType(getTeam()) == AREAAI_MASSING));
+		if (!bChop) {
+			UnitTypes eProductionUnit = getProductionUnit();
+			bChop = (eProductionUnit != NO_UNIT && GC.getInfo(eProductionUnit).isFoodProduction());
+		}*/ // BtS
+		// K-Mod. Chop when a new city with low productivity is trying to construct a (useful) building.
+		if (!bChop && getProductionBuilding() != NO_BUILDING)
+		{
+			// ideally this would be based on the value of what we are building, and on the number of things we still want to build.
+			// But it currently isn't easy to get that infomation, so I'm just going to use arbitrary minimums. Sorry.
+			// (The scale of this is roughly a 2 pop whip or 2 mines of productivity - higher with productive flavour.)
+			if (kOwner.AI_getFlavorValue(FLAVOR_PRODUCTION) > 0
+				? (getHighestPopulation() <= 6 && getBaseYieldRate(YIELD_PRODUCTION) <= 10)
+				: (getHighestPopulation() <= 4 && getBaseYieldRate(YIELD_PRODUCTION) <= 7))
+			{
+				bChop = true;
+			}
+		}
+		CvWorldInfo const& kWorld = GC.getInfo(GC.getMap().getWorldSize()); // advc
+		// Chop when trying to expand, and when at war -- but only if there is not financial trouble.
+		if (!bChop)
+		{
+			int iDummy;
+			if (kOwner.AI_isLandWar(getArea()) ||
+				(kOwner.getNumCities() < kWorld.getTargetNumCities() &&
+				kOwner.AI_getNumAreaCitySites(getArea(), iDummy) > 0))
+			{
+				if (!kOwner.AI_isFinancialTrouble())
+					bChop = true;
+			}
+		}
+		// Chop for workers, if we are short.
+		if (!bChop && getProductionUnitAI() == UNITAI_WORKER)
+		{
+			int const iAreaWorkers = getArea().getNumAIUnits(getOwner(), UNITAI_WORKER);
+			int const iAreaCities = getArea().getCitiesPerPlayer(getOwner());
+			//if(iAreaWorkers < std::max(iAreaCities, kWorld.getTargetNumCities())*3/2)
+			/*  <advc.113> Note that, if we have time to chop, then we can't be really
+				short on workers. (I guess kOwner.AI_neededWorkers would be too slow here.) */
+			if (getProductionTurnsLeft() > 3 &&
+				(3 * iAreaWorkers < 4 * iAreaCities ||
+				(2 * iAreaWorkers < 3 * iAreaCities &&
+				AI_getWorkersHave() <= 0 && AI_getWorkersNeeded() > 0)))
+			{ // </advc.113>
+				bChop = true;
+			}
+		}
+		// K-Mod end
+	}
+
+	/*if (getProductionBuilding() != NO_BUILDING) {
+		iHappyAdjust += getBuildingHappiness(getProductionBuilding());
+		iHealthAdjust += getBuildingHealth(getProductionBuilding());
+	}*/
+
+	for (WorkablePlotIter it(*this, false); it.hasNext(); ++it)
+	{
+		CvPlot& kPlot = *it;
+		CityPlotTypes const ePlot = it.currID();
+		BuildTypes const eLastBestBuildType = m_aeBestBuild[ePlot];
+
+		AI_bestPlotBuild(kPlot, &m_aiBestBuildValue[ePlot], &m_aeBestBuild[ePlot],
+				iFoodMultiplier, iProductionMultiplier, iCommerceMultiplier, bChop,
+				0, 0, iDesiredFoodChange); //iHappyAdjust, iHealthAdjust, iDesiredFoodChange);
+		// K-Mod, originally this was all workers at the city.
+		//int iWorkerCount = GET_PLAYER(getOwner()).AI_plotTargetMissionAIs(&kPlot, MISSIONAI_BUILD);
+		/*m_aiBestBuildValue[ePlot] *= 4;
+		m_aiBestBuildValue[ePlot] += 3 + iWorkerCount; // (round up)
+		m_aiBestBuildValue[ePlot] /= (4 + iWorkerCount);*/ // disabled by K-Mod. I don't think this really helps us.
+		// (advc: conditionals turned into assertions)
+		FAssert(m_aiBestBuildValue[ePlot] <= 0 || m_aeBestBuild[ePlot] != NO_BUILD);
+		FAssert(m_aeBestBuild[ePlot] == NO_BUILD || m_aiBestBuildValue[ePlot] > 0);
+
+		// K-Mod, make some adjustments to our yield weights based on our new bestbuild
+		// [really we want (isWorking || was good plot), but that's harder and more expensive...]
+		if (m_aeBestBuild[ePlot] == eLastBestBuildType)
+			continue;
+
+		if (isWorkingPlot(ePlot)) // [or was 'good plot' with previous build]
+		{
+			// its a new best-build, so lets adjust our multiplier values.
+			// This adjustment is rough, but better than nothing. (at least, I hope so...)
+			// (The most accurate way to do this would be to use AI_getYieldMultipliers; but I think that would be too slow.)
+			// food
+			int iDelta = (m_aeBestBuild[ePlot] == NO_BUILD ?  // new
+					kPlot.getYield(YIELD_FOOD) :
+					kPlot.getYieldWithBuild(m_aeBestBuild[ePlot], YIELD_FOOD, true));
+			iDelta -= (eLastBestBuildType == NO_BUILD ? kPlot.getYield(YIELD_FOOD) :  // old
+					kPlot.getYieldWithBuild(eLastBestBuildType, YIELD_FOOD, true));
+			if (iDelta != 0)
+			{
+				int iTotalFood = 16 * GC.getFOOD_CONSUMPTION_PER_POPULATION();
+				iFoodMultiplier *= iTotalFood - iDelta;
+				iFoodMultiplier /= std::max(1, iTotalFood);
+				// cf. adjustment in AI_getImprovementValue.
+				iDesiredFoodChange -= iDelta;
+			}
+
+			// production
+			iDelta = (m_aeBestBuild[ePlot] == NO_BUILD ? kPlot.getYield(YIELD_PRODUCTION) : // new
+					kPlot.getYieldWithBuild(m_aeBestBuild[ePlot], YIELD_PRODUCTION, true));
+			iDelta -= (eLastBestBuildType == NO_BUILD ? kPlot.getYield(YIELD_PRODUCTION) : // old
+					kPlot.getYieldWithBuild(eLastBestBuildType, YIELD_PRODUCTION, true));
+			if (iDelta != 0)
+			{
+				int iProductionTotal = getBaseYieldRate(YIELD_PRODUCTION);
+				int iProductionTarget = 1 + getPopulation();
+				// note: the true values depend on unworked plots and so on. this is just a rough approximation.
+				if (iProductionTotal < iProductionTarget)
+				{
+					iProductionMultiplier -= 6 * std::min(iDelta,
+							iProductionTarget - iProductionTotal);
+					// cf. iProductionMultiplier += 8 * (iProductionTarget - iProductionTotal);
+				}
+				// iProductionTotal += iDelta;
+			}
+			// Happiness modifers.. maybe I'll do this later, after testing etc.
+		}
+
+		// since best-build has changed, cancel all current build missions on this plot
+		if (eLastBestBuildType != NO_BUILD)
+		{
+			FOR_EACH_GROUPAI_VAR(pLoopSelectionGroup, kOwner)
+			{
+				if (pLoopSelectionGroup->AI_getMissionAIPlot() == &kPlot &&
+					pLoopSelectionGroup->AI_getMissionAIType() == MISSIONAI_BUILD)
+				{
+					FAssert(pLoopSelectionGroup->getHeadUnitAIType() == UNITAI_WORKER ||
+							pLoopSelectionGroup->getHeadUnitAIType() == UNITAI_WORKER_SEA);
+					pLoopSelectionGroup->clearMissionQueue();
+				}
+			}
+		}
+		// K-Mod end
+	}
+
+	//new experimental yieldValue calcuation
+
+	CityPlotTypes eBestPlot = NO_CITYPLOT;
+	int iBestPlotValue = -1;
+	int iBestUnworkedPlotValue = 0;
+	// advc: Was naked array w/o initial values
+	std::vector<int> aiValues(NUM_CITY_PLOTS, MAX_INT);
+	int const iGrowthValue = AI_growthValuePerFood(); // K-Mod
+	for (WorkablePlotIter itPlot(*this, false); itPlot.hasNext(); ++itPlot)
+	{
+		CvPlot const& kPlot = *itPlot;
+		CityPlotTypes const ePlot = itPlot.currID();
+
+		if (m_aeBestBuild[ePlot] != NO_BUILD)
+		{
+			int aiYields[NUM_YIELD_TYPES]; // advc: Moved into the loop; don't reuse.
+			int iValue = 0;
+			FOR_EACH_ENUM(Yield)
+			{
+				aiYields[eLoopYield] = kPlot.getYieldWithBuild(
+						m_aeBestBuild[ePlot], eLoopYield, true);
+			}
+			iValue += AI_yieldValue(aiYields, 0, false, false, true, true, iGrowthValue);
+			aiValues[ePlot] = iValue;
+			// K-Mod
+			/*	Also evaluate the _change_ in yield,
+				so that we aren't always tinkering with our best plots
+				Note: AI_yieldValue wasn't intended to be used with negative yields.
+				But I think it will work; and it doesn't need to be perfectly accurate anyway. */
+			FOR_EACH_ENUM(Yield)
+				aiYields[eLoopYield] -= kPlot.getYield(eLoopYield);
+			iValue += AI_yieldValue(aiYields, 0, false, false, true, true, iGrowthValue);
+			// priority increase for chopping when we want to chop
+			//if (bChop)
+			/*  <advc.117> Also increase the value a little when
+				constructing sth. nonurgent */
+			if (kPlot.isFeature() && GC.getInfo(m_aeBestBuild[ePlot]).
+				isFeatureRemove(kPlot.getFeatureType())) // </advc.117>
+			{	/*	<advc.121> Extra priority for clearing harmful feature
+					from worked, improved plot. */
+				if (iValue > 0 && kPlot.isImproved() && kPlot.isBeingWorked())
+					iValue *= 2; // </advc.121>
+				// Increase chop multipier from 2 to 3; handle nonurgent construction orders.
+				CvCity* pCity=NULL;
+				int iChopValue = kPlot.getFeatureProduction(
+						m_aeBestBuild[ePlot], getTeam(), &pCity) * 3;
+				// Based on K-Mod 1.45
+				if(ePlot < NUM_INNER_PLOTS && iChopValue > 0 &&
+					GC.getInfo(kPlot.getFeatureType()).getDefenseModifier() > 0)
+				{
+					iChopValue += 10;
+				}
+				if (bChop /* advc.300: */ && !isBarbarian())
+					iValue += iChopValue;
+				else if (getProductionBuilding() != NO_BUILDING)
+					iValue += iChopValue / 3;
+				// </advc.117>
+				/*  note: the scale of iValue here is roughly 4x commerce per turn.
+					So a boost of 40 would be signficant. */
+				FAssert(pCity == this);
+			}
+			/*  make some minor adjustments to prioritize plots that are easy to access,
+				and plots which aren't already improved. */
+			if (iValue > 0)
+			{ 
+				if (kPlot.isRoute())
+					iValue += 2;
+				if (!kPlot.isImproved())
+					iValue += 4;
+				if (kPlot.getNumCultureRangeCities(getOwner()) > 1)
+					iValue += 1;
+			}
+			// K-Mod end
+
+			iValue = std::max(0, iValue);
+			m_aiBestBuildValue[ePlot] *= iValue + 100;
+			m_aiBestBuildValue[ePlot] /= 100;
+			if (iValue > iBestPlotValue)
+			{
+				eBestPlot = ePlot;
+				iBestPlotValue = iValue;
+			}
+		}
+		if (!kPlot.isBeingWorked())
+		{
+			int aiYields[NUM_YIELD_TYPES];
+			FOR_EACH_ENUM(Yield)
+				aiYields[eLoopYield] = kPlot.getYield(eLoopYield);
+			int iValue = AI_yieldValue(aiYields, 0, false, false, true, true, iGrowthValue);
+			iBestUnworkedPlotValue = std::max(iBestUnworkedPlotValue, iValue);
+		}
+	}
+	if (eBestPlot != NO_CITYPLOT)
+	{
+		//m_aiBestBuildValue[iBestPlot] *= 2;
+		m_aiBestBuildValue[eBestPlot] = m_aiBestBuildValue[eBestPlot] * 3 / 2; // K-Mod
+		m_eBestBuild = m_aeBestBuild[eBestPlot]; // advc.opt
+	}
+	else m_eBestBuild = NO_BUILD; // advc.opt
+
+	//Prune plots which are sub-par.
+	// K-Mod. I've rearranged the following code. But kept most of the original functionality.
+	if (iBestUnworkedPlotValue <= 0)
+		return;
+	{
+		PROFILE("AI_updateBestBuild pruning phase");
+		for (WorkablePlotIter itPlot(*this, false); itPlot.hasNext(); ++itPlot)
+		{
+			CvPlot const& kPlot = *itPlot;
+			CityPlotTypes const ePlot = itPlot.currID();
+
+			/*	K-Mod. If the new improvement will upgrade over time, then don't mark it
+				as being low-priority. We want to build it sooner rather than later. */
+			if (m_aeBestBuild[ePlot] != NO_BUILD &&
+				GC.getInfo(m_aeBestBuild[ePlot]).getImprovement() != NO_IMPROVEMENT &&
+				GC.getInfo(GC.getInfo(m_aeBestBuild[ePlot]).getImprovement()).
+				getImprovementUpgrade() == NO_IMPROVEMENT)
+			{
+				if (!kPlot.isImproved() &&
+				/*	<advc.117> Don't "prune" removal of forests; not sure if this
+					could otherwise happen. */
+					(!kPlot.isFeature() ||
+					!GC.getInfo(m_aeBestBuild[ePlot]).isFeatureRemove(kPlot.getFeatureType())))
+				{	// </advc.117>
+					if (!kPlot.isBeingWorked() && aiValues[ePlot] <= iBestUnworkedPlotValue &&
+						aiValues[ePlot] < 400) // was 500. (reduced due to some rescaling)
+					{
+						m_aiBestBuildValue[ePlot] = 1;
+					}
+				}
+				else
+				{
+					int aiYields[NUM_YIELD_TYPES];
+					FOR_EACH_ENUM(Yield)
+						aiYields[eLoopYield] = kPlot.getYield(eLoopYield);
+					int iValue = AI_yieldValue(aiYields, 0, false, false, true, true, iGrowthValue);
+					if (iValue > aiValues[ePlot])
+						m_aiBestBuildValue[ePlot] = 1;
+				}
+			}
+		}
+	}
+}
+
+// advc.129:
+int CvCityAI::AI_countOvergrownBonuses(FeatureTypes eFeature) const
+{
+	int iR = 0;
+	for (CityPlotIter it(*this, false); it.hasNext(); ++it)
+	{
+		CvPlot const& p = *it;
+		if (p.getOwner() == getID() && p.getFeatureType() == eFeature && !p.isImproved())
+		{
+			BonusTypes eBonus = p.getNonObsoleteBonusType(getTeam());
+			if (eBonus == NO_BONUS)
+				continue;
+			FOR_EACH_ENUM(Build)
+			{
+				CvBuildInfo const& kLoopBuild = GC.getInfo(eLoopBuild);
+				if(kLoopBuild.getImprovement() == NO_IMPROVEMENT ||
+					!kLoopBuild.isFeatureRemove(eFeature))
+				{
+					continue;
+				}
+				if (!GC.getInfo(kLoopBuild.getImprovement()).isImprovementBonusMakesValid(eBonus))
+					continue;
+				/*  This function is used for tech evaluation; too complicated
+					to check if the required tech is on the path to the tech
+					that is being evaluated. It's really only for Bronze Working
+					anyway, so an era check suffices.
+					The tech under evaluation is assumed to enable eBuild, so
+					no need to check getFeatureTech either. */
+				TechTypes eReq = kLoopBuild.getTechPrereq();
+				if (eReq == NO_TECH ||
+					GC.getInfo(eReq).getEra() <= GET_PLAYER(getOwner()).getCurrentEra())
+				{
+					iR++;
+					break;
+				}
+			}
+		}
+	}
+	return iR;
+}
+
+
+void CvCityAI::AI_doDraft(bool bForce)
+{
+	PROFILE_FUNC();
+
+	FAssert(!isHuman());
+	if (isBarbarian() || !canConscript())
+		return; // advc
+
+	// BETTER_BTS_AI_MOD,City AI, War Strategy AI, 07/12/09, jdog5000: START
+	//if (GC.getGame().AI_combatValue(getConscriptUnit()) > 33) // disabled by K-Mod
+	if (bForce)
+	{
+		conscript();
+		return;
+	}
+
+	CvPlayerAI const& kOwner = GET_PLAYER(getOwner());
+	//bool bLandWar = (getArea().getAreaAIType(getTeam()) == AREAAI_OFFENSIVE || getArea().getAreaAIType(getTeam()) == AREAAI_DEFENSIVE || getArea().getAreaAIType(getTeam()) == AREAAI_MASSING);
+	bool bLandWar = kOwner.AI_isLandWar(getArea()); // K-Mod
+	bool bDanger = (!AI_isDefended() && AI_isDanger());
+	int iUnitCostPerMil = kOwner.AI_unitCostPerMil(); // K-Mod
+
+	// Don't go broke from drafting
+	//if (!bDanger && kOwner.AI_isFinancialTrouble())
+	// K-Mod. (cf. conditions for scrapping units in AI_doTurnUnitPost)
+	if (!bDanger && iUnitCostPerMil > kOwner.AI_maxUnitCostPerMil(area(), 50))
+		return;
+
+	// K-Mod. See if our drafted unit is particularly good value.
+	// (cf. my calculation in CvPlayerAI::AI_civicValue)
+	UnitTypes eConscriptUnit = getConscriptUnit();
+	int iConscriptPop = std::max(1, GC.getInfo(eConscriptUnit).getProductionCost() /
+			GC.getDefineINT(CvGlobals::CONSCRIPT_POPULATION_PER_COST));
+
+	// call it "good value" if we get at least 1.4 times the normal hammers-per-conscript-pop.
+	// (with standard settings, this only happens for riflemen)
+	bool bGoodValue = 10 * GC.getInfo(eConscriptUnit).getProductionCost() /
+			(iConscriptPop * GC.getDefineINT(CvGlobals::CONSCRIPT_POPULATION_PER_COST)) >= 14;
+
+	// one more thing... it's not "good value" if we already have too many troops.
+	if (!bLandWar && bGoodValue)
+	{
+		bGoodValue = iUnitCostPerMil <= kOwner.AI_maxUnitCostPerMil(area(), 20) +
+				kOwner.AI_getFlavorValue(FLAVOR_MILITARY);
+	}
+	// K-Mod end - although, I've put a bunch of 'bGoodValue' conditions in all through the rest of this function.
+
+	// Don't shrink cities too much
+	//int iConscriptPop = getConscriptPopulation();
+	if (//!bGoodValue && // advc.017: Don't shrink them arbitrarily just b/c it's "good value"!
+		!bDanger && (3 * (getPopulation() - iConscriptPop) < getHighestPopulation() * 2))
+	{
+		return;
+	} // <advc.017>
+	// Cut-and-pasted from below:
+	bool bTooMuchPop = AI_countWorkedPoorPlots() > 0 ||
+			foodDifference(false, true)+getFood() < 0 ||
+			(foodDifference(false, true) < 0 && healthRate() <= -4);
+	// Don't just draft for no particular reason
+	if(!bDanger && !kOwner.AI_isFocusWar() && !bTooMuchPop)
+		return; // </advc.017>
+	// Large cities want a little spare happiness
+	int iHappyDiff = GC.getDefineINT(CvGlobals::CONSCRIPT_POP_ANGER) - iConscriptPop + (bGoodValue ? 0 : getPopulation()/10);
+
+	if((!bGoodValue && !bLandWar) || angryPopulation(iHappyDiff) > 0)
+		return; // advc
+	bool bWait = true;
+	if(kOwner.AI_isDoStrategy(AI_STRATEGY_TURTLE))
+	{	// Full out defensive
+		/*if (bDanger || getPopulation() >= std::max(5, getHighestPopulation() - 1))
+			bWait = false;
+		else if (AI_countWorkedPoorPlots() >= 1)
+			bWait = false;*/ // BtS
+		// K-Mod: full out defensive indeed. We've already checked for happiness, and we're desperate for units.
+		// Just beware of happiness sources that might expire - such as military happiness.
+		if (getConscriptAngerTimer() == 0 || AI_countWorkedPoorPlots() > 0)
+			bWait = false;
+	}
+
+	// // <!-- custom: cache to kTeam for perf opt if i'm not mistaken. See note at CvCityAI::AI_buildingValue. -->
+	// CvTeamAI const& kTeam = GET_TEAM(kOwner.getTeam()); // kekm.16
+
+	if (bWait && bDanger)
+	{
+		// If city might be captured, don't hold back
+		/* BBAI code
+		int iOurDefense = kTeam.AI_getOurPlotStrength(plot(),0,true,false,true);
+		int iEnemyOffense = GET_PLAYER(getOwner()).AI_getEnemyPlotStrength(plot(),2,false,false);
+		if (iOurDefense == 0 || 3 * iEnemyOffense > 2 * iOurDefense)*/
+		// K-Mod
+		int iOurDefense = kOwner.AI_localDefenceStrength(plot(), getTeam(), DOMAIN_LAND, 0);
+		int iEnemyOffense = kOwner.AI_localAttackStrength(plot(), NO_TEAM, DOMAIN_LAND, 2);
+		if (iOurDefense < iEnemyOffense) // K-Mod end
+			bWait = false;
+	}
+
+	if (bWait)
+	{
+		// Non-critical, only burn population if population is not worth much
+		if (SyncRandSuccess100(AI_buildUnitProb(true)) && // advc.017
+			(getConscriptAngerTimer() == 0 || isNoUnhappiness()) && // K-Mod
+			(bGoodValue || bTooMuchPop)) // advc.017  (no functional change here)
+		{
+			bWait = false;
+		}
+	}
+
+	if (!bWait && gCityLogLevel >= 2)
+		logBBAI("      City %S (size %d, highest %d) chooses to conscript with danger: %d, land war: %d, poor tiles: %d%s", getName().GetCString(), getPopulation(), getHighestPopulation(), bDanger, bLandWar, AI_countWorkedPoorPlots(), bGoodValue ? ", good value" : "");
+	// BETTER_BTS_AI_MOD: END
+	if (!bWait)
+		conscript();
+}
+
+// This function has been heavily edited for K-Mod
+void CvCityAI::AI_doHurry(bool bForce)
+{
+	PROFILE_FUNC();
+
+	FAssert(!isHuman() || isProductionAutomated());
+
+	CvPlayerAI const& kOwner = GET_PLAYER(getOwner());
+
+	if (kOwner.isBarbarian())
+		return;
+
+	if (getProduction() == 0 && !bForce)
+		return;
+
+	UnitTypes eProductionUnit = getProductionUnit();
+	UnitAITypes eProductionUnitAI = getProductionUnitAI();
+	BuildingTypes eProductionBuilding = getProductionBuilding();
+
+	FOR_EACH_ENUM2(Hurry, eHurry)
+	{
+		if (!canHurry(eHurry))
+			continue;
+
+		if (bForce)
+		{
+			hurry(eHurry);
+			break;
+		}
+
+		// gold hurry information
+		int const iHurryGold = hurryGold(eHurry);
+		int iGoldCost = 0;
+		if (iHurryGold > 0)
+		{
+			if (iHurryGold > kOwner.getGold() - kOwner.AI_goldTarget(true))
+				continue; // we don't have enough gold for this hurry type.
+			int const iGoldTarget = kOwner.AI_goldTarget();
+			iGoldCost = iHurryGold;
+			if (kOwner.getGold() - iHurryGold >= iGoldTarget)
+			{
+				iGoldCost *= 100;
+				iGoldCost /= 100 + 50 * (kOwner.getGold() - iHurryGold) /
+						std::max(iGoldTarget, iHurryGold);
+			}
+			if (kOwner.isHuman())
+				iGoldCost = iGoldCost * 3 / 2;
+		}
+		//
+
+		// population hurry information
+		int const iHurryAngerLength = hurryAngerLength(eHurry);
+		int const iHurryPopulation = hurryPopulation(eHurry);
+
+		// <advc.101> Don't whip in cities with revolt chance
+		if (iHurryAngerLength >= 3 && (revoltProbability(false, false, true) > 0 ||
+			(getNumRevolts() >= GC.getDefineINT(CvGlobals::NUM_WARNING_REVOLTS) &&
+			revoltProbability(true, true, true) > 0)))
+		{
+			continue;
+		} // </advc.101>
+		int iPopCost = 0;
+		int iHappyDiff = 0;
+		int iOverflow = 0; // advc.121b
+		if (iHurryPopulation > 0)
+		{
+			if (!isNoUnhappiness())
+			{
+				iHappyDiff = iHurryPopulation - GC.getDefineINT(CvGlobals::HURRY_POP_ANGER);
+				if (iHurryAngerLength > 0 && getHurryAngerTimer() > 1)
+				{
+					iHappyDiff -= intdiv::uround(
+							(kOwner.AI_getFlavorValue(FLAVOR_GROWTH) > 0 ? 4 : 3) *
+							getHurryAngerTimer(), iHurryAngerLength);
+				}
+			}
+			int iHappy = happyLevel() - unhappyLevel();
+			if (iHappyDiff > 0 && iGoldCost == 0)
+			{
+				if (iHappy < 0 && iHurryPopulation < -4*iHappy) // don't kill 4 citizens to remove 1 angry citizen.
+				{
+					if (gCityLogLevel >= 2)
+						logBBAI("      City %S whips to reduce unhappiness", getName().GetCString());
+					hurry(eHurry);
+					return;
+				}
+			}
+			else if (iHappy + iHappyDiff < 0)
+				continue; // not enough happiness to afford this hurry
+
+			if (iHappy + iHappyDiff >= 1 && iGoldCost == 0 && foodDifference() < -iHurryPopulation)
+			{
+				if (gCityLogLevel >= 2)
+					logBBAI("      City %S whips to reduce food loss", getName().GetCString());
+				hurry(eHurry);
+				return;
+			}
+
+			iPopCost = AI_citizenSacrificeCost(iHurryPopulation, iHappy,
+					GC.getDefineINT(CvGlobals::HURRY_POP_ANGER), iHurryAngerLength);
+			iPopCost += std::max(0, 6 * -iHappyDiff) * iHurryAngerLength;
+
+			if (kOwner.isHuman())
+				iPopCost = iPopCost * 3 / 2;
+			/*  subtract overflow from the cost; but only if we can be confident the
+				city isn't being over-whipped. (iHappyDiff has been adjusted above based on the anger-timer) */
+			if (iHappyDiff > 0 || isNoUnhappiness() ||
+				(iHappy > 1 && (getHurryAngerTimer() <= 1 || iHurryAngerLength == 0)))
+			{	/*int iOverflow = (hurryProduction(eHurry) - productionLeft()); // raw overflow
+				iOverflow *= getBaseYieldRateModifier(YIELD_PRODUCTION); // limit which multiplier apply to the overflow
+				iOverflow /= std::max(1, getBaseYieldRateModifier(YIELD_PRODUCTION, getProductionModifier()));*/
+				// <advc.064b> Replacing the above
+				hurryOverflow(eHurry, &iOverflow, NULL /* (ignore gold) */, false);
+				if(iOverflow > 0)
+				{
+					// Need to subtract current overflow b/c Slavery isn't causing that
+					int iCurrentOverflow = getOverflowProduction();
+					if(iCurrentOverflow > 0)
+					{
+						/*  Extra production modifiers are still to be applied to
+							iCurrentOverflow, but generic modifiers are already included. */
+						iCurrentOverflow *= getBaseYieldRateModifier(YIELD_PRODUCTION, getProductionModifier());
+						iCurrentOverflow /= std::max(1, getBaseYieldRateModifier(YIELD_PRODUCTION));
+						iOverflow = std::max(0, iOverflow - iCurrentOverflow);
+					} // </advc.064b>
+					//iOverflow *= ((kOwner.AI_getFlavorValue(FLAVOR_PRODUCTION) > 0) ? 6 : 4); // value factor
+					// <advc.121b> Replacing the above
+					int iFlavorBoost = 0;
+					if(kOwner.AI_getFlavorValue(FLAVOR_PRODUCTION) > 0)
+					{
+						iFlavorBoost++;
+						/*  Growth also matters in AI_citizenSacrificeCost, but
+							not that much. */
+						if(kOwner.AI_getFlavorValue(FLAVOR_GROWTH) <= 0 &&
+							kOwner.AI_getFlavorValue(FLAVOR_PRODUCTION) > 2)
+						{
+							iFlavorBoost++;
+						}
+					}
+					iOverflow *= 4 + iFlavorBoost;
+					iOverflow /= 4;
+					// Will add overflow later // </advc.121b>
+					//iPopCost -= iOverflow;
+				}
+			}
+			// convert units from 4x commerce to 1x commerce
+			iPopCost /= 4;
+		} // advc.121b: Renamed from iTotalCost b/c iOverflow now counted separately
+		int iHurryCost = iPopCost + iGoldCost;
+		// <advc.064b>
+		int iProductionAdded = std::max(0, productionLeft()
+				- getCurrentProductionDifference(iPopCost > 0, true,
+				false, iPopCost > 0, true)); // </advc.064b>
+		if (eProductionUnit != NO_UNIT)
+		{
+			const CvUnitInfo& kUnitInfo = GC.getInfo(eProductionUnit);
+
+			int iValue = 0;
+			if (kOwner.AI_isFinancialTrouble())
+			/*{ iTotalCost = std::max(0, iTotalCost); // overflow is not good when it is being used to build units that we don't want.
+			} else*/
+			// advc: The above meant that we don't hurry (iValue=0, iTotalCost>=0); simpler:
+				continue;
+
+			//iValue = std::max(0, productionLeft());
+			// advc.064b: Hurry no longer covers the entire productionLeft
+			iValue = iProductionAdded;
+			switch (eProductionUnitAI)
+			{
+			case UNITAI_WORKER:
+			case UNITAI_SETTLE:
+			case UNITAI_WORKER_SEA:
+			{
+				iValue *= kUnitInfo.isFoodProduction() ? 5 : 4;
+				int foo=-1;
+				// cf. value of commerce/turn
+				iValue += ((eProductionUnitAI == UNITAI_SETTLE &&
+						getArea().getNumAIUnits(getOwner(), UNITAI_SETTLE) <= 0 &&
+						// advc.121b: Check for local city sites
+						kOwner.AI_getNumAreaCitySites(getArea(), foo) > 0) ? 24 : 14) *
+						/*  <advc.064b> Second arg for getProductionTurnsLeft was 1,
+							perhaps by accident, or so that overflow and chopping production
+							are ignored, but that's not going to work anymore.
+							2 would still work, but I think we should use the actual
+							production turns here - how much earlier are we getting the unit? */
+						std::min(getProductionTurnsLeft(eProductionUnit, 0) - 1,
+						getProductionNeeded(eProductionUnit)); // </advc.064b>
+				break;
+			}
+			case UNITAI_SETTLER_SEA:
+			case UNITAI_EXPLORE_SEA:
+				iValue *= kOwner.AI_getNumAIUnits(eProductionUnitAI) == 0 ? 5 : 4;
+				break;
+			default:
+				if (kUnitInfo.getUnitCombatType() == NO_UNITCOMBAT)
+				{
+					//iValue *= 4;
+					/*  <advc.121b> Rarely urgent, suggests that this city doesn't
+						have anything to produce, which is why it also shouldn't
+						be too fond of overflow. */
+					iValue *= 2;
+					iOverflow /= 2; // </advc.121b>
+				}
+				else
+				{
+					if (AI_isDanger())
+						iValue *= 6;
+					else if (kUnitInfo.getDomainType() == DOMAIN_SEA &&
+						(getArea().getAreaAIType(kOwner.getTeam()) == AREAAI_ASSAULT ||
+						getArea().getAreaAIType(kOwner.getTeam()) == AREAAI_ASSAULT_ASSIST ||
+						getArea().getAreaAIType(kOwner.getTeam()) == AREAAI_ASSAULT_MASSING))
+					{
+						iValue *= 5;
+					}
+					else
+					{
+						if (getArea().getAreaAIType(kOwner.getTeam()) == AREAAI_DEFENSIVE)
+						{
+							int iSuccessRating = GET_TEAM(kOwner.getTeam()).AI_getWarSuccessRating();
+							iValue *= iSuccessRating < -5 ? (iSuccessRating < -50 ? 6 : 5) : 4;
+						}
+						else if (kOwner.AI_isDoStrategy(AI_STRATEGY_CRUSH) &&
+							(getArea().getAreaAIType(kOwner.getTeam()) == AREAAI_OFFENSIVE ||
+							getArea().getAreaAIType(kOwner.getTeam()) == AREAAI_MASSING))
+						{
+							int iSuccessRating = GET_TEAM(kOwner.getTeam()).AI_getWarSuccessRating();
+							//iValue *= iSuccessRating < 35 ? (iSuccessRating < 1 ? 6 : 5) : 4;
+							/*  advc.018: Replacing the line above. No need to hurry things
+								if we're winning anyway. */
+							iValue *= iSuccessRating < 35 ? (iSuccessRating < 1 ? 5 : 3) : 1;
+						}
+						else
+						{
+							if (getArea().getAreaAIType(kOwner.getTeam()) == AREAAI_NEUTRAL)
+							{
+								iValue *= kOwner.AI_unitCostPerMil() >= kOwner.AI_maxUnitCostPerMil(
+										area(), AI_buildUnitProb()) ? 0 : 3;
+								iOverflow = (2 * iOverflow) / 3; // advc.021b
+							} // <advc.121b>
+							else if(!kOwner.AI_isFocusWar() &&
+								!kOwner.AI_isDoStrategy(AI_STRATEGY_ALERT1) &&
+								!kOwner.AI_isDefenseFocusOnBarbarians(getArea()))
+							{
+								iValue *= 3;
+								iOverflow = (iOverflow * 3) / 4;
+							} // </advc.121b>
+							else iValue *= 4;
+						}
+					}
+				}
+				break;
+			}
+			iValue /= 4 + std::max(0, -iHappyDiff)
+					+ 2; // advc.121b: Whip fewer units
+			if (iHurryCost < iValue + /* advc.121b: */ iOverflow)
+			{
+				if (gCityLogLevel >= 2) logBBAI("      City %S (%d) hurries %S. %d pop (%d) + %d gold (%d) to save %d turns. (value %d) (hd %d)", getName().GetCString(), getPopulation(), GC.getInfo(eProductionUnit).getDescription(0), iHurryPopulation, iPopCost, iHurryGold, iGoldCost, getProductionTurnsLeft(eProductionUnit, /* advc.064b: was 1 */ 2), iValue, iHappyDiff);
+				hurry(eHurry);
+				return;
+			}
+		}
+		else if (eProductionBuilding != NO_BUILDING)
+		{
+			/*  advc.121b: AI_buildingValue isn't cost-adjusted; need sth. to
+				prevent the AI from hurrying every wonder. */
+			if(iProductionAdded + iOverflow > iHurryCost)
+			{
+				const CvBuildingInfo& kBuildingInfo = GC.getInfo(eProductionBuilding);
+				int iValue = AI_buildingValue(eProductionBuilding, 0, 0, false,
+				/*  advc.121b: No recursion b/c that's for long-term benefits and no
+					specialists b/c the city will probably not be able to use them
+					right away after the population loss from hurrying */
+						false, (iHurryPopulation > 0)) *
+				// <advc.064b> Second arg was 1; see comment in the units branch above.
+						std::min(getProductionTurnsLeft(eProductionBuilding, 0) - 1,
+						getProductionNeeded(eProductionBuilding)); // </advc.064b>
+				iValue /= std::max(4, 4 - iHappyDiff) + (iHurryPopulation+1)/2;
+				/*	<advc.121b> AI_buildingValue doesn't say if the building is
+					immediately useful */
+				if(iValue + iOverflow > iHurryCost) // Just for performance
+				{
+					/*  Buildings with an unconditional happy/health effect don't
+						usually have other important abilities */
+					int iHappy = kBuildingInfo.getHappiness();
+					int iHealth = kBuildingInfo.getHealth();
+					if((iHappy > 0 && iHealth <= 0 && happyLevel() > unhappyLevel()) ||
+						(iHealth > 0 && iHappy <= 0 && goodHealth() >= badHealth()))
+					{
+						iValue = 0;
+						/*  If the current building isn't really needed, then we
+							may not have much use for overflow either. */
+						iOverflow /= 2;
+					}
+				} // </advc.121b>
+				if (iValue + iOverflow > iHurryCost)
+				{
+					if (gCityLogLevel >= 2)
+					{
+						logBBAI("      City %S (%d) hurries %S. %d pop (%d) + %d gold (%d) to save %d turns with %d building value (%d) (hd %d)", getName().GetCString(), getPopulation(), kBuildingInfo.getDescription(0), iHurryPopulation, iPopCost, iHurryGold, iGoldCost, getProductionTurnsLeft(eProductionBuilding, /* advc.064b: was 1 */ 2), AI_buildingValue(eProductionBuilding), iValue, iHappyDiff);
+					}
+					hurry(eHurry);
+					return;
+				}
+			}
+		}
+	}
+}
+
+// Improved use of emphasize by Blake, to go with his whipping strategy - thank you!
+//Note from Blake:
+//Emphasis proved to be too clumsy to manage AI economies,
+//as such it's been nearly completely phased out by
+//the AI_specialYieldMultiplier system which allows arbitary
+//value-boosts and works very well.
+//Ideally the AI should never use emphasis.
+void CvCityAI::AI_doEmphasize()
+{
+	PROFILE_FUNC();
+
+	FAssert(!isHuman());
+	CvPlayerAI const& kOwner = GET_PLAYER(getOwner());
+	// BETTER_BTS_AI_MOD, Victory Strategy AI, 03/08/10, jdog5000:
+	bool bCultureVictory = kOwner.AI_atVictoryStage(AI_VICTORY_CULTURE2);
+
+	bool bFirstTech = false;
+	if (kOwner.getCurrentResearch() != NO_TECH)
+		bFirstTech = kOwner.AI_isFirstTech(kOwner.getCurrentResearch());
+
+	int iPopulationRank = findPopulationRank();
+
+	FOR_EACH_ENUM(Emphasize)
+	{
+		bool bEmphasize = false;
+		/*if (GC.getInfo((EmphasizeTypes)iI).getYieldChange(YIELD_FOOD) > 0)
+		{}*/
+		/*if (GC.getInfo((EmphasizeTypes)iI).getYieldChange(YIELD_PRODUCTION) > 0)
+		{}*/ // advc: Empty branches commented out
+		if (AI_specialYieldMultiplier(YIELD_PRODUCTION) >= 50)
+			continue; // advc
+
+		CvEmphasizeInfo const& kLoopEmphasize = GC.getInfo(eLoopEmphasize); // advc
+		if (kLoopEmphasize.getYieldChange(YIELD_COMMERCE) > 0)
+		{
+			if (bFirstTech)
+				bEmphasize = true;
+		}
+		if (kLoopEmphasize.getCommerceChange(COMMERCE_RESEARCH) > 0)
+		{
+			if (bFirstTech && !bCultureVictory)
+			{
+				if (iPopulationRank < kOwner.getNumCities() / 4 + 1)
+					bEmphasize = true;
+			}
+		}
+		if (kLoopEmphasize.isGreatPeople())
+		{
+			int iHighFoodTotal = 0;
+			int iHighFoodPlotCount = 0;
+			int iHighHammerPlotCount = 0;
+			int iHighHammerTotal = 0;
+			int iGoodFoodSink = 0;
+			int const iFoodPerPop = GC.getFOOD_CONSUMPTION_PER_POPULATION();
+			for (WorkablePlotIter it(*this); it.hasNext(); ++it)
+			{
+				CvPlot const& kPlot = *it;
+
+				int iFood = kPlot.getYield(YIELD_FOOD);
+				if (iFood > iFoodPerPop)
+				{
+					iHighFoodTotal += iFood;
+					iHighFoodPlotCount++;
+				}
+				int iHammers = kPlot.getYield(YIELD_PRODUCTION);
+				if (iHammers >= 3 && iHammers + iFood >= 4)
+				{
+					iHighHammerPlotCount++;
+					iHighHammerTotal += iHammers;
+				}
+				int iCommerce = kPlot.getYield(YIELD_COMMERCE);
+				if (iCommerce * 2 + iHammers * 3 > 9)
+					iGoodFoodSink += std::max(0, iFoodPerPop - iFood);
+			}
+			if (iHighFoodTotal + iHighFoodPlotCount - iGoodFoodSink >= foodConsumption(true))
+			{
+				if (iHighHammerPlotCount < 2 && iHighHammerTotal < getPopulation())
+				{
+					if (AI_countGoodTiles(true, false, 100, true) < getPopulation())
+						bEmphasize = true;
+				}
+			}
+		}
+		AI_setEmphasize(eLoopEmphasize, bEmphasize);
+	}
+}
+
+bool CvCityAI::AI_chooseUnit(UnitAITypes eUnitAI, /* BBAI: */ int iOdds)
+{
+	UnitTypes eBestUnit;
+	if (eUnitAI != NO_UNITAI)
+		eBestUnit = AI_bestUnitAI(eUnitAI);
+	else eBestUnit = AI_bestUnit(false, NO_ADVISOR, &eUnitAI);
+
+	// <!-- custom: performance optimization: cache repetitive calls -->
+	CvGame const& kGame = GC.getGame();
+
+	if (eBestUnit != NO_UNIT)
+	{	// <advc.033> Don't build outdated pirates
+		if(!isBarbarian() && eUnitAI == UNITAI_PIRATE_SEA)
+		{
+			TechTypes eTech = GC.getInfo(eBestUnit).getPrereqAndTech();
+			if(eTech != NO_TECH &&
+				GC.getInfo(eTech).getEra() < kGame.getCurrentEra())
+			{
+				return false;
+			}
+		} // </advc.033>
+
+		/*if (iOdds < 0 ||
+			getUnitProduction(eBestUnit) > 0 ||
+			SyncRandNum(100) < iOdds)*/ // BtS
+		// K-Mod. boost the odds based on our completion percentage.
+		if (iOdds < 0 || SyncRandSuccess100(iOdds +
+			/*	advc.131: Coefficient was 100. Should we re-roll at all once
+				production has been started? Same issue in AI_chooseBuilding. */
+			(250 * getUnitProduction(eBestUnit)) /
+			std::max(1, getProductionNeeded(eBestUnit)))) // K-Mod end
+		{
+			// <!-- custom: avoid redundance, call same function instead, also so we can tweak it there only once, much cleaner; also note: chatgpt 5 recommeneded to add a return here (i.e. in next code, not comment, line as of now below), i thought it was not necessary, but maybe chatgpt 5 is right and i don't know too much about these, check if accurate -->
+			// pushOrder(ORDER_TRAIN, eBestUnit, eUnitAI);
+			// return true;
+			// Funnel through the (UnitTypes, UnitAITypes) overload and propagate success/failure.
+			return AI_chooseUnit(eBestUnit, eUnitAI);
+		}
+	}
+
+	return false;
+}
+
+// <!-- custom: common logic helper of our previously scattered logic and duplicated logic, with the help of GPT-5.2-Codex and Claude Opus 4.5 thanks a lot -->
+bool CvCityAI::SAS_AI_findBestFallbackUnit(
+		UnitTypes& ePickUnit,
+		UnitAITypes& ePickUnitAI,
+		bool bOffenseDefaultUnitAIsOnly,
+		bool bDefenseDefaultUnitAIsOnly,
+		int iMaxCost,
+		bool bAllowSiege,
+		bool bAllowTrebuchetsLike,
+		int iCapNonTrebuchetsLikeSiegesAll,
+		int iCapTrebsLike,
+		int iSiegesAllNonTrebuchetsLike,
+		int iSiegesAllTrebuchetsLike,
+		UnitTypes eSkipUnit,
+		bool bAllowOverallFallback,
+		bool bAllowCheapestFallback) const
+{
+	ePickUnit = NO_UNIT;
+	ePickUnitAI = NO_UNITAI;
+
+	// <!-- custom: go for the most expensive one so we don't accumulate a bunch of low overall combat fighting ability and high maintenance cost and go bankrupt too soon; also this helps reduce military upgrade costs later on. Hopefully the xml is such that no unit are super high cost (e.g. 300 hammer unit cost of a unit at stone age/ era_ancient or medieval era/ era_medieval or something in some mod mod or perhaps ours although not too likely), so add a guard against that (per era as unit costs change as the game goes on). Note: we also assume here hammer cost accurately reflects overall combat ability. Note 2: as of now, if for some extremely unlikely reason there are no buildable units at all, or all eligible ones are beyond iMaxCost extremely unlikely (even less likely in fact), then among all options regardless of iMaxCost, pick the overall cheapest one to save hammer xd. This is an extremly unlikely case safety but just in case or if XML is weirdly tweaked in some mod mod with new weird or such units xd (1 hammer cost 1000 str or 1000 hammer 1 str xd or whatever (not in our mod so far! If i may say)) -->
+	UnitTypes eCheapestOverallUnit = NO_UNIT;      // backup if nothing under cap
+	UnitTypes eBestFallbackOverallUnit = NO_UNIT;  // track highest cost ≤ cap
+	// <!-- custom: cache once after found for efficiency -->
+	UnitAITypes eBestFallbackOverallUnitUnitAI = NO_UNITAI;
+	UnitAITypes eCheapestFallbackOverallUnitUnitAI = NO_UNITAI;
+
+	// <!-- custom: note: as for offense only and defense only best fallback units, no need to worry about cheapest offense only and defense only, since they are a fallback of a fallback anyway and never reached in actual games (they are just a safety), if ever reached use the overall cheapest as a fallback of fallback for all; also save computation while doing so -->
+	UnitTypes eBestFallbackOffenseUnit = NO_UNIT;
+	// <!-- custom: cache once after found for efficiency -->
+	UnitAITypes eBestFallbackOffenseUnitUnitAI = NO_UNITAI;
+
+	UnitTypes eBestFallbackDefenseUnit = NO_UNIT;
+	// <!-- custom: cache once after found for efficiency -->
+	UnitAITypes eBestFallbackDefenseUnitUnitAI = NO_UNITAI;
+
+	// <!-- custom: use real cost for sanity no overly expensive unit compare, but use inflated cost (e.g. egyptian war chariot would have inflated cost of 30 * 2 = 60 hammer vs 50 hammer for generic horse archer so we think as we want that war chariot is stronger (since is civ-specific unit we assume so). However, don't overdo it, for example if we were to add a civ-specific variant of the ancient maceman / warrior, that would cost say 20 hammers, it would still likely be weaker than a modern horse archer else game would be broken, so 20 * 2 even after inflation is lower than 50 hammer than the horse archer, but the egyptian war chariot is strong enough already that 30 * 2 = 60 inflated hammer cost to estimate strengthmakes it worth building over the 50 hammer cost generic horse archer). While doing this, still sanity checking based on 30 hammer not 60 hammer (else 60 hammer > max 50 per era in ancient era we would reject it and never build it)) -->
+	int iCheapestOverallCost = MAX_INT;
+	int iBestFallbackOverallCost = MIN_INT;
+
+	int iBestFallbackOffenseCost = MIN_INT;
+	int iBestFallbackDefenseCost = MIN_INT;
+
+	int iCheapestOverallScore = -1;
+	int iBestFallbackOverallScore = -1;
+
+	int iBestFallbackOffenseScore = -1;
+	int iBestFallbackDefenseScore = -1;
+
+	static const UnitCombatTypes eUnitCombatSiege = (UnitCombatTypes)GC.getInfoTypeForString("UNITCOMBAT_SIEGE");
+	static const int TREBUCHET_LIKE_MIN_CITY_ATK_THRESHOLD = GC.getDefineINT("SAS_TREBUCHET_LIKE_MIN_CITY_ATK_THRESHOLD");
+
+	static const bool bSAS_INFLATE_CIV_SPECIFIC_UNIT = GC.getDefineBOOL("SAS_INFLATE_CIV_SPECIFIC_UNIT");
+	static const bool bSAS_INFLATE_CIV_SPECIFIC_ANY_OTHER_DEFAULT_UNITAI_UNIT = GC.getDefineBOOL("SAS_INFLATE_CIV_SPECIFIC_ANY_OTHER_DEFAULT_UNITAI_UNIT");
+
+	static const int iSAS_INFLATE_CIV_SPECIFIC_UNIT_MULT = GC.getDefineINT("SAS_INFLATE_CIV_SPECIFIC_UNIT_MULT");
+	static const int iSAS_INFLATE_CIV_SPECIFIC_UNIT_DIV = std::max(1, GC.getDefineINT("SAS_INFLATE_CIV_SPECIFIC_UNIT_DIV"));
+	static const int iSAS_INFLATE_CIV_SPECIFIC_UNIT_ADD = GC.getDefineINT("SAS_INFLATE_CIV_SPECIFIC_UNIT_ADD");
+
+	// <!-- custom: note to chatgpt 5 and other AIs or such: it looks like `GC.getCivilizationInfo` does not exist at all in our entire .cpp and .h codebase (but there are many in .py files though although not relevant here for our need), but there are many .cpp and .h pieces of code in our mod (including which i didn't write myself at all) like `GC.getInfo(getCivilizationType())` so it may be the more correct one in our mod, although after looking at CvGlobals.h and chatgpt 5's analysis of it it seems fine to use any, sticking with the only used one, check if accurate -->
+	// Yep - that header explains it perfectly.
+	// GC.getCivilizationInfo(eCiv) is just a tiny wrapper that returns getInfo(eCiv). In AdvCiv/K-Mod it's defined inline in CvGlobals.h:
+	// DllExport CvCivilizationInfo& getCivilizationInfo(CivilizationTypes eCivilization) { return getInfo(eCivilization); }
+	// So either call (getCivilizationInfo(...) or getInfo(...)) yields the same CvCivilizationInfo&. Your earlier grep just showed project usage prefers getInfo(...), but both compile to the same thing.
+	const CvCivilizationInfo& kCivInfo = GC.getInfo(getCivilizationType());
+
+	FOR_EACH_ENUM(Unit)
+	{
+		if (!canTrain(eLoopUnit, false))
+		{
+			continue;
+		}
+		// <!-- custom: note: this is eLoopUnit's pointer, not currently chosen to be produced eChangedUnit -->
+		const CvUnitInfo& kU = GC.getInfo(eLoopUnit);
+		// Land-only, must actually fight
+		const bool bLoopUnitDomainLand = (kU.getDomainType() == DOMAIN_LAND);
+		if (!bLoopUnitDomainLand)
+		{
+			continue;
+		}
+		if (kU.getCombat() <= 0)
+		{
+			continue; // ignore noncombat here
+		}
+		// Skip picking the same type you're trying to replace (just in case an archer line slips through with an offensive AI):
+		if (eSkipUnit != NO_UNIT && eLoopUnit == eSkipUnit)
+		{
+			continue;
+		}
+		// <!-- custom: ignore civilian units that happen to have strength, and more generally any unitai that is not among the most efficient ones (e.g. no naval units, no spy, no scout or anything else, etc), while we do a fallback, let it be a good one! Xd -->
+		const UnitAITypes eLoopDefaultUnitAI = kU.getDefaultUnitAIType();
+
+		const bool bOffenseDefaultUnitAI = (
+			(eLoopDefaultUnitAI == UNITAI_COUNTER) ||
+			(eLoopDefaultUnitAI == UNITAI_ATTACK) ||
+			(eLoopDefaultUnitAI == UNITAI_ATTACK_CITY)
+		);
+		const bool bDefenseDefaultUnitAI = (
+			(eLoopDefaultUnitAI == UNITAI_CITY_DEFENSE) ||
+			(eLoopDefaultUnitAI == UNITAI_CITY_COUNTER) ||
+			(eLoopDefaultUnitAI == UNITAI_CITY_SPECIAL) ||
+			(eLoopDefaultUnitAI == UNITAI_RESERVE)
+		);
+		// <!-- custom: note: we don't reject defense units if offense only yet, or vice versa if offense units if defense only, as we still want to compute and store defense units, in case we can build no offense unit at all, then we'd still want to build a defense unit rather than nothing -->
+		const bool bSuitableDefaultUnitAI = (bOffenseDefaultUnitAI || bDefenseDefaultUnitAI);
+
+		if (!bSuitableDefaultUnitAI)
+		{
+			continue;
+		}
+
+		// <!-- custom: do not build too much non-trebuchets like siege units early (i.e. pre-renaissance/cannons), but keep enough as they can help us rush an enemy especially if we have no bonus and only longbows as an alternative, but trebuchets are not versatile enough so do not allow them. Defense difference is not big if just for a few units, but these few catapults can many times be decisive so build a few in fallback code but not lot. See known issue as of now 53.3 for info related to previous version of these changes -->
+		// <!-- custom: only valid for pre-renaissance units, later on cannons are good enough as defenders as well optionally, especially if we have nothing better else to build, do not overstack pikemen when cannons are a valid option, and pikemen are obsolete due to gun units being onlnie -->
+		const bool bLoopUnitCombatSiege = (kU.getUnitCombatType() == eUnitCombatSiege);
+		if (bLoopUnitCombatSiege)
+		{
+			if (!bAllowSiege)
+			{
+				continue;
+			}
+
+			const int iCityAttackModifier = kU.getCityAttackModifier();
+			const bool bTrebuchetLike = (iCityAttackModifier >= TREBUCHET_LIKE_MIN_CITY_ATK_THRESHOLD);
+
+			// <!-- custom: simplified non-trebuchets like (i.e. catapults only as of now) gate -->
+			if (!bTrebuchetLike)
+			{
+				if (iSiegesAllNonTrebuchetsLike >= iCapNonTrebuchetsLikeSiegesAll)
+				{
+					continue;
+				}
+			}
+			// <!-- custom: simplified trebuchets like rule -->
+			else
+			{
+				if (!bAllowTrebuchetsLike)
+				{
+					continue;
+				}
+				if (iSiegesAllTrebuchetsLike >= iCapTrebsLike)
+				{
+					continue;
+				}
+			}
+		}
+
+		// Stable classification by XML base cost
+		// (keeps behavior stable if a modmod has odd XML)
+		// const int iLoopCost = getProductionNeeded(eLoopUnit);
+		const int iLoopXMLCost = kU.getProductionCost();     // from XML (unscaled)
+		// <!-- custom: don't deal with garbage or very unexpected XML -->
+		if (iLoopXMLCost < 0)
+		{
+			continue;
+		}
+
+		int iLoopScore = iLoopXMLCost;
+
+		if (bSAS_INFLATE_CIV_SPECIFIC_UNIT)
+		{
+			// <!-- custom: inflate artificially the civ-specific unit assuming it is best (war chariot is as of now 5 str for 30 hammer, vs 6 str for 50 hammaer for a horse archer! The horse archer is much more efficient, but we can't judge on str alone, as some units have some nice perks like withdraw chance, etc. Simplest way is to assume civ-specific unit is best choice if available, at least a much stronger one than cost would lead on, else fix our XML to make them strong enough to justify being picked by AI) -->
+			// prefer the civilization's unique unit (war chariot over horse archer, etc.)
+			const UnitClassTypes eClass = kU.getUnitClassType();
+			// <!-- custom: explanation and code below by/from chatgpt 5, check if accurate as i don't know for sure but it is maybe correct or not or etc but check to be sure -->
+			// To prevent inflating default units for civs without unique units (UU), add the check eLoopUnit != GC.getUnitClassInfo(eClass).getDefaultUnit()
+			// <!-- custom: see code in CvCityAI::AI_chooseUnit (and see known issue as of now 53.2.2 for related info): assume civ-specific units are best (e.g. pick an egyptian war chariot over a longbow) -->
+			const UnitTypes eCivUnitForClass = (UnitTypes)kCivInfo.getCivilizationUnits(eClass);
+			const UnitTypes eDefaultForClass = (UnitTypes)GC.getUnitClassInfo(eClass).getDefaultUnit();
+			const bool bIsUUOverride = (eCivUnitForClass == eLoopUnit && eLoopUnit != eDefaultForClass);
+			// Then use bIsUUOverride for the inflation.
+			if (bIsUUOverride)
+			{
+				// <!-- custom: added a +1 tie breaker if both the best generic unit (e.g. if catapults were allowed so 50 hammer vs a civ-specific archer costing 25 hammer if there was any in our mod), we'd now have 51 vs 50 hammer so we win with our civ-specific unit -->
+				// treat it as ~100% "more valuable" than its raw cost so cheap UUs still win ties
+				// <!-- custom: counter civ-specific (e.g. maya holkan, etc) units are less likely to be useful for offense, so do not especially favour them -->
+				if (bSAS_INFLATE_CIV_SPECIFIC_ANY_OTHER_DEFAULT_UNITAI_UNIT || (eLoopDefaultUnitAI != UNITAI_COUNTER))
+				{
+					iLoopScore = ((iSAS_INFLATE_CIV_SPECIFIC_UNIT_MULT * iLoopScore) / iSAS_INFLATE_CIV_SPECIFIC_UNIT_DIV) + iSAS_INFLATE_CIV_SPECIFIC_UNIT_ADD;
+				}
+			}
+		}
+
+		// <!-- custom: use iLoopXMLCost for sanity not overly expensive unit check, but use inflated cost for which unit is strongest as per cost indicates check; note: <= handles for iLoopXMLCost handles ties -->
+		// prefer the most expensive unit ≤ cap; <!-- custom: this also avoids producing tons of high maintenance cost low unit overall strength (e.g. ancient maceman especially later in the game) units that would cripple our economy. For this reason, it may be better to have no production especially later in the game, but it is only a hypothetical concern as our iMaxHammerPerEra should accomodate all units as of now (or almost all if we somehow mod them to add very expensive ones, not planned as of now but anyways), so this is more hypothetical but an extra information in case chatgpt or whoever reads it is wondering about it. -->
+		if (iLoopXMLCost <= iMaxCost)
+		{
+			// <!-- custom: e.g. egyptian war chariot (30 hammer 5 str, 60 score) better than generic horse archer (50 hammer 6 str, 50 score); also an imaginary civ-specific ancient maceman (20 hammer, 3 str, 40 score still loses vs generic horse archer that is much stronger and hammer efficient (50 hammer, 6 str, 50 score) so all good to not pick the outdated and overall weaker ancient maceman) -->
+			// <!-- custom: note: the == is flipped as compared to what is in cheapest unit checks, as cheapest means best cheapest, vs best fallback means highest score one is best, so tie breaking and edge cases are bit different as done in the checks we did -->
+			// Track overall best ≤ cap AND per-bucket bests ≤ cap
+			if ((iLoopScore > iBestFallbackOverallScore) || (iLoopScore == iBestFallbackOverallScore && iLoopXMLCost > iBestFallbackOverallCost))
+			{
+				iBestFallbackOverallCost = iLoopXMLCost;
+				iBestFallbackOverallScore = iLoopScore;
+				eBestFallbackOverallUnit = eLoopUnit;
+				eBestFallbackOverallUnitUnitAI = eLoopDefaultUnitAI;
+			}
+
+			if (bOffenseDefaultUnitAIsOnly)
+			{
+				if (bOffenseDefaultUnitAI)
+				{
+					// Offense best ≤ cap
+					if ((iLoopScore > iBestFallbackOffenseScore) ||
+						(iLoopScore == iBestFallbackOffenseScore && iLoopXMLCost > iBestFallbackOffenseCost))
+					{
+						iBestFallbackOffenseCost = iLoopXMLCost;
+						iBestFallbackOffenseScore = iLoopScore;
+						eBestFallbackOffenseUnit = eLoopUnit;
+						eBestFallbackOffenseUnitUnitAI = eLoopDefaultUnitAI;
+					}
+				}
+			}
+			else if (bDefenseDefaultUnitAIsOnly)
+			{
+				if (bDefenseDefaultUnitAI)
+				{
+					// Best defense ≤ cap
+					if ((iLoopScore > iBestFallbackDefenseScore) ||
+						(iLoopScore == iBestFallbackDefenseScore && iLoopXMLCost > iBestFallbackDefenseCost))
+					{
+						iBestFallbackDefenseCost = iLoopXMLCost;
+						iBestFallbackDefenseScore = iLoopScore;
+						eBestFallbackDefenseUnit = eLoopUnit;
+						eBestFallbackDefenseUnitUnitAI = eLoopDefaultUnitAI;
+					}
+				}
+			}
+		}
+
+		// <!-- custom: if they are otherwise equal in cost, take the civ-specific one (e.g. a generic axeman 35 hammer vs civ-specific zulu impi (spearman) 35 hammer, which both would be cheap enough to build assuming a tight threshold (which we don't have here but as an example and just in case)) -->
+		// track cheapest overall as fallback-of-fallback
+		// Track absolute cheapest overall (global backup)
+		if ((iLoopXMLCost < iCheapestOverallCost) || (iLoopXMLCost == iCheapestOverallCost && iLoopScore > iCheapestOverallScore))
+		{
+			iCheapestOverallCost = iLoopXMLCost;
+			iCheapestOverallScore = iLoopScore;
+			eCheapestOverallUnit = eLoopUnit;
+			eCheapestFallbackOverallUnitUnitAI = eLoopDefaultUnitAI;
+		}
+	}
+
+	// <!-- custom: attempt offense only units or defense only units first, and if fails overall units, and if fails cheapest units -->
+	// Final pick: primary bucket first; if none, secondary; else global backups
+	if (bOffenseDefaultUnitAIsOnly)
+	{
+		if (eBestFallbackOffenseUnit != NO_UNIT && eBestFallbackOffenseUnitUnitAI != NO_UNITAI)
+		{
+			ePickUnit = eBestFallbackOffenseUnit;
+			ePickUnitAI = eBestFallbackOffenseUnitUnitAI;
+		}
+	}
+	else if (bDefenseDefaultUnitAIsOnly)
+	{
+		if (eBestFallbackDefenseUnit != NO_UNIT && eBestFallbackDefenseUnitUnitAI != NO_UNITAI)
+		{
+			ePickUnit = eBestFallbackDefenseUnit;
+			ePickUnitAI = eBestFallbackDefenseUnitUnitAI;
+		}
+	}
+
+	if (bAllowOverallFallback)
+	{
+		// <!-- custom: fallback in case we have no offense only or no defense only units, we still want to check our overall units instead before checking the cheapest one fallback of the fallback; note: use this as a way to sanity check corrupt or missing unitai so we check overalls as a fallback then (and then cheapest if fails) -->
+		// fallback to overall-best ≤ cap
+		const bool bNoOffenseOnlyNorDefenseOnlyUnit = ((ePickUnit == NO_UNIT) || (ePickUnitAI == NO_UNITAI));
+		if (bNoOffenseOnlyNorDefenseOnlyUnit)
+		{
+			if ((eBestFallbackOverallUnit != NO_UNIT) && (eBestFallbackOverallUnitUnitAI != NO_UNITAI))
+			{
+				ePickUnit = eBestFallbackOverallUnit;
+				ePickUnitAI = eBestFallbackOverallUnitUnitAI;
+			}
+		}
+	}
+
+	if (bAllowCheapestFallback)
+	{
+		// <!-- custom: if no non-cheapest is available (i.e. no unit that is less expensive than iMaxCost (extremely unlikely but just in case)), add a little safetythat unitai needs to not be no_unitai; note: same code but different value than no offense only nor defense only unit, as we recompute this after fetching overall unit pick as well -->
+		// fallback to absolute cheapest (global backup)
+		const bool bNoOverallUnit = ((ePickUnit == NO_UNIT) || (ePickUnitAI == NO_UNITAI));
+		if (bNoOverallUnit)
+		{
+			if ((eCheapestOverallUnit != NO_UNIT) && (eCheapestFallbackOverallUnitUnitAI != NO_UNITAI))
+			{
+				ePickUnit = eCheapestOverallUnit;
+				ePickUnitAI = eCheapestFallbackOverallUnitUnitAI;
+			}
+		}
+	}
+
+	return ((ePickUnit != NO_UNIT) && (ePickUnitAI != NO_UNITAI));
+}
+
+bool CvCityAI::AI_chooseUnit(UnitTypes eUnit, UnitAITypes eUnitAI)
+{
+	if (eUnit != NO_UNIT)
+	{
+		// <!-- custom: see known issue 53.2.2 for related info or related code in this function on why we'd want to change unit here-->
+		// Try to pick a concrete offensive alternative and COMMIT to it
+		// <!-- custom: also make a copy of our unit right now so we don't have to recheck everytime later if we changed it or not -->
+		UnitTypes   eChangedUnit   = eUnit;
+		UnitAITypes eChangedUnitAI = eUnitAI;
+
+		static const bool bSAS_AI_CHOOSE_UNIT_OPTIMIZE = GC.getDefineBOOL("SAS_AI_CHOOSE_UNIT_OPTIMIZE");
+
+		if (bSAS_AI_CHOOSE_UNIT_OPTIMIZE)
+		{
+			// <!-- custom: use a pointer (pUnitInfo) rather than a reference (kUnitInfo) so that if we change the unit, we can just refresh the pointer itself, while refreshing the reference is risky according to chatgpt 5 (for example if reference is a const by GC (i don't know too much about it but it's what i understood of it), check if accurate -->
+			// CvUnitInfo& kUnitInfo = GC.getInfo(eChangedUnit);
+			const CvUnitInfo* pUnitInfo = &GC.getInfo(eChangedUnit);
+			// <!-- custom: info below by chatgpt 5 for reminder, check if accurate -->
+			// Cheatsheet:
+			// T& = reference (alias, cannot be reseated).
+			// T* = pointer (can be reseated; use -> to access).
+			// &expr = address-of operator (produces a pointer).
+
+			// <!-- custom: not sure if we should exclude barbarian (e.g. if we someday add land units rules here (e.g. more defenders if in dangers based on total unitais, on top of what is done in bestunitai (so maybe redundant but to be safe about short circuits or such as well))) but just in case -->
+			CvPlayerAI const& kPlayer = GET_PLAYER(getOwner());
+			// <!-- custom: cache to kTeam for perf opt if i'm not mistaken. See note at CvCityAI::AI_buildingValue. -->
+			CvTeamAI const& kTeam = GET_TEAM(kPlayer.getTeam()); // kekm.16
+
+			// <!-- custom: performance optimization: cache repetitive calls -->
+			CvGame const& kGame = GC.getGame();
+
+			const bool bBarbarian = kPlayer.isBarbarian();
+
+			// <!-- custom: note: all values here are linked to their counterpart/equivalent in the canScrap function e.g. to know which is the max (decisions to scrap or not are not directly symetrical to what we do here to produce them (e.g. don't produce naval units at war on land, but don't scrap exist ones though), but may often be or not, in all cases please refer to each function to see the link between them -->
+			if (!bBarbarian)
+			{
+				const EraTypes eCurrentEra = kPlayer.getCurrentEra();
+				// <!-- custom: as of now eras are (see xml for details or updated version -->
+				// 18,5: 			<Type>ERA_ANCIENT</Type>
+				// 79,5: 			<Type>ERA_CLASSICAL</Type>
+				// 154,5: 			<Type>ERA_MEDIEVAL</Type>
+				// 237,5: 			<Type>ERA_RENAISSANCE</Type>
+				// 320,5: 			<Type>ERA_INDUSTRIAL</Type>
+				// 401,5: 			<Type>ERA_MODERN</Type>
+				// 477,5: 			<Type>ERA_FUTURE</Type>
+				// <!-- custom: note: this pattern of xml lookup and comparison for era types seems safe as it is used in Civ4 Reimagined mod but check to be sure -->
+				// cache once; uses hidden-assert overload if available in your DLL
+				// <!-- custom: make these static const for performance optimization as advised by chatgpt 5 too. -->
+				static const EraTypes eERA_RENAISSANCE  = (EraTypes)GC.getInfoTypeForString("ERA_RENAISSANCE");
+
+				// <!-- custom: added as recommended by chatgpt 5; as of now untested assert -->
+				FAssertMsg((eERA_RENAISSANCE != NO_ERA), "Era key missing; check CIV4EraInfos.xml");
+
+				const bool bRenaissancePlus    = (eCurrentEra >= eERA_RENAISSANCE);
+
+				// CvGame::getCurrentEra()
+				// It returns an EraTypes (enum), computed as the rounded average of alive players’ eras (barbs excluded) via intdiv::uround.
+				// Your pattern is fine: keep variables as EraTypes for comparisons and cast to int only when doing arithmetic.
+				const int iCurrentEra = static_cast<int>(eCurrentEra);
+				static const int iERA_RENAISSANCE  = static_cast<int>(eERA_RENAISSANCE);
+
+				// Situation read
+				// <!-- custom: note: sometimes AI_isFocusWar is used with, sometimes without in cvcityai.cpp, going for the larger one and chatgpt 5 suggests to do as such despite not knowing all our code but should be fine, and maybe we handle more cases this way, check if accurate -->
+				bool const bWarPlan = kPlayer.AI_isFocusWar();
+				bool const bDanger = AI_isDanger();
+				// <!-- custom: it seems to me guessedly more reliable than the old AI_isLandWar check, chatgpt 5 advises for this as well when looking at the function's code when i asked it about it, check if accurate -->
+				const bool bAtWar = (kTeam.getNumWars() > 0);
+				const int iEnemyPowerPercent = kTeam.AI_getEnemyPowerPercent(true);
+				static const int iSAS_ENEMY_STRONG_POWER_THRESHOLD = GC.getDefineINT("SAS_ENEMY_STRONG_POWER_THRESHOLD"); // e.g. 120
+				const bool bEnemyStrong = (iEnemyPowerPercent >= iSAS_ENEMY_STRONG_POWER_THRESHOLD);
+				// <!-- custom: note: if i remember it correctly, chatgpt 5 said this applies also if not at war. I guessedly thought this maybe would or could return 0 if we are not at war with any ennemy, faslifying formula and defeating the purpose. In some places, i have added bAtWarAndEnemyWeak, while in some other places i may have left it as bEnemyWeak (check to be sure, i didn't check too much). I don't know which is more correct as of now and didn't dig too deep into it, so left as such, hopefully accurate enough, thankfully at this part of the code the difference wouldn't be too big regardless, and most importantly it already pre-checks bAtWar before so no issue there but ideally figure out how it works to decide if we should merge the weak with an at war check to be safe or if uneeded and be more flexible and accurate with only a weak check, but left as such -->
+				// <!-- custom: update: to be sure i asked chatgpt 5 again about this while implementing known issue as of now 53.3's related fixes or tweaks, if iEnemyPowerPercent is valid/relaible if at peace or if we have an unreliable 0 making us misleadedly think that you potentially strong rivals are very weak, or how it works, here is what it replied (i edited and formatted it a bit but is mostly the same otherwise) when fed the code sample, check if accurate -->
+				// Short answer: it’s solid during war or when a war is already “chosen", but it’s not meaningful in generic peacetime.
+				//
+				// Why:
+				// - It loops only over known potential enemies.
+				// - For each enemy:
+				// 		- If at war, adds a weighted chunk of their getPower(false).
+				// 		- Else if we’ve set a chosen war on them (AI_isChosenWar) and they aren’t a vassal, it adds a weighted chunk of their defensive power vs us.
+				// - It discounts distant enemies (/2 if they have cities in our primary area, else /3) and minor civs (/3).
+				// - If bConsiderOthers is true, it divides by the enemy’s number of current wars so someone already fighting multiple fronts counts less.
+				// - Finally it divides by an averaged notion of our power (our own + master’s, halved).
+				//
+				// So:
+				// - Not at war & no chosen-war plans ⇒ loop adds nothing ⇒ returns 0. That doesn’t mean “we’re stronger"; it means “no active/selected enemy to compare to".
+				// - It’s a sum over applicable enemies, not “the strongest enemy". Nearby-ness is only approximated via the “primary area" discount.
+				//
+				// Practical use in your siege gate
+				// Don’t use iEnemyPowPct<=90 to mean “we’re stronger" when you aren’t at war or actively preparing one, because you’ll read 0% and green-light trebuchets in peacetime.
+				// This way:
+				// - In peacetime, you won’t accidentally treat “0" as “we totally dominate" and overbuild siege.
+				static const int iSAS_ENEMY_WEAK_POWER_THRESHOLD = GC.getDefineINT("SAS_ENEMY_WEAK_POWER_THRESHOLD"); // e.g. 80
+				//const bool bEnemyWeak = (iEnemyPowerPercent <= iSAS_ENEMY_WEAK_POWER_THRESHOLD);
+				// <!-- custom: modified version i guessedly made without checking relevant function's code, hopefully more accurate but check to be sure as is just a guess from me-->
+				const bool bEnemyWeakNotZero = ((iEnemyPowerPercent > 0) && (iEnemyPowerPercent <= iSAS_ENEMY_WEAK_POWER_THRESHOLD));
+
+				const int iNumCities = kPlayer.getNumCities();
+
+				// <!-- custom: trim excess trebuchet and siege unit orders when not relevant (not attacking cities for trebuchets, being weaker, etc; defending cities for siege units in general which AIs with catapults don't do well i think), as AI produces way too much of them especially when not relevant and detrimental to it, see known issue as of now 53.3 for details -->
+				static const UnitCombatTypes eUnitCombatSiege = (UnitCombatTypes)GC.getInfoTypeForString("UNITCOMBAT_SIEGE");
+
+				const bool bUnitCombatSiege = (pUnitInfo->getUnitCombatType() == eUnitCombatSiege);
+
+				const int iSiegesAll = kPlayer.AI_countUnitsByCombat(eUnitCombatSiege);
+				const int iTrebsLike = kPlayer.AI_countTrebuchetsLike();
+
+				const int iMainDefenders = kPlayer.AI_mainDefensiveLandTotalUnitAIs();
+				const int iMainAttackers = kPlayer.AI_mainOffensiveLandTotalUnitAIs();
+
+				static const bool bNoExcessSieges = GC.getDefineBOOL("SAS_AI_CHOOSE_UNIT_NO_EXCESS_SIEGES");
+
+				if (bUnitCombatSiege && bNoExcessSieges)
+				{
+					static const int TREBUCHET_LIKE_MIN_CITY_ATK_THRESHOLD = GC.getDefineINT("SAS_TREBUCHET_LIKE_MIN_CITY_ATK_THRESHOLD");
+
+					const int iCityAttackModifier = pUnitInfo->getCityAttackModifier();
+					const bool bTrebuchetLike = (iCityAttackModifier >= TREBUCHET_LIKE_MIN_CITY_ATK_THRESHOLD);
+
+					static const bool bNoExcessTrebuchetsLike = GC.getDefineBOOL("SAS_NO_EXCESS_TREBUCHETS_LIKE");
+
+					static const int iSAS_NO_EXCESS_SIEGES_PRE_RENAISSANCE_NO_KEY_EARLY_STRATEGIC_BONUS_MODIFIER = GC.getDefineINT("SAS_NO_EXCESS_SIEGES_PRE_RENAISSANCE_NO_KEY_EARLY_STRATEGIC_BONUS_MODIFIER");
+
+					static const bool bNoExcessSiegesAll = GC.getDefineBOOL("SAS_AI_CHOOSE_UNIT_NO_EXCESS_SIEGES_ALL");
+
+					// Trebuchet-like stricter rule
+					if (bTrebuchetLike && bNoExcessTrebuchetsLike)
+					{
+						int iCapTrebs = 20;
+
+						// <!-- custom: the war has already started, no time to produce them if we didn't do so already, focus on defense or immediate joining stack units to finalize our offensive stacks, now is not the time to weaken our stacks with trebuchets that are quite likely to be not relevant -->
+						if (bAtWar && bEnemyStrong)
+						{
+							return false; // don’t add more narrow-purpose siege when not stronger
+						}
+						// <!-- custom: even if not at war and still in planning stage, trebuchets are bad if we're weak regardless (we can expect to be attacked, so don't build them); note: i guessedly assume if we are planning war we are strong enough to do so and so don't mind some trebuchets to help that (otherwise maybe not if other conditions are also not met) but i didn't check, check if accurate -->
+						if (bDanger)
+						{
+							return false; // don’t add more narrow-purpose siege when not stronger
+						}
+						if (!bWarPlan)
+						{
+							iCapTrebs = 15;
+						}
+						// <!-- custom: even if not at war, if our enemy is already stronger, don't attempt to build trebuchets that will most likely be useless as enemy will get even stronger over time and we'll be more vulnerable with non versatile or not enough defender units -->
+						if (bEnemyStrong)
+						{
+							return false;
+						}
+
+						if (!bRenaissancePlus)
+						{
+							// <!-- custom: save some computation by computing this in this sub scope rather (in later eras we don't check this anymore as of now, plus we start to have many unit orders and cities, so save some computation if we can; ideally should refactor this a bit but hopefully maybe also not too bad as such i mean)-->
+							const bool bHaveAnyKeyEarlyStrategicBonuses = kPlayer.getNumAvailableBonusesHaveAnyKeyEarlyStrategicBonuses();
+
+							if (!bHaveAnyKeyEarlyStrategicBonuses)
+							{
+								iCapTrebs += (iCapTrebs * iSAS_NO_EXCESS_SIEGES_PRE_RENAISSANCE_NO_KEY_EARLY_STRATEGIC_BONUS_MODIFIER) / 100;
+							}
+						}
+
+						// <!-- custom: even if we are stronger or otherwise ok to produce trebuchets, another edge case may be that they are simply even less versatile than other siege units, so apply tighter rules (their only purpose is to bombard city defenses or suicide attacking a city, except for that we don't want too many of them in our unit composition as it may be crippling or detrimental due to lack of versatility -->
+						static const int iTrebuchetsLikeMinExtraCap = GC.getDefineINT("SAS_AI_CHOOSE_UNIT_NO_EXCESS_SIEGES_TREBUCHETS_LIKE_MIN_EXTRA_CAP");
+
+
+						int const iTrebsShareOff = (100 * iTrebsLike) / std::max(1, iMainAttackers);
+
+						if (iTrebsShareOff >= (iCapTrebs + iTrebuchetsLikeMinExtraCap))
+						{
+							return false;
+						}
+					}
+
+					if (bNoExcessSiegesAll)
+					{
+						// <!-- custom: if not in cases where we should not produce siege units at all for efficiency, consider the case we can/should, and add some sanity/efficiency limits -->
+						// Simple caps:
+						int iCapSiegesAll;
+						int iTotalMainUnits;
+
+						// <!-- custom: a few catapults are a valid alternative if we have nothing else to build but longbows, these can help our rush or versatility, just don't overdo it -->
+						if (!bRenaissancePlus)
+						{
+							iCapSiegesAll = 40;
+
+							if (bAtWar && bEnemyStrong)
+							{
+								// <!-- custom: no need to overinvest since we won't attack, but don't neglect it entirely as we may target other rivals instead, or maybe we don't have a better unit at all to build -->
+								iCapSiegesAll = 20;
+							}
+							if (bDanger)
+							{
+								iCapSiegesAll = 10; // <!-- custom: avoid adding too much--> narrow-purpose siege when not stronger
+							}
+
+							// <!-- custom: save some computation by computing this in this sub scope rather (in later eras we don't check this anymore as of now, plus we start to have many unit orders and cities, so save some computation if we can; ideally should refactor this a bit but hopefully maybe also not too bad as such i mean)-->
+							const bool bHaveAnyKeyEarlyStrategicBonuses = kPlayer.getNumAvailableBonusesHaveAnyKeyEarlyStrategicBonuses();
+
+							if (!bHaveAnyKeyEarlyStrategicBonuses)
+							{
+								iCapSiegesAll += (iCapSiegesAll * iSAS_NO_EXCESS_SIEGES_PRE_RENAISSANCE_NO_KEY_EARLY_STRATEGIC_BONUS_MODIFIER) / 100;
+							}
+
+							// <!-- custom: pre renaissance, be wary to not overproduce siege, they are not useful at defense for AIs -->
+							iTotalMainUnits = iMainAttackers;
+						}
+						// <!-- custom: cannons are strong enough to not limit them so heavily, sometimes they may be our only option except from pikemen if we don't have muskets yet, and pikemen are useless against cuirassiers units, so definitely go for cannon more aggressively or generously -->
+						else
+						{
+							iCapSiegesAll = 60;
+
+							// <!-- custom: post renaissance, cannons can serve as defenders if we have no better units (do not overbuild pikemen), so make sure to account for them here as well among total units (counting percentage among attackers only would make us stockpile defenders after we have met our siege quotas, which is not what we want (don't want too much excess pikemen at renaissance, they are useless then anyway consider cannons instead, just don't overdo it)) -->
+							iTotalMainUnits = iMainAttackers + iMainDefenders;
+						}
+
+						const int iSiegesShareOff = (100 * iSiegesAll) / std::max(1, iTotalMainUnits);
+
+						static const int iSiegesAllMinExtraCap = GC.getDefineINT("SAS_AI_CHOOSE_UNIT_NO_EXCESS_SIEGES_ALL_MIN_EXTRA_CAP");
+
+						if ((iSiegesShareOff) >= (iCapSiegesAll + iSiegesAllMinExtraCap))
+						{
+							return false;
+						}
+					}
+				}
+
+				// <!-- custom: note: use these map checks with else if to make sure both are not true according to chatgpt 5 and so to not run both corresponding blocks in case we made a mistake somehow (even though if so our priority should rather be to fix code but this is just in theory and as a less worse solution if it were o be true which i think isn't even with 2 if but check to be sure, and if -> else if -> else is preferable anyway for clarity or performance as well) -->
+				// <!-- custom: trying to save some computing power by condtionally checking naval maps only if not land map (which also btw in most cases shouldn't be for players i think) -->
+				bool const bLandHeavyMapname = kGame.isLandHeavyMapnameCached();
+				bool bNavalHeavyMapname = false;
+				if (!bLandHeavyMapname)
+				{
+					bNavalHeavyMapname = kGame.isNavalHeavyMapnameCached();
+				}
+
+				// Early-game window (scaled by game speed TrainPercent)
+				const int iTrainPct = GC.getInfo(kGame.getGameSpeedType()).getTrainPercent();
+				// <!-- custom: extend to turn 200 at normal where we reasonably expect muskets to bail us from a no bonus at all start and game, overproducing defenders won't help and would cripple us in fact, so produce just enough to not die while we beeline muskets or such other no bonus units to help us not die -->
+				// const int iEarlyCutoff = (150 * iTrainPct) / 100; // ~T150 @ Normal
+				static const int iEarlyTurnNoExcessDefendersNormal = GC.getDefineINT("SAS_NO_EXCESS_DEFENDERS_EARLY_TURN_THRESHOLD");
+				const int iEarlyCutoff = (iEarlyTurnNoExcessDefendersNormal * iTrainPct) / 100; // e.g. ~T200 @ Normal
+				const int iCurrentTurn = kGame.getGameTurn();
+				const bool bEarly = (iCurrentTurn <= iEarlyCutoff);
+
+				if (bEarly)
+				{
+					// <!-- custom: does not include UNITAI_CITY_COUNTER so we make sure we have enough pure defenders per city on average -->
+					const bool bStrictLandDefenderUnitAI = (
+						(eChangedUnitAI == UNITAI_CITY_DEFENSE) ||
+						(eChangedUnitAI == UNITAI_CITY_SPECIAL) ||
+						(eChangedUnitAI == UNITAI_RESERVE)
+					);
+
+					static const bool bNoExcessStrictDefendersUnitAIs = GC.getDefineBOOL("SAS_AI_CHOOSE_UNIT_NO_EXCESS_STRICT_DEFENDERS_UNITAIS");
+
+					if (bStrictLandDefenderUnitAI && bNoExcessStrictDefendersUnitAIs)
+					{
+						// 2) Don’t starve defenders if there’s immediate danger
+						// <!-- custom: update: the unitai swap to unitai_counter is not working anymore ingame it seems, so make it less strict to see if solves -->
+						// if (!bDanger && !(bAtWar && bEnemyStrong))
+						if (!(bAtWar && bEnemyStrong))
+						{
+							// // <!-- custom: if we are overall strong and have met unit requirements to defend cities we should go on the offensive. See known issue as of now 53.2.2 for details or related info -->
+
+							static const int iEarlyTurnNoNeedYetExtraDefendersNormal = 100;
+							const int iEarlyNoNeedYetCutoff = (iEarlyTurnNoNeedYetExtraDefendersNormal * iTrainPct) / 100; // e.g. ~T200 @ Normal
+							const bool bEarlyNoNeedYetExtraDefenders = (iCurrentTurn <= iEarlyNoNeedYetCutoff);
+
+							// <!-- custom: very simple and computationally efficient "are we lagging behind in city count vs other rivals? If so switch to offense rather to attempt to make gains" by approximating we'd need about 1 city per 25 turn to be expanding enough. Even if this is not striclty accurate, what matters is we get a signal soon enough to switch to offense, as it can get time to build units. Plus, limit this to the early game, as later we don't expand as much, and our military composition should be stable so it wouldn't help as much. This attempts to fix issue of joao ai building 36 longbowmen at turn 130 instead while having only 3 cities, and his neighbour that has 8+ cities at a glance and weaker and thinner military would have been a perfect target if say half of our forces had been offense units; code provided by chatgpt 5 check if accurate; see known issue as of now 53.2 for details as well; also note: we're focused on land warfare here as it is the most important even in water heavy maps the point is to not lose cities or gain them especially early -->
+							// cap = 2 …then +1 at ~T100, <!-- custom: may need, as of now removed: --> +1 at ~T150 (and you can add ~T200 too)
+							int iMaxDefendersPerCityEarlyAdjusted = 2;
+							if (!bEarlyNoNeedYetExtraDefenders)
+							{
+								iMaxDefendersPerCityEarlyAdjusted += 1;
+							}
+
+							// <!-- custom: not checking units in city plot, as code i added seemed or might be unreliable (was based on getNumDefenders), issue may have been something/somewhere else, but i thought in all casesit's better/good to simplify it as well to be more reliable; as we are in the early game such an approximation is i assume fine; using instead only a generous enough but not too broad grossly guessed per city defender, i want AIs to quickly switch to offense mode when they can make gains early, and not produce tons of longbows or such that would prevent that, but we need to be careful to have enough units in general as well, hopefully this is a fine enough and safe enough approximation -->
+							// Guard against div-by-zero and define a very simple “defense overweight" signal:
+							const bool bDefenseOverweight = (3 * iMainDefenders > 4 * iMainAttackers);
+
+							const int iEnoughEarlyDefendersPerCityGuessedly = (iMaxDefendersPerCityEarlyAdjusted * iNumCities);
+							const bool bEnoughEarlyDefendersPerCityGuessedly = (iMainDefenders >= iEnoughEarlyDefendersPerCityGuessedly);
+
+							// 3) Empire composition check: are we defender-heavy?
+							// <!-- custom: reuse bEnoughDefenders -->
+
+							// 4) If we’re about to add another pure defender while boxed/lagging, reroll to offense.
+							// <!-- custom: reused bStrictLandDefenderUnitAI rather than recomputing as it is more efficient i think -->
+
+							// <!-- custom: if we have too much defenders and it's early and not in danger, switch to attack (although we could use power ratios to help us, hopefully accurate enough to do as such and much simpler maybe although i don't know too much about, potentially computaitonally much faster maybe) -->
+							// <!-- custom: use an or here to favour versatility and focus on offense when we are defended enough in the early game. For example if we have 5 cities (at as of now turn 100+) and 2 longbowmen and 1 spearman in our city, or 2 spearmen and 1 longbow or something simlar, we may consider ourselves safe enough when it comes to the early game for this part of the city's computation (if it has more units count the excess as well as virtually belonging to other cities instead, only look at total defenders in all empires in the end to simplify and they could maybe move if needed) also remaining attackers could be used as defense, and there shouldn't be too much differences early, so try to grab any offensive edge we can rather as soon / as long as we are safe enough in the early game and -->
+							// Short answer: yes—use OR between your two simple signals. It’s safe and matches your intent.
+							// You already gate on “safe to flip" with
+							// !bDanger && !(bAtWar && bEnemyStrong), so you won’t starve defenders when things look bad.
+							// Using non-strict defenders makes the check tolerant to variety (mix of spears/LBs/etc).
+							// With 5 cities and target 3 per city → cap=15: hitting that cap early and flipping is fine—your new offense units still defend in practice.
+
+							if (bEnoughEarlyDefendersPerCityGuessedly || bDefenseOverweight)
+							{
+								static const bool bNoExcessStrictDefendersUnitAIsRejectUnit = GC.getDefineBOOL("SAS_AI_CHOOSE_UNIT_NO_EXCESS_STRICT_DEFENDERS_UNITAIS_REJECT_UNIT");
+								static const bool bNoExcessStrictDefendersUnitAIsAttemptReplaceUnit = GC.getDefineBOOL("SAS_AI_CHOOSE_UNIT_NO_EXCESS_STRICT_DEFENDERS_UNITAIS_ATTEMPT_REPLACE_UNIT");
+								static const bool bNoExcessStrictDefendersUnitAIsAttemptHijackUnitAI = GC.getDefineBOOL("SAS_AI_CHOOSE_UNIT_NO_EXCESS_STRICT_DEFENDERS_UNITAIS_ATTEMPT_HIJACK_UNITAI");
+
+								if (bNoExcessStrictDefendersUnitAIsRejectUnit)
+								{
+									// <!-- custom: update: actually add a reject all excess defenders check and knob/tunable, useful in itself as an option i mean in this case i mean but/andalso to help debug the cases where we have excess early defenders -->
+									return false;
+								}
+								else if (bNoExcessStrictDefendersUnitAIsAttemptReplaceUnit)
+								{
+									// <!-- custom: if we can produce better, more offense or versatile focused units, abandon current defense unit project -->
+									// <!-- custom: a catapult rush could work if we have nothing better at all, better than a longbow rush! Just don't overbuild; we already processed if we should build siege and trebuchets in particular or not, so use a simplified version here for the "enough defenders but checking if siege are good if we have nothing better part of the code", is bit redundant, ideally should be merged there but maybe not too bad as such, as we are not looping over units there in siege checks but are doing so here, so maybe fine as such or not too bad as i said-->
+									const bool bEnoughSiegeAlready = (iSiegesAll >= iNumCities);
+									// <!-- custom: as for trebuchets, be stricter as they are even less versatile, however if we really have absolutely nothing better, a few of them could help us win our rush of longbows + trebuchets xd, so allow some minimally as they are otherwise not efficient and best not produced if not for specific role. Do not implement all checks here again, use a very simple approximation of it here -->
+									const bool bEnoughTrebsLikeAlready = (iTrebsLike >= 3);
+
+									const bool bNoNewSiegeRightNow = (
+										(bAtWar && !bEnemyWeakNotZero) ||
+										// <!-- custom: try to be a bit more versatile and not too restrictive, as we don't produce enough siege units as of now -->
+										// !bWarPlan ||
+										bDanger
+										// <!-- custom: try to not restrict new siege units too much as we have a bit too few now after our changes although it's a lot better than trebuchets insanity of before but trying to increase it bit more now, as well as also trying to do so in other uncommented changes -->
+										// bEnemyStrong
+									);
+
+									// “Can we build any generic offensive land unit right now?"
+									// <!-- custom: assume most expensive unit is strongest so we are hammer efficient, as i noticed hatshepsut ai for example built many ancient macemen at turn 100+, possibly because of this new no more defender code, so if we want to pick an attacker, use cost to determine strongest, i.e. the more expensive the stronger we can expect it to be. Based on the code in CvCity::doTurn -->
+									UnitTypes eBestCandidateUnit = NO_UNIT;
+									UnitAITypes eBestCandidateUnitAI = NO_UNITAI;
+
+									// same era cap you use elsewhere
+									static const int iMaxHammerPerEra = GC.getDefineINT("SAS_DO_TURN_NO_PRODUCTION_FORCE_FALLBACK_UNIT_INSTEAD_MAX_HAMMER_PER_ERA");
+									const int iMaxCost = iMaxHammerPerEra * (iCurrentEra + 1);
+
+									const bool bAllowSiege = (!bEnoughSiegeAlready && !bNoNewSiegeRightNow);
+									const bool bAllowTrebuchetsLike = (!bEnoughTrebsLikeAlready && !bNoNewSiegeRightNow);
+
+									const bool bFoundCandidate = SAS_AI_findBestFallbackUnit(
+											eBestCandidateUnit,
+											eBestCandidateUnitAI,
+											/*bOffenseDefaultUnitAIsOnly=*/true,
+											/*bDefenseDefaultUnitAIsOnly=*/false,
+											iMaxCost,
+											bAllowSiege,
+											bAllowTrebuchetsLike,
+											iNumCities,
+											3,
+											iSiegesAll,
+											iTrebsLike,
+											eChangedUnit,
+											/*bAllowOverallFallback=*/false,
+											/*bAllowCheapestFallback=*/false);
+
+									// commit if we found something
+									if (bFoundCandidate)
+									{
+										eChangedUnit   = eBestCandidateUnit;
+										eChangedUnitAI = eBestCandidateUnitAI;
+										// <!-- custom: if we change the unit, also refresh the pointer -->
+										// refresh
+										pUnitInfo = &GC.getInfo(eChangedUnit);
+										// <!-- custom: be very careful!!! we are not recomputing our booleans that check unitais later, so if any land unit were to change, we would need to either recompute the booleans, or directly check in the check itself (much cleaner i think), as nicely noted by chatgpt 5 thanks a lot, is todo ideally to be safe-->
+									}
+								}
+								// <!-- custom: else if no unit was found, fallback to alternative unitai types for this defensive unit that had a strict or heavily defensive unitai, now instead focusing on most reliable unitais we can most likely always build for simplicty and no error ideally although we could check this but i don't know how; what matters most here is we switch to offense soon enough so that we have enough offense units later in the game where it matters most (joao ai having 36 longbowmen at turn 130 for example is way too much as most of these were city_defense or city_counter or something similar), see known issue as of now 53.2 for related info -->
+								else if (bNoExcessStrictDefendersUnitAIsAttemptHijackUnitAI && (pUnitInfo->getDomainType() == DOMAIN_LAND) && (pUnitInfo->getCombat() > 0))
+								{
+									// preconditions already true: bNoExcessStrictDefendersUnitAIsAttemptHijackUnitAI
+									// and we're in the strict-defender branch
+
+									// <!-- custom: maybe (hypothetically/guessedly of me but i have no idea is just a hunch or random or rather blind or rather intutition/ guess but maybe producing attack unitais motivates ai less to fill quotas otherwise, so try counter first and then if not other roles) -->
+									// Prefer COUNTER, then ATTACK, then ATTACK_CITY.
+									if (pUnitInfo->getUnitAIType(UNITAI_COUNTER))
+									{
+										eChangedUnitAI = UNITAI_COUNTER;
+									}
+									else if (pUnitInfo->getUnitAIType(UNITAI_CITY_COUNTER))
+									{
+										eChangedUnitAI = UNITAI_CITY_COUNTER;
+									}
+									else if (pUnitInfo->getUnitAIType(UNITAI_ATTACK))
+									{
+										eChangedUnitAI = UNITAI_ATTACK;
+									}
+									else if (pUnitInfo->getUnitAIType(UNITAI_ATTACK_CITY))
+									{
+										eChangedUnitAI = UNITAI_ATTACK_CITY;
+									}
+									// <!-- custom: if offensive roles fail, prefer defensive but more versatile ones, anything is better than overstacking excess defense without using our advantage of unit count (or desperate positionthen dying later) -->
+									else if (pUnitInfo->getUnitAIType(UNITAI_RESERVE))
+									{
+										eChangedUnitAI = UNITAI_RESERVE;
+									}
+									// else: leave as is (keeps defender AI)
+								}
+								// else: keep original defender AI (can’t sensibly attack)
+								// <!-- custom: and then do not push order here, only alter selection on bestunitai if i'm not mistaken, do not redo all the pipeline and let it be handled before or later wherever it is -->
+								// notes
+								// This doesn’t push orders or re-run best-unit logic; it just tweaks eChangedUnitAI if the already-picked eChangedUnit supports the offensive role.
+								// Because ATTACK/ATTACK_CITY/COUNTER aren’t in your “handled civilian/naval/air" blocks, the rest of the function just falls through to the final pushOrder(ORDER_TRAIN, eChangedUnit, eChangedUnitAI); as desired.
+							}		
+						}
+					}
+				}
+
+				// <!-- custom: add our pre-checks to help improve the naval dementia of overproducing naval units and pangea or scrapping them as well possibly, then being invaded and losing top city while having spent needlessly hammers on 20+ mix of galleons/privateers on pangea, fixing the overproducing part of the issue here by setting sanity gates / pre-checks before we push the final order, and so we can control here all order -->
+				const bool bNavalFrontLineUnitAIs = (
+					(eChangedUnitAI == UNITAI_ATTACK_SEA) ||
+					(eChangedUnitAI == UNITAI_RESERVE_SEA) ||
+					(eChangedUnitAI == UNITAI_PIRATE_SEA)
+				);
+
+				const bool bNavalExploreSeaUnitAIs = (
+					(eChangedUnitAI == UNITAI_EXPLORE_SEA)
+				);
+
+				const bool bNavalSupportOffenseFrontUnitAIs = (
+					(eChangedUnitAI == UNITAI_ASSAULT_SEA)
+				);
+
+				const bool bNavalSupportDefenseFrontUnitAIs = (
+					(eChangedUnitAI == UNITAI_ESCORT_SEA)
+				);
+
+				const bool bNavalAirExtraUnitAIs = (
+					(eChangedUnitAI == UNITAI_CARRIER_SEA) ||
+					(eChangedUnitAI == UNITAI_MISSILE_CARRIER_SEA)
+				);
+
+				const bool bNavalSettlerSeaUnitAIs = (
+					(eChangedUnitAI == UNITAI_SETTLER_SEA)
+				);
+
+				const bool bNavalWorkerSeaUnitAIs = (
+					(eChangedUnitAI == UNITAI_WORKER_SEA)
+				);
+
+				const bool bNavalMissionarySeaUnitAIs = (
+					(eChangedUnitAI == UNITAI_MISSIONARY_SEA)
+				);
+
+				const bool bNavalSpySeaUnitAIs = (
+					(eChangedUnitAI == UNITAI_SPY_SEA)
+				);
+
+				const bool bAllHandledNavalUnitAIs = (
+					bNavalFrontLineUnitAIs ||
+					bNavalSupportOffenseFrontUnitAIs ||
+					bNavalSupportDefenseFrontUnitAIs ||
+					bNavalExploreSeaUnitAIs ||
+					bNavalAirExtraUnitAIs ||
+					//
+					bNavalSettlerSeaUnitAIs ||
+					bNavalWorkerSeaUnitAIs ||
+					bNavalMissionarySeaUnitAIs ||
+					bNavalSpySeaUnitAIs
+				);
+
+				// <!-- custom: do not limit naval units on naval heavy maps, it seems we have way too few units as a result in archipelago, after all if a frigate defeats an invading galleon it counts same as having more units than all land cargo invaders, so do not limit it, also maybe this allows for more versatile naval games, let AI decide its own strategy (hopefully not nonsensical one else we could tweak it, but naval maps could go many ways and with various approaches perhaps, so let AI handle it and keep versatility here rather and based on previous results that were bad when nerfing naval production way too hard as of now on archipelago for example) -->
+				if (!bNavalHeavyMapname && bAllHandledNavalUnitAIs)
+				{
+					if (bNavalFrontLineUnitAIs)
+					{
+						// <!-- custom: let's limit certain types of naval units by map type (less on land heavy ones like pangea, more in naval heavy ones like archipelago), to help the known issue as of now 53 of having an AI player have 20+ galleons/privateers, yet producing them +/- scrapping them (dementia/insane like behvaiour if may say.., but not its fault, it just wasn't told better, so hopefully we can help AI have saner unit limits, and we'll ahndle the seemignly naval units scrapping elsewhere as we did in known issue as of now 52 for many units), so for now a few of the combat naval unit AIs (like max iNumCities per AI player seems very sane on pangea, possibly * 2 for naval heavy maps, no need to overproduce beyond that, nor to scrap before that potentially risking crazy loops, we hopefully maybe also save computation by implementing our check here before code is executed); code added with the help / thanks to chatgpt 5 as well, check if accurate (and check mine too) -->
+						int iMaxUnits = iNumCities;
+						// if (bNavalHeavyMapname)
+						// {
+						// 	iMaxUnits = 2 * iNumCities;
+						// }
+
+						// <!-- custom: adjust based on danger, do not waste hammer if threatened in particular, or if preparing a nice offense, make it effective and use our hammer wisely -->
+						if (bAtWar || bEnemyStrong || bDanger || bWarPlan)
+						{
+							// When you halve naval caps under danger/war, iNumCities == 1 would drop to 0 and hard-block all builds. If that’s not what you want, clamp to at least 1.
+							iMaxUnits = std::max(1, iMaxUnits / 2);
+						}
+
+						// <!-- custom: this counts existing and being produced units if i'm not mistaken, which is perfect to avoid overproducing (e.g. if we 5 units, limit is 6, but cities C D E are producing one unit each, they all think limit is not reached so fine, but if they finish production we'll/'d end up with 5+3 = 8 units above what we want by 2, so to produce, check the total being produced + existing already, as pointed by chatgpt 5 as well, check if accurate -->
+						// Sum current empire-wide SEA combat AIs (exclude workers / settlers / explorers)
+						const int iTotalUnitAIs = (
+							kPlayer.AI_totalUnitAIs(UNITAI_ATTACK_SEA)
+							+ kPlayer.AI_totalUnitAIs(UNITAI_RESERVE_SEA)
+							// counts pirates too
+							+ kPlayer.AI_totalUnitAIs(UNITAI_PIRATE_SEA)
+						);
+
+						if (iTotalUnitAIs >= iMaxUnits)
+						{
+							return false;
+						}
+						// <!-- custom: else continue and if all good otherwise produce the unit at the end of this function -->
+					}
+					else if (bNavalExploreSeaUnitAIs)
+					{
+						// <!-- custom: we don't need too many explore units, especially on land heavy maps, so make sure we don't overproduce (unless they all die or something then replenish) them and waste hammer -->
+						int iMaxUnits = 1 + (3 * iNumCities) / 10; // 1 + ⌊0.3 * cities⌋;
+						// if (bNavalHeavyMapname)
+						// {
+						// 	iMaxUnits = 2 + (3 * iNumCities) / 10;
+						// }
+
+						// <!-- custom: adjust based on danger, do not waste hammer if threatened in particular, or if preparing a nice offense, make it effective and use our hammer wisely -->
+						if (bAtWar || bEnemyStrong || bDanger || bWarPlan)
+						{
+							iMaxUnits = std::max(1, iMaxUnits / 2);
+						}
+
+						const int iTotalUnitAIs = kPlayer.AI_totalUnitAIs(UNITAI_EXPLORE_SEA);
+
+						if (iTotalUnitAIs >= iMaxUnits)
+						{
+							return false;
+						}
+					}
+					else if (bNavalSupportOffenseFrontUnitAIs)
+					{
+						// <!-- custom: the needed amount will heavily be influenced by our war strategy or situation, otherwise falling back with the as of now below default -->
+						int iMaxUnits = iNumCities;
+						// if (bNavalHeavyMapname)
+						// {
+						// 	iMaxUnits = 2 * iNumCities;
+						// }
+
+						// // <!-- custom: adjust based on danger, do not waste hammer if threatened in particular, or if preparing a nice offense, make it effective and use our hammer wisely -->
+						// if (bEnemyStrong || bDanger || bWarPlan)
+						// <!-- custom: was too strict according to chatgpt 5 and probably is so, reduce it a bit if planning war to have at least 1 or 2 available or something without sacrificing land warfare -->
+						if (bEnemyStrong || bDanger)
+						{
+							// <!-- custom: no time for these, focus is on defense atm not offense -->
+							return false;
+						}
+						else if (bWarPlan)
+						{
+							// <!-- custom: no time for these, focus is on defense atm not offense -->
+							iMaxUnits = 2;
+						}
+						// <!-- custom: else if bEnemyStrong stay the same, fine as such -->
+
+						const int iTotalUnitAIs = kPlayer.AI_totalUnitAIs(UNITAI_ASSAULT_SEA);
+
+						if (iTotalUnitAIs >= iMaxUnits)
+						{
+							return false;
+						}
+					}
+					else if (bNavalSupportDefenseFrontUnitAIs)
+					{
+						// <!-- custom: the needed amount will be influenced by our war strategy or situation, otherwise falling back with the as of now below default -->
+						int iMaxUnits = iNumCities;
+						// if (bNavalHeavyMapname)
+						// {
+						// 	iMaxUnits = 2 * iNumCities;
+						// }
+
+						// <!-- custom: it is hard to predict how these units will be used, we could maybe settle a new island, guard our cargo, who knows, i don't know exactly how this is used, so let's be a bit conservative and also broad in case they have many use cases, following our general rule though to be conservative and preserve hammer, especially considering our current issue of 20+ galleons/privateers crazy dementia pump xd while our top city is captured around turn 220, so giving lower priority to naval units in harsh times as well here as a general rule, but with less concern than for assault as of now at least -->
+						if (bAtWar || bEnemyStrong || bDanger || bWarPlan)
+						{
+							iMaxUnits = std::max(1, (iMaxUnits * 6 / 10));
+						}
+
+						const int iTotalUnitAIs = kPlayer.AI_totalUnitAIs(UNITAI_ESCORT_SEA);
+
+						if (iTotalUnitAIs >= iMaxUnits)
+						{
+							return false;
+						}
+					}
+					else if (bNavalAirExtraUnitAIs)
+					{
+						// <!-- custom: i don't know too much about these units so allow some quite conservatively and in a sane manner without going overboard on restriction nor in unrestricting them-->
+						int iMaxUnits = iNumCities;
+						// if (bNavalHeavyMapname)
+						// {
+						// 	iMaxUnits = 2 * iNumCities;
+						// }
+
+						// <!-- custom: it is hard to predict how these units will be used, we could maybe settle a new island, guard our cargo, who knows, i don't know exactly how this is used, so let's be a bit conservative and also broad in case they have many use cases, following our general rule though to be conservative and preserve hammer, especially considering our current issue of 20+ galleons/privateers crazy dementia pump xd while our top city is captured around turn 220, so giving lower priority to naval units in harsh times as well here as a general rule, but with less concern than for assault as of now at least -->
+						if (bAtWar || bEnemyStrong || bDanger || bWarPlan)
+						{
+							iMaxUnits = std::max(1, (iMaxUnits * 6 / 10));
+						}
+						// <!-- custom: else most likely fine to keep as such maybe (check if accurate or relevant)-->
+
+						const int iTotalUnitAIs = (
+							kPlayer.AI_totalUnitAIs(UNITAI_CARRIER_SEA)
+							+ kPlayer.AI_totalUnitAIs(UNITAI_MISSILE_CARRIER_SEA)
+						);
+
+						if (iTotalUnitAIs >= iMaxUnits)
+						{
+							return false;
+						}
+					}
+					else if (bNavalSettlerSeaUnitAIs)
+					{
+						// <!-- custom: don't overbuild these especially early, we won't found too many cities all at the same time (else something may be wrong with our economy or something xd i would guess at least with base/current settings of maintenance / city cost / settler cost) -->
+						int iMaxUnits = 1 + (3 * iNumCities) / 10; // 1 + ⌊0.3 * cities⌋;
+						// if (bNavalHeavyMapname)
+						// {
+						// 	iMaxUnits = 2 + (3 * iNumCities) / 10;
+						// }
+
+						// <!-- custom: if at war or such danger or threat, don't die, don't expand, but since this is about founding cities, allow one for naval heavy maps -->
+						if (bAtWar || bEnemyStrong || bDanger || bWarPlan)
+						{
+							// if (bNavalHeavyMapname)
+							// {
+							// 	iMaxUnits = 1;
+							// }
+							// else
+							// {
+							// 	return false;
+							// }
+							return false;
+						}
+						// <!-- custom: else most likely fine to keep as such maybe (check if accurate or relevant)-->
+
+						const int iTotalUnitAIs = kPlayer.AI_totalUnitAIs(UNITAI_SETTLER_SEA);
+
+						if (iTotalUnitAIs >= iMaxUnits)
+						{
+							return false;
+						}
+					}
+					else if (bNavalWorkerSeaUnitAIs)
+					{
+						// <!-- custom: no reason to have too many of these, but early we may need quite a few -->
+						int iMaxUnits;
+						if (!bRenaissancePlus)
+						{
+							iMaxUnits = iNumCities;
+							// if (bNavalHeavyMapname)
+							// {
+							// 	iMaxUnits = 2 * iNumCities;
+							// }
+						}
+						else
+						{
+							iMaxUnits = 1 + (3 * iNumCities) / 10; // 1 + ⌊0.3 * cities⌋;
+							// if (bNavalHeavyMapname)
+							// {
+							// 	iMaxUnits = 2 + (3 * iNumCities) / 10;
+							// }
+						}
+
+						// <!-- custom: the limits are sane, and at war, especially if pilalged, we may need more workboats, plus they are cheap anyway, so just make sure to not overbuild which we do then all fine i would say/guess, so no threat/war or such change for this unitai -->
+
+						const int iTotalUnitAIs = kPlayer.AI_totalUnitAIs(UNITAI_WORKER_SEA);
+
+						if (iTotalUnitAIs >= iMaxUnits)
+						{
+							return false;
+						}
+					}
+					else if (bNavalMissionarySeaUnitAIs)
+					{
+						// <!-- custom: no reason to have too many of these, but early we may need quite a few -->
+						int iMaxUnits;
+						if (!bRenaissancePlus)
+						{
+							iMaxUnits = iNumCities;
+							// if (bNavalHeavyMapname)
+							// {
+							// 	iMaxUnits = 2 * iNumCities;
+							// }
+						}
+						else
+						{
+							iMaxUnits = 1 + (3 * iNumCities) / 10; // 1 + ⌊0.3 * cities⌋;
+							// if (bNavalHeavyMapname)
+							// {
+							// 	iMaxUnits = 2 + (3 * iNumCities) / 10;
+							// }
+						}
+
+						// <!-- custom: if at war or such danger or threat, don't die, don't worry or try to propagate religions, now is not the time, save every hammer (and unit cost if it costs, which i don't know, but hammer is justification/raitonale of enough to not overbuild or at all maybe) -->
+						if (bAtWar || bEnemyStrong || bDanger || bWarPlan)
+						{
+							return false;
+						}
+						// <!-- custom: else most likely fine to keep as such maybe (check if accurate or relevant)-->
+
+						const int iTotalUnitAIs = kPlayer.AI_totalUnitAIs(UNITAI_MISSIONARY_SEA);
+
+						if (iTotalUnitAIs >= iMaxUnits)
+						{
+							return false;
+						}
+					}
+					else if (bNavalSpySeaUnitAIs)
+					{
+						// <!-- custom: allow AI to be quite versatile with these, just don't overdo it -->
+						int iMaxUnits = iNumCities;
+						// if (bNavalHeavyMapname)
+						// {
+						// 	iMaxUnits = (iNumCities * 3) / 2;
+						// }
+
+						// <!-- custom: at war these can go a long way, especially on land maps, we can get a big advantage from using these, but if we don't already have them, don't build them now, they won't be ready nor effective in time anyway and we'd have just wasted hammer -->
+						if (bAtWar || bEnemyStrong || bDanger)
+						{
+							return false;
+						}
+						else if (bWarPlan)
+						{
+							if (!bNavalHeavyMapname)
+							{
+								// <!-- custom: useless or ineffective at land warfare, better not waste hammer here -->
+								return false;
+							}
+							// <!-- custom: else keep as is most likely fine-->
+						}
+						// <!-- custom: else most likely fine to keep as such maybe (check if accurate or relevant)-->
+
+						const int iTotalUnitAIs = kPlayer.AI_totalUnitAIs(UNITAI_SPY_SEA);
+
+						if (iTotalUnitAIs >= iMaxUnits)
+						{
+							return false;
+						}
+					}
+				}
+
+				const bool bLandExploreUnitAIs = (
+					(eChangedUnitAI == UNITAI_EXPLORE)
+				);
+
+				const bool bLandSettlerUnitAIs = (
+					(eChangedUnitAI == UNITAI_SETTLE)
+				);
+
+				const bool bLandWorkerUnitAIs = (
+					(eChangedUnitAI == UNITAI_WORKER)
+				);
+
+				const bool bLandMissionaryUnitAIs = (
+					(eChangedUnitAI == UNITAI_MISSIONARY)
+				);
+
+				const bool bLandSpyUnitAIs = (
+					(eChangedUnitAI == UNITAI_SPY)
+				);
+
+				const bool bAllHandledLandCivilianUnitAIs = (
+					bLandExploreUnitAIs ||
+					bLandSettlerUnitAIs ||
+					bLandWorkerUnitAIs ||
+					bLandMissionaryUnitAIs ||
+					bLandSpyUnitAIs
+				);
+
+				if (bAllHandledLandCivilianUnitAIs)
+				{
+					if (bLandExploreUnitAIs)
+					{
+						// <!-- custom: we don't need too many explore units, especially on naval heavy maps, so make sure we don't overproduce (unless they all die or something then replenish) them and waste hammer -->
+						int iMaxUnits = 2;
+						if (bNavalHeavyMapname)
+						{
+							iMaxUnits = 1;
+						}
+
+						// <!-- custom: adjust based on danger, squeeze every last bit of hammer xd we can save -->
+						if (bAtWar || bEnemyStrong || bDanger || bWarPlan)
+						{
+							return false;
+						}
+
+						const int iTotalUnitAIs = kPlayer.AI_totalUnitAIs(UNITAI_EXPLORE);
+
+						if (iTotalUnitAIs >= iMaxUnits)
+						{
+							return false;
+						}
+					}
+					else if (bLandSettlerUnitAIs)
+					{
+						// <!-- custom: only one settler at a time and for efficiency -->
+						int iMaxUnits = 1;
+
+						// <!-- custom: no time for expansion at war or danger or similar -->
+						if (bAtWar || bEnemyStrong || bDanger || bWarPlan)
+						{
+							return false;
+						}
+
+						const int iTotalUnitAIs = kPlayer.AI_totalUnitAIs(UNITAI_SETTLE);
+
+						if (iTotalUnitAIs >= iMaxUnits)
+						{
+							return false;
+						}
+					}
+					else if (bLandWorkerUnitAIs)
+					{
+						// <!-- custom: have a good amount early, gradually fade past a certain point/era (as of now before renaissance) -->
+						// base: 2.5 workers per city
+						int iMaxUnits = (2 * iNumCities) + ((iNumCities * 5) / 10);
+						// <!-- custom: be careful to not overproduce them, workers are expensive and block growth, could be 1.5 swordsman instead for example plus the food growth used as slaving if stored in that time, but some amount is needed to grow especially early-->
+
+						if (bRenaissancePlus)
+						{
+							// <!-- custom: +1 since we start eras at 0 so renaissance is first era where our decay starts to apply-->
+							// clamp to avoid negative
+							const int iErasSinceRenaissance = std::max(0, (iCurrentEra - iERA_RENAISSANCE) + 1);
+
+							// <!-- custom: as for decay use a very simple and effecive formula/idea i got hehe thanks to chatgpt 5's own review of my previous idea it gave me this idea too so thanks really but anysays etc: 10% decay per era, starting from renaissance included hehe thanks; scale * 100 for rounding error/precision asa chatgpt 5 described suggested although i may have had or not or yes or etcsame idea or not or yes or etc -->
+							// Era decay: start at Renaissance; <!-- custom: linear (as chatgpt 5 describes them, i don't know too much about these xd, but i like the idea of a linear.. reduction xd not regression! i know even less about these or a bit more but i like how predictable and simple this is if all good, rather than (0.9^n)*x based on chatgpt 5's explanation of what compound is thanks, and prefer linear if all good as is simple and predictable (at least to me or more easily)) --> -10% per era -->
+							const int pct = std::max(60, (100 - (10 * iErasSinceRenaissance))); // never below <!-- custom: 40% reduction/decay, so never below 60% of the max value-->
+							const int iMaxWorkersDecayed = (iMaxUnits * pct) / 100;
+							// <!-- custom: keep minimal force of 3+ workers around in case but no need to pay maintenance (if it costs? I don't know but i guess so) for all -->
+							const int iMinWorkersInCase = 3 + ((iNumCities * 3) / 10);
+							iMaxUnits = std::max(iMinWorkersInCase, iMaxWorkersDecayed);
+						}
+
+						// <!-- custom: no time for expansion at war or danger or similar, but the worker is so important we'll be a bit more lenient, we may unlock more hammers for example by producing a worker that would then chop or build a mine or workshop or anything useful so don't be too harsh here as advised by chatgpt 5 thanks-->
+						if (bAtWar && bEnemyStrong)
+						{
+							return false;
+						}
+						// <!-- custom: else if planning war and otherwise no danger or such (e.g. enemy is weak or no danger), still continue to grow; as for bDanger and bEnemyStrong and such if any more maybe, they may be a bit too strong signals so we'll ignore them as well here for workers, hopefully AI handles these well and doesn't overproduce them(workers are also not that expensive like wonders that we'd need so bad to avoid them, and benefits may be immediate so go with a more lenient check or rather maybe gate) -->
+
+						const int iTotalUnitAIs = kPlayer.AI_totalUnitAIs(UNITAI_WORKER);
+
+						if (iTotalUnitAIs >= iMaxUnits)
+						{
+							return false;
+						}
+					}
+					else if (bLandMissionaryUnitAIs)
+					{
+						// <!-- custom: peacetime or early: spread religion (capped as they are national units but adding an extra check here just in case), and also with more conditions and fine tuning, so else don't or do less -->
+						int iMaxUnits;
+						if (!bRenaissancePlus)
+						{
+							iMaxUnits = iNumCities;
+						}
+						else
+						{
+							iMaxUnits = 2;
+						}
+
+						// <!-- custom: if at war or such danger or threat, don't die, don't worry or try to propagate religions, now is not the time, save every hammer (and unit cost if it costs, which i don't know, but hammer is justification/raitonale of enough to not overbuild or at all maybe) -->
+						if (bAtWar || bEnemyStrong || bDanger || bWarPlan)
+						{
+							return false;
+						}
+						// <!-- custom: else most likely fine to keep as such maybe (check if accurate or relevant)-->
+
+						const int iTotalUnitAIs = kPlayer.AI_totalUnitAIs(UNITAI_MISSIONARY);
+
+						if (iTotalUnitAIs >= iMaxUnits)
+						{
+							return false;
+						}
+					}
+					else if (bLandSpyUnitAIs)
+					{
+						// <!-- custom: allow AI to be quite versatile with these, just don't overdo it -->
+						int iMaxUnits = iNumCities;
+						if (bNavalHeavyMapname)
+						{
+							iMaxUnits = (iNumCities * 3) / 2;
+						}
+
+						// <!-- custom: at war these can go a long way, especially on land maps, we can get a big advantage from using these, but if we don't already have them, don't build them now, they won't be ready nor effective in time anyway and we'd have just wasted hammer -->
+						if (bAtWar || bEnemyStrong || bDanger)
+						{
+							return false;
+						}
+						// <!-- custom: else if bWarPlan, don't interfere, they could help with our offense, e.g. weakening our target or spying on it to gather data or steal info or such-->
+						else if (bWarPlan)
+						{
+							if (!bNavalHeavyMapname)
+							{
+								// <!-- custom: useless or ineffective at land warfare, better not waste hammer here -->
+								return false;
+							}
+							// <!-- custom: else keep as is most likely fine-->
+						}
+						// <!-- custom: else most likely fine to keep as such maybe (check if accurate or relevant)-->
+
+						const int iTotalUnitAIs = kPlayer.AI_totalUnitAIs(UNITAI_SPY);
+
+						if (iTotalUnitAIs >= iMaxUnits)
+						{
+							return false;
+						}
+					}
+				}
+
+				// <!-- custom: i didn't check, but just in case we have the issue with air units, manage in a very straightforward and simple max units just in case, these are not critical if i'm not mistaken, but we want to avoid preemptively if exists dementia of destroy produce infinite loop, or excess producing at the cost of cities being weakly guarded or newer (mostly land) units not build especially when hammer is plenty, give some leeway for versatility but not too much for efficiency -->
+				const bool bAirCombatUnitAIs = (
+					(eChangedUnitAI == UNITAI_ATTACK_AIR) ||
+					(eChangedUnitAI == UNITAI_DEFENSE_AIR)
+				);
+				if (bAirCombatUnitAIs)
+				{
+					// <!-- custom: let's limit certain types of naval units by map type (less on land heavy ones like pangea, more in naval heavy ones like archipelago), to help the known issue as of now 53 of having an AI player have 20+ galleons/privateers, yet producing them +/- scrapping them (dementia/insane like behvaiour if may say.., but not its fault, it just wasn't told better, so hopefully we can help AI have saner unit limits, and we'll ahndle the seemignly naval units scrapping elsewhere as we did in known issue as of now 52 for many units), so for now a few of the combat naval unit AIs (like max iNumCities per AI player seems very sane on pangea, possibly * 2 for naval heavy maps, no need to overproduce beyond that, nor to scrap before that potentially risking crazy loops, we hopefully maybe also save computation by implementing our check here before code is executed); code added with the help / thanks to chatgpt 5 as well, check if accurate (and check mine too) -->
+					// <!-- custom: combined total shared between air fighters and air bombers -->
+					const int iMaxUnits = 3 * iNumCities;
+
+					const int iTotalUnitAIs = (
+						kPlayer.AI_totalUnitAIs(UNITAI_ATTACK_AIR)
+						+ kPlayer.AI_totalUnitAIs(UNITAI_DEFENSE_AIR)
+					);
+
+					if (iTotalUnitAIs >= iMaxUnits)
+					{
+						return false;
+					}
+				}
+
+				// <!-- custom: note: as of now unhandled unitais here mean free production or let AI decide, the more the better: military land units, air units, see canScrap function for the handling of these produced units -->
+			}
+		}
+
+		if (eChangedUnit != NO_UNIT && eChangedUnitAI != NO_UNITAI)
+		{
+			pushOrder(ORDER_TRAIN, eChangedUnit, eChangedUnitAI);
+		}
+		return true;
+	}
+
+	return false;
+}
+
+
+bool CvCityAI::AI_chooseDefender()
+{
+	if (getPlot().plotCheck(PUF_isUnitAIType, UNITAI_CITY_SPECIAL, -1, getOwner()) == NULL)
+	{
+		if (AI_chooseUnit(UNITAI_CITY_SPECIAL))
+			return true;
+	}
+
+	if (getPlot().plotCheck(PUF_isUnitAIType, UNITAI_CITY_COUNTER, -1, getOwner()) == NULL)
+	{
+		if (AI_chooseUnit(UNITAI_CITY_COUNTER))
+			return true;
+	}
+
+	if (AI_chooseUnit(UNITAI_CITY_DEFENSE))
+		return true;
+
+	return false;
+}
+
+// advc: Param was vector of pairs "allowedTypes"
+bool CvCityAI::AI_chooseLeastRepresentedUnit(UnitAIWeightMap const& kWeights,
+	int iOdds) // BBAI
+{
+	std::vector<std::pair<int, UnitAITypes> > bestTypes; // K-Mod (replacing multimap)
+	FOR_EACH_NON_DEFAULT_PAIR(kWeights, UnitAI, int)
+	{
+		UnitAITypes const eUnitAI = perUnitAIVal.first;
+		int iValue = perUnitAIVal.second;
+		iValue *= 750 + syncRand().get(250, "AI choose least represented unit",
+				eUnitAI); // advc.007
+		iValue /= 1 + GET_PLAYER(getOwner()).AI_totalAreaUnitAIs(getArea(), eUnitAI);
+		bestTypes.push_back(std::make_pair(iValue, eUnitAI)); // K-Mod
+	}
+	// <K-Mod>
+	std::sort(bestTypes.begin(), bestTypes.end(), std::greater<std::pair<int, UnitAITypes> >());
+	std::vector<std::pair<int, UnitAITypes> >::iterator best_it; // </K-Mod>
+ 	for (best_it = bestTypes.begin(); best_it != bestTypes.end(); ++best_it)
+ 	{
+		if (AI_chooseUnit(best_it->second, iOdds))
+		{
+			return true;
+		}
+ 	}
+	return false;
+}
+
+bool CvCityAI::AI_bestSpreadUnit(bool bMissionary, bool bExecutive, int iBaseChance, UnitTypes* eBestSpreadUnit, int* iBestSpreadUnitValue)
+{
+	CvPlayerAI const& kPlayer = GET_PLAYER(getOwner());
+	CvTeamAI const& kTeam = GET_TEAM(getTeam());
+
+	FAssert(eBestSpreadUnit != NULL && iBestSpreadUnitValue != NULL);
+
+	int iBestValue = 0;
+
+	if (bMissionary)
+	{
+		FOR_EACH_ENUM2(Religion, eReligion)
+		{
+			if (!isHasReligion(eReligion))
+				continue;
+			int iHasCount = kPlayer.getHasReligionCount(eReligion);
+			FAssert(iHasCount > 0);
+			{
+				int iChance = (iHasCount > 4) ? iBaseChance :
+						(((100 - iBaseChance) / iHasCount) + iBaseChance);
+				if (kPlayer.AI_isDoStrategy(AI_STRATEGY_MISSIONARY))
+				{
+					iChance *= (kPlayer.getStateReligion() == eReligion ? 170 : 65);
+					iChance /= 100;
+				}
+				// BETTER_BTS_AI_MOD (03/08/10, jdog5000, Victory Strategy AI): START
+				if (kPlayer.AI_atVictoryStage(AI_VICTORY_CULTURE2))
+					iChance += 25; // BETTER_BTS_AI_MOD: END
+				else if (!kTeam.hasHolyCity(eReligion) &&
+					kPlayer.getStateReligion() != eReligion)
+				{
+					iChance /= 2;
+					/*if (kPlayer.isNoNonStateReligionSpread())
+						iChance /= 2;*/ // disabled by K-mod
+				}
+				if (!SyncRandSuccess100(iChance))
+					continue;
+			}
+			int iReligionValue = kPlayer.AI_missionaryValue(eReligion, area());
+			if (iReligionValue <= 0)
+				continue;
+
+			CvCivilization const& kCiv = getCivilization(); // advc.003w
+			for (int i = 0; i < kCiv.getNumUnits(); i++)
+			{
+				UnitTypes eLoopUnit = kCiv.unitAt(i);
+				CvUnitInfo& kUnitInfo = GC.getInfo(eLoopUnit);
+				if (kUnitInfo.getReligionSpreads(eReligion) > 0)
+				{
+					if (canTrain(eLoopUnit))
+					{
+						int iValue = iReligionValue;
+						iValue /= kUnitInfo.getProductionCost();
+						if (iValue > iBestValue)
+						{
+							iBestValue = iValue;
+							*eBestSpreadUnit = eLoopUnit;
+							*iBestSpreadUnitValue = iReligionValue;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	if (bExecutive)
+	{
+		FOR_EACH_ENUM2(Corporation, eCorporation)
+		{
+			if (!isActiveCorporation(eCorporation))
+				continue;
+			int iHasCount = kPlayer.getHasCorporationCount(eCorporation);
+			FAssert(iHasCount > 0);
+			{
+				int iChance = (iHasCount > 4) ? iBaseChance :
+						(((100 - iBaseChance) / iHasCount) + iBaseChance);
+				/* if (!kTeam.hasHeadquarters(eCorporation))
+					iChance /= 8;*/
+				// K-Mod
+				if (kTeam.hasHeadquarters(eCorporation))
+					iChance += 10;
+				else iChance /= 2;
+				// K-Mod end
+				if (!SyncRandSuccess100(iChance))
+					continue;
+			}
+			int iCorporationValue = kPlayer.AI_executiveValue(eCorporation, area());
+			if (iCorporationValue <= 0)
+				continue;
+
+			CvCivilization const& kCiv = getCivilization(); // advc.003w
+			for (int i = 0; i < kCiv.getNumUnits(); i++)
+			{
+				UnitTypes eLoopUnit = kCiv.unitAt(i);
+				CvUnitInfo& kUnitInfo = GC.getInfo(eLoopUnit);
+				if (kUnitInfo.getCorporationSpreads(eCorporation) > 0)
+				{
+					if (canTrain(eLoopUnit))
+					{	/*int iValue = iCorporationValue;
+						iValue /= kUnitInfo.getProductionCost();
+						int iTotalCount = 0;
+						int iPlotCount = 0;
+						FOR_EACH_UNITAI(pLoopUnit, kPlayer) {
+							if ((pLoopUnit->AI_getUnitAIType() == UNITAI_MISSIONARY) && (pLoopUnit->getUnitInfo().getCorporationSpreads(eCorporation) > 0)) {
+							iTotalCount++;
+							if (pLoopUnit->at(getPlot()))
+								iPlotCount++;
+							}
+						}
+						iCorporationValue /= std::max(1, (iTotalCount / 4) + iPlotCount);*/ // BtS
+						// K-Mod
+						UnitClassTypes eLoopClass = kCiv.unitClassAt(i);
+						int iExistingUnits = kPlayer.getUnitClassCount(eLoopClass) +
+								kPlayer.getUnitClassMaking(eLoopClass)/2;
+						iCorporationValue *= 3;
+						iCorporationValue /= iExistingUnits > 1 ? 2 + iExistingUnits : 3;
+
+						int iValue = iCorporationValue;
+						iValue /= kUnitInfo.getProductionCost();
+						// K-Mod end
+
+						/*int iCost = std::max(0, GC.getInfo(eCorporation).getSpreadCost() * (100 + GET_PLAYER(getOwner()).calculateInflationRate()));
+						iCost /= 100;
+						if (kPlayer.getGold() >= iCost) {
+							iCost *= GC.getDefineINT("CORPORATION_FOREIGN_SPREAD_COST_PERCENT");
+							iCost /= 100;
+							if (kPlayer.getGold() < iCost && iTotalCount > 1)
+								iCorporationValue /= 2;
+						}
+						else if (iTotalCount > 1)
+						iCorporationValue /= 5;*/ // BtS
+						if (iValue > iBestValue)
+						{
+							iBestValue = iValue;
+							*eBestSpreadUnit = eLoopUnit;
+							*iBestSpreadUnitValue = iCorporationValue;
+						}
+					}
+				}
+			}
+		}
+	}
+
+	return (*eBestSpreadUnit != NULL);
+}
+
+bool CvCityAI::AI_chooseBuilding(int iFocusFlags, int iMaxTurns, int iMinThreshold,
+	int iOdds) // BBAI
+{
+	BuildingTypes eBestBuilding = NO_BUILDING; // advc
+	eBestBuilding = AI_bestBuildingThreshold(iFocusFlags, iMaxTurns, iMinThreshold);
+	if (eBestBuilding != NO_BUILDING)
+	{
+		// <!-- custom: try to prevent barbarians from building world wonders, their purpose is to fight not to compete for wonders no matter how well they are developped, at least in advciv-sas, increasing iBuildUnitProb to 100 and using NONE in civilizations info xml file seem to be no good or not always reliable/consistent as they still build world wonders in some cases and quite often, so patching the DLL rather hopefully helps reliably solve this, with chatgpt's help thanks. -->
+		// Check if Barbarian is trying to build a world wonder and skip it
+		CvPlayerAI const& kOwner = GET_PLAYER(getOwner());
+		if (kOwner.isBarbarian())
+		{
+			CvBuildingInfo const& kBuilding = GC.getInfo(eBestBuilding);
+			if (kBuilding.isWorldWonder())
+				return false;
+		}
+
+		/*if (iOdds < 0 ||
+			getBuildingProduction(eBestBuilding) > 0 ||
+			SyncRandNum(100) < iOdds)*/ // BBAI
+		// K-Mod
+		int iRand=0;
+		if (iOdds < 0 ||
+			(iRand = SyncRandNum(100)) < iOdds ||
+			// advc.131: Coefficient was 100; cf. CvCityAI::AI_chooseUnit.
+			iRand < iOdds + (250 * getBuildingProduction(eBestBuilding)) /
+			std::max(1, getProductionNeeded(eBestBuilding)))
+		// K-Mod end
+		{
+			pushOrder(ORDER_CONSTRUCT, eBestBuilding);
+			return true;
+		}
+	}
+
+	return false;
+}
+
+// advc.003j: Replaced by K-Mod code in AI_chooseProduction
+/*bool CvCityAI::AI_chooseProject() {
+	ProjectTypes eBestProject;
+	eBestProject = AI_bestProject();
+	if (eBestProject != NO_PROJECT) {
+		pushOrder(ORDER_CREATE, eBestProject);
+		return true;
+	}
+	return false;
+}*/
+
+
+bool CvCityAI::AI_chooseProcess(CommerceTypes eCommerceType)
+{
+	ProcessTypes eBestProcess = AI_bestProcess(eCommerceType);
+	if (eBestProcess != NO_PROCESS)
+	{
+		pushOrder(ORDER_MAINTAIN, eBestProcess);
+		return true;
+	}
+	return false;
+}
+
+// Returns true if a citizen was added to a plot...
+bool CvCityAI::AI_addBestCitizen(bool bWorkers, bool bSpecialists,
+	CityPlotTypes* peBestPlot, // advc.enum: CityPlotTypes
+	SpecialistTypes* peBestSpecialist)
+{
+	PROFILE_FUNC();
+
+	int iGrowthValue = AI_growthValuePerFood(); // K-Mod
+
+	int iBestValue = -1;
+	SpecialistTypes eBestSpecialist = NO_SPECIALIST;
+
+	if (bSpecialists)
+	{
+		// K-Mod. I've deleted a lot of original BtS code for handling forced specialists and replaced it with a simpler method.
+		// We allow specialists only if they are either a forced type, or there are no forced types available.
+		// (the original code attempted to assign specialists in the same proportions to their force counts.)
+		bool bForcedSpecAvailable = false;
+		if (isSpecialistForced()) // advc.opt
+		{
+			FOR_EACH_ENUM(Specialist)
+			{
+				if (getForceSpecialistCount(eLoopSpecialist) > 0 && isSpecialistValid(eLoopSpecialist, 1))
+					bForcedSpecAvailable = true;
+			}
+		}
+		FOR_EACH_ENUM(Specialist)
+		{
+			if (isSpecialistValid(eLoopSpecialist, 1) &&
+				(!bForcedSpecAvailable || getForceSpecialistCount(eLoopSpecialist) > 0))
+			{
+				int iValue = AI_specialistValue(eLoopSpecialist, false, false, iGrowthValue);
+				if (iValue > iBestValue)
+				{
+					iBestValue = iValue;
+					eBestSpecialist = eLoopSpecialist;
+				}
+			}
+		}
+	}
+
+	CityPlotTypes eBestPlot = NO_CITYPLOT;
+	if (bWorkers)
+	{
+		for (CityPlotIter it(*this, false); it.hasNext(); ++it)
+		{
+			CvPlot const& kPlot = *it;
+			CityPlotTypes const ePlot = it.currID();
+			if (!isWorkingPlot(ePlot) && canWork(kPlot))
+			{
+				int iValue = AI_plotValue(kPlot, false, false, false, iGrowthValue);
+				if (iValue > iBestValue)
+				{
+					iBestValue = iValue;
+					eBestPlot = ePlot;
+					eBestSpecialist = NO_SPECIALIST;
+				}
+			}
+		}
+	}
+
+	if (eBestSpecialist != NO_SPECIALIST)
+	{
+		changeSpecialistCount(eBestSpecialist, 1);
+		if (peBestPlot != NULL)
+		{
+			FAssert(peBestSpecialist != NULL);
+			*peBestSpecialist = eBestSpecialist;
+			*peBestPlot = NO_CITYPLOT;
+		}
+		return true;
+	}
+	else if (eBestPlot != NO_CITYPLOT)
+	{
+		setWorkingPlot(eBestPlot, true);
+		if (peBestPlot != NULL)
+		{
+			FAssert(peBestSpecialist != NULL);
+			*peBestSpecialist = NO_SPECIALIST;
+			*peBestPlot = eBestPlot;
+
+		}
+		return true;
+	}
+
+	return false;
+}
+
+// Returns true if a citizen was removed from a plot...
+bool CvCityAI::AI_removeWorstCitizen(SpecialistTypes eIgnoreSpecialist)
+{
+	// if we are using more specialists than the free ones we get
+	if (extraFreeSpecialists() < 0)
+	{
+		// <!-- custom: make these static const for performance optimization as advised by chatgpt 5 too. -->
+		static const SpecialistTypes eDefaultSpecialist = (SpecialistTypes)GC.getDEFAULT_SPECIALIST();
+
+		// does generic 'citizen' specialist exist?
+		if (eDefaultSpecialist != NO_SPECIALIST)
+		{
+			// is ignore something other than generic citizen?
+			if (eIgnoreSpecialist != eDefaultSpecialist)
+			{
+				// do we have at least one more generic citizen than we are forcing?
+				if (getSpecialistCount(eDefaultSpecialist) >
+					getForceSpecialistCount(eDefaultSpecialist))
+				{
+					// remove the extra generic citzen
+					changeSpecialistCount(eDefaultSpecialist, -1);
+					return true;
+				}
+			}
+		}
+	}
+
+	//bAvoidGrowth = AI_avoidGrowth();
+	//bIgnoreGrowth = AI_ignoreGrowth();
+	int iGrowthValue = AI_growthValuePerFood();
+
+	int iWorstValue = MAX_INT;
+	SpecialistTypes eWorstSpecialist = NO_SPECIALIST;
+	CityPlotTypes eWorstPlot = NO_CITYPLOT;
+
+	// if we are using more specialists than the free ones we get
+	if (extraFreeSpecialists() < 0)
+	{
+		FOR_EACH_ENUM(Specialist)
+		{
+			if (eIgnoreSpecialist == eLoopSpecialist ||
+				getSpecialistCount(eLoopSpecialist) <= getForceSpecialistCount(eLoopSpecialist))
+			{
+				continue; // advc
+			}
+			int iValue = AI_specialistValue(eLoopSpecialist, true, false, iGrowthValue);
+			if (iValue < iWorstValue)
+			{
+				iWorstValue = iValue;
+				eWorstSpecialist = eLoopSpecialist;
+				eWorstPlot = NO_CITYPLOT;
+			}
+		}
+	}
+
+	// check all the plots we are working
+	for (WorkingPlotIter it(*this, false); it.hasNext(); ++it)
+	{
+		int iValue = AI_plotValue(*it, true, false, false, iGrowthValue);
+		if (iValue < iWorstValue)
+		{
+			iWorstValue = iValue;
+			eWorstSpecialist = NO_SPECIALIST;
+			eWorstPlot = it.currID();
+		}
+	}
+
+	if (eWorstSpecialist != NO_SPECIALIST)
+	{
+		changeSpecialistCount(eWorstSpecialist, -1);
+		// K-Mod. If we had to remove a forced specialist, reduce the force count to match what we did.
+		if (getSpecialistCount(eWorstSpecialist) < getForceSpecialistCount(eWorstSpecialist))
+			setForceSpecialistCount(eWorstSpecialist, getSpecialistCount(eWorstSpecialist));
+		//
+		return true;
+	}
+	else if (eWorstPlot != NO_CITYPLOT)
+	{
+		setWorkingPlot(eWorstPlot, false);
+		return true;
+	}
+
+	// if we still have not removed one, then try again, but do not ignore the one we were told to ignore
+	if (extraFreeSpecialists() < 0)
+	{
+		FOR_EACH_ENUM(Specialist)
+		{
+			if (getSpecialistCount(eLoopSpecialist) <= 0)
+				continue; // advc
+			int iValue = AI_specialistValue(eLoopSpecialist, true, false, iGrowthValue);
+			if (iValue < iWorstValue)
+			{
+				iWorstValue = iValue;
+				eWorstSpecialist = eLoopSpecialist;
+				eWorstPlot = NO_CITYPLOT;
+			}
+		}
+	}
+
+	if (eWorstSpecialist != NO_SPECIALIST)
+	{
+		changeSpecialistCount(eWorstSpecialist, -1);
+		return true;
+	}
+
+	return false;
+}
+
+// This function has been completely rewritten for K-Mod - original code deleted
+void CvCityAI::AI_juggleCitizens(/* advc.131d: */ bool bEmphasize)
+{
+	PROFILE_FUNC();
+
+	int iTotalFreeSpecialists = totalFreeSpecialists();
+	bool bAnyForcedSpecs = isSpecialistForced();
+
+	// work out how much food deficit would be acceptable
+	int iStarvingAllowance = 0;
+	// <!-- custom: cities starve too often, on top of failing to allocate best food tiles; make it stricter by not allowing any allowance, as advised by claude ai when asking it thanks to my prompts and or such or not contributions or not too -->
+	// {
+	// 	int iFoodLevel = getFood();
+	// 	int iFoodToGrow = growthThreshold();
+	// 	int iHappinessLevel = happyLevel() - unhappyLevel(0);
+
+	// 	if (AI_isEmphasizeAvoidGrowth() || iHappinessLevel < (isHuman() ? 0 : 1))
+	// 	{
+	// 		iStarvingAllowance = std::max(0, (iFoodLevel - std::max(1, ((7 * iFoodToGrow) / 10))));
+	// 		iStarvingAllowance /= (iHappinessLevel+getEspionageHappinessCounter()/2 >= 0 ? 2 : 1);
+	// 	}
+	// }
+
+	//
+
+	typedef std::pair<int, std::pair<bool,int> > PotentialJob_t; // (value, (isSpecialist, plot/specialist index))
+	// I'd like to use std::tuple<int, bool, int>, but it isn't supported by this version of C++
+	std::vector<PotentialJob_t> worked_jobs;
+	std::vector<PotentialJob_t> unworked_jobs;
+	std::vector<std::pair<bool, int> > new_jobs; // jobs assigned by this juggling process
+
+	bool bDone = false;
+	bool bAnyNewJobTaken = false; // advc.131d
+	int iCycles = 0;
+	do
+	{
+		int iGrowthValue = AI_growthValuePerFood(); // recalcuate on each cycle?
+		int iFoodPerTurn = getYieldRate(YIELD_FOOD) - foodConsumption();
+
+		worked_jobs.clear();
+		unworked_jobs.clear();
+
+		// populate jobs lists.
+		// evaluate plots
+		for (CityPlotIter it(*this, false); it.hasNext(); ++it)
+		{
+			CityPlotTypes const ePlot = it.currID();
+			CvPlot const& kPlot = *it;
+			if (isWorkingPlot(ePlot))
+			{
+				int iValue = AI_plotValue(kPlot, false, false, iFoodPerTurn >= 0, iGrowthValue);
+				worked_jobs.push_back(PotentialJob_t(iValue, std::make_pair(false, ePlot)));
+				// Note: the juggling process works better if worked and unworked plots are compared in the same way.
+				// So I'm using 'bRemove = false' here even though we would be removing this worker.
+			}
+			else if (canWork(kPlot))
+			{
+				int iValue = AI_plotValue(kPlot, false, false, iFoodPerTurn >= 0, iGrowthValue);
+				unworked_jobs.push_back(PotentialJob_t(iValue, std::make_pair(false, ePlot)));
+			}
+		}
+
+		// check if it is still possible to assign new specialists of types that are forced
+		bool bForcedSpecAvailable = false;
+		if (bAnyForcedSpecs)
+		{
+			FOR_EACH_ENUM(Specialist)
+			{
+				if (getForceSpecialistCount(eLoopSpecialist) > 0 &&
+					isSpecialistValid(eLoopSpecialist, 1))
+				{
+					bForcedSpecAvailable = true;
+				}
+			}
+		}
+
+		// evaluate specialists
+		FOR_EACH_ENUM2(Specialist, e)
+		{
+			if (getSpecialistCount(e) > getForceSpecialistCount(e))
+			{
+				// don't allow unforced specialists unless none of the forced type are available
+				int iValue = (bForcedSpecAvailable && getForceSpecialistCount(e) == 0 ? 0 :
+						AI_specialistValue(e, false, false, iGrowthValue));
+				worked_jobs.push_back(PotentialJob_t(iValue, std::make_pair(true, e)));
+			}
+			if (isSpecialistValid(e, 1))
+			{
+				int iValue = (bForcedSpecAvailable && getForceSpecialistCount(e) == 0 ? 0 :
+						AI_specialistValue(e, false, false, iGrowthValue));
+				unworked_jobs.push_back(PotentialJob_t(iValue, std::make_pair(true, e)));
+				if (getForceSpecialistCount(e) > 0)
+					bForcedSpecAvailable = true;
+			}
+		}
+
+		//
+		std::sort(worked_jobs.begin(), worked_jobs.end());
+		std::sort(unworked_jobs.begin(), unworked_jobs.end(), std::greater<PotentialJob_t>());
+		// if values are equal - prefer to work the specialist job. (perhaps a different city can use the plot)
+		// Note: PotentialJob_t is (value, (bSpecialist, index)), and bSpecialist == true is a higher value than bSpecialist == false.
+
+		std::vector<PotentialJob_t>::iterator worked_it = worked_jobs.begin();
+		std::vector<PotentialJob_t>::iterator unworked_it = unworked_jobs.begin();
+		bool bTakeNewJob = false;
+
+		while (!bTakeNewJob && worked_it != worked_jobs.end() && unworked_it != unworked_jobs.end()
+			&& unworked_it->first > worked_it->first)
+		{
+			bTakeNewJob = true; // default position is the take the new job.
+
+			// Don't take the job if it would make us starve
+			int iCurrentFood = worked_it->second.first
+				? GET_PLAYER(getOwner()).specialistYield((SpecialistTypes)worked_it->second.second, YIELD_FOOD)
+				: getCityIndexPlot((CityPlotTypes)worked_it->second.second)->getYield(YIELD_FOOD);
+
+			int iNextFood = unworked_it->second.first
+				? GET_PLAYER(getOwner()).specialistYield((SpecialistTypes)unworked_it->second.second, YIELD_FOOD)
+				: getCityIndexPlot((CityPlotTypes)unworked_it->second.second)->getYield(YIELD_FOOD);
+
+			// <!-- custom: seemingly a bug found by claude ai; i am not sure this is really a bug, indeed ingame cities are starving without allocating improved sheep or such high tiles (see as of now known issue 34 in docs with screenshots there in the google drive) -->
+			// OLD: Only avoid starvation if we're not already starving
+			// if (iFoodPerTurn >= 0 && iFoodPerTurn + iNextFood - iCurrentFood + iStarvingAllowance < 0)
+			// NEW: Always check if job change improves/worsens food situation
+			if (iFoodPerTurn + iNextFood - iCurrentFood + iStarvingAllowance < 0)
+			{
+				bTakeNewJob = false;
+			}
+			// block removal of free specialists
+			else if (worked_it->second.first && !unworked_it->second.first &&
+				getSpecialistPopulation() <= iTotalFreeSpecialists)
+			{
+				bTakeNewJob = false;
+			}
+			// if forced specialists are still available, don't allow non-forced specialists.
+			else if ((bForcedSpecAvailable || (worked_it->second.first && getForceSpecialistCount((SpecialistTypes)worked_it->second.second) > 0)) &&
+				unworked_it->second.first && getForceSpecialistCount((SpecialistTypes)unworked_it->second.second) == 0)
+			{
+				bTakeNewJob = false;
+			}
+			// don't remove jobs that were assigned by the juggling process
+			else if (std::find(new_jobs.begin(), new_jobs.end(), worked_it->second) != new_jobs.end())
+			{
+				bTakeNewJob = false;
+			}
+			// finally, don't take the new job if a direct comparison shows that it is not more valuable than the old job.
+			// (exception, switching away from zero-value jobs, such as unwanted specialists)
+			else if (worked_it->first > 0 && AI_jobChangeValue(unworked_it->second, worked_it->second, false, false, iGrowthValue) <= 0)
+			{
+				bTakeNewJob = false;
+			}
+
+			// If we can't do this job switch, check another option. Loop through worked jobs first, then unworked jobs.
+			if (!bTakeNewJob)
+			{
+				++worked_it;
+				if (worked_it == worked_jobs.end() || worked_it->first >= unworked_it->first)
+				{
+					worked_it = worked_jobs.begin();
+					++unworked_it;
+				}
+			}
+			// else we're done.
+		}
+
+		if (!bTakeNewJob)
+		{
+			bDone = true; // no more job swaps. So we're finished.
+		}
+		else
+		{
+			bAnyNewJobTaken = true; // advc.131d
+			// remove the current job
+			if (worked_it->second.first)
+			{
+				FAssert(getSpecialistCount((SpecialistTypes)worked_it->second.second) > 0);
+				changeSpecialistCount((SpecialistTypes)worked_it->second.second, -1);
+			}
+			else
+			{
+				FAssert(isWorkingPlot((CityPlotTypes)worked_it->second.second));
+				setWorkingPlot((CityPlotTypes)worked_it->second.second, false);
+			}
+
+			// assign the new job
+			if (unworked_it->second.first)
+			{
+				FAssert(isSpecialistValid((SpecialistTypes)unworked_it->second.second, 1));
+				changeSpecialistCount((SpecialistTypes)unworked_it->second.second, 1);
+			}
+			else
+			{
+				FAssert(!isWorkingPlot((CityPlotTypes)unworked_it->second.second));
+				setWorkingPlot((CityPlotTypes)unworked_it->second.second, true);
+			}
+			// add the new job to the new jobs list
+			new_jobs.push_back(unworked_it->second);
+		}
+
+		if (iCycles > getPopulation() + iTotalFreeSpecialists)
+		{
+			// This isn't a serious problem. I just want to know how offen it happens.
+			//FErrorMsg("juggle citizens failed to find a stable solution.");
+			PROFILE("juggle citizen failure");
+			bDone = true;
+		}
+		iCycles++;
+	} while (!bDone);
+	// <advc.131d>
+	if (bEmphasize && isHuman() && !bAnyNewJobTaken && !AI_isStrongEmphasis())
+	{
+		/*	The player probably wanted there to be a change.
+			Let's try harder. */
+		AI_setStrongEmphasis(true);
+	} // </advc.131d>
+	// Record keeping, to test efficiency.
+#ifdef LOG_JUGGLE_CITIZENS
+	{
+		TCHAR message[20];
+		_snprintf(message, 20, "%d+%d : %d\n", getPopulation(), iTotalFreeSpecialists, iCycles);
+		gDLL->logMsg("juggle_log.txt", message ,false, false);
+	}
+#endif
+}
+
+/*	K-Mod: Estimate the cost of recovery after losing iQuantity number of citizens
+	in this city. (units of 4x commerce.) Replacing AI_citizenLossCost in BtS. */
+int CvCityAI::AI_citizenSacrificeCost(int iCitLoss, int iHappyLevel, int iNewAnger, int iAngerTimer)
+{
+	PROFILE_FUNC();
+
+	CvPlayerAI const& kOwner = GET_PLAYER(getOwner());
+
+	iCitLoss = std::min(getPopulation()-1, iCitLoss);
+	if (iCitLoss < 1)
+		return 0;
+
+	if (isNoUnhappiness())
+	{
+		iNewAnger = 0;
+		iAngerTimer = 0;
+	}
+
+	int iYields[NUM_YIELD_TYPES] = {};
+	int iYieldWeights[NUM_YIELD_TYPES] =
+	{
+		9, // food
+		7, // production
+		4, // commerce
+	}; // <advc.121b>
+	if(isCapital())
+		iYieldWeights[YIELD_COMMERCE]++; // </advc.121b>
+	std::vector<int> job_scores;
+	int iTotalScore = 0;
+
+	for (int i = 0; i < -iHappyLevel; i++)
+		job_scores.push_back(0);
+
+	if ((int)job_scores.size() < iCitLoss)
+	{
+		for (WorkingPlotIter it(*this, false); it.hasNext(); ++it)
+		{
+			CvPlot const& kPlot = *it;
+			FAssert(kPlot.getWorkingCity() == this);
+			// ideally, the plots would be scored using AI_plotValue, but I'm worried that would be too slow.
+			// so here's a really rough estimate of the plot value
+			int iPlotScore = 0;
+			for (int j = 0; j < NUM_YIELD_TYPES; j++)
+			{
+				int y = kPlot.getYield((YieldTypes)j);
+				iYields[j] += y;
+				iPlotScore += y * iYieldWeights[j];
+			}
+			if (kPlot.isImproved() &&
+				GC.getInfo(kPlot.getImprovementType()).getImprovementUpgrade() != NO_IMPROVEMENT)
+			{
+				iYields[YIELD_COMMERCE] += 2;
+				iPlotScore += 2 * iYieldWeights[YIELD_COMMERCE];
+			}
+			/*	<advc.121b> Anticipate improvement. CitySiteEvaluator has proper code
+				for this, but don't want to go through all improvements here. */
+			if (!kPlot.isImproved() && AI_getWorkersHave() > 0)
+				iPlotScore *= 2; // </advc.121b>
+			iTotalScore += iPlotScore;
+			job_scores.push_back(iPlotScore);
+		}
+	}
+	if ((int)job_scores.size() < iCitLoss)
+	{
+		FOR_EACH_ENUM(Specialist)
+		{
+			if (getSpecialistCount(eLoopSpecialist) <= 0)
+				continue; // advc
+			// very rough..
+			int iSpecScore = 0;
+			for (int j = 0; j < NUM_YIELD_TYPES; j++)
+			{
+				int y = kOwner.specialistYield(eLoopSpecialist, (YieldTypes)j)*3/2;
+				iYields[j] += y;
+				iSpecScore += y * iYieldWeights[j];
+			}
+			FOR_EACH_ENUM(Commerce)
+			{
+				int c = kOwner.specialistCommerce(eLoopSpecialist, eLoopCommerce)*3/2;
+				iYields[YIELD_COMMERCE] += c;
+				iSpecScore += c * iYieldWeights[YIELD_COMMERCE];
+			}
+			iTotalScore += iSpecScore * getSpecialistCount(eLoopSpecialist);
+			job_scores.resize(job_scores.size() +
+					getSpecialistCount(eLoopSpecialist), iSpecScore);
+		}
+	}
+
+	if ((int)job_scores.size() < iCitLoss)
+	{
+		FErrorMsg("Not enough job data to calculate citizen loss cost.");
+		int iBogusData = (1+GC.getFOOD_CONSUMPTION_PER_POPULATION()) * iYieldWeights[YIELD_FOOD];
+		job_scores.resize(iCitLoss, iBogusData);
+		iTotalScore += iBogusData;
+	}
+
+	FAssert((int)job_scores.size() >= iCitLoss);
+	std::partial_sort(job_scores.begin(), job_scores.begin()+iCitLoss, job_scores.end());
+	int iAverageScore = intdiv::round(iTotalScore, job_scores.size());
+
+	int iWastedFood = -healthRate();
+	int iTotalFood = getYieldRate(YIELD_FOOD) - iWastedFood;
+
+	// calculate the total cost-per-turn from missing iCitLoss citizens.
+	int iBaseCostPerTurn = 0;
+	for (int j = 0; j < NUM_YIELD_TYPES; j++)
+	{
+		if (iYields[j] > 0)
+			iBaseCostPerTurn += 4 * iYields[j] * AI_yieldMultiplier((YieldTypes)j) * kOwner.AI_yieldWeight((YieldTypes)j) / 100;
+	}
+	// reduce value of food used for production - otherwise our citizens might be overvalued due to working extra food.
+	if (isFoodProduction())
+	{
+		int iExtraFood = iTotalFood - getPopulation() * GC.getFOOD_CONSUMPTION_PER_POPULATION();
+		iExtraFood = std::min(iExtraFood, iYields[YIELD_FOOD]*AI_yieldMultiplier(YIELD_FOOD)/100);
+		iBaseCostPerTurn -= 4 * iExtraFood * (kOwner.AI_yieldWeight(YIELD_FOOD)-kOwner.AI_yieldWeight(YIELD_PRODUCTION)); // note that we're keeping a factor of 100.
+	}
+
+	int iCost = 0; // accumulator for the final return value
+	int iScoreLoss = 0;
+	for (int i = 0; i < iCitLoss; i++)
+	{
+		// since the score estimate is very rough, I'm going to flatten it out a bit by combining it with the average score
+		job_scores[i] = (2*job_scores[i] + iAverageScore + 2)/3;
+		iScoreLoss += job_scores[i];
+	}
+
+	for (int i = iCitLoss; i > 0; i--)
+	{
+		int iFoodLoss = kOwner.getGrowthThreshold(getPopulation() - i) *
+				(105 - getMaxFoodKeptPercent()) / 100;
+		int iFoodRate = iTotalFood - (iScoreLoss * AI_yieldMultiplier(YIELD_FOOD) * iYields[YIELD_FOOD]
+				/*  advc.121b: Round up and then some. Err on the side of under-
+					estimating the food rate. */
+				+ (2 * 100 * iTotalScore) / 3) /
+				std::max(1, iTotalScore * 100);
+		iFoodRate -= (getPopulation() - i) * GC.getFOOD_CONSUMPTION_PER_POPULATION();
+		iFoodRate += std::min(iWastedFood, i);
+		// if we're at the happiness cap, assume we've got some spare food that we're not currently working.
+		iFoodRate += iHappyLevel <= 0 ? i : 0;
+
+		int iRecoveryTurns = iFoodRate > 0 ? (iFoodLoss+iFoodRate-1) / iFoodRate : iFoodLoss;
+
+		int iCostPerTurn = iBaseCostPerTurn;
+		iCostPerTurn *= iScoreLoss;
+		iCostPerTurn /= std::max(1, iTotalScore * 100);
+
+		// extra food from reducing the population:
+		iCostPerTurn -= 4 * (std::min(iWastedFood, i) +
+				i*GC.getFOOD_CONSUMPTION_PER_POPULATION()) *
+				kOwner.AI_yieldWeight(YIELD_FOOD)/100;
+		iCostPerTurn += 2*i; // just a little bit of extra cost, to show that we care...
+
+		FAssert(iRecoveryTurns > 0); // iCostPerTurn <= 0 is possible, but it should be rare
+
+		// recovery isn't complete if the citizen is still angry
+		iAngerTimer -= iRecoveryTurns;
+		if (iAngerTimer > 0 && iHappyLevel + i - iNewAnger < 0)
+		{
+			iCost += iAngerTimer * GC.getFOOD_CONSUMPTION_PER_POPULATION() * 4 * kOwner.AI_yieldWeight(YIELD_FOOD) / 100;
+			iRecoveryTurns += iAngerTimer;
+		}
+
+		iCost += iRecoveryTurns * iCostPerTurn;
+
+		iScoreLoss -= job_scores[i-1];
+	}
+	// if there is any anger left over after regrowing, we might as well count some cost for that too.
+	if (iAngerTimer > 0 && iHappyLevel - 1 - iNewAnger < 0)
+	{
+		int iGrowthTime = std::max(1, iTotalFood - getPopulation()*GC.getFOOD_CONSUMPTION_PER_POPULATION()); // just the food rate here
+		iGrowthTime = (kOwner.getGrowthThreshold(getPopulation()) - getFood() + iGrowthTime - 1)/iGrowthTime; // now it's the time.
+
+		iAngerTimer -= iGrowthTime;
+		if (iAngerTimer > 0)
+		{
+			int iCostPerTurn = iBaseCostPerTurn;
+
+			iCostPerTurn *= iAverageScore * (iNewAnger + 1 - iHappyLevel);
+			iCostPerTurn /= std::max(1, iTotalScore * 100);
+
+			iCostPerTurn += (iNewAnger + 1 - iHappyLevel) * GC.getFOOD_CONSUMPTION_PER_POPULATION() * 4 * kOwner.AI_yieldWeight(YIELD_FOOD) / 100;
+
+			FAssert(iCostPerTurn > 0 && iAngerTimer > 0);
+
+			iCost += iCostPerTurn * iAngerTimer;
+		}
+	}
+	if (kOwner.AI_getFlavorValue(FLAVOR_GROWTH) > 0)
+	{
+		iCost *= 120 + kOwner.AI_getFlavorValue(FLAVOR_GROWTH);
+		iCost /= 100;
+	}
+
+	return iCost;
+}
+
+/*	advc: K-Mod formula that was used in two places. I also want to use it in a
+	third place. */
+int CvCityAI::AI_citizenValue() const
+{
+	/*	advc.erai (note): Kek-Mod normalizes the era here, but
+		I don't think we should assume (implicitly) that mods with fewer eras
+		have more perks (like extra tile yields) per era. */
+	return 6 + GET_PLAYER(getOwner()).getCurrentEra();
+}
+
+//  advc.enum: Param was a pointer to a CvPlot member array of yields.
+//	Replaced all uses of that param with kPlot.getYield(YieldTypes), which,
+//	due to inlining, should be just as fast.
+// Never mind - it's unused anyway.
+/*bool CvCityAI::AI_potentialPlot(CvPlot const& kPlot) const
+{
+	int iNetFood = kPlot.getYield(YIELD_FOOD) - GC.getFOOD_CONSUMPTION_PER_POPULATION();
+	if (iNetFood < 0)
+	{
+ 		if (kPlot.getYield(YIELD_FOOD) == 0)
+		{
+			if (kPlot.getYield(YIELD_PRODUCTION) + kPlot.getYield(YIELD_COMMERCE) < 2)
+				return false;
+		}
+		else
+		{
+			if (kPlot.getYield(YIELD_PRODUCTION) + kPlot.getYield(YIELD_COMMERCE) == 0)
+				return false;
+		}
+	}
+	return true;
+}
+
+bool CvCityAI::AI_foodAvailable(int iExtra) const
+{
+	PROFILE_FUNC();
+
+	int iFoodCount = 0;
+
+	bool abPlotAvailable[NUM_CITY_PLOTS] = { false };
+	for (CityPlotIter it(*this); it.hasNext(); ++it)
+	{
+		CityPlotTypes const ePlot = it.currID();
+		CvPlot const& kPlot = *it;
+		if (ePlot == CITY_HOME_PLOT)
+			iFoodCount += kPlot.getYield(YIELD_FOOD);
+		else if (it->getWorkingCity() == this && AI_potentialPlot(kPlot))
+			abPlotAvailable[ePlot] = true;
+	}
+
+	int iPopulation = (getPopulation() + iExtra);
+	while (iPopulation > 0)
+	{
+		int iBestPlot = CITY_HOME_PLOT;
+		int iBestValue = 0;
+		FOR_EACH_ENUM(CityPlot)
+		{
+			if (abPlotAvailable[eLoopCityPlot])
+			{
+				int iValue = getCityIndexPlot(eLoopCityPlot)->getYield(YIELD_FOOD);
+				if (iValue > iBestValue)
+				{
+					iBestValue = iValue;
+					iBestPlot = eLoopCityPlot;
+				}
+			}
+		}
+
+		if (iBestPlot != CITY_HOME_PLOT)
+		{
+			iFoodCount += iBestValue;
+			abPlotAvailable[iBestPlot] = false;
+		}
+		else break;
+
+		iPopulation--;
+	}
+
+	FOR_EACH_ENUM(Specialist)
+	{
+		iFoodCount += (GC.getInfo(eLoopSpecialist).getYieldChange(YIELD_FOOD) *
+				getFreeSpecialistCount(eLoopSpecialist));
+	}
+
+	if (iFoodCount < foodConsumption(false, iExtra))
+		return false;
+
+	return true;
+}*/
+
+/*	K-Mod: I've rewritten large chunks of this function.
+	I've deleted much of the original code, rather than commenting it;
+	just to keep things a bit tidier and clearer.
+	Note. I've changed the scale to match the building evaluation code: ~4x commerce. */
+/*	advc.make: Array types changed from short to int to avoid problems with /W4.
+	(Ideally 'typedef yield_t char' would be used for all yields ...) */
+int CvCityAI::AI_yieldValue(int* piYields, int* piCommerceYields, bool bRemove,
+	bool bIgnoreFood, bool bIgnoreStarvation, bool bWorkerOptimization, int iGrowthValue) const
+{
+	PROFILE_FUNC();
+
+	CvPlayerAI const& kOwner = GET_PLAYER(getOwner());
+
+	// <!-- custom: cache to kTeam for perf opt if i'm not mistaken. See note at CvCityAI::AI_buildingValue. -->
+	CvTeamAI const& kTeam = GET_TEAM(kOwner.getTeam()); // kekm.16
+
+	//const int iBaseProductionValue = 9; // (K-Mod: was 7 before I removed the averageCommerceExchange factor from the commerce values.)
+	/*  advc.121b: So I guess the K-Mod line above sets the priority as in BtS.
+		Let's set a lower priority then, in part to even out the use of Slavery. */
+	const int iBaseProductionValue = 8;
+	const int iBaseCommerceValue = 4;
+
+	bool const bEmphasizeFood = AI_isEmphasizeYield(YIELD_FOOD);
+	bool const bFoodIsProduction = isFoodProduction();
+	//bool bCanPopRush = kOwner.canPopRush();
+
+	// a kludge to handle the NULL yields easily.
+	int aiZeroYields[NUM_YIELD_TYPES] = {};
+	if (piYields == NULL)
+		piYields = aiZeroYields;
+
+	int const iBaseProductionModifier = getBaseYieldRateModifier(YIELD_PRODUCTION);
+	int const iExtraProductionModifier = getProductionModifier();
+	int iProductionTimes100 = piYields[YIELD_PRODUCTION] *
+			(iBaseProductionModifier + iExtraProductionModifier);
+	int const iCommerceYieldTimes100 = piYields[YIELD_COMMERCE] *
+			getBaseYieldRateModifier(YIELD_COMMERCE);
+	int const iFoodYieldTimes100 = piYields[YIELD_FOOD] *
+			getBaseYieldRateModifier(YIELD_FOOD);
+	int const iFoodYield = iFoodYieldTimes100/100;
+
+	int iValue = 0; // total value
+
+	// Commerce
+	int iCommerceValue = 0;
+	ProcessTypes eProcess = getProductionProcess();
+
+	FOR_EACH_ENUM2(Commerce, eCommerce)
+	{
+		int iCommerceTimes100 = iCommerceYieldTimes100 *
+				kOwner.getCommercePercent(eCommerce) / 100;
+		if (piCommerceYields != NULL)
+			iCommerceTimes100 += piCommerceYields[eCommerce] * 100;
+
+		iCommerceTimes100 *= getTotalCommerceRateModifier(eCommerce);
+		iCommerceTimes100 /= 100;
+
+		//FAssert(iCommerceTimes100 >= 0);
+
+		if (eProcess != NO_PROCESS)
+		{
+			iCommerceTimes100 += (GC.getInfo(getProductionProcess()).
+					getProductionToCommerceModifier(eCommerce) * iProductionTimes100) / 100;
+		}
+		if (iCommerceTimes100 != 0)
+		{
+			// (Should we still use this with bWorkerOptimization?)
+			int iCommerceWeight = kOwner.AI_commerceWeight(eCommerce, this);
+			if (AI_isEmphasizeCommerce(eCommerce))
+				iCommerceWeight *= 2 + /* advc.131d: */ (AI_isStrongEmphasis() ? 1 : 0);
+			if (!bWorkerOptimization && eCommerce == COMMERCE_CULTURE &&
+				getCultureLevel() <= 1)
+			{
+				// bring on the artists
+				if (getCommerceRateTimes100(COMMERCE_CULTURE)
+					- (bRemove ? iCommerceTimes100 : 0) < 100)
+				{
+					iCommerceValue += 20 * (iCommerceTimes100 > 0 ? 1 : -1);
+				}
+				iCommerceWeight = std::max(iCommerceWeight, 200);
+			}
+
+			iCommerceValue += iCommerceWeight * iCommerceTimes100 * iBaseCommerceValue
+					//* kOwner.AI_averageCommerceExchange((CommerceTypes)iI) / 1000000;
+					/*	K-Mod. (averageCommerceExchange should be part of commerceWeight
+						if we want it, and we probably don't want it anyway.) */
+					/ 10000;
+		}
+	}
+
+	// Production
+	int iProductionValue = 0;
+	if (eProcess == NO_PROCESS)
+	{
+		if (bFoodIsProduction)
+			iProductionTimes100 += iFoodYieldTimes100;
+
+		iProductionValue += iProductionTimes100 * iBaseProductionValue / 100;
+		// If city has more than enough food, but very little production, add large value to production
+		// Particularly helps coastal cities with plains forests
+		// (based on BBAI code)
+		if (!bWorkerOptimization && iProductionTimes100 > 0 && !bFoodIsProduction && isProduction())
+		{
+			if (!isHuman() || AI_isEmphasizeYield(YIELD_PRODUCTION) ||
+				(!bEmphasizeFood && !AI_isEmphasizeYield(YIELD_COMMERCE) &&
+				!AI_isEmphasizeGreatPeople()))
+			{
+				/*	don't worry about minimum production if there is any hurry type
+					available for us. If we need the productivity, we can just buy it. */
+				bool bAnyHurry = false;
+				/*	advc.121: I don't think a human will want to hurry production
+					when setting a city to "emphasize production" */
+				if (!isHuman())
+				{
+					for (HurryTypes i = (HurryTypes)0;
+						!bAnyHurry && i < GC.getNumHurryInfos(); i=(HurryTypes)(i+1))
+					{
+						bAnyHurry = kOwner.canHurry(i);
+					}
+				}
+				if (!bAnyHurry &&
+					foodDifference(false) - (bRemove ? iFoodYield : 0) >=
+					GC.getFOOD_CONSUMPTION_PER_POPULATION())
+				{
+					/*if (getYieldRate(YIELD_PRODUCTION) - (bRemove ? iProductionTimes100/100 : 0)  < 1 + getPopulation()/3)
+						iValue += 60 + iBaseProductionValue * iProductionTimes100 / 100;*/
+					int iCurrentProduction = getCurrentProductionDifference(true, false)
+							- (bRemove ? iProductionTimes100/100 : 0);
+					if (iCurrentProduction < 1 + getPopulation()/3)
+					{
+						iValue += 5 * iBaseProductionValue *
+								std::min(iProductionTimes100,
+								(1 + getPopulation()/3 - iCurrentProduction)*100) / 100;
+					}
+				}
+			}
+		}
+		if (!isProduction() && !isHuman())
+			iProductionValue /= 2;
+	}
+
+	int iSlaveryValue = 0;
+	int iFoodGrowthValue = 0;
+	if (!bIgnoreFood && iFoodYield != 0)
+	{
+		if (iGrowthValue < 0)
+			iGrowthValue = AI_growthValuePerFood();
+		// <k146>
+		if (bEmphasizeFood)
+		{
+			iGrowthValue += 8 // in addition to other effects.
+					+ (AI_isStrongEmphasis() ? 3 : 0); // advc.131d
+		} // </k146>
+		// <!-- custom: we have a major bug or suboptimal behaviour of cities being stagnant and allocating unimproved plains no bonus rather than improved sheep grassland (see "prague screenshots" and doc for details in as of now known issue 34 in docs), on top of the starving cities not allocating improved food tiles at all (see the "ulundi screenshots" for example and such as well as of now in example 34); both seem to come down to cities choosing production over food. Attempt for now in this change to reason cities that being stagnant is not good enough when there are nice yields to allocate, as provided and suggested by gemini ai thanks to my prompt and question about this issue i can't really or easily find the root of xd -->
+		// Add a small boost for non-emphasized food to make it more valuable than production
+		else if (iFoodYield > 0 && !AI_isEmphasizeAvoidGrowth()) {
+			iGrowthValue += 2;
+		}
+
+		// <!-- custom: moved up if i may say in this case too at least so we can use these in our checks -->
+		int iHealthLevel = goodHealth() - badHealth();
+		int iHappinessLevel = (isNoUnhappiness() ?
+				std::max(3, iHealthLevel + 5) : happyLevel() - unhappyLevel(0));
+
+		// <!-- custom: actually even if food is production, food is just as valuable, i noticed in tundra cities workers would go before our reworked workers (didn't check since since they also settle elsewhere now but i assume would be different with the new priority system of builds) 4 food is just as good as 4 hammer to produce a settler, no reason to negate here i think if i understood it correctly; i seem to have solved the issue of 1 hammer being preferred over 5 food even if city has to starve for it (see known issue 34 for details with screenshots and documentation about it too), now ulundi is growing big, not starving while unallocating the food, and high food tiles are all allocated although production is a bit low though now so need to reduce the crazy * 100 multiplier i put as well as a test on top of removing the foodisproduction check to fix / enhance things -->
+		// tiny food factor, to ensure that even when we don't want to grow,
+		// we still prefer more food if everything else is equal
+		// iValue += bFoodIsProduction ? 0 : (iFoodYieldTimes100+50)/100;
+		// <!-- custom: commented-out line below (that was a test to try to fix known issue 34 which is seemignly done or at least bypassed at the cost of angry cities still growing and having lower production) fixes it or so it seems, but at the cost of lowered produciton, even if cities have few angry citizens, try to make it more fine-tuned to city current state: we value food as long as we are not angry, if we are angry, value production in an attempt to build things that would make us go out of unhappiness, but even if we don't, no point in growing further, the citizen won't be allocated; results of this change seem to be very good, cities are not starving anymore unallocating food tiles, they grow until unhappy, then it seems to halt but the food tiles are still reasonable allocated even though production is now high as well and growth slow it seems from quick testing / glances, although this is a patch and not full fix, i hope this helps the issue a lot, or so it seems from quick testing -->
+		// iValue += ((iFoodYieldTimes100+50)/100) * 100;
+		// <!-- custom: note: also include 0 happiness (i.e not unhappy) as it seems in another same file, ulundi again was starving while not unhappy nor happy (at 0 exactly) instead of allocating a food tile; note 2: the issue happens still with this change but fixed itself right away the next turn, so i'd tend or like to think this is ideally solved, see known issue 34 appendix for details.
+		if (iHappinessLevel >= 0)
+		{
+			iValue += ((iFoodYieldTimes100+50)/100) * 3;
+		}
+		else
+		{
+			iValue += ((iFoodYieldTimes100+50)/100);
+		}
+
+
+		int const iFoodPerTurn = getYieldRate(YIELD_FOOD) - foodConsumption() -
+				(bRemove? iFoodYield : 0);
+		int const iFoodLevel = getFood();
+		int const iFoodToGrow = growthThreshold();
+		int const iPopulation = getPopulation();
+		/*	(I'd like to lower this when evaluating plots we might switch to -
+			but currently there is no way to know we're doing that.) */
+		int const iAdjustedFoodPerTurn = iFoodPerTurn;
+
+		// if we not human, allow us to starve to half full if avoiding growth
+		if (!bIgnoreStarvation)
+		{
+			int iStarvingAllowance = 0;
+			if (AI_isEmphasizeAvoidGrowth() || iHappinessLevel < (isHuman() ? 0 : 1))
+			{
+				iStarvingAllowance = std::max(0,
+						iFoodLevel - std::max(1, (7 * iFoodToGrow) / 10));
+				iStarvingAllowance /= 1 +
+						(iHappinessLevel+getEspionageHappinessCounter()/2 >= 0 ? 1 : 0) +
+						(iHealthLevel+getEspionageHealthCounter() > 0 ? 1 : 0);
+			}
+
+			// if still starving
+			if (iFoodPerTurn + iStarvingAllowance < 0)
+			{
+				// if working plots all like this one will save us from starving
+				//if (((bReassign?1:0)+iExtraPopulationThatCanWork+std::max(0, getSpecialistPopulation() - totalFreeSpecialists())) * iFoodYield >= -iFoodPerTurn)
+				/*if ((iExtraPopulationThatCanWork+std::max(bReassign?1:0, getSpecialistPopulation() - totalFreeSpecialists())) * iFoodYield >= -iFoodPerTurn + (bReassign ? std::min(iFoodYield, iConsumtionPerPop) : 0))
+				{
+					iValue += 2048;
+				}*/
+
+				// value food high, but not forced
+				//iValue += 36 * std::min(iFoodYield, -iFoodPerTurn+(bReassign ? iConsumtionPerPop : 0));
+				iValue += (iHappinessLevel >= 0 ? 2: 1)*std::max(iGrowthValue, iBaseProductionValue*3) * std::min(iFoodYield, -(iFoodPerTurn + iStarvingAllowance));
+				// note. iGrowthValue only counts unworked plots - so it isn't entirely suitable for this. Hence the arbitrary minimum value.
+			}
+		}
+
+		// if food isn't production, then adjust for growth
+		if ((bWorkerOptimization || !bFoodIsProduction) && !AI_isEmphasizeAvoidGrowth())
+		{
+			/*	only do relative checks on food if we want to grow AND do not emph food.
+				the emph food case will just give a big boost
+				to all food under all circumstances */
+			//if (bWorkerOptimization || (!bIgnoreGrowth && !bEmphasizeFood))
+			if (iGrowthValue > 0)
+			{
+				/*  K-Mod. Happiness boost we expect before we grow.
+					(originally, the boost was added directly to iHappyLevel) */
+				int iFutureHappy = 0;
+
+				// we have less than 10 extra happy, do some checks to see if we can increase it
+				//if (iHappinessLevel < 10)
+				/*	K-Mod. make it 5.
+					We shouldn't really be worried about growing 10 pop all at once... */
+				if (iHappinessLevel < 5)
+				{
+					/*	if we have anger becase no military, do not count it,
+						on the assumption that it will be remedied soon,
+						and that we still want to grow */
+					if (getMilitaryHappinessUnits() == 0 && kOwner.getNumCities() > 2)
+					{
+						iHappinessLevel += (//GC.getDefineINT(CvGlobals::NO_MILITARY_PERCENT_ANGER)
+								kTeam.getNoMilitaryAnger() * // advc.500c
+								(iPopulation + 1)) / GC.getPERCENT_ANGER_DIVISOR();
+					}
+
+					int const kMaxHappyIncrease = 2;
+
+					// if happy is large enough so that it will be over zero after we do the checks
+					if (iHappinessLevel + kMaxHappyIncrease > 0)
+					{
+						/*	not including reassignment penalty
+							because it's better to overestimate food here. */
+						int iNewFoodPerTurn = iFoodPerTurn + iFoodYield;
+						int iApproxTurnsToGrow = (iNewFoodPerTurn <= 0 ? MAX_INT :
+								((iFoodToGrow - iFoodLevel + iNewFoodPerTurn - 1) / iNewFoodPerTurn));
+
+						// do we have hurry anger?
+						int iHurryAngerTimer = getHurryAngerTimer();
+						if (iHurryAngerTimer > 0)
+						{
+							int iTurnsUntilAngerIsReduced = iHurryAngerTimer % flatHurryAngerLength();
+
+							// angry population is bad but if we'll recover by the time we grow...
+							if (iTurnsUntilAngerIsReduced <= iApproxTurnsToGrow)
+								iFutureHappy++;
+						}
+
+						// do we have conscript anger?
+						int iConscriptAngerTimer = getConscriptAngerTimer();
+						if (iConscriptAngerTimer > 0)
+						{
+							int iTurnsUntilAngerIsReduced = iConscriptAngerTimer % flatConscriptAngerLength();
+
+							// angry population is bad but if we'll recover by the time we grow...
+							if (iTurnsUntilAngerIsReduced <= iApproxTurnsToGrow)
+								iFutureHappy++;
+						}
+
+						// do we have defy resolution anger?
+						int iDefyResolutionAngerTimer = getDefyResolutionAngerTimer();
+						if (iDefyResolutionAngerTimer > 0)
+						{
+							int iTurnsUntilAngerIsReduced = iDefyResolutionAngerTimer %
+									flatDefyResolutionAngerLength();
+
+							// angry population is bad but if we'll recover by the time we grow...
+							if (iTurnsUntilAngerIsReduced <= iApproxTurnsToGrow)
+								iFutureHappy++;
+						}
+					}
+				}
+				/*  advc.121: Want the AI to grow cities a bit more aggressively
+					(but I don't quite know what I'm doing). Surely, in the
+					time that the city grows four times, we should be able to
+					procure an extra happiness. If not, the bonus to iFutureHappy
+					should go away once we near the cap (because iHappinessLevel
+					will drop under 4), and food can be de-emphasized. */
+				iFutureHappy += iHappinessLevel / 4;
+
+				if (bEmphasizeFood)
+				{
+					//If we are emphasize food, pay less heed to caps.
+					iHealthLevel += 5;
+					iFutureHappy += 3; // k146: was +=2
+					// <advc.131d>
+					if (AI_isStrongEmphasis())
+					{
+						iHealthLevel++;
+						iFutureHappy++;
+					} // </advc.131d>
+				}
+
+				bool const bBarFull = (iFoodLevel + iAdjustedFoodPerTurn >
+						iFoodToGrow * 80 / 100);
+
+				int iPopToGrow = std::max(0, iHappinessLevel+iFutureHappy);
+				int iGoodTiles = AI_countGoodTiles(iHealthLevel > 0, true, 50,
+						// K-Mod comment: so that we pretend the plots are already improved
+						// advc.121: Don't do that if no worker is assigned
+						isHuman() || AI_getWorkersHave() > 0);
+				iGoodTiles += AI_countGoodSpecialists(iHealthLevel > 0);
+
+				if (!bEmphasizeFood)
+				{
+					iPopToGrow = std::min(iPopToGrow,
+							iGoodTiles + (bWorkerOptimization ? 1 : 0));
+					// <k146>
+					if (iPopulation < 3 && iHappinessLevel+iFutureHappy > 0)
+						iPopToGrow = std::max(iPopToGrow, 1); // </k146>
+					if (AI_isEmphasizeYield(YIELD_PRODUCTION) || AI_isEmphasizeGreatPeople())
+					{
+						iPopToGrow = std::min(iPopToGrow, 2
+								- (AI_isStrongEmphasis() ? 1 : 0)); // advc.131d
+					}
+					else if (AI_isEmphasizeYield(YIELD_COMMERCE))
+					{
+						iPopToGrow = std::min(iPopToGrow, 3
+								- (AI_isStrongEmphasis() ? 1 : 0)); // advc.131d
+					}
+				}
+
+				// if we have growth pontential, then get the food bar close to full
+				bool bFillingBar = false;
+				if (iPopToGrow == 0 && iHappinessLevel >= 0 &&
+					iGoodTiles >= 0 && iHealthLevel >= 0)
+				{
+					if (!bBarFull)
+					{
+						//if (AI_specialYieldMultiplier(YIELD_PRODUCTION) < 50)
+						{
+							bFillingBar = true;
+						}
+					}
+				}
+
+				/*	We don't want to count growth value for tiles with nothing else to contribute.
+					But since AI_yieldValue is used for AI_jobChangeValue,
+					we can't assume that we're evaluating a plot. */
+				// (placeholder, just in case we restore this kind of check in the future)
+				bool const bRelativeComparison = true;
+				if ((iPopToGrow > 0 || bFillingBar) &&
+					(bRelativeComparison ||
+					iFoodYield > GC.getFOOD_CONSUMPTION_PER_POPULATION() ||
+					iProductionValue > 0 || iCommerceValue > 0))
+				{
+					if (bFillingBar)
+					{
+						iGrowthValue = iGrowthValue * iFoodToGrow /
+								std::max(1, 2*iFoodToGrow + iFoodLevel + iAdjustedFoodPerTurn);
+					}
+					if (iHealthLevel < (bFillingBar ? 0 : 1))
+						iGrowthValue = iGrowthValue * 2/3;
+
+					//iFoodGrowthValue = iFoodYield * iFactorPopToGrow;
+					/*	K-Mod. iGrowthValue is the initial value per piece of food,
+						but the value decreases by iDevalueRate for each piece.
+						Think of the integral with respect to x of
+						iGrowthValue * (100 - iDevalueRate*(iAdjustedFoodPerTurn+x))/100. */
+					int iDevalueRate = 0;
+					if (!bEmphasizeFood)
+					{
+						if (bFillingBar)
+						{
+							iDevalueRate = 25 + 15 *
+									(iFoodLevel + iAdjustedFoodPerTurn) / iFoodToGrow;
+						}
+						else // k146: was 20-...
+							iDevalueRate = 18 - std::min(5, iPopToGrow)*3;
+						if (iHealthLevel < 1)
+							iDevalueRate += 5;
+					}
+					// maximum value for this amount of food.
+					int iBestFoodYield = std::max(0,
+							std::min(iFoodYield, 100/std::max(1, iDevalueRate)
+							- iAdjustedFoodPerTurn));
+					iFoodGrowthValue = iBestFoodYield * iGrowthValue *
+							(100 - iDevalueRate*iAdjustedFoodPerTurn) / 100;
+					iFoodGrowthValue -= iBestFoodYield * iBestFoodYield *
+							iDevalueRate * iGrowthValue / 200;
+					FAssert(iFoodGrowthValue >= 0);
+					// K-Mod end
+				}
+			}
+
+			// Slavery evaluation
+			// K-Mod. Rescaled values and conditions.
+			//if (!bWorkerOptimization && isProduction() && kOwner.canPopRush() && getHurryAngerTimer() <= std::min(3,getPopulation()/2)+2*iHappinessLevel) // K-Mod
+			// k146: Replacing the above
+			if (!bWorkerOptimization && isProduction() &&
+				/*kOwner.*/canPopRush() && // advc.912d
+				iHappinessLevel >= 0)
+			{
+				//iSlaveryValue = 30 * 14 * std::max(0, aiYields[YIELD_FOOD] - ((iHealthLevel < 0) ? 1 : 0));
+				int iProductionPerPop = 0;
+				FOR_EACH_ENUM2(Hurry, eHurry)
+				{
+					if (kOwner.canHurry(eHurry) /* advc.912d: */ || canPopRush())
+					{
+						iProductionPerPop = std::max(iProductionPerPop,
+								GC.getGame().getProductionPerPopulation(eHurry)
+								// Don't use modifiers weights, because slavery usage is erratic.
+								/* *iBaseProductionModifier / 100*/);
+						
+					}
+				}
+				FAssert(iProductionPerPop > 0);
+				/*
+				// Note: '80' means that we're only counting 90% of the potential production, because slavery require careful micromangement to get 100% of the value.
+				iSlaveryValue = 80 * iProductionPerPop * iBaseProductionValue * std::max(0, iFoodYield - ((iHealthLevel < 0) ? 1 : 0));
+				iSlaveryValue /= std::max(10*100, (growthThreshold() * (100 - getMaxFoodKeptPercent())));
+				iSlaveryValue *= 100;
+				iSlaveryValue /= getHurryCostModifier(true);
+				iSlaveryValue *= iConsumtionPerPop * 2;
+				//iSlaveryValue /= iConsumtionPerPop * 2 + std::max(0, iAdjustedFoodDifference);
+				iSlaveryValue /= iConsumtionPerPop * 2 + std::max(0, iAdjustedFoodPerTurn - iConsumtionPerPop * iHappinessLevel);
+				*/
+				/*	<k146> Replacing the old calculation above:
+					Use the same 'devalue rate' system as we used for growth value earlier.
+					Ideally, we'd try to take our infrastructure needs into account.
+					(ie. how much do we still need to build.) */
+
+				// the factor of 100 is removed at the end.
+				int iWhipValue = 100 * iProductionPerPop * iBaseProductionValue;
+
+				int iDevalueRate = 0;
+				if (!bEmphasizeFood && !isNoUnhappiness())
+				{
+					/*	What we really care about is how many turns it will take
+						to grow the population lost from whipping.
+						But that calculation isn't easy
+						(given that number of turns will depend on which plots we choose to work
+						potentially resulting in circular reasoning.)
+						So we're just going to do some ad hoc calculation instead. */
+					iDevalueRate = std::max(0, 10 + getHurryAngerTimer() *
+							// 1*timer for size 1. 1/3 * in limit.
+							(3 + iPopulation) / (1 + 3 * iPopulation) - iHappinessLevel * 3);
+
+					if (iHealthLevel < 0)
+						iDevalueRate += 5;
+				}
+				// maximum value for this amount of food.
+				int iBestFoodYield = std::max(0, std::min(iFoodYield,
+						100 / std::max(1, iDevalueRate) - iAdjustedFoodPerTurn));
+				iSlaveryValue = iBestFoodYield * iWhipValue *
+						(100 - iDevalueRate * iAdjustedFoodPerTurn) / 100;
+				iSlaveryValue -= iBestFoodYield * iBestFoodYield *
+						iDevalueRate * iWhipValue / 200;
+
+				iSlaveryValue *= 100;
+				iSlaveryValue /= getHurryCostModifier(true);
+				iSlaveryValue /= std::max(10 * 100, growthThreshold() *
+						(100 - getMaxFoodKeptPercent()));
+
+				FAssert(iSlaveryValue >= 0); // </k146>
+			}
+		}
+	}
+
+	/*	Note: iSlaveryValue use to be counted in the production section.
+		(There are argument for and against - but this is easier.) */
+	int iFoodValue = iFoodGrowthValue;
+
+	if (iSlaveryValue > iFoodGrowthValue)
+	{
+		//iFoodValue = (iSlaveryValue + iFoodGrowthValue)/2; // Use the average - to account for the fact that we won't always be making use of slavery.
+		// advc.121b: Replacing the above. We'll only sometimes use Slavery.
+		iFoodValue = (iSlaveryValue + 2 * iFoodGrowthValue) / 3;
+	}
+
+	/*	Lets have some fun with the multipliers, this basically bluntens the
+		impact of massive bonuses..... */
+
+	/*	normalize the production... this allows the system to account for rounding
+		and such while preventing an "out to lunch smoking weed" scenario with
+		unusually high transient production modifiers.
+		Other yields don't have transient bonuses in quite the same way. */
+
+	/*	Rounding can be a problem, particularly for small commerce amounts.
+		Added safeguards to make sure commerce is counted, even if just a tiny amount. */
+	if (AI_isEmphasizeYield(YIELD_PRODUCTION))
+	{
+		int const iMultPercent = 140 // was 130
+				+ (AI_isStrongEmphasis() ? 25 : 0); // advc.131d
+		iProductionValue *= iMultPercent;
+		iProductionValue /= 100;
+		if (bFoodIsProduction)
+		{
+			iFoodValue *= iMultPercent;
+			iFoodValue /= 100;
+		}
+	}
+	else if (iProductionValue > 0 && AI_isEmphasizeYield(YIELD_COMMERCE))
+	{
+		iProductionValue *= 75
+				- (AI_isStrongEmphasis() ? 8 : 0); // advc.131d
+		iProductionValue /= 100;
+		iProductionValue = std::max(1, iProductionValue);
+	}
+
+	if (AI_isEmphasizeYield(YIELD_FOOD))
+	{
+		if (!bFoodIsProduction)
+		{
+			iFoodValue *= 130
+					+ (AI_isStrongEmphasis() ? 15 : 0); // advc.131d
+			iFoodValue /= 100;
+		}
+	}
+	/* else if (iFoodValue > 0 && (AI_isEmphasizeYield(YIELD_PRODUCTION) || AI_isEmphasizeYield(YIELD_COMMERCE)))
+	{
+		iFoodValue *= 75; // was 75 for production, and 80 for commerce. (now same for both.)
+		iFoodValue /= 100;
+		iFoodValue = std::max(1, iFoodValue);
+	} */ // K-Mod. Food value is now scaled elsewhere.
+
+	if (AI_isEmphasizeYield(YIELD_COMMERCE))
+	{
+		iCommerceValue *= 140 // was 130
+				+ (AI_isStrongEmphasis() ? 17 : 0); // advc.131d
+		iCommerceValue /= 100;
+	}
+	else if (iCommerceValue > 0 && AI_isEmphasizeYield(YIELD_PRODUCTION))
+	{
+		iCommerceValue *= 75 // was 60
+				- (AI_isStrongEmphasis() ? 15 : 0); // advc.131d
+		iCommerceValue /= 100;
+		iCommerceValue = std::max(1, iCommerceValue);
+	}
+
+	if (iProductionValue > 0)
+	{
+		if (bFoodIsProduction)
+		{
+			iProductionValue *= 100 + (bWorkerOptimization ? 0 :
+					AI_specialYieldMultiplier(YIELD_PRODUCTION));
+			iProductionValue /= 100;
+		}
+		else
+		{
+			iProductionValue *= iBaseProductionModifier;
+			iProductionValue /= (iBaseProductionModifier + iExtraProductionModifier);
+
+			// Note: iSlaveryValue use to be added here. Now it is counted as food value instead.
+			iProductionValue *= 100 + (bWorkerOptimization ? 0 :
+					AI_specialYieldMultiplier(YIELD_PRODUCTION));
+			iProductionValue /= kOwner.AI_averageYieldMultiplier(YIELD_PRODUCTION);
+		}
+
+		iValue += std::max(1,iProductionValue);
+	}
+
+	if (iCommerceValue > 0)
+	{
+		iCommerceValue *= (100 + (bWorkerOptimization ? 0 : AI_specialYieldMultiplier(YIELD_COMMERCE)));
+		iCommerceValue /= kOwner.AI_averageYieldMultiplier(YIELD_COMMERCE);
+		iValue += std::max(1, iCommerceValue);
+	}
+
+	// <!-- custom: weird code comment above, adding here a fix with the help of chatgpt o3 thanks, to attempt to fix as of now known issue 40 of a china AI city in this example staying pop 1 for 50 turns seemingly due to one or a few high production tiles, and producting archers, walls, workers etc (which is maybe not bad, but favour growth rather at least more, as city is pop 3 at turn 100 while it could grow so fast instead if it could do this still, seems really bad as city is very happy so could have grown a lot. So make food value a function of happiness vs unhappiness ratio, so that the closer we are to hapiness vs unhappiness cap (i.e. 0, equal hapyp vs unhappy, the less we value foodn, and also meaning if we are very happy, favour growth), hopefully not going overboard of having size 10 cities with 1 hammer and max pop and many unhappy citizens; note: chatgpt 3-o went with +6% food increase per happy, but i felt it's too conservative, grow if we can, so although i have no idea of actual values trying other values experimentally and we see-->
+	// ------------------------------------------------------------------
+	// boost food if there is spare happiness
+	// ------------------------------------------------------------------
+	// Zero change if happiness ≤ unhappiness, so starving / angry cities stay cautious.
+	int const iHappySurplus = happyLevel() - unhappyLevel(0);      // >0 means room to grow
+	// <!-- custom: exception to this rule: if food is production (worker, settler, etc if any), then 6 hammer is fine and better than 2 or 3 food. I just don't know if AI would swap its tiles later or not-->
+	if (iHappySurplus > 0 && !isFoodProduction())
+	{
+		/*  Each surplus happy point increases food’s weight.
+			Pop-1 cities with +5 happy <!-- custom: increase quite a lot / significantly --> the attractiveness of food.   */
+		// <!-- custom: for example with 9 happy and 1 unhappy so 9 - 1 = 8 happy surplus, we'd have the food value now being multiplied by 8, but if happy surplus is only 2 (say 9 happy 7 unhappy for example) then the food multiplier would only be 2 which seems fine as it is quite mild maybe (i don't know but i assume seeing very quickly other mulitplicative calculations in this function but only glanced and from my memory of it so check to be sure) but still encouraging growth, testing it to see if excessive or not ingame or if solves known issue as of now 40 among other issues or not; in short favour growth if we are happy (i.e and have room to grow), and the happier we are the more we want to use it to grow (even if production is lower as a result short term) -->
+		// <!-- custom: update: this change seems very effective, china ai grows its city very fast, although at another spot, and has 3 cities at turn 50 now not just 2 with high pop. These cities opt for high food at low pop, then at high pop they seem to successfully switch or focus on hammer a lot more, i am very happy of these changes, i think AI is stronger and reacts more dynamically to its environment now, without being too food focused. At turn 60, China AI has a 4th city growing as well already, very nice; i did another run in autoplay as welland the results seem even better. China AI settled its city C at same location, improved the copper, although a bit later, then continuously ignored it, grew, and slaved a few times, while still favouring growth and being way over happiness cap in this cap; at turn 100 it has a few more buildings than when it stayed passively low pop on copper. It seemed also as said before to adopt a produciton profile again at hgiher pop, beijing would produce the great wall :) looking inside beijing the hammer production is decent: most high hammer tiles are worked, while most are still food tiles, but this seems very efficient or nice :) i am very happy of these changes and result, and i think AI is quite a lot stronger now, see also known issue as of now 40 for details or additional info -->
+		// <!-- custom: note: if happiness surplus is exactly 1, this seems to do nothing as noted by chatgpt 3-o if i may say and which although it annoyed me bit with math xd it helped me lot so thanks a lot chagpt 3-o too (:)), as we multiply by 1, but since i'm satisfied with these results, leaving it as such, probably not too bad or maybe even fine as such as 1 happiness is about full no happy almost anyways -->
+		iFoodValue *= iHappySurplus;
+
+		/*  Optional: nudge hammers downward when the city is very happy
+			so a lone 6-hammer hill won’t override a 3-food pasture.           */
+		if (iHappySurplus >= 3)
+		{
+			// <!-- custom: so for example with 9 happy and 1 unhappy, we'd have 9 - 1 = 8 happy surplus, so we'd want to reduce hammer value a lot and capitalize on our happiness to grow, and so it production value would be divided by 8 - 1 = 7 so we'd have iProductionValue reduced to 1 / 7 = 14.3 % (approximately) of its former value, so we'd grow much more ideally, but if happiness suprplus is say only 3 (for example 9 happy and 6 unhappy), the extra divider would be 3 - 1 = 2, so we'd have iProductionValue reduced to = 1 / 2 = 50% of its former value which is fine i think, we still have some room to grow after all, better use that and capitalize on long term -->
+			iProductionValue /= (iHappySurplus - 1);
+		}
+	}
+
+	if (iFoodValue > 0)
+	{
+		iFoodValue *= 100;
+		iFoodValue /= kOwner.AI_averageYieldMultiplier(YIELD_FOOD);
+		iValue += std::max(1, iFoodValue);
+	}
+
+	return iValue;
+}
+
+// units of 400x commerce
+int CvCityAI::AI_plotValue(CvPlot const& kPlot, bool bRemove, bool bIgnoreFood,
+	bool bIgnoreStarvation, int iGrowthValue) const
+{
+	FAssert(getCityPlotIndex(kPlot) < NUM_CITY_PLOTS);
+	/*	K-Mod. To reduce code duplication, this function now uses AI_jobChangeValue.
+		(original code deleted) */
+	if (bRemove)
+	{
+		return -AI_jobChangeValue(std::make_pair(false, -1),
+				std::make_pair(false, getCityPlotIndex(kPlot)),
+				bIgnoreFood, bIgnoreStarvation, iGrowthValue);
+	}
+	else
+	{
+		return AI_jobChangeValue(std::make_pair(false, getCityPlotIndex(kPlot)),
+				std::make_pair(false, -1),
+				bIgnoreFood, bIgnoreStarvation, iGrowthValue);
+	}
+}
+
+/*	K-Mod. value gained by working new_job, and stopping work of old_job.
+	jobs are (bSpecialist, iIndex) pairs. iIndex < 0 indicates "no job".
+	Return value is roughly 400x commerce per turn.
+	This function replaces AI_plotValue and AI_specialistValue. */
+int CvCityAI::AI_jobChangeValue(std::pair<bool, int> new_job, std::pair<bool, int> old_job,
+	bool bIgnoreFood, bool bIgnoreStarvation, int iGrowthValue) const
+{
+	PROFILE_FUNC();
+
+	FAssert(new_job.second < 0 || (new_job.first ? new_job.second < GC.getNumSpecialistInfos() : getCityIndexPlot((CityPlotTypes)new_job.second)));
+	FAssert(old_job.second < 0 || (old_job.first ? old_job.second < GC.getNumSpecialistInfos() : getCityIndexPlot((CityPlotTypes)old_job.second)));
+
+	CvPlayerAI const& kOwner = GET_PLAYER(getOwner());
+
+	// <!-- custom: make these static const for performance optimization as advised by chatgpt 5 too. -->
+	// <!-- custom: code/performance optimization: hoist -->
+	static const SpecialistTypes eDefaultSpecialist = (SpecialistTypes)GC.getDEFAULT_SPECIALIST();
+
+	static const bool bSAS_AI_JOB_CHANGE_VALUE_OPTIMIZE = GC.getDefineBOOL("SAS_AI_JOB_CHANGE_VALUE_OPTIMIZE");
+
+	// <!-- custom: note: it seems based on autoplay results i mean that this block and function only apply to non-human players when trying to relax this and play manually the behaviour seemingly does not happen as implemented here vs if i autoplay with my player ai player in autoplay, but added the human check just to be safe and in case. Check if accurate as i don't know too much about these -->
+	if (bSAS_AI_JOB_CHANGE_VALUE_OPTIMIZE)
+	{
+		// <!-- custom: update: recommended by chatgpt 5 to use a high negative value such as -100000 instead of 1 in case other values could be lower and then our specialist unwantingly still being chosen if i understood its explanation correctly. To avoid that, use a very negative value, still high enough to avoid overflow according to my understanding of chatgpt's explanation, check if accurate and relevant here -->
+		static const int iSAS_AI_JOB_CHANGE_VALUE_AI_JOB_FORBIDDEN = GC.getDefineINT("SAS_AI_JOB_CHANGE_VALUE_AI_JOB_FORBIDDEN");
+
+		const bool bHuman = kOwner.isHuman();
+
+		// <!-- custom: code provided with the help of gemini ai and then chatgpt thanks, to prevent AI from choosing the citizen specialist, which is generally if not almost always a bad or inefficient choice, especially crippling in the early game i think. As gemini AI did, it is also more efficient computationally to early return at beginning of function rather than do all computation just to return an int without any computation.  Early return and drastic disallowing is more efficient computationally and strategically, i can barely see cases where the citizen specialist would be valuable. Originally this code returned 1 as gemini ai did and had suggested in code comment below, but then as per chatgpt 5's review now released hehe with available code samples, and while adding the strict population limit to address AI cities wrongly assigning inefficiently/too early sometimes specialists and then stagnating (see below for details) or such similar or relatded issue, use a lower value to be safe and better cover edge cases, unlike what is written below from gemini ai, kept for exhaustiveness and just in case -->
+		// <!-- custom: it seems we deleted the no citizen logic or it is missing here for some reason, adding it again as recommended by chatgpt 5.1; i adjusted its code by removing some extra other stuff -->
+        // -----------------------------------------------------------------
+        // 0) Citizen guard – only as LAST RESORT
+        //     - AI: always active
+        //     - Humans: active when SAS_CONVENIENCE_HUMAN_NO_AUTO_CITIZEN_SPECIALIST is 1
+        // -----------------------------------------------------------------
+		if (eDefaultSpecialist != NO_SPECIALIST && new_job.first && new_job.second == eDefaultSpecialist)
+		{
+			if (!bHuman)
+			{
+				return iSAS_AI_JOB_CHANGE_VALUE_AI_JOB_FORBIDDEN;
+			}
+			else
+			{
+				static const bool bNoAutoHumanCitizen = GC.getDefineBOOL("SAS_CONVENIENCE_HUMAN_NO_AUTO_CITIZEN_SPECIALIST");
+
+				if (bNoAutoHumanCitizen)
+				{
+					// <!-- custom: enable (recommended) / disable to toggle the game auto assigning citizen specialists for the human player sometimes in their cities, which is annoying and inefficient; code added with the help of chatgpt 5.1, check if accurate -->
+					// Yes, with your current XML + AI_jobChangeValue changes, the fix does do what you want for human players: the AI auto-assignment logic will now treat Citizens as “forbidden" using the same strong negative value that worked so well for AI cities.
+					// Manual specialist changes are untouched (still allowed to create Citizens).
+					// <!-- custom: fires often (very often actually xd) so is noisy but at least works fine it seems. From t300 to t301 it fires like 10+ times just this turn more or less (didn't count exactly but seems as such). But it is useful, to make sure we effectively block citizen specialists as intended, even though most of it is just the AI considering it and not actually going for it or choosing it. Would need more testing to be sure though, but considering it worked fine for AI players, it might also work as well for human players, but check to be sure and see known issue as of now 44.6 for details -->
+					// 2. Why does it fire “a big lot"?
+					// That’s expected with where you put it.
+					// 	- AI_jobChangeValue is called a lot from AI_juggleCitizens and AI_addBestCitizen, for every candidate job (plot or specialist) during each juggling cycle.
+					// 	- Every time the governor considers “what about a citizen?" for a human city while your define is on, it hits your guard, returns the huge negative value, and (in debug) triggers the FAssertMsg(false, ...).
+					// So at T300, with multiple cities, each time the city grows or auto-assignment is reconsidered, you can easily see dozens or hundreds of those asserts in a single turn. That doesn’t mean the logic is broken; it just means your debug hook is very low-level.
+					#ifdef _DEBUG
+					FAssertMsg(false, CvString::format(
+						"SAS citizen debug: T%d city=%S (%d,%d) owner=%S: no type=%s auto specialists for human players.",
+						GC.getGame().getGameTurn(),
+						getName().GetCString(),
+						getX(), getY(),
+						kOwner.getName(),
+						GC.getInfo((SpecialistTypes)new_job.second).getType() // gives e.g. SPECIALIST_CITIZEN
+					).c_str());
+					#endif
+
+					return iSAS_AI_JOB_CHANGE_VALUE_AI_JOB_FORBIDDEN;
+				}
+			}
+		}
+
+		static const bool bNoAutoHumanScientist = GC.getDefineBOOL("SAS_CONVENIENCE_HUMAN_NO_AUTO_SCIENTIST_SPECIALIST");
+		static const bool bNoAutoHumanEngineer  = GC.getDefineBOOL("SAS_CONVENIENCE_HUMAN_NO_AUTO_ENGINEER_SPECIALIST");
+		static const bool bNoAutoHumanMerchant  = GC.getDefineBOOL("SAS_CONVENIENCE_HUMAN_NO_AUTO_MERCHANT_SPECIALIST");
+		static const bool bNoAutoHumanPriest    = GC.getDefineBOOL("SAS_CONVENIENCE_HUMAN_NO_AUTO_PRIEST_SPECIALIST");
+		static const bool bNoAutoHumanSpy       = GC.getDefineBOOL("SAS_CONVENIENCE_HUMAN_NO_AUTO_SPY_SPECIALIST");
+		static const bool bNoAutoHumanArtist    = GC.getDefineBOOL("SAS_CONVENIENCE_HUMAN_NO_AUTO_ARTIST_SPECIALIST");
+
+		static const SpecialistTypes eScientist = (SpecialistTypes)GC.getInfoTypeForString("SPECIALIST_SCIENTIST");
+		static const SpecialistTypes eEngineer  = (SpecialistTypes)GC.getInfoTypeForString("SPECIALIST_ENGINEER");
+		static const SpecialistTypes eMerchant  = (SpecialistTypes)GC.getInfoTypeForString("SPECIALIST_MERCHANT");
+		static const SpecialistTypes ePriest    = (SpecialistTypes)GC.getInfoTypeForString("SPECIALIST_PRIEST");
+		static const SpecialistTypes eSpy       = (SpecialistTypes)GC.getInfoTypeForString("SPECIALIST_SPY");
+		static const SpecialistTypes eArtist    = (SpecialistTypes)GC.getInfoTypeForString("SPECIALIST_ARTIST");
+
+		// 0b) Human-only: block specific auto specialists based on convenience defines
+		if (bHuman && new_job.first && new_job.second >= 0)
+		{
+			const SpecialistTypes eSpec = (SpecialistTypes)new_job.second;
+			bool bForbidden = false;
+
+			if (bNoAutoHumanScientist && eSpec == eScientist)
+			{
+				bForbidden = true;
+			}
+			else if (bNoAutoHumanEngineer && eSpec == eEngineer)
+			{
+				bForbidden = true;
+			}
+			else if (bNoAutoHumanMerchant && eSpec == eMerchant)
+			{
+				bForbidden = true;
+			}
+			else if (bNoAutoHumanPriest && eSpec == ePriest)
+			{
+				bForbidden = true;
+			}
+			else if (bNoAutoHumanSpy && eSpec == eSpy)
+			{
+				bForbidden = true;
+			}
+			else if (bNoAutoHumanArtist && eSpec == eArtist)
+			{
+				bForbidden = true;
+			}
+
+			if (bForbidden)
+			{
+				#ifdef _DEBUG
+				FAssertMsg(false, CvString::format(
+					"SAS specialist debug: T%d city=%S (%d,%d) owner=%S: no type=%s auto specialists for human players.",
+					GC.getGame().getGameTurn(),
+					getName().GetCString(),
+					getX(), getY(),
+					kOwner.getName(),
+					GC.getInfo(eSpec).getType() // gives e.g. SPECIALIST_SPY
+				).c_str());
+				#endif
+
+				return iSAS_AI_JOB_CHANGE_VALUE_AI_JOB_FORBIDDEN;
+			}
+		}
+
+		// <!-- custom: before the no specialist at low pop rule, and regardless of city population, handle the exception where we absolutely need an artist to get our BFC, if city has low or no culture. Code provided by chatgpt 5 and thanks to my prompts or such and that i adjusted or such, check if accurate -->
+		// --- Simple BFC Artist precheck ---------------------------------------------
+		// If we don't have BFC yet (level < 1) and city culture is very low (<3),
+		// force-pick exactly one Artist; and don't drop it until BFC is reached.
+		static const bool bSAS_DO_TURN_FORCE_ARTIST_IF_NO_BFC_AND_LOW_CULTURE = GC.getDefineBOOL("SAS_DO_TURN_FORCE_ARTIST_IF_NO_BFC_AND_LOW_CULTURE");
+
+		static const int iSAS_DO_TURN_FORCE_ARTIST_MIN_NO_CULTURE_LEVEL_THRESHOLD = GC.getDefineINT("SAS_DO_TURN_FORCE_ARTIST_MIN_NO_CULTURE_LEVEL_THRESHOLD");
+		const bool bBelowCultureLevel = (getCultureLevel() < iSAS_DO_TURN_FORCE_ARTIST_MIN_NO_CULTURE_LEVEL_THRESHOLD);
+
+		const bool bWantBFCArtist = (bBelowCultureLevel && bSAS_DO_TURN_FORCE_ARTIST_IF_NO_BFC_AND_LOW_CULTURE);
+
+		if (!bHuman && !bWantBFCArtist && (eArtist != NO_SPECIALIST))
+		{
+			const int iCityPopulation = getPopulation();
+
+			// <!-- custom: AIs often misassign specialists especially when their city is still small and perhaps low food too, resulting in pop 2 cities being stagnant. Sometimes even 2 specialists were assigned in said cities. Happened to barbarians too. It would be amazing to retweak all, but i believe a simple sanity/safe patch of preventing cities <= 4 to use a specialist of any kind would help a lot, see known issue as of now 45 for details, also code by chatgpt 5 that i adjusted or not or yes or etc, check if accurate and thanks for help chatgpt 5 hehe -->
+			if (iCityPopulation <= 4)
+			{
+				if (new_job.first /* hiring any specialist */)
+				{
+					return iSAS_AI_JOB_CHANGE_VALUE_AI_JOB_FORBIDDEN;
+				}
+			}
+			// <!-- custom: also disable/discourage AI from choosing a specialist for any bigger size city if they can still grow before that, hopefully also helps them be more efficient and stronger without killing versatility -->
+			// <!-- custom: update: generalizing the previous is "grow when you can instead of assigning any specialist" policy below now to all bigger sized cities without population cap anymore, as some cities still are inefficiently stagnant when they could have grown first instead, see known issue as of now 45 for details with screenshots -->
+			// <!-- custom: also note: on the plus side as well, not having to think about specialists at all in some conditions will probably save quite a lot or a bit at least if i may say of computation as well as a nice side effect too hopefully while preserving versatility or preserving it enough and assuming our change works as intended (would need to test more to be sure)-->
+			// strict growth-first rule for small-but-not-tiny cities with headroom
+			// Block *hiring* specialists when: pop >= 7, net happy ≥ 1, food surplus ≥ 2,
+			// and we're NOT in food→production mode (Settlers/Workers).
+			// <!-- custom: update: generalizing this "grow when you can instead of assigning any specialist" policy, as some cities still are inefficiently stagnant when they could have grown first instead, see known issue as of now 45 for details with screenshots -->
+			// else if (iCityPopulation <= 7 && !isFoodProduction() && (iHappySurplus >= 1))
+			else
+			{
+				const int iHappySurplus = (happyLevel() - unhappyLevel(0));
+
+				if (!isFoodProduction() && (iHappySurplus >= 1))
+				{
+					int const iFoodSurplus = getYieldRate(YIELD_FOOD) - foodConsumption();
+
+					if (iFoodSurplus >= 2 && new_job.first)
+					{
+						return iSAS_AI_JOB_CHANGE_VALUE_AI_JOB_FORBIDDEN;
+					}
+				}
+			}
+		}
+		
+		// <!-- custom: for barbarians, do not allow any other specialist than the scientist, they would die or if not really don't need the other types for efficiency as well, keeping the scientist for versatility and utility, and in case we make some changes later where they last a big longer as a result; note: for performance optimization, put this check last so all other conditions apply to other non-barbarian AI players first without checking this uneededly and if this is a word xd, as well as to barbarians as well, then only if not check barbarians specifically for remaining conditions -->
+		// Barbarian rule: allow only Scientist as a specialist target.
+		// Applies to both hires (plot->spec) and switches (spec->spec). Removals (spec->plot) unaffected.
+        // ---------------------------------------------------------------------
+        // 3) Barbarian rule – AI only: only Scientists allowed as specialists
+        // ---------------------------------------------------------------------
+		if (!bHuman && isBarbarian())
+		{
+			if ((eScientist != NO_SPECIALIST) && new_job.first && (new_job.second != eScientist))
+			{
+				return iSAS_AI_JOB_CHANGE_VALUE_AI_JOB_FORBIDDEN;
+			}
+		} 
+	}
+	
+	int iTotalValue = 0;
+
+	// Calculate and evaluate direct changes in yields
+	int aiYieldGained[NUM_YIELD_TYPES] = {};
+	int aiYieldLost[NUM_YIELD_TYPES] = {};
+
+	FOR_EACH_ENUM(Yield)
+	{
+		int iYield = 0;
+		if (new_job.second >= 0)
+		{
+			iYield += new_job.first ?
+					kOwner.specialistYield((SpecialistTypes)new_job.second, eLoopYield) :
+					getCityIndexPlot((CityPlotTypes)new_job.second)->getYield(eLoopYield);
+		}
+
+		if (old_job.second >= 0)
+		{
+			iYield -= old_job.first ?
+					kOwner.specialistYield((SpecialistTypes)old_job.second, eLoopYield) :
+					getCityIndexPlot((CityPlotTypes)old_job.second)->getYield(eLoopYield);
+		}
+
+		if (iYield >= 0)
+			aiYieldGained[eLoopYield] = iYield;
+		else aiYieldLost[eLoopYield] = -iYield;
+	}
+	int iYieldValue = 0;
+	iYieldValue += 100 * AI_yieldValue(aiYieldGained, NULL, false,
+			bIgnoreFood, bIgnoreStarvation, false, iGrowthValue);
+	iYieldValue -= 100 * AI_yieldValue(aiYieldLost, NULL, true,
+			bIgnoreFood, bIgnoreStarvation, false, iGrowthValue);
+
+	/*	Check whether either the old job or the new job
+		involves an upgradable improvement. (eg. a cottage)
+		Note, AI_finalImprovementYieldDifference will update the yield vectors. */
+	bool bUpgradeYields = false;
+	if (new_job.second >= 0 && !new_job.first && AI_finalImprovementYieldDifference(
+		*getCityIndexPlot((CityPlotTypes)new_job.second), aiYieldGained))
+	{
+		bUpgradeYields = true;
+	}
+	if (old_job.second >= 0 && !old_job.first && AI_finalImprovementYieldDifference(
+		*getCityIndexPlot((CityPlotTypes)old_job.second), aiYieldLost))
+	{
+		bUpgradeYields = true;
+	}
+	if (bUpgradeYields)
+	{
+		FOR_EACH_ENUM2(Yield, y)
+		{
+			int iYield = aiYieldGained[y] - aiYieldLost[y];
+			if (iYield >= 0)
+			{
+				aiYieldGained[y] = iYield;
+				aiYieldLost[y] = 0;
+			}
+			else
+			{
+				aiYieldGained[y] = 0;
+				aiYieldLost[y] = -iYield;
+			}
+		}
+		/*	Combine the old and new values in the same way as AI_plotValue.
+			(cf. AI_plotValue) */
+		int iFinalYieldValue = 0;
+		iFinalYieldValue += 100 * AI_yieldValue(aiYieldGained, NULL, false,
+				bIgnoreFood, bIgnoreStarvation, false, iGrowthValue);
+		iFinalYieldValue -= 100 * AI_yieldValue(aiYieldLost, NULL, true,
+				bIgnoreFood, bIgnoreStarvation, false, iGrowthValue);
+
+		if (iFinalYieldValue > iYieldValue)
+			iYieldValue = (40 * iYieldValue + 60 * iFinalYieldValue) / 100;
+		else iYieldValue = (60 * iYieldValue + 40 * iFinalYieldValue) / 100;
+	}
+	iTotalValue += iYieldValue;
+	// (end of yield value)
+
+	// Special consideration of plot improvements.
+	int iImprovementsValue = 0;
+	if (new_job.second >= 0 && !new_job.first)
+	{
+		iImprovementsValue += AI_specialPlotImprovementValue(
+				*getCityIndexPlot((CityPlotTypes)new_job.second));
+	}
+	if (old_job.second >= 0 && !old_job.first)
+	{
+		iImprovementsValue -= AI_specialPlotImprovementValue(
+				*getCityIndexPlot((CityPlotTypes)old_job.second));
+	}
+	iTotalValue += iImprovementsValue;
+
+	// Specialist extras
+	if (new_job.first || old_job.first)
+	{
+		// Raw commerce value (plots don't give raw commerce)
+		int aiCommerceGained[NUM_COMMERCE_TYPES] = {};
+		int aiCommerceLost[NUM_COMMERCE_TYPES] = {};
+
+		FOR_EACH_ENUM(Commerce)
+		{
+			int iCommerce = 0;
+
+			if (new_job.second >= 0 && new_job.first)
+			{
+				iCommerce += kOwner.specialistCommerce((SpecialistTypes)
+						new_job.second, eLoopCommerce);
+			}
+			if (old_job.second >= 0 && old_job.first)
+			{
+				iCommerce -= kOwner.specialistCommerce((SpecialistTypes)
+						old_job.second, eLoopCommerce);
+			}
+			if (iCommerce >= 0)
+				aiCommerceGained[eLoopCommerce] = iCommerce;
+			else
+				aiCommerceLost[eLoopCommerce] = -iCommerce;
+		}
+		iTotalValue += 100 * AI_yieldValue(NULL, aiCommerceGained, false,
+				bIgnoreFood, bIgnoreStarvation, false, iGrowthValue);
+		iTotalValue -= 100 * AI_yieldValue(NULL, aiCommerceLost, true,
+				bIgnoreFood, bIgnoreStarvation, false, iGrowthValue);
+
+		int iGPPGained = 0;
+		int iGPPLost = 0;
+		if (new_job.second >= 0 && new_job.first)
+			iGPPGained += GC.getInfo((SpecialistTypes)new_job.second).getGreatPeopleRateChange();
+		if (old_job.second >= 0 && old_job.first)
+			iGPPLost += GC.getInfo((SpecialistTypes)old_job.second).getGreatPeopleRateChange();
+
+		if (iGPPGained || iGPPLost)
+		{
+			int iEmphasisCount = AI_isEmphasizeYield(YIELD_COMMERCE) +
+					AI_isEmphasizeYield(YIELD_FOOD) + AI_isEmphasizeYield(YIELD_PRODUCTION);
+
+			int iBaseValue = AI_isEmphasizeGreatPeople() ? 12 :
+					(iEmphasisCount > 0 ? 3 : 4);
+				// note: each point of iEmphasisCount reduces the value at the end.
+
+			int iGPPValue = 0;
+
+			/*	Value for GPP, dependant on great person type.
+				(Note: currently for humans, great person weights are all 100.) */
+			if (iGPPGained)
+			{
+				iGPPValue += iGPPGained * iBaseValue * kOwner.AI_getGreatPersonWeight((UnitClassTypes)
+						GC.getInfo((SpecialistTypes)new_job.second).getGreatPeopleUnitClass());
+			}
+			if (iGPPLost)
+			{
+				iGPPValue -= iGPPLost * iBaseValue * kOwner.AI_getGreatPersonWeight((UnitClassTypes)
+						GC.getInfo((SpecialistTypes)old_job.second).getGreatPeopleUnitClass());
+			}
+			iGPPValue *= getTotalGreatPeopleRateModifier();
+			iGPPValue /= 100;
+
+			// Bonus value for GPP when we're close to getting another great person
+			if (!isHuman() || AI_isEmphasizeGreatPeople())
+			{
+				int iProgress = getGreatPeopleProgress();
+				if (iProgress > 0)
+				{
+					int iThreshold = kOwner.greatPeopleThreshold();
+					int iCloseBonus = (iGPPGained - iGPPLost) * (isHuman() ? 1 : 4) *
+							iBaseValue * iProgress / iThreshold;
+					iCloseBonus *= iProgress;
+					iCloseBonus /= iThreshold;
+					iGPPValue += iCloseBonus;
+				}
+			}
+
+			// Scale based on how often this city will actually get a great person.
+			if (iGPPValue != 0 && // k146
+				!AI_isEmphasizeGreatPeople())
+			{
+				int iCityRate = getGreatPeopleRate() + iGPPGained - iGPPLost;
+				int iHighestRate = 0;
+				FOR_EACH_CITY(pLoopCity, kOwner)
+					iHighestRate = std::max(iHighestRate, pLoopCity->getGreatPeopleRate());
+				if (iHighestRate > iCityRate)
+				{
+					iGPPValue *= 100;
+					/*	the +8 is just so that we don't block ourselves
+						from assigning the first couple of specialists. */
+					iGPPValue /= (2*100*(iHighestRate+8))/(iCityRate+8) - 100;
+				}
+				/*	each successive great person costs more points.
+					So the points are effectively worth less...
+					(note: I haven't tried to match this value decrease
+					with the actual cost increase,
+					because the value of the great people changes as well.) */
+				iGPPValue *= 138; // advc.121: was *=100
+				// it would be nice if we had a flavour modifier for this.
+				iGPPValue /= 90 + 9 * kOwner.getGreatPeopleCreated(); // advc.121: was 90+7*...
+			}
+
+			//iTempValue /= kOwner.AI_averageGreatPeopleMultiplier();
+			/*	K-Mod note: ultimately, I don't think the value should be divided
+				by the average multiplier.
+				because more great people points is always better,
+				regardless of what the average multiplier is.
+				However, because of the flawed way that food is currently evaluated,
+				I need to dilute the value of GPP
+				so that specialists don't get value more highly than food tiles.
+				(I hope to correct this later.) */
+			iGPPValue *= 100;
+			iGPPValue /= (300 + kOwner.AI_averageGreatPeopleMultiplier())/4;
+
+			iGPPValue /= (1 + iEmphasisCount);
+
+			iTotalValue += iGPPValue;
+		} /* advc.001: Moved the XP code out of the 'iGPPGained || iGPPLost' block.
+			 That (unused) ability shouldn't be assumed to imply a GPP rate. */
+		// Evaluate military experience from specialists
+		int iExperience = 0;
+		if (new_job.second >= 0 && new_job.first)
+			iExperience += GC.getInfo((SpecialistTypes)new_job.second).getExperience();
+		if (old_job.second >= 0 && old_job.first)
+		{	// advc.001: was +=
+			iExperience -= GC.getInfo((SpecialistTypes)old_job.second).getExperience();
+		}
+		if (iExperience != 0)
+		{
+			int iProductionRank = findYieldRateRank(YIELD_PRODUCTION);
+			int iExperienceValue = 100 * iExperience * 4;
+			if (iProductionRank <= kOwner.getNumCities() / 2 + 1
+				|| isBarbarian()) // advc.300: Yield rank shouldn't matter for them
+			{
+				iExperienceValue += 100 * iExperience * 4;
+			}
+			iExperienceValue += (getMilitaryProductionModifier() * iExperience * 8);
+			iTotalValue += iExperienceValue;
+		}
+		// Devalue generic citizens (for no specific reason). (cf. AI_specialistValue)
+		/* if (no gpp) {
+			SpecialistTypes eGenericCitizen = eDefaultSpecialist;
+			if (eGenericCitizen != NO_SPECIALIST) {
+				if (new_job.first && new_job.second == eGenericCitizen)
+					iTotalValue = iTotalValue * 80 / 100;
+				if (old_job.first && old_job.second == eGenericCitizen)
+					iTotalValue = iTotalValue * 100 / 80;
+			} } */
+	}
+
+	return iTotalValue;
+}
+
+/*	K-Mod. Difference between current yields and
+	yields after plot improvement reaches final upgrade.
+	piYields will have final yields added to it, and current yields subtracted.
+	Return true iff any yields are changed. */
+bool CvCityAI::AI_finalImprovementYieldDifference(/* advc: */ CvPlot const& kPlot,
+	int* piYields) const // advc.make: was short* (cf. AI_yieldValue)
+{
+	FAssert(piYields != NULL);
+
+	CvPlayer const& kOwner = GET_PLAYER(getOwner());
+	bool bAnyChange = false;
+
+	ImprovementTypes eCurrentImprovement = kPlot.getImprovementType();
+	ImprovementTypes eFinalImprovement = CvImprovementInfo::finalUpgrade(eCurrentImprovement);
+	if (eFinalImprovement != NO_IMPROVEMENT && eFinalImprovement != eCurrentImprovement)
+	{
+		FOR_EACH_ENUM(Yield)
+		{
+			int iYieldDiff = kPlot.calculateImprovementYieldChange(
+					eFinalImprovement, eLoopYield, getOwner()) -
+					kPlot.calculateImprovementYieldChange(
+					eCurrentImprovement, eLoopYield, getOwner());
+			// <advc.908a>
+			int extraYieldThresh = kOwner.getExtraYieldThreshold(eLoopYield);
+			if(extraYieldThresh > 0 &&
+				// Otherwise the improvement doesn't matter
+				kPlot.calculateNatureYield(eLoopYield, getTeam()) < extraYieldThresh)
+			{
+				if(kPlot.getYield(eLoopYield) > extraYieldThresh)
+					iYieldDiff -= GC.getDefineINT(CvGlobals::EXTRA_YIELD);
+				if(kPlot.getYield(eLoopYield) + iYieldDiff > extraYieldThresh)
+					iYieldDiff += GC.getDefineINT(CvGlobals::EXTRA_YIELD);
+				// Replacing the line below // </advc.908a>
+				//iYieldDiff += (pPlot->getYield(i) >= kOwner.getExtraYieldThreshold(i) ? -GC.getEXTRA_YIELD() : 0) + (pPlot->getYield(i)+iYieldDiff >= kOwner.getExtraYieldThreshold(i) ? GC.getEXTRA_YIELD() : 0);
+			}
+
+			if (iYieldDiff != 0)
+			{
+				bAnyChange = true;
+				piYields[eLoopYield] += iYieldDiff;
+			}
+		}
+	}
+	return bAnyChange;
+}
+
+
+/*	For improvements which upgrade when worked, this function calculates
+	a time-weighted average of their yields.
+	The average is calculated with continous weighting such that
+	~63% of the weight is in the time from now until 'time_scale' turns have past.
+	(More precisely, the weight drops exponentially w.r.t. the number of turns,
+	decreasing by a factor of `e` for each `time_scale` turns.) */
+bool CvCityAI::AI_timeWeightedImprovementYields(CvPlot const& kPlot, ImprovementTypes eImprovement,
+	int iTimeScale, // advc.912f (note): 0 now means infinity
+	EagerEnumMap<YieldTypes,scaled>& kWeightedYields) const // advc: was vector<float>&
+{
+	PROFILE_FUNC();
+
+	FAssert(iTimeScale >= 0); // advc.912f: was >0
+
+	/*	This is an experimental function, designed to be 'the right way'
+		to evaluate improvements which upgrade over time,
+		with no concern for calculation speed.
+		If it isn't too slow, I'll use it for lots of things. */
+	// weighted yield = integral from 0 to inf. of (yield(t) * e^(-t/scale)), w.r.t.  t
+
+	kWeightedYields.reset();
+	std::set<ImprovementTypes> citedImprovements;
+	int iTotalTurns = 0;
+
+	while (eImprovement != NO_IMPROVEMENT &&
+		citedImprovements.insert(eImprovement).second)
+	{
+		CvImprovementInfo const& kImprovement = GC.getInfo(eImprovement);
+		/*	<advc.912f> If upgrades will never happen, use factor 1 for the current improv
+			and skip the rest. */
+		scaled rValueFactor;
+		if (iTimeScale == 0)
+		{
+			if (iTotalTurns == 0)
+				rValueFactor = 1;
+			else break;
+		}
+		else // </advc.912f>
+		{
+			// piecewise integration
+			// each piece is exp(-t0/T) - exp(-t1/T)
+			// [advc: Comment had said 't1' instead of '-t1'; but I think the code is right.]
+			rValueFactor = scaled(iTotalTurns, -iTimeScale).exp() -
+					(kImprovement.getImprovementUpgrade() == NO_IMPROVEMENT ? 0 :
+					scaled(iTotalTurns + kImprovement.getUpgradeTime(), -iTimeScale).exp());
+		}
+		FOR_EACH_ENUM(Yield)
+		{
+			int iYieldDiff = kPlot.calculateImprovementYieldChange(
+					eImprovement, eLoopYield, getOwner());
+			/*	todo: Extra yield for finacial civs
+				(see AI_finalImprovementYieldDifference for guidence.) */
+			//if (kOwner.getExtraYieldThreshold(i) > 0)
+				// ;
+
+			kWeightedYields.add(eLoopYield, iYieldDiff * rValueFactor);
+		}
+
+		iTotalTurns += kImprovement.getUpgradeTime();
+		eImprovement = kImprovement.getImprovementUpgrade();
+	}
+
+	if (eImprovement != NO_IMPROVEMENT /* advc.912f: */ && iTimeScale > 0)
+	{
+		/*	If we didn't reach final improvement;
+			normalise the yield values based on what we've got so far. */
+		FOR_EACH_ENUM(Yield)
+		{
+			kWeightedYields.set(eLoopYield, kWeightedYields.get(eLoopYield) /
+					(1 - scaled(iTotalTurns, -iTimeScale).exp()));
+		}
+	}
+	// return true if the improvement had any upgrades
+	return (citedImprovements.size() > 1);
+}
+
+/*	K-Mod. Value for working a plot in addition to its yields.
+	(Returns ~400x commerce per turn.) */
+int CvCityAI::AI_specialPlotImprovementValue(CvPlot const& kPlot) const
+{
+	ImprovementTypes const eImprovement = kPlot.getImprovementType();
+	if (eImprovement == NO_IMPROVEMENT)
+		return 0;
+
+	// <!-- custom: cache to kTeam for perf opt if i'm not mistaken. See note at CvCityAI::AI_buildingValue. -->
+	CvPlayerAI const& kOwner = GET_PLAYER(getOwner());
+	CvTeamAI const& kTeam = GET_TEAM(kOwner.getTeam()); // kekm.16
+
+	int iValue = 0;
+	if (GC.getInfo(eImprovement).getImprovementUpgrade() != NO_IMPROVEMENT)
+	{
+		/*	Prefer plots that are close to upgrading, but
+			not over immediate yield differences. (kludge) */
+		iValue += kPlot.getUpgradeProgress() /
+				std::max(1, GC.getGame().getImprovementUpgradeTime(eImprovement));
+	}
+	/*	small value bonus for the possibility of popping new resources.
+		(cf. CvGame::doFeature) */
+	if (kPlot.getBonusType(getTeam()) == NO_BONUS)
+	{
+		FOR_EACH_ENUM(Bonus)
+		{
+			if (kTeam.canDiscoverBonus(eLoopBonus) &&
+				GC.getInfo(eImprovement).getImprovementBonusDiscoverRand(eLoopBonus) > 0)
+			{
+				iValue += 20;
+			}
+		}
+	}
+	return iValue;
+}
+
+/*	K-Mod: Value of each unit of food for the purpose of population growth.
+	Units ~4x commerce. Note: the value here is at the high end..
+	it should be reduced based on things such as the happiness cap. */
+int CvCityAI::AI_growthValuePerFood() const
+{
+	int iFoodMultiplier = getBaseYieldRateModifier(YIELD_FOOD);
+	int iConsumtionPerPop = std::max(1, GC.getFOOD_CONSUMPTION_PER_POPULATION());
+	// <k146>
+	/*  Note, although we are trying to evaluate growth value, we still need to
+		take into account jobs we are already working, because some of our food
+		goes into supporting those jobs; and if they are significantly more
+		valuable than the unworked jobs, then our cities just won't want to grow.
+		(This function is probably a good place to calculate the 'devalue rate'
+		used in food evaluation. But we aren't doing that right now.) */
+	std::vector<int> unworked_jobs;
+	std::vector<int> worked_jobs;
+	for (WorkablePlotIter it(*this, false); it.hasNext(); ++it)
+	{
+		CvPlot const& kPlot = *it;
+		CityPlotTypes const ePlot = it.currID();
+
+		if (isWorkingPlot(ePlot) && kPlot.getYield(YIELD_FOOD) >= iConsumtionPerPop)
+			continue; // we don't need to evaluate self-sufficient plots already being worked.
+
+		int iValue = AI_plotValue(kPlot, isWorkingPlot(ePlot), true, true, -1);
+		iValue *= 100 * iConsumtionPerPop + iFoodMultiplier * kPlot.getYield(YIELD_FOOD);
+		iValue /= 100 * iConsumtionPerPop;
+
+		if (isWorkingPlot(ePlot))
+			worked_jobs.push_back(iValue);
+		else unworked_jobs.push_back(iValue);
+	}
+
+	CvPlayerAI const& kOwner = GET_PLAYER(getOwner());
+
+	// <!-- custom: make these static const for performance optimization as advised by chatgpt 5 too. -->
+	// <!-- custom: code/performance optimization: hoist -->
+	static const SpecialistTypes eDefaultSpecialist = (SpecialistTypes)GC.getDEFAULT_SPECIALIST();
+
+	FOR_EACH_ENUM2(Specialist, eSpec)
+	{
+		// cf. CvCity::isSpecialistValid
+		int iAvailable = (kOwner.isSpecialistValid(eSpec) ||
+				eSpec == eDefaultSpecialist) ? 3 :
+				std::min(3, getMaxSpecialistCount(eSpec) - getSpecialistCount(eSpec));
+		// this could get messed up by free specialists. I'm not sure if that's a problem.
+		int iCurrent = getSpecialistCount(eSpec);
+		/*	consider using totalFreeSpecialists() or something to find out
+			if we are actually feeding these specialists. */
+
+		if (iAvailable > 0  || (iCurrent > 0 &&
+			kOwner.specialistYield(eSpec, YIELD_FOOD) < iConsumtionPerPop))
+		{
+			FAssert(iAvailable == 0 || isSpecialistValid(eSpec, iAvailable));
+			/*	note. I'm just sticking with 'bRemove == false'
+				so that we don't have to evaluate twice. */
+			int iValue = AI_specialistValue(eSpec, false, true, -1);
+			iValue *= 100 * iConsumtionPerPop + iFoodMultiplier *
+					kOwner.specialistYield(eSpec, YIELD_FOOD);
+			iValue /= 100 * iConsumtionPerPop;
+			if (iCurrent > 0)
+			{
+				while (--iCurrent >= 0)
+					worked_jobs.push_back(iValue);
+			}
+			if (iAvailable > 0)
+			{
+				while (--iAvailable >= 0)
+					unworked_jobs.push_back(iValue);
+			}
+		}
+	}
+	/*  ok. we've surveyed the available jobs.
+		To calculate the food value, we'll use the values of the best 3 unworked
+		jobs; but we'll also consider the worst of the worked jobs.
+		(To be honest, I'm really not sure what is the best way to handle the
+		worked jobs. The current system can cause flip-flopping, due to
+		food value decreasing when food is being worked.)
+		Note: from here on, "unworked_jobs" isn't only for unworked jobs. */
+	while (worked_jobs.size() < 3)
+		worked_jobs.push_back(0);
+	std::partial_sort(worked_jobs.begin(), worked_jobs.begin() +
+			3, worked_jobs.end(), std::less_equal<int>()); // worst 3 worked jobs.
+	for (int i = 0; i < 3; ++i)
+		unworked_jobs.push_back(worked_jobs[i]);
+	// best 3 unworked (or best of the worsed worked)
+	std::partial_sort(unworked_jobs.begin(), unworked_jobs.begin() + 3,
+			unworked_jobs.end(), std::greater<int>());
+	return (unworked_jobs[0]*4 + unworked_jobs[1]*2 + unworked_jobs[2]*1) /
+			/*	advc.121: Coefficient was 700. I think that prioritized growth
+				too much. */
+			(800 * iConsumtionPerPop);
+	// </k146>
+}
+
+
+int CvCityAI::AI_experienceWeight()
+{
+	//return ((getProductionExperience() + getDomainFreeExperience(DOMAIN_SEA)) * 2);
+	// K-Mod
+	return 2 * getProductionExperience() +
+			getDomainFreeExperience(DOMAIN_LAND) + getDomainFreeExperience(DOMAIN_SEA)
+			- 2; /*  advc.017: Barracks are pretty ubiquitous; shouldn't add 3
+					 to buildUnitProb. Rather make cities w/o Barracks hesitant
+					 to train units. */
+	// K-Mod end
+}
+
+// BBAI / K-Mod // <advc.017> Draft param added; count XP weight only half then.
+int CvCityAI::AI_buildUnitProb(bool bDraft)
+{
+	// <!-- custom: cache to kTeam for perf opt if i'm not mistaken. See note at CvCityAI::AI_buildingValue. -->
+	CvPlayerAI const& kOwner = GET_PLAYER(getOwner());
+	CvTeamAI const& kTeam = GET_TEAM(kOwner.getTeam()); // kekm.16
+
+	scaled r = per100(GC.getInfo(getPersonalityType()).getBuildUnitProb());
+	int iXPWeight = AI_experienceWeight();
+	if (bDraft)
+		iXPWeight /= 2;
+	r += per100(iXPWeight);
+	// </advc.017>
+	// <advc.253>
+	if (kOwner.AI_getCurrEraFactor() >= 1)
+		r *= kOwner.AI_trainUnitSpeedAdustment(); // <advc.253>
+	bool bGreatlyReduced = false; // advc.017
+	// BETTER_BTS_AI_MOD, 05/29/10, jdog5000: City AI, Barbarian AI
+	if (!isBarbarian() && kOwner.AI_isFinancialTrouble())
+	{
+		r /= 2;
+		bGreatlyReduced = true; // advc.017
+	}
+	//else if (kTeam.getHasMetCivCount(false) == 0)
+	/*	<advc.109> Replacing the BBAI code above. The ECONOMY_FOCUS check is from K-Mod;
+		moved from AI_chooseProduction. */
+	else if (kOwner.AI_isDoStrategy(AI_STRATEGY_ECONOMY_FOCUS) ||
+		(kOwner.getNumCities() <= 1 && isCapital()))
+	{
+		r /= 2; // </advc.109>
+		bGreatlyReduced = true; // advc.017
+	}
+	// advc.017: Don't always adjust to era
+	if (kOwner.AI_isDoStrategy(AI_STRATEGY_GET_BETTER_UNITS))
+	{
+		scaled rEraDiff = GC.AI_getGame().AI_getCurrEraFactor()
+				- kOwner.AI_getCurrEraFactor();
+		if (rEraDiff.isPositive())
+			r *= scaled::max(fixp(0.4), 1 - fixp(0.2) * rEraDiff);
+	}
+	// <advc.017>
+	if (!bDraft)
+	{
+		// Lowered multiplier from 2 to 1.5
+		r *= 1 + fixp(1.5) * per100(getMilitaryProductionModifier());
+	}
+	if (!isBarbarian())
+	{
+		int const iCities = kOwner.getNumCities();
+		if (iCities > 1)
+		{
+			CvTeamAI const& kOurTeam = kTeam;
+			int iHighestRivalPow = 0;
+			for (TeamAIIter<FREE_MAJOR_CIV,OTHER_KNOWN_TO> it(getTeam());
+				it.hasNext(); ++it)
+			{
+				CvTeamAI const& kRival = *it; // (Akin to code in CvPlayerAI::AI_feelsSafe)
+				if (kOurTeam.AI_getWarPlan(kRival.getID()) != NO_WARPLAN ||
+					!kOurTeam.AI_isAvoidWar(kRival.getID(), true) ||
+					!kRival.AI_isAvoidWar(kOurTeam.getID()) ||
+					kOurTeam.AI_anyMemberAtVictoryStage(
+					AI_VICTORY_MILITARY3 | AI_VICTORY_MILITARY4) ||
+					kRival.AI_anyMemberAtVictoryStage(
+					AI_VICTORY_MILITARY3 | AI_VICTORY_MILITARY4))
+				{
+					iHighestRivalPow = std::max(kRival.getPower(true), iHighestRivalPow);
+				}
+			}
+			// Don't throttle at all until we're clearly ahead of the best rival
+			scaled rTargetAdvantage = per100(25);
+			if (kOwner.AI_atVictoryStage(AI_VICTORY_MILITARY1))
+				rTargetAdvantage += per100(5);
+			if (kOwner.AI_atVictoryStage(AI_VICTORY_MILITARY2))
+				rTargetAdvantage += per100(5);
+			if (kOwner.AI_atVictoryStage(AI_VICTORY_MILITARY3))
+				rTargetAdvantage += per100(7);
+			if (kOwner.AI_atVictoryStage(AI_VICTORY_MILITARY4))
+				rTargetAdvantage += per100(8);
+			scaled rTargetPow = (rTargetAdvantage + 1) * iHighestRivalPow;
+			rTargetPow.increaseTo(scaled::epsilon());
+			scaled rPowRatio = kOurTeam.getPower(false) / rTargetPow;
+			if (rPowRatio > 1)
+			{
+				scaled rAdvantage = rPowRatio - 1;
+				if (rAdvantage >= fixp(1.5))
+				{
+					r /= 4;
+					bGreatlyReduced = true;
+				}
+				else r *= 1 - rAdvantage / 2;
+			}
+		}
+		/*  Can't afford to specialize one city entirely on military production
+			until we've expanded a bit */
+		r.decreaseTo(fixp(0.2) * (1 + iCities));
+		/*  Don't get too careless in the early game when most cities have
+			negative AI_experienceWeight */
+		if (!bGreatlyReduced)
+			r.increaseTo(per100(25 - 2 * iCities));
+	} // </advc.017>
+	r.decreaseTo(1); // experimental (K-Mod)
+	return r.getPercent();
+}
+
+// advc: Body cut from AI_bestPlotBuild (K-Mod code)
+bool CvCityAI::AI_emphasizeIrrigatingPlot(CvPlot const& kPlot) const
+{
+	/*BonusTypes eNonObsoleteBonus = kPlot.getNonObsoleteBonusType(getTeam());
+	bool bHasBonusImprovement = false;
+	if (eNonObsoleteBonus != NO_BONUS) {
+		if (pPlot->getImprovementType() != NO_IMPROVEMENT) {
+			if (GC.getInfo(pPlot->getImprovementType()).isImprovementBonusTrade(eNonObsoleteBonus))
+				bHasBonusImprovement = true;
+		}
+	}*/ // BtS
+	if (kPlot.getNonObsoleteBonusType(getTeam(), true) != NO_BONUS
+		|| isBarbarian()) // advc.300
+	{
+		return false;
+	}
+	/*	It looks unwieldly but the code has to be rigid to avoid "worker ADD"
+		where they keep connecting then disconnecting a crops resource or building
+		multiple farms to connect a single crop resource.
+		isFreshWater is used to ensure invalid plots are pruned early, the inner loop
+		really doesn't run that often.
+
+		using logic along the lines of "Will irrigating me make crops wet"
+		wont really work... it has to be "am i the tile the crops want to be irrigated"
+
+		I optimized through the use of "isIrrigated" which is just checking a bool...
+		once everything is nicely irrigated, this code should be really fast... */
+	if (!kPlot.isIrrigated() &&
+		(!kPlot.isFreshWater() || !kPlot.canHavePotentialIrrigation()))
+	{
+		return false;
+	}
+	FOR_EACH_ADJ_PLOT(kPlot)
+	{
+		if (pAdj->getOwner() != getOwner() || !pAdj->isCityRadius())
+			continue;
+		if (pAdj->isFreshWater() ||
+			/*	check for a city? cities can conduct irrigation and that effect is
+				quite useful... so I think irrigate cities. */
+			!pAdj->isPotentialIrrigation())
+		{
+			continue;
+		}
+		CvPlot* eBestIrrigationPlot = NULL;
+		FOR_EACH_ADJ_PLOT_VAR2(pDistTwoPlot, *pAdj)
+		{
+			if (pDistTwoPlot->getOwner() != getOwner())
+				continue;
+			BonusTypes const eDistTwoBonus = pDistTwoPlot->
+					getNonObsoleteBonusType(getTeam());
+			if (pAdj->isIrrigated() &&
+				//the irrigation has to be coming from somewhere
+				pDistTwoPlot->isIrrigated())
+			{
+				/*	if we find a tile which is already carrying irrigation
+					then lets not replace that one... */
+				eBestIrrigationPlot = pDistTwoPlot;
+				if (pDistTwoPlot->isCity() || eDistTwoBonus != NO_BONUS ||
+					!pDistTwoPlot->isCityRadius())
+				{
+					if (pDistTwoPlot->isFreshWater())
+					{
+						//these are all ideal for irrigation chains so stop looking.
+						break;
+					}
+				}
+			}
+			else
+			{
+				if (eDistTwoBonus == NO_BONUS)
+				{
+					if (pDistTwoPlot->canHavePotentialIrrigation() &&
+						pDistTwoPlot->isIrrigationAvailable())
+					{
+						/*	could use more sophisticated logic
+							however this would rely on things like 
+							smart irrigation chaining of out-of-city plots */
+						eBestIrrigationPlot = pDistTwoPlot;
+						break;
+					}
+				}
+			}
+		}
+		if (&kPlot == eBestIrrigationPlot)
+			return true;
+	}
+	return false;
+}
+
+
+void CvCityAI::AI_bestPlotBuild(CvPlot const& kPlot, int* piBestValue, BuildTypes* peBestBuild,
+	int iFoodPriority, int iProductionPriority, int iCommercePriority, bool bChop,
+	int iHappyAdjust, int iHealthAdjust, // advc (note): obsolete
+	int iDesiredFoodChange) const
+{
+	PROFILE_FUNC();
+
+	if (piBestValue != NULL)
+		*piBestValue = 0;
+	if (peBestBuild != NULL)
+		*peBestBuild = NO_BUILD;
+
+	if (kPlot.getWorkingCity() != this)
+		return;
+
+	/*	When improving new plots only, count emphasis twice
+		helps to avoid too much tearing up of old improvements. */
+
+	/*	K-Mod: I've deleted the section about counting emphasis twice...
+		It's absurd to think it would help avoid tearing up old improvements.
+		If the emphasis changes as soon as the improvment is built, then that
+		is likely to cause us to tear up the improvement! */
+
+	CvPlayerAI const& kOwner = GET_PLAYER(getOwner());
+	FAssert(kPlot.getOwner() == kOwner.getID());
+	BonusTypes const eBonus = kPlot.getBonusType(getTeam());
+	// (advc: bHasBonusImprovement moved into AI_emphasizeIrrigatingPlot)
+	int iClearFeatureValue = 0;
+	/*	K-Mod. I've removed the yield change evaluation from AI_clearFeatureValue
+		(to avoid double counting it elsewhere)
+		but for the parts of this function, we want to count that value... */
+	int iClearValue_wYield = 0; // So I've made this new number for that purpose.
+	if (kPlot.isFeature())
+	{
+		iClearFeatureValue = AI_clearFeatureValue(getCityPlotIndex(kPlot));
+		CvFeatureInfo const& kFeature = GC.getInfo(kPlot.getFeatureType());
+		iClearValue_wYield = iClearFeatureValue;
+		iClearValue_wYield -= kFeature.getYieldChange(YIELD_FOOD) *
+				100 * iFoodPriority / 100;
+		iClearValue_wYield -= kFeature.getYieldChange(YIELD_PRODUCTION) *
+				80 * iProductionPriority / 100; // was 60
+		iClearValue_wYield -= kFeature.getYieldChange(YIELD_COMMERCE) *
+				40 * iCommercePriority / 100;
+	}
+	
+	BuildTypes eBestBuild = NO_BUILD;
+	int iBestValue = 0;
+
+	// advc.300: Improve only worked plots for their yield
+	if (!isBarbarian() || isWorkingPlot(kPlot))
+	{	// advc: Moved into subroutine
+		bool bEmphasizeIrrigation = AI_emphasizeIrrigatingPlot(kPlot);
+		FOR_EACH_ENUM(Improvement)
+		{
+			BuildTypes eBestTempBuild;
+			int iValue = AI_getImprovementValue(kPlot, eLoopImprovement, iFoodPriority,
+					iProductionPriority, iCommercePriority, iDesiredFoodChange,
+					iClearFeatureValue, bEmphasizeIrrigation, &eBestTempBuild);
+			if (iValue > iBestValue)
+			{
+				iBestValue = iValue;
+				// advc (note): Will be NO_BUILD for kPlot's present improvement
+				eBestBuild = eBestTempBuild;
+			}
+		}
+	}
+
+	// K-Mod. Don't chop the feature if we need it for our best improvement!
+	/* advc.117: This seems to be ok (no change). River-side and hill-side forests
+	   are still being chopped. */
+	if (eBestBuild == NO_BUILD ?
+		(!kPlot.isImproved() ||
+		GC.getInfo(kPlot.getImprovementType()).isRequiresFeature()) :
+		(GC.getInfo(eBestBuild).getImprovement() != NO_IMPROVEMENT &&
+		GC.getInfo(GC.getInfo(eBestBuild).getImprovement()).isRequiresFeature()))
+	{
+		bChop = false;
+	}
+	else if (iClearValue_wYield > 0)
+	// K-Mod end
+	{
+		FAssert(kPlot.isFeature());
+		/*if ((GC.getInfo(kPlot.getFeatureType()).getHealthPercent() < 0) ||
+			((GC.getInfo(kPlot.getFeatureType()).getYieldChange(YIELD_FOOD) + GC.getInfo(kPlot.getFeatureType()).getYieldChange(YIELD_PRODUCTION) + GC.getInfo(kPlot.getFeatureType()).getYieldChange(YIELD_COMMERCE)) < 0)) {*/
+		// Disabled by K-Mod. That stuff is already taken into account by iClearValue_wYield.
+
+		FOR_EACH_ENUM(Build)
+		{
+			if (GC.getInfo(eLoopBuild).getImprovement() == NO_IMPROVEMENT &&
+				GC.getInfo(eLoopBuild).isFeatureRemove(kPlot.getFeatureType()) &&
+				kOwner.canBuild(kPlot, eLoopBuild))
+			{
+				int iValue = iClearValue_wYield;
+				{
+					CvCity* pCity=NULL;
+					iValue += (kPlot.getFeatureProduction(eLoopBuild, getTeam(), &pCity)
+							* 5); // was * 10
+				}
+				iValue *= 400;
+				iValue /= std::max(1, GC.getInfo(eLoopBuild).getFeatureTime(
+						kPlot.getFeatureType()) + 100);
+				/*	<advc.001> One of the checks K-Mod had removed. They're needed
+					when kPlot has an improvement that we want to keep. */
+				if (iValue <= 0)
+					continue; // </advc.001>
+				if (iValue > iBestValue || // K-Mod. (removed redundant checks)
+					eBestBuild == NO_BUILD) // advc.001 (restored)
+				{	// <advc.121> Akin to the boost for RouteYieldChanges below
+					if (eBestBuild == NO_BUILD && kPlot.isBeingWorked())
+						iBestValue *= 2; // </advc.121>
+					iBestValue = iValue;
+					eBestBuild = eLoopBuild;
+				}
+			}
+		}
+	}
+
+	/*	Chop - maybe integrate this better with the other feature-clear code
+		though the logic is kinda different */
+	if (bChop && eBonus == NO_BONUS && kPlot.isFeature() &&
+		!kPlot.isImproved() && !kOwner.isHumanOption(PLAYEROPTION_LEAVE_FORESTS))
+	{
+		FOR_EACH_ENUM(Build)
+		{
+			if (GC.getInfo(eLoopBuild).getImprovement() != NO_IMPROVEMENT ||
+				!GC.getInfo(eLoopBuild).isFeatureRemove(kPlot.getFeatureType()) ||
+				!kOwner.canBuild(kPlot, eLoopBuild))
+			{
+				continue;
+			}
+			CvCity* pCity=NULL;
+			int iValue = (kPlot.getFeatureProduction(eLoopBuild, getTeam(), &pCity)) * 10;
+			FAssert(pCity == this);
+			if (iValue <= 0)
+				continue;
+			// K-Mod. Inflate the production value in the early expansion phase of the game.
+			int iCitiesTarget = GC.getInfo(GC.getMap().getWorldSize()).getTargetNumCities();
+			if (kOwner.getNumCities() < iCitiesTarget && kOwner.AI_getNumCitySites() > 0)
+				iValue = (iValue * 3 * iCitiesTarget) /
+						std::max(1, 2 * kOwner.getNumCities() + iCitiesTarget);
+			/*	Increase the value if it is large compared to the city's natural production rate
+				(note: iValue is chop production * 10) */
+			iValue += iValue / (getBaseYieldRate(YIELD_PRODUCTION)*20 + iValue);
+			// K-Mod end
+			iValue += iClearValue_wYield;
+			// K-Mod
+			if (!kPlot.isBeingWorked() && iClearFeatureValue < 0)
+			{	// extra points for passive feature bonuses such as health
+				iValue += iClearFeatureValue/2;
+			} // K-Mod end
+			if (iValue <= 0)
+				continue;
+			if (kOwner.AI_isDoStrategy(AI_STRATEGY_DAGGER))
+			{
+				iValue += 20;
+				iValue *= 2;
+			}
+			// K-Mod, flavour production, military, and growth.
+			if (kOwner.AI_getFlavorValue(FLAVOR_PRODUCTION) > 0 ||
+				kOwner.AI_getFlavorValue(FLAVOR_MILITARY) +
+				kOwner.AI_getFlavorValue(FLAVOR_GROWTH) > 2)
+			{
+				iValue *= 110 + 3 * kOwner.AI_getFlavorValue(FLAVOR_PRODUCTION) +
+						2 * kOwner.AI_getFlavorValue(FLAVOR_MILITARY) +
+						2 * kOwner.AI_getFlavorValue(FLAVOR_GROWTH);
+				iValue /= 100;
+			} // K-Mod end
+			iValue *= 500;
+			iValue /= std::max(1, GC.getInfo(eLoopBuild).
+					getFeatureTime(kPlot.getFeatureType()) + 100);
+			if (iValue > iBestValue)
+			{
+				iBestValue = iValue;
+				eBestBuild = eLoopBuild;
+			}
+		}
+	}
+
+	FOR_EACH_ENUM(Route)
+	{
+		RouteTypes const eOldRoute = kPlot.getRouteType();
+		if (eLoopRoute == eOldRoute)
+			continue;
+
+		int iTempValue = 0;
+		if (kPlot.isImproved())
+		{
+			CvImprovementInfo const& kCurrentImprov = GC.getInfo(kPlot.getImprovementType());
+			if (eOldRoute == NO_ROUTE || GC.getInfo(eLoopRoute).getValue() > GC.getInfo(eOldRoute).getValue())
+			{
+				iTempValue += kCurrentImprov.getRouteYieldChanges(eLoopRoute, YIELD_FOOD) * 100;
+				iTempValue += kCurrentImprov.getRouteYieldChanges(eLoopRoute, YIELD_PRODUCTION) * 80; // was 60
+				iTempValue += kCurrentImprov.getRouteYieldChanges(eLoopRoute, YIELD_COMMERCE) * 40;
+			}
+			if (kPlot.isBeingWorked())
+				iTempValue *= 2;
+			//road up bonuses if sort of bored.
+			if (!kPlot.isWater() && // K-Mod
+				eOldRoute == NO_ROUTE && eBonus != NO_BONUS)
+			{
+				iTempValue += (kPlot.isConnectedToCapital() ? 10 : 30);
+			}
+		}
+		if (iTempValue > 0)
+		{
+			FOR_EACH_ENUM(Build)
+			{
+				if (GC.getInfo(eLoopBuild).getRoute() == eLoopRoute &&
+					kOwner.canBuild(kPlot, eLoopBuild, false))
+				{
+					//the value multiplier is based on the default time...
+					int iValue = iTempValue * 5 * 300;
+					iValue /= GC.getInfo(eLoopBuild).getTime();
+					if (iValue > iBestValue || (iValue > 0 && eBestBuild == NO_BUILD))
+					{
+						iBestValue = iValue;
+						eBestBuild = eLoopBuild;
+					}
+				}
+			}
+		}
+	}
+
+	if (eBestBuild != NO_BUILD)
+	{
+		FAssert(iBestValue > 0);
+
+		/*//Now modify the priority for this build.
+		if (kOwner.AI_isFinancialTrouble()) {
+			if (GC.getInfo(eBestBuild).getImprovement() != NO_IMPROVEMENT) {
+				iBestValue += (iBestValue * std::max(0, aiBestDiffYields[YIELD_COMMERCE])) / 4;
+				iBestValue = std::max(1, iBestValue);
+			}
+		}*/
+
+		if (piBestValue != NULL)
+			*piBestValue = iBestValue;
+		if (peBestBuild != NULL)
+			*peBestBuild = eBestBuild;
+	}
+}
+
+
+int CvCityAI::AI_getHappyFromHurry(HurryTypes eHurry) const
+{
+	return AI_getHappyFromHurry(hurryPopulation(eHurry));
+}
+
+int CvCityAI::AI_getHappyFromHurry(int iHurryPopulation) const
+{
+	PROFILE_FUNC();
+
+	int iHappyDiff = iHurryPopulation - GC.getDefineINT(CvGlobals::HURRY_POP_ANGER);
+	if (iHappyDiff > 0)
+	{
+		if (getHurryAngerTimer() <= 1)
+		{
+			if (2 * angryPopulation(1) - healthRate(false, 1) > 1)
+			{
+				return iHappyDiff;
+			}
+		}
+	}
+
+	return 0;
+}
+
+int CvCityAI::AI_getHappyFromHurry(HurryTypes eHurry, UnitTypes eUnit, bool bIgnoreNew) const
+{
+	return AI_getHappyFromHurry(getHurryPopulation(eHurry, getHurryCost(true, eUnit, bIgnoreNew)));
+}
+
+int CvCityAI::AI_getHappyFromHurry(HurryTypes eHurry, BuildingTypes eBuilding, bool bIgnoreNew) const
+{
+	return AI_getHappyFromHurry(getHurryPopulation(eHurry, getHurryCost(true, eBuilding, bIgnoreNew)));
+}
+
+// K-Mod. I'm essentially rewritten this function. note: units ~ commerce x100
+int CvCityAI::AI_splitEmpireValue() const
+{
+	PROFILE_FUNC();
+	/*AreaAITypes eAreaAI = getArea().getAreaAIType(getTeam());
+	if (eAreaAI == AREAAI_OFFENSIVE || eAreaAI == AREAAI_MASSING || eAreaAI == AREAAI_DEFENSIVE)
+		return 0;*/ // (BtS) This isn't relevant to city value. It should be handled elsewhere.
+
+	// K-Mod: disorder causes the commerce rates to go to zero... so that would  mess up our calculations
+	if (isDisorder())
+	{
+		//return 0;
+		/*	advc.ctr: Could always use this, but the K-Mod code yields similar results,
+			is faster and, for the moment, no trouble to maintain. */
+		return -GET_PLAYER(getOwner()).AI_assetVal(*this, false).getPercent();
+	}
+
+	int iValue = 0;
+
+	/*iValue += getCommerceRateTimes100(COMMERCE_GOLD);
+	iValue += getCommerceRateTimes100(COMMERCE_RESEARCH);
+	iValue += 100 * getYieldRate(YIELD_PRODUCTION);
+	iValue -= 3 * calculateColonyMaintenanceTimes100();*/ // BtS
+	// K-Mod. The original code fails for civs using high espionage or high culture.
+	CvPlayerAI const& kOwner = GET_PLAYER(getOwner());
+	iValue += getCommerceRateTimes100(COMMERCE_RESEARCH) *
+			kOwner.AI_commerceWeight(COMMERCE_RESEARCH);
+	iValue += getCommerceRateTimes100(COMMERCE_ESPIONAGE) *
+			kOwner.AI_commerceWeight(COMMERCE_ESPIONAGE);
+	iValue /= 100;
+	/*	Culture isn't counted, because its value is local.
+		Unfortunately this will mean that civs running 100% culture
+		(ie CULTURE4) will give up their non-core cities. It could be argued
+		that this would be good strategy, but the problem is
+		that CULTURE4 doesn't always run its full course. ...
+		so I'm going to make a small ad hoc adjustment... */
+	iValue += 100 * getYieldRate(YIELD_PRODUCTION);
+	iValue *= (kOwner.AI_atVictoryStage(AI_VICTORY_CULTURE4) ? 2 : 1);
+	/*	Gold value is not weighted, and does not get the cultural victory boost,
+		because gold is directly comparable to maintenance. */
+	iValue += getCommerceRateTimes100(COMMERCE_GOLD);
+
+	int iCosts = calculateColonyMaintenanceTimes100() + 2*getMaintenanceTimes100()/3;
+	iCosts = iCosts * (100+kOwner.calculateInflationRate()) / 100;
+
+	// slightly encourage empire split when aiming for a diplomatic victory
+	if (kOwner.AI_atVictoryStage(AI_VICTORY_DIPLOMACY3) &&
+		kOwner.getCommercePercent(COMMERCE_GOLD) > 0)
+	{
+		iCosts = iCosts * 4 / 3;
+	}
+	// target pop is not a good measure for small cities w/ unimproved tiles.
+	int iTargetPop = std::max(5, AI_getTargetPopulation());
+	if (getPopulation() > 0 && getPopulation() < iTargetPop)
+	{
+		iValue *= iTargetPop + 3;
+		iValue /= getPopulation() + 3;
+		iCosts *= getPopulation() + 6;
+		iCosts /= iTargetPop + 6;
+	}
+	iValue -= iCosts;
+	// K-Mod end
+	return -iValue; // advc.ctr: Sign flipped to match the new function name
+}
+
+void CvCityAI::AI_doPanic() // advc: Unused return type bool removed, body refactored.
+{
+	/*	advc.139 (comment): This gets called after defenders have moved,
+		so AI_isSafe wouldn't be reliable. */
+	if (//(getArea().getAreaAIType(getTeam()) == AREAAI_OFFENSIVE || getArea().getAreaAIType(getTeam()) == AREAAI_DEFENSIVE || getArea().getAreaAIType(getTeam()) == AREAAI_MASSING)
+		!GET_PLAYER(getOwner()).AI_isLandWar(getArea())) // K-Mod
+	{
+		return;
+	}
+	int iOurDefense = GET_PLAYER(getOwner()).AI_localDefenceStrength(plot(), getTeam());
+	int iEnemyOffense = GET_PLAYER(getOwner()).AI_localAttackStrength(plot());
+	scaled rRatio(iEnemyOffense, std::max(1, iOurDefense));
+	if (rRatio <= 1)
+		return;
+
+	UnitTypes eProductionUnit = getProductionUnit();
+	if (eProductionUnit != NO_UNIT && getProduction() > 0 &&
+		GC.getInfo(eProductionUnit).getCombat() > 0)
+	{
+		AI_doHurry(true);
+		return;
+	}
+	if ((SyncRandOneChanceIn(2) && AI_chooseUnit(UNITAI_CITY_COUNTER)) ||
+		AI_chooseUnit(UNITAI_CITY_DEFENSE) || AI_chooseUnit(UNITAI_ATTACK))
+	{
+		AI_doHurry(rRatio > fixp(1.4));
+	}
+}
+
+/* disabled by K-Mod. (this function is buggy, and obsolete)
+int CvCityAI::AI_calculateCulturePressure(bool bGreatWork) const
+{ ... }*/ // advc: BtS code deleted
+
+
+// K-Mod: I've completely butchered this function. ie. deleted the bulk of it, and rewritten it.
+void CvCityAI::AI_buildGovernorChooseProduction()
+{
+	PROFILE_FUNC();
+
+	setChooseProductionDirty(false);
+	clearOrderQueue();
+
+	// <!-- custom: add these to match code in our other functions and why not if is more efficient, check if accurate -->
+	CvGame const& kGame = GC.getGame();
+
+	CvPlayerAI& kOwner = GET_PLAYER(getOwner());
+	CvArea* pWaterArea = waterArea();
+	bool const bDanger = AI_isDanger();
+
+	BuildingTypes eBestBuilding = AI_bestBuildingThreshold(); // go go value cache!
+	int iBestBuildingValue = (eBestBuilding == NO_BUILDING) ? 0 :
+			AI_buildingValue(eBestBuilding);
+
+	// pop borders
+	if (AI_needsCultureToWorkFullRadius())
+	{
+		if (eBestBuilding != NO_BUILDING && AI_countGoodTiles(true, false) > 0)
+		{
+			const CvBuildingInfo& kBestBuilding = GC.getInfo(eBestBuilding);
+			if (kBestBuilding.getCommerceChange(COMMERCE_CULTURE) +
+				kBestBuilding.getObsoleteSafeCommerceChange(COMMERCE_CULTURE) > 0
+				&& (GC.getNumCultureLevelInfos() < 2 ||
+				getProductionTurnsLeft(eBestBuilding, 0) <=
+				kGame.getCultureThreshold((CultureLevelTypes)2)))
+			{
+				pushOrder(ORDER_CONSTRUCT, eBestBuilding);
+				return;
+			}
+		}
+		if (AI_countGoodTiles(true, true, 60) == 0 && AI_chooseProcess(COMMERCE_CULTURE))
+			return;
+	}
+
+	//workboat
+	if (pWaterArea != NULL &&
+		kOwner.AI_totalWaterAreaUnitAIs(*pWaterArea, UNITAI_WORKER_SEA) == 0 &&
+		AI_neededSeaWorkers() > 0)
+	{
+		bool bLocalResource = (AI_countNumImprovableBonuses(true, NO_TECH, false, true) > 0);
+		if (bLocalResource || iBestBuildingValue < 20)
+		{
+			int iOdds = 100;
+			iOdds *= 50 + iBestBuildingValue;
+			iOdds /= 50 + (bLocalResource ? 3 : 5) * iBestBuildingValue;
+			if (AI_chooseUnit(UNITAI_WORKER_SEA, iOdds))
+			{
+				return;
+			}
+		}
+	}
+
+	if (kOwner.AI_isPrimaryArea(getArea())) // if its not a primary area, let the player ship units in.
+	{
+		//worker
+		if (!bDanger)
+		{
+			int iExistingWorkers = kOwner.AI_totalAreaUnitAIs(getArea(), UNITAI_WORKER);
+			int iNeededWorkers = kOwner.AI_neededWorkers(getArea());
+
+			if (iExistingWorkers < (iNeededWorkers + 2)/3) // I don't want to build more workers than the player actually wants.
+			{
+				int iOdds = 100;
+				iOdds *= iNeededWorkers - iExistingWorkers;
+				iOdds /= std::max(1, iNeededWorkers);
+				iOdds *= 50 + iBestBuildingValue;
+				iOdds /= 50 + 5 * iBestBuildingValue;
+
+				if (AI_chooseUnit(UNITAI_WORKER, iOdds))
+				{
+					return;
+				}
+			}
+		}
+
+		// adjust iBestBuildValue for the remaining comparisons. (military and spies.)
+		if (GC.getNumEraInfos() > 1)
+		{
+			FAssert(kOwner.getCurrentEra() < GC.getNumEraInfos());
+			iBestBuildingValue *= 2 * (GC.getNumEraInfos() - 1) - kOwner.getCurrentEra();
+			iBestBuildingValue /= GC.getNumEraInfos() - 1;
+		}
+
+		//military
+		bool bWar = getArea().getAreaAIType(kOwner.getTeam()) != AREAAI_NEUTRAL;
+		/*	(I'd like to check AI_neededFloatingDefenders, but I don't want to
+			have to calculate it just for this singluar case.) */
+		if (bDanger || iBestBuildingValue < (bWar ? 70 : 35))
+		{
+			int iOdds = (bWar ? 100 : 60) - kOwner.AI_unitCostPerMil()/2;
+			iOdds += AI_experienceWeight();
+			iOdds *= 100 + 2*getMilitaryProductionModifier();
+			iOdds /= 100;
+
+			iOdds *= 60 + iBestBuildingValue;
+			iOdds /= 60 + 10 * iBestBuildingValue;
+
+			if (SyncRandSuccess100(iOdds))
+			{
+				UnitAITypes eUnitAI;
+				UnitTypes eBestUnit = AI_bestUnit(false, NO_ADVISOR, &eUnitAI);
+				if (eBestUnit != NO_UNIT)
+				{
+					CvUnitInfo const& kUnit = GC.getInfo(eBestUnit);
+					if (kUnit.getUnitCombatType() != NO_UNITCOMBAT)
+					{
+						BuildingTypes eExperienceBuilding = AI_bestBuildingThreshold(
+								BUILDINGFOCUS_EXPERIENCE);
+						if (eExperienceBuilding != NO_BUILDING)
+						{
+							const CvBuildingInfo& kBuilding = GC.getInfo(eExperienceBuilding);
+							if (kBuilding.getFreeExperience() > 0 ||
+								kBuilding.getUnitCombatFreeExperience(kUnit.getUnitCombatType()) > 0 ||
+								kBuilding.getDomainFreeExperience(kUnit.getDomainType()) > 0)
+							{
+								// This building helps the unit we want
+								// ...so do the building first.
+								pushOrder(ORDER_CONSTRUCT, eBestBuilding);
+								return;
+							}
+						}
+					}
+					// <!-- custom: although this pushes a unit order outside of our AI_chooseUnit rewritten code, it seems caller outside (i.e. of AI_buildGovernorChooseProduction) is only applied if player is human, so does not affect other AI players so fine to keep as such i'd say as this shouldn't interfere with our logic there if i understood it correctly, and chatgpt 5 confirms it xd, but check to be sure as this is just from a quite quick glance and i don't know too much about these although in this case i mean i mean it seems accurate/correct of me but check to be sure -->
+					// You’re right: AI_buildGovernorChooseProduction() is the human city-governor routine. It only runs when a human city has production automation on. For AI civs (Japan in your save), production flows through the regular AI_chooseProduction(), which then calls your AI_chooseUnit(...) paths. So the “governor pushOrder bypass" isn’t what’s creating AI longbows.
+					//
+					// otherwise, we're ready to build the unit
+					pushOrder(ORDER_TRAIN, eBestUnit, eUnitAI);
+					return;
+				}
+			}
+		}
+
+		//spies
+		if (!kOwner.AI_isAreaAlone(getArea()))
+		{
+			int iNumSpies = kOwner.AI_totalAreaUnitAIs(getArea(), UNITAI_SPY);
+					// advc: Commented out
+					//+ kOwner.AI_getNumTrainAIUnits(UNITAI_SPY);
+			int iNeededSpies = 2 + getArea().getCitiesPerPlayer(kOwner.getID()) / 5;
+			iNeededSpies += kOwner.getCommercePercent(COMMERCE_ESPIONAGE)/20;
+
+			if (iNumSpies < iNeededSpies)
+			{
+				int iOdds = 35 - iBestBuildingValue/3;
+				if (iOdds > 0)
+				{
+					iOdds *= (40 + iBestBuildingValue);
+					iOdds /= (20 + 3 * iBestBuildingValue);
+					iOdds *= iNeededSpies;
+					iOdds /= (4*iNumSpies+iNeededSpies);
+					if (AI_chooseUnit(UNITAI_SPY, iOdds))
+					{
+						return;
+					}
+				}
+			}
+		}
+
+		//spread
+		int iSpreadUnitOdds = std::max(0, 80 - iBestBuildingValue*2);
+
+		int iSpreadUnitThreshold = 1200 + (bWar ? 800: 0) + iBestBuildingValue * 25;
+		// is it wrong to use UNITAI values for human players?
+		iSpreadUnitThreshold += kOwner.AI_totalAreaUnitAIs(getArea(), UNITAI_MISSIONARY) * 1000;
+
+		UnitTypes eBestSpreadUnit = NO_UNIT;
+		int iBestSpreadUnitValue = -1;
+		if (AI_bestSpreadUnit(true, true, iSpreadUnitOdds, &eBestSpreadUnit, &iBestSpreadUnitValue))
+		{
+			// <!-- custom: also fix this preemptively as if i recall it correctly, this assert failed did happen in several code lines, so as it's harmless, better fix it as well as chatgpt 5 advises as well, check if accurate -->
+			// Yep—treat this second block the same way: don’t assert on AI_chooseUnit failure; just guard and fall through.
+			// <!-- custom: while we're at it, make the assert prettier with more info -->
+			// FErrorMsg("AI_bestSpreadUnit should provide a valid unit when it returns true");
+			// Contract check: if function said "true", we expect a concrete unit
+			FAssertMsg(eBestSpreadUnit != NO_UNIT,
+				CvString::format("bestSpreadUnit: returned true but NO_UNIT | T%d %S thr=%d",
+					kGame.getGameTurn(), getName().GetCString(),
+					iSpreadUnitThreshold).c_str());
+			// if (iBestSpreadUnitValue > iSpreadUnitThreshold)
+			if (eBestSpreadUnit != NO_UNIT && iBestSpreadUnitValue > iSpreadUnitThreshold) 
+			{
+				if (AI_chooseUnit(eBestSpreadUnit, UNITAI_MISSIONARY))
+				{
+					return;
+				}
+			}
+		}
+	}
+
+	//process
+	ProcessTypes eBestProcess = AI_bestProcess();
+	if (eBestProcess != NO_PROCESS)
+	{
+		// similar to AI_chooseProduction
+		int iOdds = 100;
+		if (eBestBuilding != NO_BUILDING)
+		{	// <advc.004x>
+			int iConstructionTurns = getProductionTurnsLeft(eBestBuilding, 0);
+			if(iConstructionTurns == MAX_INT)
+				iOdds = 0;
+			else // </advc.004x>
+			{
+				int iBuildingCost = AI_processValue(eBestProcess) * iConstructionTurns;
+				int iScaledTime = 10000 * iBuildingCost /
+						(std::max(1, iBestBuildingValue) *
+						GC.getInfo(kGame.getGameSpeedType()).getConstructPercent());
+				// <= 4 turns means 0%. 20 turns ~ 61%.
+				iOdds = 100 * (iScaledTime - 400) / (iScaledTime + 600);
+			}
+		}
+		if (SyncRandSuccess100(iOdds))
+		{
+			pushOrder(ORDER_MAINTAIN, eBestProcess);
+			return;
+		}
+	}
+
+	//default
+	if (AI_chooseBuilding())
+		return;
+
+	/*if (AI_chooseProcess())
+		return; */
+
+	if (AI_chooseUnit())
+		return;
+}
+
+/*	K-Mod: This is a chunk of code that I moved out of AI_chooseProduction.
+	The only reason I've moved it is to reduce clutter in the other function. */
+void CvCityAI::AI_barbChooseProduction()
+{
+	// <!-- custom: performance optimization: cache repetitive calls -->
+	CvGame const& kGame = GC.getGame();
+
+	const CvPlayerAI& kPlayer = GET_PLAYER(getOwner());
+
+	// <!-- custom: cache to kTeam for perf opt if i'm not mistaken. See note at CvCityAI::AI_buildingValue. -->
+	CvTeamAI const& kTeam = GET_TEAM(kPlayer.getTeam()); // kekm.16
+
+	// <!-- custom: performance optimizations -->
+	CvPlot const& kPlot = getPlot();
+	
+	CvArea const* pWaterArea = waterArea(true);
+	bool bMaybeWaterArea = false;
+	bool bWaterDanger = false;
+	if (pWaterArea != NULL)
+	{
+		bMaybeWaterArea = true;
+		if (!kTeam.AI_isWaterAreaRelevant(*pWaterArea))
+			pWaterArea = NULL;
+
+		bWaterDanger = kPlayer.AI_isAnyWaterDanger(kPlot, 4);
+	}
+	int const iWaterPercent = AI_calculateWaterWorldPercent();
+	bool const bDanger = AI_isDanger();
+	int const iNumCitiesInArea = getArea().getCitiesPerPlayer(getOwner());
+	// <!-- custom: store this once since we use it many times then reference the cached variable rather as chatgpt 5 usually advices hehe-->
+	const int iNumCities = kPlayer.getNumCities();
+	int const iExistingWorkers = kPlayer.AI_totalAreaUnitAIs(getArea(), UNITAI_WORKER);
+	int const iNeededWorkers = kPlayer.AI_neededWorkers(getArea());
+
+	int iBuildUnitProb = AI_buildUnitProb();
+
+	if (!AI_isDefended(kPlot.plotCount(
+		PUF_isUnitAIType, UNITAI_ATTACK, -1, getOwner()))) // XXX check for other team's units?
+	{
+		if (AI_chooseDefender())
+			return;
+		if (AI_chooseUnit(UNITAI_ATTACK))
+			return;
+	}
+
+	// advc.303: Disabled.
+	// K-Mod. Allow barbs to pop their borders when they can.
+	//if (getCultureLevel() <= 1 && AI_chooseProcess(COMMERCE_CULTURE))
+		//return;
+	// K-Mod end
+	// advc.305:
+	int iCityAge = kGame.getGameTurn() - getGameTurnAcquired();
+
+	// <!-- custom: optimization i found myself; done with the help of chatgpt 5 and that i then adjusted or not or yes or etc, check if accurate -->
+	// use sCityName (or kCityName) multiple times in this function
+	// My advice here is to avoid binding a pointer to a temporary object. If getName() doesn’t return const CvWString&, we can store a local copy, like so:
+	// Overhead of calling getName() or .GetCString() is minimal, but if repeated often, I could store it to save on performance. However, I must be cautious about pointer invalidation if name changes within the function (though rare). A better approach might be using const CvWString& szCityName = getName() to store it safely before passing .GetCString() when needed. If it’s only used once—没必要! For performance, it’s okay to use getName().GetCString() directly in formatting.
+	const CvWString& kCityName = getName();      // bound to the city's internal name
+	const wchar* sCityName    = kCityName.GetCString();
+
+	if (!bDanger && (2*iExistingWorkers < iNeededWorkers) && (AI_getWorkersNeeded() > 0) && (AI_getWorkersHave() == 0))
+	{
+		// <advc.305>
+		int iPopThresh = 3; // was 2
+		int iTimeThresh = isCoastal() ? 25 : 20; // was 15 flat
+		int iTrainPercent = GC.getInfo(kGame.
+				getGameSpeedType()).getTrainPercent();
+		if (getPopulation() >= iPopThresh ||
+			iCityAge > (iTimeThresh * iTrainPercent) / 100) // </advc.305>
+		{
+			if (AI_chooseUnit(UNITAI_WORKER))
+			{
+				if (gCityLogLevel >= 2) logBBAI("      City %S uses barb choose worker 1", sCityName);
+				return;
+			}
+		}
+	}
+	if (!bDanger && !bWaterDanger &&
+		(getPopulation() > 1 || iCityAge >= 12)) // advc.305
+	{
+		// advc.opt: Sea worker counts moved down; only needed here.
+		int iNeededSeaWorkers = (bMaybeWaterArea) ? AI_neededSeaWorkers() : 0;
+		int iExistingSeaWorkers = (waterArea(true) != NULL) ?
+				kPlayer.AI_totalWaterAreaUnitAIs(*waterArea(true), UNITAI_WORKER_SEA) : 0;
+		if (iNeededSeaWorkers > 0 &&
+			iExistingSeaWorkers <= 0 )// advc.001: safer (as in AI_chooseProduction)
+		{
+			if (AI_chooseUnit(UNITAI_WORKER_SEA))
+			{
+				if (gCityLogLevel >= 2) logBBAI("      City %S uses barb choose worker sea 1", sCityName);
+				return;
+			}
+		}
+	}
+	{
+		int iFreeLandExperience = getSpecialistFreeExperience() +
+				getDomainFreeExperience(DOMAIN_LAND);
+		iBuildUnitProb += (3 * iFreeLandExperience);
+	}
+	//bool bRepelColonists = false; // advc.300: no longer used
+	if (getArea().getNumCities() > getArea().getCitiesPerPlayer(BARBARIAN_PLAYER) + 2)
+	{
+		if (getArea().getCitiesPerPlayer(BARBARIAN_PLAYER) > getArea().getNumCities()/3)
+		{
+			//bRepelColonists = true;
+			// New world scenario with invading colonists ... fight back!
+			iBuildUnitProb += 8*(getArea().getNumCities() - getArea().getCitiesPerPlayer(BARBARIAN_PLAYER));
+		}
+	}
+
+	if (!bDanger && !SyncRandSuccess100(iBuildUnitProb))
+	{
+		int iBarbarianFlags = 0;
+		if (getPopulation() < 4)
+			iBarbarianFlags |= BUILDINGFOCUS_FOOD;
+		iBarbarianFlags |= BUILDINGFOCUS_PRODUCTION;
+		iBarbarianFlags |= BUILDINGFOCUS_EXPERIENCE;
+		if (getPopulation() > 3)
+			iBarbarianFlags |= BUILDINGFOCUS_DEFENSE;
+
+		if (AI_chooseBuilding(iBarbarianFlags, 15))
+		{
+			if (gCityLogLevel >= 2) logBBAI("      City %S uses barb AI_chooseBuilding with flags and iBuildUnitProb = %d", sCityName, iBuildUnitProb);
+			return;
+		}
+		if (!SyncRandSuccess100(iBuildUnitProb))
+		{
+			if (AI_chooseBuilding())
+			{
+				if (gCityLogLevel >= 2) logBBAI("      City %S uses barb AI_chooseBuilding without flags and iBuildUnitProb = %d", sCityName, iBuildUnitProb);
+				return;
+			}
+		}
+	}
+
+	if (kPlot.plotCount(PUF_isUnitAIType, UNITAI_ASSAULT_SEA, -1, getOwner()) > 0)
+	{
+		if (AI_chooseUnit(UNITAI_ATTACK_CITY))
+		{
+			if (gCityLogLevel >= 2) logBBAI("      City %S uses barb choose attack city for transports", sCityName);
+			return;
+		}
+	}
+
+	if (!bDanger && pWaterArea != NULL && iWaterPercent > 30)
+	{
+		if (SyncRandOneChanceIn(3)) // AI Coast Raiders
+		{
+			if (kPlayer.AI_totalUnitAIs(UNITAI_ASSAULT_SEA) <= 1 + iNumCities / 2)
+			{
+				if (AI_chooseUnit(UNITAI_ASSAULT_SEA))
+				{
+					if (gCityLogLevel >= 2) logBBAI("      City %S uses barb choose transport", sCityName);
+					return;
+				}
+			}
+		}
+		if (SyncRandNum(110) < iWaterPercent + 10)
+		{
+			if (kPlayer.AI_totalUnitAIs(UNITAI_PIRATE_SEA) <= iNumCities)
+			{
+				if (AI_chooseUnit(UNITAI_PIRATE_SEA))
+				{
+					if (gCityLogLevel >= 2) logBBAI("      City %S uses barb choose pirate", sCityName);
+					return;
+				}
+			}
+
+			if (kPlayer.AI_totalAreaUnitAIs(*pWaterArea, UNITAI_ATTACK_SEA) < iNumCitiesInArea)
+			{
+				if (AI_chooseUnit(UNITAI_ATTACK_SEA))
+				{
+					if (gCityLogLevel >= 2) logBBAI("      City %S uses barb choose attack sea", sCityName);
+					return;
+				}
+			}
+		}
+	}
+
+	if (SyncRandOneChanceIn(2))
+	{
+		if (!bDanger && iExistingWorkers < iNeededWorkers &&
+			AI_getWorkersNeeded() > 0 && AI_getWorkersHave() == 0)
+		{
+			if (getPopulation() > 1)
+			{
+				if (AI_chooseUnit(UNITAI_WORKER))
+				{
+					if (gCityLogLevel >= 2) logBBAI("      City %S uses barb choose worker 2", sCityName);
+					return;
+				}
+			}
+		}
+	}
+
+	UnitAIWeightMap unitAIWeight; // advc: Was vector of pairs "barbarianTypes"
+	unitAIWeight.set(UNITAI_ATTACK, //125
+			// <advc.300>
+			std::max(65, 100 - 15 *
+			kPlot.plotCount(PUF_isUnitAIType, UNITAI_ATTACK, -1, getOwner())));
+	AreaAITypes const eAreaAI = getArea().getAreaAIType(getTeam()); // </advc.300>
+	unitAIWeight.set(UNITAI_ATTACK_CITY,
+			//bRepelColonists ? 100 : 50
+			/*	advc.300: (Note that naval invaders for existing transports have
+				already been considered above) */
+			eAreaAI == AREAAI_OFFENSIVE ? 100 : (eAreaAI != AREAAI_ASSAULT ? 60 : 30));
+	unitAIWeight.set(UNITAI_COUNTER, //100
+			// <advc.300>
+			std::max(25, 100 - 20 *
+			kPlot.plotCount(PUF_isUnitAIType, UNITAI_COUNTER, -1, getOwner())));
+			// </advc.300>
+	unitAIWeight.set(UNITAI_CITY_DEFENSE, //50
+			// <advc.300>
+			25 + 10 * std::max(0,
+			GC.getInfo(kGame.getHandicapType()).getBarbarianInitialDefenders() -
+			kPlot.plotCount(PUF_isMissionAIType, MISSIONAI_GUARD_CITY, -1, getOwner())));
+			// </advc.300>
+	if (AI_chooseLeastRepresentedUnit(unitAIWeight))
+		return;
+
+	if (AI_chooseUnit())
+		return;
+}
+
+
+int CvCityAI::AI_calculateWaterWorldPercent()
+{
+	int iFriendlyCities = 0;
+	// <advc> Count sibling vassals too
+	for (TeamIter<ALIVE,NOT_A_RIVAL_OF> it(getTeam()); it.hasNext(); ++it)
+		iFriendlyCities += it->countNumCitiesByArea(getArea());
+	if (iFriendlyCities <= 0)
+		return 0;
+	int const iAreaCities = getArea().getNumCities();
+	// Cheats with visiblity, but that was also the case in BtS.
+	int const iRivalCities = iAreaCities - iFriendlyCities;
+	// </advc>
+	int iWaterPercent = 0;
+	if (iRivalCities > 0)
+	{
+		iWaterPercent = 100 -
+				(iAreaCities * 100) / std::max(1, GC.getGame().getNumCities());
+	}
+	else iWaterPercent = 100;
+	iWaterPercent *= 50;
+	iWaterPercent /= 100;
+	iWaterPercent += (50 * (2 + iFriendlyCities)) / (2 + iAreaCities);
+	iWaterPercent = std::max(1, iWaterPercent);
+	return iWaterPercent;
+}
+
+//Please note, takes the yield multiplied by 100
+int CvCityAI::AI_getYieldMagicValue(const int* piYieldsTimes100, bool bHealthy) const
+{
+	FAssert(piYieldsTimes100 != NULL);
+
+	int iPopEats = GC.getFOOD_CONSUMPTION_PER_POPULATION();
+	iPopEats += (bHealthy ? 0 : 1);
+	iPopEats *= 100;
+	int iValue = (piYieldsTimes100[YIELD_FOOD] * 95 + // advc.121: was *100
+			piYieldsTimes100[YIELD_PRODUCTION] * 70 + // K-Mod: was *55 in BBAI and BtS
+			piYieldsTimes100[YIELD_COMMERCE] * 40 -
+			iPopEats * 100); // advc.121: was *102
+	iValue /= 100;
+	return iValue;
+}
+
+/*	The magic value is basically "Look at this plot, is it worth working"
+	-50 or lower means the plot is worthless in a "workers kill yourself" kind of way.
+	-50 to -1 means the plot isn't worth growing to work - might be okay with emphasize though.
+	Between 0 and 50 means it is marginal.
+	50-100 means it's okay.
+	Above 100 means it's definitely decent - seriously question ever not working it.
+	This function deliberately doesn't use emphasize settings. */
+int CvCityAI::AI_getPlotMagicValue(CvPlot const& kPlot, bool bHealthy, bool bWorkerOptimization) const // advc: const CvPlot
+{	// <k146>
+	int aiYields[NUM_YIELD_TYPES];
+	bool bFinalBuildAssumed = (bWorkerOptimization &&
+			kPlot.getWorkingCity() == this &&
+			AI_getBestBuild(getCityPlotIndex(kPlot)) != NO_BUILD);
+
+	FOR_EACH_ENUM(Yield)
+	{
+		if (bFinalBuildAssumed)
+		{
+			aiYields[eLoopYield] = kPlot.getYieldWithBuild(AI_getBestBuild(
+					getCityPlotIndex(kPlot)), eLoopYield, true)
+					* 100; // advc.001: times-100 scale!
+		}
+		else aiYields[eLoopYield] = kPlot.getYield(eLoopYield) * 100;
+	}
+	ImprovementTypes eCurrentImprovement = kPlot.getImprovementType();
+	if (eCurrentImprovement != NO_IMPROVEMENT && !bFinalBuildAssumed)
+	{
+		int aiYieldDiffs[NUM_YIELD_TYPES] = {};
+		AI_finalImprovementYieldDifference(kPlot, aiYieldDiffs);
+		// Remember, aiYields has values *100.
+		FOR_EACH_ENUM(Yield)
+		{
+			//aiYields[eLoopYield] += bWorkerOptimization ? aiYieldDiffs[eLoopYield]*100 : aiYieldDiffs[eLoopYield]*50;
+			aiYields[eLoopYield] += aiYieldDiffs[eLoopYield] * 100; //  Just use the final values.
+ 		}
+	} // </k146>
+	return AI_getYieldMagicValue(aiYields, bHealthy);
+}
+
+//useful for deciding whether or not to grow... or whether the city needs terrain
+//improvement.
+//if healthy is false it assumes bad health conditions.
+int CvCityAI::AI_countGoodTiles(bool bHealthy, bool bUnworkedOnly, int iThreshold, bool bWorkerOptimization) const
+{
+	//PROFILE_FUNC(); // advc.opt: Apparently not responsible for AI_yieldValue being somewhat slow
+	int iCount = 0;
+
+	for (CityPlotIter it(*this, false); it.hasNext(); ++it)
+	{
+		CvPlot const& kPlot = *it;
+		//if (kPlot.getWorkingCity() == this)
+		// <advc.113> Anticipate border expansion
+		bool bValid = (kPlot.getWorkingCity() == this);
+		if(!bValid && kPlot.getOwner() == NO_PLAYER &&
+			getCultureLevel() == 1 && getCultureTurnsLeft() <= 5)
+		{
+			bValid = true;
+		}
+		if(!bValid)
+			continue; // </advc.113>
+
+		if (!bUnworkedOnly || !kPlot.isBeingWorked())
+		{
+			if (AI_getPlotMagicValue(kPlot, bHealthy,
+				/* <k146> */ bWorkerOptimization /* </k146> */) > iThreshold)
+			{
+				iCount++;
+			}
+		}
+	}
+	return iCount;
+}
+
+/* disabled by K-Mod. (this function always returns 1, so I've decided not to use it at all)
+int CvCityAI::AI_calculateTargetCulturePerTurn() const
+{ ... } */ // advc: BtS code deleted
+
+
+int CvCityAI::AI_countGoodSpecialists(bool bHealthy) const
+{
+	CvPlayerAI& kPlayer = GET_PLAYER(getOwner());
+
+	// <!-- custom: make these static const for performance optimization as advised by chatgpt 5 too. -->
+	// <!-- custom: code/performance optimization: hoist -->
+	static const SpecialistTypes eDefaultSpecialist = (SpecialistTypes)GC.getDEFAULT_SPECIALIST();
+
+	int iCount = 0;
+	FOR_EACH_ENUM2(Specialist, eSpecialist)
+	{
+		int iValue = 0;
+
+		iValue += 100 * kPlayer.specialistYield(eSpecialist, YIELD_FOOD);
+		iValue += 65 * kPlayer.specialistYield(eSpecialist, YIELD_PRODUCTION);
+		iValue += 40 * kPlayer.specialistYield(eSpecialist, YIELD_COMMERCE);
+
+		iValue += 40 * kPlayer.specialistCommerce(eSpecialist, COMMERCE_RESEARCH);
+		iValue += 40 * kPlayer.specialistCommerce(eSpecialist, COMMERCE_GOLD);
+		iValue += 20 * kPlayer.specialistCommerce(eSpecialist, COMMERCE_ESPIONAGE);
+		iValue += 15 * kPlayer.specialistCommerce(eSpecialist, COMMERCE_CULTURE);
+		iValue += 25 * GC.getInfo(eSpecialist).getGreatPeopleRateChange();
+
+		if (iValue >= (bHealthy ? 200 : 300))
+		{
+			//iCount += getMaxSpecialistCount(eSpecialist);
+			// K-Mod
+			if (kPlayer.isSpecialistValid(eSpecialist) ||
+				eSpecialist == eDefaultSpecialist)
+			{
+				return getPopulation(); // unlimited
+			}
+			int iDelta = getMaxSpecialistCount(eSpecialist)
+					- getSpecialistCount(eSpecialist);
+			/*  <advc.006> CvTeam::doResearch can obsolete a building
+				(Egyptian Obelisk; any others?) and then, apparently,
+				CvCityAI::AI_updateAssignWork isn't called soon enough.
+				Not really a problem I guess. */
+			if (iDelta < 0)
+			{
+				FAssert(AI_isAssignWorkDirty());
+				iDelta = 0;
+			} // </advc.006>
+			iCount += iDelta;
+			// K-Mod end
+		}
+	}
+	//iCount -= getFreeSpecialist();
+	iCount -= totalFreeSpecialists(); // K-Mod
+
+	//return iCount;
+	return std::max(0, iCount); // K-Mod
+}
+
+// return value: 0 is normal. greater than 0 has a special meaning.
+/*	(K-Mod todo: this function is currently only used for CvCityAI::AI_stealPlots,
+	and even there it is only used in a very binary way.
+	I think I can make this function more versatile, and
+	then use it to bring some consistency to other parts of the code.) */
+int CvCityAI::AI_getCityImportance(bool bEconomy, bool bMilitary)
+{
+	int iValue = 0;
+	if (GET_PLAYER(getOwner()).AI_atVictoryStage(
+		AI_VICTORY_CULTURE3)) // K-Mod (was culture2 in BBAI)
+	{
+		int iCultureRateRank = findCommerceRateRank(COMMERCE_CULTURE);
+		int iCulturalVictoryNumCultureCities = GC.getGame().culturalVictoryNumCultureCities();
+
+		if (iCultureRateRank <= iCulturalVictoryNumCultureCities)
+		{
+			iValue += 100;
+			if (getCultureLevel() < CvCultureLevelInfo::finalCultureLevel())
+				iValue += !bMilitary ? 100 : 0;
+			else iValue += bMilitary ? 100 : 0;
+		}
+	}
+	return iValue;
+}
+
+
+void CvCityAI::AI_stealPlots()
+{
+	PROFILE_FUNC();
+
+	int iImportance = AI_getCityImportance(true, false);
+	for (CityPlotIter it(*this); it.hasNext(); ++it)
+	{
+		CvPlot& kPlot = *it;
+		if (iImportance > 0 && kPlot.getOwner() == getOwner())
+		{
+			CvCityAI* pWorkingCity = kPlot.AI_getWorkingCity();
+			if (pWorkingCity != this && pWorkingCity != NULL)
+			{
+				FAssert(pWorkingCity->getOwner() == getOwner());
+				if (iImportance > pWorkingCity->AI_getCityImportance(true, false))
+					kPlot.setWorkingCityOverride(this);
+			}
+		}
+
+		if (kPlot.getWorkingCityOverride() == this &&
+			kPlot.getOwner() != getOwner())
+		{
+			kPlot.setWorkingCityOverride(NULL);
+		}
+	}
+}
+
+
+
+// original description (obsolete):
+/*	+1/+3/+5 plot based on base food yield (1/2/3)
+	+4 if being worked.
+	+4 if a bonus.
+	Unworked ocean ranks very lowly. Unworked lake ranks at 3. Worked lake at 7.
+	Worked bonus in ocean ranks at like 11 */
+//int CvCityAI::AI_buildingSpecialYieldChangeValue(BuildingTypes kBuilding, YieldTypes eYield) const
+
+/*	K-Mod: I've rewritten this function to give a lower but more consistent value.
+	The function should return roughly 4x the number of affected plots which are
+	expected to be worked.
+	+4 if either being worked, or would be good after the extra yield.
+	(~consumption rate +4 commerce / 2 yield)
+	+2 to +3 if would be ok after the extra yield.
+	(~consumption rate +2 commerce / 1 yield)
+	+1 otherwise */
+int CvCityAI::AI_buildingSeaYieldChangeWeight(BuildingTypes eBuilding, bool bGrowing) const
+{
+	int iValue = 0;
+	CvBuildingInfo const& kBuilding = GC.getInfo(eBuilding);
+
+	/*	only add the building's yield if it isn't already built -
+		otherwise the building will be overvalued for sabotage missions. */
+	bool const bAddBuilding = (getNumBuilding(eBuilding) <
+			GC.getDefineINT(CvGlobals::CITY_MAX_NUM_BUILDINGS));
+	int const iCommerceValue = 4;
+	int const iProdValue = 7;
+	int const iFoodValue = 11;
+	int const iBaseValue = iFoodValue * GC.getFOOD_CONSUMPTION_PER_POPULATION();
+	// <advc.131>
+	int iDecentUnworkedLand = 0;
+	// Count plots not currently worked separately
+	int iPotentialValue = 0; // </advc.131>
+	for (WorkablePlotIter it(*this); it.hasNext(); ++it)
+	{
+		CvPlot const& kPlot = *it;
+		if (kPlot.isWater())
+		{
+			if (kPlot.isBeingWorked())
+			{
+				iValue += 4;
+				continue;
+			}
+		}
+		else if (kPlot.isBeingWorked())
+			continue;
+		bool bAddYield = (bAddBuilding && kPlot.isWater()); // advc.131
+		int iPlotValue =
+				iFoodValue * (kPlot.getYield(YIELD_FOOD) +
+				(bAddYield ? kBuilding.getSeaPlotYieldChange(YIELD_FOOD) : 0)) +
+				iProdValue * (kPlot.getYield(YIELD_PRODUCTION) +
+				(bAddYield ? kBuilding.getSeaPlotYieldChange(YIELD_PRODUCTION) : 0)) +
+				iCommerceValue * (kPlot.getYield(YIELD_COMMERCE) +
+				(bAddYield ? kBuilding.getSeaPlotYieldChange(YIELD_COMMERCE) : 0));
+		// <advc.131> Threshold corresponds to a flat Grassland Cottage
+		if (!kPlot.isWater() && iPlotValue >= iBaseValue + iCommerceValue)
+		{
+			iDecentUnworkedLand++;
+			continue;
+		} // </advc.131>
+		if (iPlotValue > iBaseValue + 3 * iCommerceValue)
+			iPotentialValue += 4;
+		else if (iPlotValue >= iBaseValue + 2 * iCommerceValue)
+			iPotentialValue += (bGrowing ? 3 : 2);
+		else iPotentialValue += 1;
+	}
+	// <advc.131>
+	iPotentialValue *= std::max(2, 10 - iDecentUnworkedLand);
+	iPotentialValue /= 10; // </advc.131>
+	return iValue + iPotentialValue;
+}
+
+
+int CvCityAI::AI_yieldMultiplier(YieldTypes eYield) const
+{
+	PROFILE_FUNC();
+
+	int iMultiplier = getBaseYieldRateModifier(eYield);
+	if (eYield == YIELD_PRODUCTION)
+		iMultiplier += (getMilitaryProductionModifier() / 2);
+
+	if (eYield == YIELD_COMMERCE)
+	{
+		/*iMultiplier += (getCommerceRateModifier(COMMERCE_RESEARCH) * 60) / 100;
+		iMultiplier += (getCommerceRateModifier(COMMERCE_GOLD) * 35) / 100;
+		iMultiplier += (getCommerceRateModifier(COMMERCE_CULTURE) * 15) / 100;*/ // BtS
+		// K-Mod
+		// this breakdown seems wrong... lets try it a different way.
+		const CvPlayer& kPlayer = GET_PLAYER(getOwner());
+		int iExtra = 0;
+		FOR_EACH_ENUM(Commerce)
+		{
+			iExtra += getTotalCommerceRateModifier(eLoopCommerce) *
+					kPlayer.getCommercePercent(eLoopCommerce);
+		}
+		// base commerce modifier compounds with individual commerce modifiers.
+		iMultiplier *= iExtra;
+		iMultiplier /= 10000;
+		// K-Mod end
+	}
+
+	return iMultiplier;
+}
+
+/*	This should be called before doing governor stuff.
+	This is the function which replaces emphasis.
+	Could stand for a Commerce Variety to be added,
+	especially now that there is Espionage. */
+void CvCityAI::AI_updateSpecialYieldMultiplier()
+{
+	PROFILE_FUNC();
+
+	int iOldProductionMult = m_aiSpecialYieldMultiplier[YIELD_PRODUCTION]; // advc.121
+	FOR_EACH_ENUM(Yield)
+		m_aiSpecialYieldMultiplier[eLoopYield] = 0;
+
+	UnitTypes eProductionUnit = getProductionUnit();
+	if (eProductionUnit != NO_UNIT)
+	{
+		/*if (GC.getInfo(eProductionUnit).getDefaultUnitAIType() == UNITAI_WORKER_SEA) {
+			m_aiSpecialYieldMultiplier[YIELD_PRODUCTION] += 50;
+			m_aiSpecialYieldMultiplier[YIELD_COMMERCE] -= 50;
+		}
+		if ((GC.getInfo(eProductionUnit).getDefaultUnitAIType() == UNITAI_WORKER) ||
+			(GC.getInfo(eProductionUnit).getDefaultUnitAIType() == UNITAI_SETTLE))
+			m_aiSpecialYieldMultiplier[YIELD_COMMERCE] -= 50;*/ // BtS
+		// K-Mod. note: when food is production, food is counted as production!
+		UnitAITypes eUnitAI = GC.getInfo(eProductionUnit).getDefaultUnitAIType();
+		if (eUnitAI == UNITAI_WORKER_SEA ||
+			eUnitAI == UNITAI_WORKER || eUnitAI == UNITAI_SETTLE)
+		{
+			m_aiSpecialYieldMultiplier[YIELD_PRODUCTION] += 50;
+			m_aiSpecialYieldMultiplier[YIELD_COMMERCE] -= 25;
+		}
+		// K-Mod end
+	} // <advc.300>
+	if (isBarbarian())
+	{
+		int iCommerceToProductionShift = AI_commerceToProductionMultiplierShift();
+		m_aiSpecialYieldMultiplier[YIELD_PRODUCTION] += iCommerceToProductionShift;
+		m_aiSpecialYieldMultiplier[YIELD_COMMERCE] -= iCommerceToProductionShift;
+		return;
+	} // </advc.300>
+
+	BuildingTypes eProductionBuilding = getProductionBuilding();
+	if (eProductionBuilding != NO_BUILDING)
+	{
+		if (GC.getInfo(eProductionBuilding).isWorldWonder() || isProductionProject())
+		{
+			m_aiSpecialYieldMultiplier[YIELD_PRODUCTION] += 50;
+			m_aiSpecialYieldMultiplier[YIELD_COMMERCE] -= 25;
+		}
+		m_aiSpecialYieldMultiplier[YIELD_PRODUCTION] += std::max(-25,
+				//GC.getInfo(eProductionBuilding).getFoodKept()
+				GET_PLAYER(getOwner()).getFoodKept(eProductionBuilding)); // advc.912d
+
+		/*if ((GC.getInfo(eProductionBuilding).getCommerceChange(COMMERCE_CULTURE) > 0)
+			|| (GC.getInfo(eProductionBuilding).getObsoleteSafeCommerceChange(COMMERCE_CULTURE) > 0)) {
+			int iTargetCultureRate = AI_calculateTargetCulturePerTurn();
+			if (iTargetCultureRate > 0) {
+				if (getCommerceRate(COMMERCE_CULTURE) == 0)
+					m_aiSpecialYieldMultiplier[YIELD_PRODUCTION] += 50;
+				else if (getCommerceRate(COMMERCE_CULTURE) < iTargetCultureRate)
+					m_aiSpecialYieldMultiplier[YIELD_PRODUCTION] += 20;
+			}
+		}*/ // BtS - emphasising production to get culture is nice, but not if it slows growth
+	}
+
+	if (isHuman())
+		return;
+	// non-human production value increase
+
+	CvPlayerAI const& kOwner = GET_PLAYER(getOwner());
+
+	// <!-- custom: cache to kTeam for perf opt if i'm not mistaken. See note at CvCityAI::AI_buildingValue. -->
+	CvTeamAI const& kTeam = GET_TEAM(kOwner.getTeam()); // kekm.16
+
+	AreaAITypes const eAreaAIType = getArea().getAreaAIType(getTeam());
+
+	// K-Mod. special strategy / personality adjustments
+	// <advc> Moved into subroutine
+	{
+		int iCommerceToProductionShift = AI_commerceToProductionMultiplierShift();
+		m_aiSpecialYieldMultiplier[YIELD_PRODUCTION] += iCommerceToProductionShift;
+		m_aiSpecialYieldMultiplier[YIELD_COMMERCE] -= iCommerceToProductionShift;
+	} // </advc>
+	if (kOwner.AI_getFlavorValue(FLAVOR_PRODUCTION) > 0)
+	{
+		m_aiSpecialYieldMultiplier[YIELD_PRODUCTION] += 5 +
+				2 * kOwner.AI_getFlavorValue(FLAVOR_PRODUCTION);
+	}
+	if (kOwner.AI_isDoStrategy(AI_STRATEGY_ECONOMY_FOCUS))
+	{
+		m_aiSpecialYieldMultiplier[YIELD_PRODUCTION] -= 10;
+		m_aiSpecialYieldMultiplier[YIELD_COMMERCE] += 20;
+	}  // advc.001: was AI_isDoVictoryStrategy
+	else if (kOwner.AI_isDoStrategy(AI_STRATEGY_GET_BETTER_UNITS)) // doesn't stack with ec focus.
+	{
+		m_aiSpecialYieldMultiplier[YIELD_COMMERCE] += 20;
+	} // K-Mod end
+	// advc: Moved down
+	if (kOwner.AI_atVictoryStage(AI_VICTORY_CULTURE1 | AI_VICTORY_SPACE1))
+		m_aiSpecialYieldMultiplier[YIELD_COMMERCE] += 5;
+
+	if ((kOwner.AI_isDoStrategy(AI_STRATEGY_DAGGER) && getPopulation() >= 4) ||
+		(eAreaAIType == AREAAI_OFFENSIVE) || (eAreaAIType == AREAAI_DEFENSIVE) ||
+		(eAreaAIType == AREAAI_MASSING) || (eAreaAIType == AREAAI_ASSAULT))
+	{
+		/*m_aiSpecialYieldMultiplier[YIELD_PRODUCTION] += 10;
+		if (!kOwner.AI_isFinancialTrouble())
+			m_aiSpecialYieldMultiplier[YIELD_COMMERCE] -= 40;*/ // BtS
+		// K-Mod. Don't sacrifice lots of commerce unless we're on the defensive, or this is 'total war'.
+		// advc.018: Removed crush from the isDoStrategy call
+		m_aiSpecialYieldMultiplier[YIELD_PRODUCTION] += kOwner.
+				AI_isDoStrategy(AI_STRATEGY_DAGGER | AI_STRATEGY_TURTLE) ? 20 : 10;
+		if (eAreaAIType != AREAAI_NEUTRAL && !kOwner.AI_isFinancialTrouble() &&
+			!kOwner.AI_isDoStrategy(AI_STRATEGY_ECONOMY_FOCUS | AI_STRATEGY_GET_BETTER_UNITS))
+		{
+			bool bSeriousWar = (eAreaAIType == AREAAI_DEFENSIVE || kOwner.isBarbarian());
+			for (TeamIter<CIV_ALIVE,KNOWN_POTENTIAL_ENEMY_OF> itEnemy(getTeam());
+				!bSeriousWar && itEnemy.hasNext(); ++itEnemy)
+			{
+				WarPlanTypes eWarPlan = kTeam.AI_getWarPlan(itEnemy->getID());
+				bSeriousWar = (eWarPlan == WARPLAN_PREPARING_TOTAL || eWarPlan == WARPLAN_TOTAL);
+			}
+			m_aiSpecialYieldMultiplier[YIELD_COMMERCE] -= (bSeriousWar ? 35 : 10);
+		} // K-Mod end
+	}
+
+	//int iIncome = 1 + kOwner.getCommerceRate(COMMERCE_GOLD) + kOwner.getCommerceRate(COMMERCE_RESEARCH) + std::max(0, kOwner.getGoldPerTurn());
+	int iIncome = 1 + kOwner.AI_getAvailableIncome(); // K-Mod
+	int iExpenses = 1 + kOwner.calculateInflatedCosts() +
+			//-std::min(0, kOwner.getGoldPerTurn());
+			// K-Mod (just to be consistent with similar calculations)
+			std::max(0, -kOwner.getGoldPerTurn()); 
+	FAssert(iIncome > 0);
+
+	int iRatio = (100 * iExpenses) / iIncome;
+	/*	Gold -> Production Reduced To
+		40- -> 100%; 60 -> 83%; 100 -> 28%; 110+ -> 14% */
+	m_aiSpecialYieldMultiplier[YIELD_PRODUCTION] += 100;
+	if (iRatio > 60)
+	{	//Greatly decrease production weight
+		m_aiSpecialYieldMultiplier[YIELD_PRODUCTION] *= std::max(10, 120 - iRatio);
+		m_aiSpecialYieldMultiplier[YIELD_PRODUCTION] /= 72;
+	}
+	else if (iRatio > 40)
+	{	//Slightly decrease production weight.
+		m_aiSpecialYieldMultiplier[YIELD_PRODUCTION] *= 160 - iRatio;
+		m_aiSpecialYieldMultiplier[YIELD_PRODUCTION] /= 120;
+	}
+	m_aiSpecialYieldMultiplier[YIELD_PRODUCTION] -= 100;
+	// <advc.121> Inertia, to avoid oscillation (not sure if really a problem).
+	m_aiSpecialYieldMultiplier[YIELD_PRODUCTION] += iOldProductionMult;
+	m_aiSpecialYieldMultiplier[YIELD_PRODUCTION] /= 2; // </advc.121>
+}
+
+
+int CvCityAI::AI_specialYieldMultiplier(YieldTypes eYield) const
+{
+	return m_aiSpecialYieldMultiplier[eYield];
+}
+
+/*	advc: Helper to avoid duplicate code. Cut from AI_getYieldMultipliers/
+	AI_updateSpecialYieldMultiplier. A K-Mod comment had said that those two
+	should be kept "roughly consistent" with each other and they were performing
+	in fact the exact same calculation. Not a nice function name; it's unclear
+	to me why other, similar adjustments aren't shared by the two functions as well
+	or what the difference between yield multipliers and special yield multipliers
+	is even supposed to be. Would need more insight to refactor this better. */
+int CvCityAI::AI_commerceToProductionMultiplierShift() const
+{
+	int iR = 0;
+	/*	<advc.300> Delay Cottaging of New World to make it a little less
+		attractive for conquerors */
+	if (isBarbarian())
+	{
+		if (getArea().getNumCivCities() <= 0)
+		{
+			iR += range(CvEraInfo::AI_getAgeOfExploration()
+					- GC.getGame().getCurrentEra(), 0, 2) * 10;
+		}
+		return iR;
+	} // </advc.300>
+	if (GET_PLAYER(getOwner()).AI_isDoStrategy(AI_STRATEGY_PRODUCTION))
+		iR = 20;
+	else if (3 * findBaseYieldRateRank(YIELD_PRODUCTION) <=
+		GET_PLAYER(getOwner()).getNumCities() &&
+		findBaseYieldRateRank(YIELD_PRODUCTION) <
+		findBaseYieldRateRank(YIELD_COMMERCE))
+	{
+		iR = 10;
+	}
+	return iR; 
+}
+
+// advc: Similar code had been used (somewhat inconsistently) in several places
+bool CvCityAI::AI_needsCultureToWorkFullRadius() const
+{
+	return (!isDisorder() && getCommerceRate(COMMERCE_CULTURE) <= 0 &&
+			getCultureLevel() + 1 <= CITY_PLOTS_RADIUS);
+}
+
+
+int CvCityAI::AI_countNumBonuses(BonusTypes eBonus,
+	bool bIncludeOurs, bool bIncludeNeutral, int iOtherCultureThreshold,
+	bool bLand, bool bWater) const
+{
+	FAssert(bLand || bWater); // advc
+	int iCount = 0;
+
+	// <!-- custom: very nice optimization with the help of chatgpt 5 -->
+	// Inside the nested player/plot loop, pull PlayerTypes eOwner = getOwner(); TeamTypes eTeam = getTeam(); once outside the loops, and reuse int ourPlotCulture = kPlot.getCulture(eOwner); inside—then you do one getCulture per rival instead of two per rival. It’s minor, but this is an O(numTiles × numPlayers) routine.
+	const PlayerTypes eOwner = getOwner();
+	const TeamTypes eTeam = getTeam();
+
+	for (CityPlotIter it(*this); it.hasNext(); ++it)
+	{
+		CvPlot const& kPlot = *it;
+		// advc.040 (tbd.): Param for including resources in different land areas?
+		// <advc.001> As in AI_countNumImprovableBonuses. BtS hadn't checked bLand.
+		if (!((bLand && isArea(kPlot.getArea())) ||
+			(bWater && kPlot.isWater())))
+		{
+			continue; // advc
+		}
+		BonusTypes eLoopBonus = kPlot.getBonusType(eTeam);
+		if (eLoopBonus == NO_BONUS)
+			continue;
+
+		if (eBonus != NO_BONUS && eBonus != eLoopBonus)
+			continue;
+
+		// <!-- custom: optimization i found myself; done with the help of chatgpt 5 and that i then adjusted or not or yes or etc, check if accurate -->
+		// Good eye—there are a couple more tiny hoists you can do here. Your eOwner/eTeam locals are already the main win. The next cheap gains:
+		// - Cache the plot owner once per iteration (used twice).
+        const PlayerTypes ePlotOwner = kPlot.getOwner();
+
+		if (bIncludeOurs && ePlotOwner == eOwner &&
+			kPlot.getWorkingCity() == this)
+		{
+			iCount++;
+		}
+		else if (bIncludeNeutral && !kPlot.isOwned())
+			iCount++;
+		else if (iOtherCultureThreshold > 0 && kPlot.isOwned() &&
+			ePlotOwner != eOwner)
+		{
+			if (kPlot.getCulture(ePlotOwner) - kPlot.getCulture(eOwner) <
+				iOtherCultureThreshold)
+			{
+				iCount++;
+			}
+		}
+	}
+	return iCount;
+}
+
+// BBAI (11/14/09, jdog5000): City AI
+// K-Mod - rearranged some stuff and fixed some bugs
+// advc (tbd.): Some overlap with CvPlayerAI::AI_isUnimprovedBonus -- merge?
+int CvCityAI::AI_countNumImprovableBonuses(bool bIncludeNeutral, TechTypes eExtraTech, bool bLand,
+	bool bWater) /* advc: */ const
+{
+	// <!-- custom: very nice optimization with the help of chatgpt 5 -->
+	// Inside the nested player/plot loop, pull PlayerTypes eOwner = getOwner(); TeamTypes eTeam = getTeam(); once outside the loops, and reuse int ourPlotCulture = kPlot.getCulture(eOwner); inside—then you do one getCulture per rival instead of two per rival. It’s minor, but this is an O(numTiles × numPlayers) routine.
+	const PlayerTypes eOwner = getOwner();
+	const TeamTypes eTeam = getTeam();
+
+	int iCount = 0;
+	for (CityPlotIter it(*this, false); it.hasNext(); ++it)
+	{
+		CvPlot const& kPlot = *it;
+		if (!((bLand && isArea(kPlot.getArea())) ||
+			(bWater && kPlot.isWater())))
+		{
+			continue;
+		}
+		BonusTypes const eLoopBonus = kPlot.getBonusType(eTeam);
+		if (eLoopBonus != NO_BONUS &&
+			(GET_TEAM(eTeam).isHasTech((TechTypes)
+			GC.getInfo(eLoopBonus).getTechCityTrade()) ||
+			GC.getInfo(eLoopBonus).getTechCityTrade() == eExtraTech))
+		{
+			if ((kPlot.getOwner() == eOwner &&
+				kPlot.getWorkingCity() == this) ||
+				(bIncludeNeutral && !kPlot.isOwned()))
+			{	// <advc.001>
+				ImprovementTypes eCurrentImp = kPlot.getImprovementType();
+				if (eCurrentImp != NO_IMPROVEMENT &&
+					(GET_TEAM(eTeam).isBonusObsolete(eLoopBonus) ||
+					GET_TEAM(eTeam).doesImprovementConnectBonus(eCurrentImp, eLoopBonus)))
+				{
+					continue;
+				} // </advc.001>
+				FOR_EACH_ENUM(Build)
+				{
+					ImprovementTypes const eImp = GC.getInfo(eLoopBuild).getImprovement();
+					if (eImp == NO_IMPROVEMENT || !kPlot.canBuild(eLoopBuild, eOwner))
+						continue;
+					if (GC.getInfo(eImp).isImprovementBonusTrade(eLoopBonus) ||
+						GC.getInfo(eImp).isActsAsCity())
+					{
+						if (GET_PLAYER(eOwner).canBuild(kPlot, eLoopBuild))
+						{	/*  advc.001: If owner can already connect the resource
+								but built sth. else instead, then it's probably deliberate. */
+							if(eCurrentImp == NO_IMPROVEMENT)
+							{
+								iCount++;
+								break;
+							}
+						}
+						else if (eExtraTech != NO_TECH &&
+							GC.getInfo(eLoopBuild).getTechPrereq() == eExtraTech)
+						{
+							iCount++;
+							break;
+						}
+					}
+				}
+			}
+		}
+	}
+	return iCount;
+}
+
+
+int CvCityAI::AI_playerCloseness(PlayerTypes eIndex, int iMaxDistance,
+	bool bConstCache) const // advc.001n
+{
+	FAssert(GET_PLAYER(eIndex).isAlive());
+
+	int iCloseness = m_aiPlayerCloseness[eIndex];
+	if ((m_aiCachePlayerClosenessTurn[eIndex] != GC.getGame().getGameTurn() ||
+		m_aiCachePlayerClosenessDistance[eIndex] != iMaxDistance))
+	{
+		iCloseness = AI_calculatePlayerCloseness(iMaxDistance,
+				eIndex, bConstCache); // advc.001n
+	}
+	return iCloseness;
+}
+
+// advc.opt: Renamed from "AI_cachePlayerCloseness"; no longer updates the whole cache.
+// BETTER_BTS_AI_MOD (5/16/10, jdog5000): General AI, closeness changes
+int CvCityAI::AI_calculatePlayerCloseness(int iMaxDistance, PlayerTypes ePlayer,
+	bool bConstCache) const // advc.001n
+{
+	PROFILE_FUNC();
+
+	int iCloseness = 0;
+	CvPlayer const& kPlayer = GET_PLAYER(ePlayer);
+	
+	int iValue = 0;
+	int iBestValue = 0;
+	CvMap const& kMap = GC.getMap();
+	FOR_EACH_CITY(pLoopCity, kPlayer)
+	{
+		if (pLoopCity == this)
+			continue;
+		int iDistance = stepDistance(getX(), getY(),
+				pLoopCity->getX(), pLoopCity->getY());
+		/*  <advc.107> No functional change here. It's OK to use a higher
+			search range for cities on other continents; but will have to
+			decrease the distance later on when computing the closeness value. */
+		bool const bSameArea = sameArea(*pLoopCity);
+		if (!bSameArea) // </advc.107>
+		{
+			iDistance += 1;
+			iDistance /= 2;
+		}
+		if (iDistance > iMaxDistance)
+			continue;
+		if (bSameArea) // advc.107 (no functional change)
+		{
+			int iPathDistance = kMap.calculatePathDistance(plot(), pLoopCity->plot());
+			if (iPathDistance > 0)
+				iDistance = iPathDistance;
+			if (iDistance > iMaxDistance)
+				continue;
+		}
+		// Weight by population of both cities, not just pop of other city
+		//iTempValue = 20 + 2*pLoopCity->getPopulation();
+		int iTempValue = 20 + pLoopCity->getPopulation() + getPopulation();
+		iTempValue *= 1 + iMaxDistance - iDistance;
+		iTempValue /= 1 + iMaxDistance;
+		//reduce for small islands.
+		int iAreaCityCount = pLoopCity->getArea().getNumCities();
+		iTempValue *= std::min(iAreaCityCount, 5);
+		iTempValue /= 5;
+		if (iAreaCityCount < 3)
+			iTempValue /= 2;
+		if (pLoopCity->isBarbarian())
+			iTempValue /= 4;
+		// <advc.107>
+		if(!bSameArea)
+			iTempValue /= (pLoopCity->isCoastal() ? 2 : 3); // </advc.107>
+		iValue += iTempValue;
+		iBestValue = std::max(iBestValue, iTempValue);
+	}
+	iCloseness = iBestValue + iValue / 4;
+	if (!bConstCache) // advc.001n
+	{
+		m_aiPlayerCloseness[kPlayer.getID()] = iCloseness;
+		m_aiCachePlayerClosenessTurn[ePlayer] = GC.getGame().getGameTurn();
+		m_aiCachePlayerClosenessDistance[ePlayer] = iMaxDistance;
+	}
+	return iCloseness;
+}
+
+// K-Mod
+int CvCityAI::AI_highestTeamCloseness(TeamTypes eTeam, /* advc.001n: */ bool bConstCache) const
+{
+	int iCloseness = -1;
+	for (MemberIter itMember(eTeam); itMember.hasNext(); ++itMember)
+	{
+		iCloseness = std::max(iCloseness, AI_playerCloseness(
+				itMember->getID(), DEFAULT_PLAYER_CLOSENESS,
+				bConstCache)); // advc.001n
+	}
+	return iCloseness;
+}
+
+/*K-Mod // advc.003j: unused
+// return true if there is an adjacent plot not owned by us.
+bool CvCityAI::AI_isFrontlineCity() const {
+	FOR_EACH_ADJ_PLOT(getPlot()) {
+		if (pAdj != NULL && !pAdj->isWater() && pAdj->getTeam() != getTeam())
+			return true;
+	}
+	return false;
+}*/
+
+// K-Mod: (advc.650 - Was unused in K-Mod; now has a use.)
+int CvCityAI::AI_calculateMilitaryOutput() const
+{
+	int iValue = getBaseYieldRate(YIELD_PRODUCTION);
+	//UnitTypes eDefaultUnit = getConscriptUnit();
+	iValue *= 100 + getMilitaryProductionModifier() + 10 * getProductionExperience();
+	iValue /= 100;
+	return iValue;
+}
+
+/*	K-Mod has made significant structural & function changes to this function.
+	(loosely described in the comments throughout the function.) */
+int CvCityAI::AI_cityThreat(/*bool bDangerPercent*/) const // advc: param unused
+{
+	PROFILE_FUNC();
+
+	// <!-- custom: performance optimization: cache repetitive calls -->
+	CvGame const& kGame = GC.getGame();
+	CvPlayerAI const& kOwner = GET_PLAYER(getOwner()); // K-Mod
+	// <!-- custom: cache to kTeam for perf opt if i'm not mistaken. See note at CvCityAI::AI_buildingValue. -->
+	CvTeamAI const& kTeam = GET_TEAM(kOwner.getTeam()); // kekm.16
+
+	int iTotalThreat = 0; // was (iValue)
+	bool const bCrushStrategy = kOwner.AI_isDoStrategy(AI_STRATEGY_CRUSH);
+
+	// advc.001: Exclude unmet players (bugfix?), vassals; K-Mod had only excluded the master.
+	for (PlayerAIIter<ALIVE,KNOWN_POTENTIAL_ENEMY_OF> itPlayer(getTeam());
+		itPlayer.hasNext(); ++itPlayer)
+	{
+		CvPlayerAI const& kRival = *itPlayer;
+
+		int iAccessFactor = // (was "iTempValue")
+				AI_playerCloseness(kRival.getID(), DEFAULT_PLAYER_CLOSENESS);
+		// (this is roughly 20 points for each neighbouring city.)
+
+		// K-Mod
+		// Add some more points for each plot the loop player owns in our fat-cross.
+		if (iAccessFactor > 0)
+		{
+			for (CityPlotIter itPlot(*this); itPlot.hasNext(); ++itPlot)
+			{
+				if (itPlot->getOwner() == kRival.getID())
+				{
+					iAccessFactor += (stepDistance(plot(), &(*itPlot)) <= 1 ? 2 : 1);
+				}
+			}
+		}
+
+		// Evaluate the posibility of a naval assault.
+		if (isCoastal( // advc.131: Area size threshold was 10, now 20
+			2 * GC.getDefineINT(CvGlobals::MIN_WATER_SIZE_FOR_OCEAN)))
+		{
+			/*	This evaluation may be expensive (when I finish writing it),
+				so only do it if there is reason to be concerned. */
+			if (kOwner.AI_atVictoryStage4() ||
+				kTeam.AI_getWarPlan(kRival.getTeam()) != NO_WARPLAN ||
+				(!kOwner.AI_isLandWar(getArea()) &&
+				//kLoopPlayer.AI_getAttitude(getOwner()) < ATTITUDE_PLEASED))
+				/*  <advc.109> Don't presume human attitude. Using PLEASED as the
+					AI threshold (instead of calling CvTeamAI::AI_isAvoidWar)
+					seems OK as the AI tends to be reluctant to start naval wars. */
+				((kRival.isHuman() && kOwner.AI_getAttitude(kRival.getID()) < ATTITUDE_FRIENDLY) ||
+				(!kRival.isHuman() && kRival.AI_getAttitude(getOwner()) < ATTITUDE_PLEASED))))
+				// </advc.109>
+			{
+				int iNavalAccess = 0;
+
+				//PROFILE("AI_cityThreat naval assault");
+				/*	(temporary calculation based on the original bts code.
+					I intend to make this significantly more detailed - eventually.) */
+				/*int iCurrentEra = kOwner.getCurrentEra();
+				iValue += std::max(0, ((10 * iCurrentEra) / 3) - 6);*/
+				int iEra = kGame.getCurrentEra();
+				iNavalAccess += std::max(0,
+						30 * (iEra + 1) / (GC.getNumEraInfos() + 1) - 10);
+				iAccessFactor = std::max(iAccessFactor, iNavalAccess);
+			}
+		}
+		// K-Mod end
+
+		if (iAccessFactor > 0)
+		{
+			/*	K-Mod. (originally the following code had
+				iTempValue *= foo; rather than iCivFactor = foo;) */
+			int iCivFactor=0;
+			/*  advc.018: Commented out. I don't see why crush should make us
+				more protective of our cities. The
+				if(bCrushStrategy) iCivFactor/=2 a bit farther down seems to be
+				the better approach. */
+			/*if (bCrushStrategy && kTeam.AI_getWarPlan(kLoopPlayer.getTeam()) != NO_WARPLAN)
+				iCivFactor = 400;
+			else*/
+			if (kTeam.isAtWar(kRival.getTeam()))
+				iCivFactor = 300;
+			// Beef up border security before starting war, but not too much (bbai)
+			else if (kTeam.AI_getWarPlan(kRival.getTeam()) != NO_WARPLAN)
+				iCivFactor = 180;
+			else
+			{	// <advc.022>
+				AttitudeTypes eTowardThem = kOwner.AI_getAttitude(kRival.getID());
+				AttitudeTypes eTowardUs = kRival.AI_getAttitude(kOwner.getID());
+				if (!kRival.isHuman())
+				{
+					// Round toward eTowardUs
+					int iTowardThem = eTowardThem;
+					if(eTowardUs > iTowardThem)
+						iTowardThem++;
+					eTowardUs = (AttitudeTypes)((eTowardUs + iTowardThem) / 2);
+				} // Replaced below:
+				//switch (kOwner.AI_getAttitude((PlayerTypes)iI))
+				/*	(K-Mod note: for good strategy,
+					this should probably be _their_ attitude rather than ours.
+					But perhaps for role-play it is better the way it is.) */
+				switch(eTowardUs) // Yep, use their attitude. </advc.022>
+				{
+				case ATTITUDE_FURIOUS:
+					iCivFactor = 180;
+					break;
+				case ATTITUDE_ANNOYED:
+					iCivFactor = 130;
+					break;
+				case ATTITUDE_CAUTIOUS:
+					iCivFactor = 100;
+					break;
+				case ATTITUDE_PLEASED:
+					iCivFactor = 50;
+					break;
+				case ATTITUDE_FRIENDLY:
+					iCivFactor = 20;
+					break;
+				default:
+					FAssert(false);
+				}
+
+				// K-Mod
+				// Reduce threat level of our vassals, particularly from capitulated vassals.
+				if (GET_TEAM(kRival.getTeam()).isVassal(getTeam()))
+				{
+					iCivFactor = std::min(iCivFactor,
+							GET_TEAM(kRival.getTeam()).isCapitulated() ? 30 : 50);
+				}
+				else
+				{
+					/*	Increase threat level for cities that we have captured from this player
+						I may add a turn limit later if this produces unwanted behaviour.
+						(getGameTurn() - getGameTurnAcquired() < 40) */
+					if (getPreviousOwner() == kRival.getID())
+						iCivFactor = (iCivFactor * 3) / 2;
+					// Don't get too comfortable if kLoopPlayer is using a military victory strategy.
+					if (kRival.AI_atVictoryStage(AI_VICTORY_MILITARY4))
+						iCivFactor = std::max(100, iCivFactor);
+				}
+				// K-Mod end
+
+				if (bCrushStrategy)
+					iCivFactor /= 2;
+			}
+
+			// K-Mod. Amplify the threat rating for rivals which have high power.
+			if (kRival.getPower() > kOwner.getPower())
+			{
+				/*iTempValue *= std::min(400, (100 * GET_PLAYER((PlayerTypes)iI).getPower())/std::max(1, GET_PLAYER(getOwner()).getPower()));
+				iTempValue /= 100;*/ // BBAI
+
+				/*	exclude population power. (Should this use the same power comparison
+					used to calculate areaAI and war values?) */
+				int iLoopPower = kRival.getPower() - kGame.getPopulationPower(kRival.getTotalPopulation());
+				int iOurPower = kOwner.getPower() - kGame.getPopulationPower(kOwner.getTotalPopulation());
+				iCivFactor *= range(100 * iLoopPower/std::max(1, iOurPower), 100, 400);
+				iCivFactor /= 100;
+			}
+
+			/* iTempValue /= 100;
+			iTotalThreat += iTempValue; */
+			iTotalThreat += iAccessFactor * iCivFactor / 100; // K-Mod
+		}
+	}
+
+	/*if (isCoastal(GC.getMIN_WATER_SIZE_FOR_OCEAN())) {
+		int iCurrentEra = kOwner.getCurrentEra();
+		iValue += std::max(0, ((10 * iCurrentEra) / 3) - 6); //there are better ways to do this
+	} */ // BtS - this is now included in the iAccessFactor calculation
+
+	/*iValue += getNumActiveWorldWonders() * 5;
+	if (kOwner.AI_atVictoryStage(AI_VICTORY_CULTURE3)) {
+		iValue += 5;
+		iValue += getCommerceRateModifier(COMMERCE_CULTURE) / 20;
+		if (getCultureLevel() >= GC.getNumCultureLevelInfos() - 2) {
+			iValue += 20;
+			if (getCultureLevel() >= GC.getNumCultureLevelInfos() - 1)
+				iValue += 30;
+		}
+	}*/ // BtS
+
+	iTotalThreat += 3 * kOwner.AI_getPlotDanger(*plot(), 3, false); // was 2 *
+
+	/*	K-Mod. Increase the threat rating for high-value cities.
+		(Note: this replaces the culture & wonder stuff above)
+		(Note2: I may end up moving this stuff into AI_getCityImportance) */
+	if (iTotalThreat > 0)
+	{
+		int iImportanceFactor = 100;
+		iImportanceFactor += 20 * getNumActiveWorldWonders();
+		iImportanceFactor += isHolyCity() ? 20 : 0;
+		FOR_EACH_ENUM(Corporation)
+		{
+			if (isHeadquarters(eLoopCorporation))
+			{
+				/*	note: the corp HQ building counts
+					as an active world wonder in addition to this value. */
+				iImportanceFactor += 10;
+			}
+		}
+
+		if (kOwner.AI_atVictoryStage(AI_VICTORY_CULTURE3))
+		{
+			if (getCultureLevel() >= kGame.culturalVictoryCultureLevel() - 1)
+			{
+				iImportanceFactor += 20;
+				if (findCommerceRateRank(COMMERCE_CULTURE) <= kGame.culturalVictoryNumCultureCities())
+				{
+					iImportanceFactor += 30;
+					if (kOwner.AI_atVictoryStage(AI_VICTORY_CULTURE4))
+					{
+						iImportanceFactor += 100;
+					}
+				}
+			}
+		}
+		if (isCapital())
+		{
+			iImportanceFactor = std::max(iImportanceFactor, 150);
+			if (GET_TEAM(kOwner.getTeam()).AI_getLowestVictoryCountdown() > 0)
+				iImportanceFactor += 100;
+		}
+		iTotalThreat = iTotalThreat * iImportanceFactor / 100;
+	} // K-Mod end
+
+	return iTotalThreat;
+}
+
+/*  advc.031b: Between 1 and 100 (not 0 b/c the caller should ensure that there
+	is at least one acceptable and reachable city site). Note that the result
+	is currently usually doubled and then used as the per-cent probability of
+	training a Settler, meaning that values greater than 50 get clamped. */
+int CvCityAI::AI_calculateSettlerPriority(int iAreaSites, int iBestAreaFoundValue,
+	int iWaterAreaSites, int iBestWaterAreaFoundValue) const
+{
+	FAssert(iAreaSites + iWaterAreaSites > 0);
+	if(iAreaSites <= 0)
+		return 60; // Don't really want to pace AI colonization
+	int iPriority = 20;
+
+	CvPlayerAI const& kOwner = GET_PLAYER(getOwner());
+	// CvTeam const& kTeam = GET_TEAM(getTeam());
+	// <!-- custom: cache to kTeam for perf opt if i'm not mistaken. See note at CvCityAI::AI_buildingValue. -->
+	CvTeamAI const& kTeam = GET_TEAM(kOwner.getTeam()); // kekm.16
+
+	int iMinFoundValue = std::max(1, kOwner.AI_getMinFoundValue());
+	iPriority += (10 * std::max(iBestAreaFoundValue, iBestWaterAreaFoundValue)) / iMinFoundValue;
+
+	if(kTeam.isAlwaysWar())
+		iPriority -= 10;
+	else if(!kTeam.AI_isWarPossible() || // Can't expand through war
+		(kTeam.isAVassal() && !kTeam.isCapitulated()) ||
+		(getUWAI().isEnabled() && kOwner.uwai().getCache().hasDefensiveTrait()))
+	{
+		iPriority += 15;
+	}
+	// Imperialistic trait? Awkward to check ...
+	// I don't think the number of sites should matter(?)
+	return std::min(100, iPriority);
+}
+
+// advc.118b (see comments about the corresponding CvPlayerAI function)
+int CvCityAI::AI_defianceAngerCost(ReligionTypes eVSReligion) const
+{
+	if (eVSReligion != NO_RELIGION && !isHasReligion(eVSReligion))
+		return 0;
+	/*	(For a more sophisticated calculation, CvPlayerAI::AI_getHappinessWeight
+		should be split up between CvPlayerAI and CvCityAI.) */
+	if (isNoUnhappiness())
+		return 0;
+	int const iHappy = happyLevel();
+	int const iUnhappy = unhappyLevel();
+	int const iUnhappyIncr = std::max(0,
+			GC.getDefineINT(CvGlobals::DEFY_RESOLUTION_POP_ANGER) +
+			iUnhappy - iHappy) - std::max(0, iUnhappy - iHappy);
+	return iUnhappyIncr * AI_citizenValue() *
+			// Discourage repeated denial
+			(getDefyResolutionAngerTimer() > 0 ? 2 : 1);
+}
+
+//Workers have/needed is not intended to be a strict
+//target but rather an indication.
+//if needed is at least 1 that means a worker
+//will be doing something useful
+int CvCityAI::AI_getWorkersHave() /* advc: */ const
+{
+	return m_iWorkersHave;
+}
+
+
+int CvCityAI::AI_getWorkersNeeded() /* advc: */ const
+{
+	return m_iWorkersNeeded;
+}
+
+
+void CvCityAI::AI_changeWorkersHave(int iChange)
+{
+	m_iWorkersHave += iChange;
+	//FAssert(m_iWorkersHave >= 0);
+	m_iWorkersHave = std::max(0, m_iWorkersHave);
+}
+
+
+void CvCityAI::AI_updateWorkersHaveAndNeeded()
+{
+	PROFILE_FUNC();
+
+	int iWorkersNeeded = 0;
+	int iWorkersHave = 0;
+	int iUnimprovedWorkedPlotCount = 0;
+	int iUnimprovedUnworkedPlotCount = 0;
+	int iWorkedUnimprovableCount = 0;
+	int iImprovedUnworkedPlotCount = 0;
+
+	int iSpecialCount = 0;
+
+	int iWorstWorkedPlotValue = MAX_INT;
+	int iBestUnworkedPlotValue = 0;
+
+	int iGrowthValue = AI_growthValuePerFood(); // K-Mod
+
+	if (getProductionUnit() != NO_UNIT)
+	{
+		if (getProductionUnitAI() == UNITAI_WORKER)
+		{
+			if (getProductionTurnsLeft() <= 3) // advc.113: was <=2
+				iWorkersHave++;
+		}
+	}
+	CvPlayerAI const& kOwner = GET_PLAYER(getOwner());
+	int aiYields[NUM_YIELD_TYPES] /* advc: */ = {};
+	for (WorkablePlotIter it(*this); it.hasNext(); ++it)
+	{
+		CvPlot const& kPlot = *it;
+		CityPlotTypes const ePlot = it.currID();
+
+		//if (kPlot.getArea() == getArea()) // (disabled by K-Mod)
+
+		/*  BtS comment: How slow is this? It could be almost NUM_CITY_PLOT times faster
+			by iterating groups and seeing if the plot target lands in this city
+			but since this is only called once/turn i'm not sure it matters. */
+		/*  advc.113b: I also want to count workers in transports, so let's indeed
+			go through the groups just once (at the end of this function). */
+		//iWorkersHave += kOwner.AI_plotTargetMissionAIs(pLoopPlot, MISSIONAI_BUILD);
+		iWorkersHave += kPlot.plotCount(PUF_isUnitAIType, UNITAI_WORKER, -1, getOwner(), getTeam(),
+				//PUF_isNoMission, -1, -1);
+				// advc.113b: Perhaps move this into the group loop too (tbd.)?
+				PUF_isMissionPlotWorkingCity, getID(), getOwner());
+		if (ePlot == CITY_HOME_PLOT)
+			continue;
+
+		if (!kPlot.isImproved())
+		{
+			if (kPlot.isBeingWorked())
+			{
+				if (AI_getBestBuild(ePlot) != NO_BUILD &&
+					isArea(kPlot.getArea())) // K-Mod
+				{
+					iUnimprovedWorkedPlotCount++;
+				}
+				else iWorkedUnimprovableCount++;
+			}
+			else if (AI_getBestBuild(ePlot) != NO_BUILD &&
+				isArea(kPlot.getArea())) // K-Mod
+			{
+				iUnimprovedUnworkedPlotCount++;
+			}
+		}
+		else if (!kPlot.isBeingWorked())
+			iImprovedUnworkedPlotCount++;
+
+		for (int iJ = 0; iJ < NUM_YIELD_TYPES; iJ++)
+			aiYields[iJ] = kPlot.getYield((YieldTypes)iJ);
+
+		if (kPlot.isBeingWorked())
+		{
+			int iPlotValue = AI_yieldValue(aiYields, NULL, false, false, true, true, iGrowthValue);
+			iWorstWorkedPlotValue = std::min(iWorstWorkedPlotValue, iPlotValue);
+		}
+		else
+		{
+			int iPlotValue = AI_yieldValue(aiYields, NULL, false, false, true, true, iGrowthValue);
+			iBestUnworkedPlotValue = std::max(iBestUnworkedPlotValue, iPlotValue);
+		}
+	}
+	//specialists?
+
+	//iUnimprovedWorkedPlotCount += std::min(iUnimprovedUnworkedPlotCount, iWorkedUnimprovableCount) / 2;
+	// K-Mod
+	int iPopDelta = AI_getTargetPopulation() - getPopulation();
+	int iFutureWork = std::max(0, iWorkedUnimprovableCount + range((iPopDelta+1)/2, 0, 3) - iImprovedUnworkedPlotCount);
+	//iUnimprovedWorkedPlotCount += (std::min(iUnimprovedUnworkedPlotCount, iFutureWork)+1) / 2
+	// K-Mod end
+	// <advc.113> Replacing the line above
+	iUnimprovedWorkedPlotCount +=
+			(scaled(std::min(iUnimprovedUnworkedPlotCount, iFutureWork) + 1, 2) *
+			per100((GC.getDefineINT(CvGlobals::WORKER_RESERVE_PERCENT) + 100 +
+			// Flavor was previously counted in CvPlayerAI::AI_neededWorkers
+			2 * kOwner.AI_getFlavorValue(FLAVOR_GROWTH)))).round();
+	// </advc.113>
+	iWorkersNeeded += 2 * iUnimprovedWorkedPlotCount;
+
+	int iBestPotentialPlotValue = -1;
+	int iChop = 0; // advc.117
+	if (iWorstWorkedPlotValue != MAX_INT)
+	{
+		//Add an additional citizen to account for future growth.
+		CityPlotTypes eBestPlot = NO_CITYPLOT;
+		SpecialistTypes eBestSpecialist = NO_SPECIALIST;
+
+		if (angryPopulation() == 0)
+			AI_addBestCitizen(true, true, &eBestPlot, &eBestSpecialist);
+
+		for (WorkablePlotIter it(*this, false); it.hasNext(); ++it)
+		{
+			CvPlot const& kPlot = *it;
+			CityPlotTypes const ePlot = it.currID();
+			if (!isArea(kPlot.getArea()) || AI_getBestBuild(ePlot) == NO_BUILD)
+			{
+				continue;
+			}
+			FOR_EACH_ENUM(Yield)
+			{
+				aiYields[eLoopYield] = kPlot.getYieldWithBuild(
+						m_aeBestBuild[ePlot], eLoopYield, true);
+			}
+			int iPlotValue = AI_yieldValue(aiYields, NULL, false, false, true, true, iGrowthValue);
+			ImprovementTypes const eImprovement = GC.getInfo(AI_getBestBuild(ePlot)).getImprovement();
+			if (eImprovement != NO_IMPROVEMENT)
+			{
+				if (getImprovementFreeSpecialists(eImprovement) > 0 ||
+					GC.getInfo(eImprovement).getHappiness() > 0||
+					// advc.901:
+					GC.getInfo(eImprovement).get(CvImprovementInfo::HealthPercent) >= 50)
+				{
+					iSpecialCount++;
+				} // <advc.117>
+				FeatureTypes eFeature = kPlot.getFeatureType();
+				if(eFeature != NO_FEATURE && GC.getInfo(AI_getBestBuild(ePlot)).
+					//getFeatureProduction(eFeature) > 0 // Let's count jungle too
+					isFeatureRemove(eFeature))
+				{
+					iChop++;
+				} // </advc.117>
+			}
+			iBestPotentialPlotValue = std::max(iBestPotentialPlotValue, iPlotValue);
+		}
+
+		if (eBestPlot != NO_CITYPLOT)
+			setWorkingPlot(eBestPlot, false);
+		if (eBestSpecialist != NO_SPECIALIST)
+			changeSpecialistCount(eBestSpecialist, -1);
+		if (iBestPotentialPlotValue > iWorstWorkedPlotValue)
+			iWorkersNeeded += 2;
+	}
+
+	scaled const rOwnerAIEraFactor = kOwner.AI_getCurrEraFactor(); // advc.erai
+	iWorkersNeeded += ((std::max(0, iUnimprovedWorkedPlotCount - 1) *
+			rOwnerAIEraFactor) / 3).round();
+	// advc.113: Disabled. Not clear to me that additional workers help with finances.
+	/*if (kOwner.AI_isFinancialTrouble()) {
+		iWorkersNeeded *= 3;
+		iWorkersNeeded /= 2;
+	}*/
+
+	// advc.117: Chopping isn't considered when counting (un)improved (un)worked tiles
+	iWorkersNeeded += (6 * iChop) / 10;
+
+	// advc.113: Moved the iSpecialistExtra code up so that the division by 3 happens afterwards
+	int iSpecialistExtra = std::min((getSpecialistPopulation() - totalFreeSpecialists()), iUnimprovedUnworkedPlotCount);
+	iSpecialistExtra -= iImprovedUnworkedPlotCount;
+	//iWorkersNeeded += std::max(0, 1 + iSpecialistExtra) / 2;
+	// advc.113b: Instead divide by 3 below
+	iWorkersNeeded += std::max(0, iSpecialistExtra);
+
+	if (iWorkersNeeded > 0)
+		iWorkersNeeded = std::max(1, (iWorkersNeeded + 1) / 3);
+
+	if (iWorstWorkedPlotValue <= iBestUnworkedPlotValue &&
+			iBestUnworkedPlotValue >= iBestPotentialPlotValue)
+		iWorkersNeeded /= 2;
+
+	if (angryPopulation(1) > 0)
+		iWorkersNeeded = (iWorkersNeeded + 1) / 2;
+
+	iWorkersNeeded += (iSpecialCount + 1) / 2;
+
+	iWorkersNeeded = std::max((iUnimprovedWorkedPlotCount + 1) / 2, iWorkersNeeded);
+	// <advc.113> Greater than 3 is dubious. Allow 4 only in the late game.
+	if (iWorkersNeeded >= 4)
+		iWorkersNeeded--;
+	iWorkersNeeded = std::min(iWorkersNeeded, 2 + ((2 + rOwnerAIEraFactor) / 3).round());
+	// </advc.113>
+	/*  <advc.113b> Replacing the more expensive AI_plotTargetMissionAIs call
+		in the city plot loop above. */
+	FOR_EACH_GROUPAI(pGroup, kOwner)
+	{
+		int const iSize = pGroup->getNumUnits();
+		if (iSize <= 0)
+			continue;
+		// Already counted in the city plot loop
+		if (pGroup->getPlot().getWorkingCity() == this)
+			continue;
+		CvPlot* pMissionPlot = pGroup->AI_getMissionAIPlot();
+		int const iRange = (9 * (1 + rOwnerAIEraFactor / 2)).round();
+		if (pMissionPlot == NULL || ::plotDistance(pMissionPlot, pGroup->plot()) > iRange)
+			continue;
+		MissionAITypes eGroupMissionAI = pGroup->AI_getMissionAIType();
+		if (eGroupMissionAI == MISSIONAI_BUILD)
+		{
+			if (pMissionPlot->getWorkingCity() == this)
+				iWorkersHave += iSize;
+		}
+		// CvUnitAI::AI_ferryWorkers uses MISSIONAI_FOUND
+		else if (eGroupMissionAI == MISSIONAI_FOUND && pGroup->getDomainType() == DOMAIN_SEA)
+		{
+			if (pMissionPlot == plot())
+				iWorkersHave += pGroup->getHeadUnit()->getUnitAICargo(UNITAI_WORKER);
+		}
+	}
+
+	m_iWorkersNeeded = iWorkersNeeded;
+	m_iWorkersHave = iWorkersHave;
+}
+
+// advc.179:
+scaled CvCityAI::AI_estimateReligionBuildings(PlayerTypes ePlayer, ReligionTypes eReligion,
+	std::vector<BuildingTypes> const& aeBuildings) const
+{
+	/*  Player whose buildings we're counting
+		(we = the owner of this CvCity) */
+	CvPlayer const& kPlayer = GET_PLAYER(ePlayer);
+	int iPotential = 0;
+	int iCertain = 0;
+	FOR_EACH_CITY(c, kPlayer)
+	{
+		if(!c->isRevealed(getTeam()))
+		{
+			iPotential++;
+			continue;
+		}
+		if(!c->isHasReligion(eReligion))
+		{
+			// As AP owner, we may well spread eReligion to all our cities.
+			if(ePlayer == getOwner() || c->getReligionCount() <= 0)
+				iPotential++;
+			continue;
+		}
+		if(c->getTeam() != getTeam() && !c->getPlot().isInvestigate(getTeam()))
+		{
+			iPotential += 3;
+			continue;
+		}
+		for(size_t i = 0; i < aeBuildings.size(); i++)
+		{
+			if(GET_TEAM(c->getTeam()).isObsoleteBuilding(aeBuildings[i]))
+				continue;
+			iCertain += c->getNumBuilding(aeBuildings[i]);
+			int iCost = GC.getInfo(aeBuildings[i]).getProductionCost();
+			// Anticipate only regular buildings
+			if(iCost > 0 && iCost < 100 && c->canConstruct(aeBuildings[i]))
+				iPotential += 2;
+		}
+	}
+	scaled r(iCertain + iPotential, 4);
+	bool bObsolete = false;
+	for(size_t i = 0; i < aeBuildings.size(); i++)
+	{
+		TechTypes eObsTech = GC.getInfo(aeBuildings[i]).getObsoleteTech();
+		if(eObsTech != NO_TECH &&
+			GC.getInfo(eObsTech).getEra() <= kPlayer.getCurrentEra())
+		{
+			bObsolete = true;
+			break;
+		}
+	}
+	if(bObsolete)
+		r /= 2;
+	return r;
+}
+
+
+BuildingTypes CvCityAI::AI_bestAdvancedStartBuilding(int iPass) const
+{
+	int iFocusFlags = 0;
+	if (iPass >= 0)
+		iFocusFlags |= BUILDINGFOCUS_FOOD;
+	if (iPass >= 1)
+		iFocusFlags |= BUILDINGFOCUS_PRODUCTION;
+	if (iPass >= 2)
+		iFocusFlags |= BUILDINGFOCUS_EXPERIENCE;
+	if (iPass >= 3)
+		iFocusFlags |= (BUILDINGFOCUS_HAPPY | BUILDINGFOCUS_HEALTHY);
+	if (iPass >= 4)
+	{
+		iFocusFlags |= (BUILDINGFOCUS_GOLD | BUILDINGFOCUS_RESEARCH | BUILDINGFOCUS_MAINTENANCE);
+		if (!GC.getGame().isOption(GAMEOPTION_NO_ESPIONAGE))
+			iFocusFlags |= BUILDINGFOCUS_ESPIONAGE;
+	}
+	return AI_bestBuildingThreshold(iFocusFlags, 0, std::max(0, 20 - iPass * 5));
+}
+
+// K-Mod:
+void CvCityAI::AI_ClearConstructionValueCache()
+{
+	m_aiConstructionValue.assign(GC.getNumBuildingClassInfos(), -1);
+}
+
+
+void CvCityAI::read(FDataStreamBase* pStream)
+{
+	CvCity::read(pStream);
+
+	// <!-- custom: removed old uiflag code (e.g. `if(uiFlag < 12)`), and now running any modern compliant uiflag such as of now according to chatgpt 5 anyways where uiflag == 17 is true such as uiflag >= 6, uiflag >= 15 or such, see code comment around as of now the top of CvCity::read. -->
+	uint uiFlag=0;
+
+	pStream->Read(&uiFlag);
+
+	pStream->Read(&m_iEmphasizeAvoidGrowthCount);
+	pStream->Read(&m_iEmphasizeGreatPeopleCount);
+	pStream->Read(&m_bAssignWorkDirty);
+	//pStream->Read(&m_bChooseProductionDirty);
+	// <advc.003u>
+
+	pStream->Read((int*)&m_routeToCity.eOwner);
+	pStream->Read(&m_routeToCity.iID);
+	m_routeToCity.validateOwner(); // advc.opt
+
+	pStream->Read(NUM_YIELD_TYPES, m_aiEmphasizeYieldCount);
+	pStream->Read(NUM_COMMERCE_TYPES, m_aiEmphasizeCommerceCount);
+	pStream->Read(&m_bForceEmphasizeCulture);
+
+	// <advc.131d>
+	pStream->Read(&m_bStrongEmphasis); // </advc.131d>
+
+	pStream->Read(NUM_CITY_PLOTS, m_aiBestBuildValue);
+	pStream->Read(NUM_CITY_PLOTS, (int*)m_aeBestBuild);
+
+	// <advc.opt>
+	pStream->Read((int*)&m_eBestBuild); // </advc.opt>
+	pStream->Read(GC.getNumEmphasizeInfos(), m_pbEmphasize);
+	pStream->Read(NUM_YIELD_TYPES, m_aiSpecialYieldMultiplier);
+
+	// <advc.opt>
+	pStream->Read(MAX_PLAYERS, m_aiCachePlayerClosenessTurn);
+	pStream->Read(MAX_PLAYERS, m_aiCachePlayerClosenessDistance);
+	// </advc.opt>
+
+	pStream->Read(MAX_PLAYERS, m_aiPlayerCloseness);
+	pStream->Read(&m_iNeededFloatingDefenders);
+	pStream->Read(&m_iNeededFloatingDefendersCacheTurn);
+
+	// <advc.139>
+	pStream->Read((int*)&m_eSafety);
+
+	pStream->Read(&m_iCityValPercent);
+	// </advc.139>
+
+	pStream->Read(&m_iWorkersNeeded);
+	pStream->Read(&m_iWorkersHave);
+
+	// K-Mod
+	FAssert(m_aiConstructionValue.size() == GC.getNumBuildingClassInfos());
+	pStream->Read(GC.getNumBuildingClassInfos(), &m_aiConstructionValue[0]);
+
+	pStream->Read(&m_iCultureWeight);
+	// K-Mod end
+}
+
+
+void CvCityAI::write(FDataStreamBase* pStream)
+{
+	CvCity::write(pStream);
+
+	// <!-- custom: removed old uiflag code (e.g. `if(uiFlag < 12)`), and now running any modern compliant uiflag such as of now according to chatgpt 5 anyways where uiflag == 17 is true such as uiflag >= 6, uiflag >= 15 or such, see code comment around as of now the top of CvCity::read. -->
+	uint uiFlag;
+	uiFlag = 9; // advc.131d
+
+	pStream->Write(uiFlag);
+	REPRO_TEST_BEGIN_WRITE(CvString::format("CityAI(%d,%d)", getX(), getY()));
+	pStream->Write(m_iEmphasizeAvoidGrowthCount);
+	pStream->Write(m_iEmphasizeGreatPeopleCount);
+	pStream->Write(m_bAssignWorkDirty);
+	//pStream->Write(m_bChooseProductionDirty); // advc.003u
+
+	pStream->Write(m_routeToCity.eOwner);
+	pStream->Write(m_routeToCity.iID);
+
+	pStream->Write(NUM_YIELD_TYPES, m_aiEmphasizeYieldCount);
+	pStream->Write(NUM_COMMERCE_TYPES, m_aiEmphasizeCommerceCount);
+	pStream->Write(m_bForceEmphasizeCulture);
+	pStream->Write(m_bStrongEmphasis); // advc.131d
+	pStream->Write(NUM_CITY_PLOTS, m_aiBestBuildValue);
+	pStream->Write(NUM_CITY_PLOTS, (int*)m_aeBestBuild);
+	pStream->Write(m_eBestBuild); // advc.opt
+	pStream->Write(GC.getNumEmphasizeInfos(), m_pbEmphasize);
+	pStream->Write(NUM_YIELD_TYPES, m_aiSpecialYieldMultiplier);
+	REPRO_TEST_END_WRITE();
+	// The closeness cache is prone to OOS/ reproducibility problems
+	REPRO_TEST_BEGIN_WRITE(CvString::format("CityAI(%d,%d) caches", getX(), getY()));
+	pStream->Write(/*<advc.opt>*/MAX_PLAYERS/*</advc.opt>*/, m_aiCachePlayerClosenessTurn);
+	pStream->Write(/*<advc.opt>*/MAX_PLAYERS/*</advc.opt>*/, m_aiCachePlayerClosenessDistance);
+	pStream->Write(MAX_PLAYERS, m_aiPlayerCloseness);
+	pStream->Write(m_iNeededFloatingDefenders);
+	pStream->Write(m_iNeededFloatingDefendersCacheTurn);
+	// <advc.139>
+	pStream->Write(m_eSafety);
+	pStream->Write(m_iCityValPercent);
+	// </advc.139>
+	//This needs to be serialized for human workers.
+	pStream->Write(m_iWorkersNeeded);
+	pStream->Write(m_iWorkersHave);
+	// K-Mod (note: cache needs to be saved, otherwise players who join mid-turn might go out of sync when the cache is used)
+	pStream->Write(GC.getNumBuildingClassInfos(), &m_aiConstructionValue[0]);
+	pStream->Write(m_iCultureWeight);
+	// K-Mod end
+	REPRO_TEST_END_WRITE();
+}
+
+// advc:
+CvCityAI* CvCityAI::fromIDInfo(IDInfo id)
+{
+	return ::AI_getCity(id);
+}
