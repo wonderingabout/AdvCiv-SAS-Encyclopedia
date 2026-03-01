@@ -1437,7 +1437,7 @@
 			<iTechCostPercent>0</iTechCostPercent>
 			<iTechMinTurnsLeft>0</iTechMinTurnsLeft>
 			<PrereqTech>NONE</PrereqTech>
-			<UnitClass>UNITCLASS_GREAT_ARTIST</UnitClass>
+			<UnitClass>UNITCLASS_WARRIOR</UnitClass>
 			<iNumFreeUnits>1</iNumFreeUnits>
 			<bDisbandUnit>0</bDisbandUnit>
 			<iUnitExperience>0</iUnitExperience>
@@ -2519,7 +2519,7 @@
 			<iTechCostPercent>0</iTechCostPercent>
 			<iTechMinTurnsLeft>0</iTechMinTurnsLeft>
 			<PrereqTech>NONE</PrereqTech>
-			<UnitClass>UNITCLASS_GREAT_PROPHET</UnitClass>
+			<UnitClass>UNITCLASS_WARRIOR</UnitClass>
 			<iNumFreeUnits>1</iNumFreeUnits>
 			<bDisbandUnit>0</bDisbandUnit>
 			<iUnitExperience>0</iUnitExperience>
@@ -12455,7 +12455,7 @@
 			<UnitCombatPromotions/>
 			<UnitClassPromotions>
 				<UnitClassPromotion>
-					<UnitClass>UNITCLASS_AXEMAN</UnitClass>
+					<UnitClass>UNITCLASS_WARRIOR</UnitClass>
 					<UnitPromotion>PROMOTION_COUNTER_MELEE</UnitPromotion>
 				</UnitClassPromotion>
 			</UnitClassPromotions>
@@ -12631,7 +12631,7 @@
 			<UnitCombatPromotions/>
 			<UnitClassPromotions>
 				<UnitClassPromotion>
-					<UnitClass>UNITCLASS_MUSKETMAN</UnitClass>
+					<UnitClass>UNITCLASS_WARRIOR</UnitClass>
 					<UnitPromotion>PROMOTION_COUNTER_GUN</UnitPromotion>
 				</UnitClassPromotion>
 			</UnitClassPromotions>
@@ -12717,7 +12717,7 @@
 			<UnitCombatPromotions/>
 			<UnitClassPromotions>
 				<UnitClassPromotion>
-					<UnitClass>UNITCLASS_CROSSBOWMAN</UnitClass>
+					<UnitClass>UNITCLASS_WARRIOR</UnitClass>
 					<UnitPromotion>PROMOTION_COMBAT1</UnitPromotion>
 				</UnitClassPromotion>
 			</UnitClassPromotions>
@@ -12803,7 +12803,7 @@
 			<UnitCombatPromotions/>
 			<UnitClassPromotions>
 				<UnitClassPromotion>
-					<UnitClass>UNITCLASS_GRENADIER</UnitClass>
+					<UnitClass>UNITCLASS_WARRIOR</UnitClass>
 					<UnitPromotion>PROMOTION_COUNTER_GUN</UnitPromotion>
 				</UnitClassPromotion>
 			</UnitClassPromotions>
@@ -12889,7 +12889,7 @@
 			<UnitCombatPromotions/>
 			<UnitClassPromotions>
 				<UnitClassPromotion>
-					<UnitClass>UNITCLASS_CANNON</UnitClass>
+					<UnitClass>UNITCLASS_WARRIOR</UnitClass>
 					<UnitPromotion>PROMOTION_COMBAT1</UnitPromotion>
 				</UnitClassPromotion>
 			</UnitClassPromotions>
@@ -12975,7 +12975,7 @@
 			<UnitCombatPromotions/>
 			<UnitClassPromotions>
 				<UnitClassPromotion>
-					<UnitClass>UNITCLASS_CARRIER</UnitClass>
+					<UnitClass>UNITCLASS_WARRIOR</UnitClass>
 					<UnitPromotion>PROMOTION_FIRST_STRIKE3</UnitPromotion>
 				</UnitClassPromotion>
 			</UnitClassPromotions>
@@ -13061,7 +13061,7 @@
 			<UnitCombatPromotions/>
 			<UnitClassPromotions>
 				<UnitClassPromotion>
-					<UnitClass>UNITCLASS_FIGHTER</UnitClass>
+					<UnitClass>UNITCLASS_WARRIOR</UnitClass>
 					<UnitPromotion>PROMOTION_AIR_RANGE1</UnitPromotion>
 				</UnitClassPromotion>
 			</UnitClassPromotions>
@@ -13147,7 +13147,7 @@
 			<UnitCombatPromotions/>
 			<UnitClassPromotions>
 				<UnitClassPromotion>
-					<UnitClass>UNITCLASS_PIKEMAN</UnitClass>
+					<UnitClass>UNITCLASS_WARRIOR</UnitClass>
 					<UnitPromotion>PROMOTION_COUNTER_MELEE</UnitPromotion>
 				</UnitClassPromotion>
 			</UnitClassPromotions>
@@ -13233,7 +13233,7 @@
 			<UnitCombatPromotions/>
 			<UnitClassPromotions>
 				<UnitClassPromotion>
-					<UnitClass>UNITCLASS_TRIREME</UnitClass>
+					<UnitClass>UNITCLASS_WARRIOR</UnitClass>
 					<UnitPromotion>PROMOTION_COMBAT1</UnitPromotion>
 				</UnitClassPromotion>
 			</UnitClassPromotions>
@@ -17319,7 +17319,7 @@
 			<UnitCombatPromotions/>
 			<UnitClassPromotions>
 				<UnitClassPromotion>
-					<UnitClass>UNITCLASS_SWORDSMAN</UnitClass>
+					<UnitClass>UNITCLASS_WARRIOR</UnitClass>
 					<UnitPromotion>PROMOTION_COUNTER_MELEE</UnitPromotion>
 				</UnitClassPromotion>
 			</UnitClassPromotions>
@@ -19292,7 +19292,7 @@
 			<iTechCostPercent>0</iTechCostPercent>
 			<iTechMinTurnsLeft>0</iTechMinTurnsLeft>
 			<PrereqTech>NONE</PrereqTech>
-			<UnitClass>UNITCLASS_PIKEMAN</UnitClass>
+			<UnitClass>UNITCLASS_WARRIOR</UnitClass>
 			<iNumFreeUnits>2</iNumFreeUnits>
 			<bDisbandUnit>0</bDisbandUnit>
 			<iUnitExperience>0</iUnitExperience>
@@ -21894,7 +21894,7 @@
 			<UnitCombatPromotions/>
 			<UnitClassPromotions>
 				<UnitClassPromotion>
-					<UnitClass>UNITCLASS_CHARIOT</UnitClass>
+					<UnitClass>UNITCLASS_WARRIOR</UnitClass>
 					<UnitPromotion>PROMOTION_COMBAT1</UnitPromotion>
 				</UnitClassPromotion>
 			</UnitClassPromotions>
@@ -22152,7 +22152,7 @@
 			<UnitCombatPromotions/>
 			<UnitClassPromotions>
 				<UnitClassPromotion>
-					<UnitClass>UNITCLASS_SWORDSMAN</UnitClass>
+					<UnitClass>UNITCLASS_WARRIOR</UnitClass>
 					<UnitPromotion>PROMOTION_CITY_RAIDER1</UnitPromotion>
 				</UnitClassPromotion>
 			</UnitClassPromotions>
@@ -22420,7 +22420,7 @@
 			<UnitCombatPromotions/>
 			<UnitClassPromotions>
 				<UnitClassPromotion>
-					<UnitClass>UNITCLASS_TRIREME</UnitClass>
+					<UnitClass>UNITCLASS_WARRIOR</UnitClass>
 					<UnitPromotion>PROMOTION_COMBAT1</UnitPromotion>
 				</UnitClassPromotion>
 			</UnitClassPromotions>
@@ -22684,7 +22684,7 @@
 			<UnitCombatPromotions/>
 			<UnitClassPromotions>
 				<UnitClassPromotion>
-					<UnitClass>UNITCLASS_MUSKETMAN</UnitClass>
+					<UnitClass>UNITCLASS_WARRIOR</UnitClass>
 					<UnitPromotion>PROMOTION_COUNTER_GUN</UnitPromotion>
 				</UnitClassPromotion>
 			</UnitClassPromotions>
@@ -23029,11 +23029,11 @@
 			<!-- custom: add camel units as a separate class in this event too -->
 			<UnitClassPromotions>
 				<UnitClassPromotion>
-					<UnitClass>UNITCLASS_HORSE_KNIGHT</UnitClass>
+					<UnitClass>UNITCLASS_WARRIOR</UnitClass>
 					<UnitPromotion>PROMOTION_RETREAT1</UnitPromotion>
 				</UnitClassPromotion>
 				<UnitClassPromotion>
-					<UnitClass>UNITCLASS_CAMEL_KNIGHT</UnitClass>
+					<UnitClass>UNITCLASS_WARRIOR</UnitClass>
 					<UnitPromotion>PROMOTION_RETREAT1</UnitPromotion>
 				</UnitClassPromotion>
 			</UnitClassPromotions>
@@ -23382,23 +23382,23 @@
 			<UnitCombatPromotions/>
 			<UnitClassPromotions>
 				<UnitClassPromotion>
-					<UnitClass>UNITCLASS_DESTROYER</UnitClass>
+					<UnitClass>UNITCLASS_WARRIOR</UnitClass>
 					<UnitPromotion>PROMOTION_COMBAT1</UnitPromotion>
 				</UnitClassPromotion>
 				<UnitClassPromotion>
-					<UnitClass>UNITCLASS_BATTLESHIP</UnitClass>
+					<UnitClass>UNITCLASS_WARRIOR</UnitClass>
 					<UnitPromotion>PROMOTION_COMBAT1</UnitPromotion>
 				</UnitClassPromotion>
 				<UnitClassPromotion>
-					<UnitClass>UNITCLASS_CARRIER</UnitClass>
+					<UnitClass>UNITCLASS_WARRIOR</UnitClass>
 					<UnitPromotion>PROMOTION_COMBAT1</UnitPromotion>
 				</UnitClassPromotion>
 				<UnitClassPromotion>
-					<UnitClass>UNITCLASS_FIGHTER</UnitClass>
+					<UnitClass>UNITCLASS_WARRIOR</UnitClass>
 					<UnitPromotion>PROMOTION_COMBAT1</UnitPromotion>
 				</UnitClassPromotion>
 				<UnitClassPromotion>
-					<UnitClass>UNITCLASS_JET_FIGHTER</UnitClass>
+					<UnitClass>UNITCLASS_WARRIOR</UnitClass>
 					<UnitPromotion>PROMOTION_COMBAT1</UnitPromotion>
 				</UnitClassPromotion>
 			</UnitClassPromotions>
@@ -25893,7 +25893,7 @@
 			<iTechCostPercent>0</iTechCostPercent>
 			<iTechMinTurnsLeft>0</iTechMinTurnsLeft>
 			<PrereqTech>NONE</PrereqTech>
-			<UnitClass>UNITCLASS_GREAT_SPY</UnitClass>
+			<UnitClass>UNITCLASS_WARRIOR</UnitClass>
 			<iNumFreeUnits>1</iNumFreeUnits>
 			<bDisbandUnit>0</bDisbandUnit>
 			<iUnitExperience>0</iUnitExperience>
@@ -28498,6 +28498,7 @@
 		</EventInfo>
 	</EventInfos>
 </Civ4EventInfos>
+
 
 
 

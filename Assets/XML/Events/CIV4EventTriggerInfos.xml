@@ -517,7 +517,7 @@
 			<iAngry>0</iAngry>
 			<iUnhealthy>0</iUnhealthy>
 			<UnitsRequired>
-				<UnitClass>UNITCLASS_SWORDSMAN</UnitClass>
+				<UnitClass>UNITCLASS_WARRIOR</UnitClass>
 			</UnitsRequired>
 			<iNumUnits>1</iNumUnits>
 			<iNumUnitsGlobal>0</iNumUnitsGlobal>
@@ -604,8 +604,8 @@
 			<iAngry>0</iAngry>
 			<iUnhealthy>0</iUnhealthy>
 			<UnitsRequired>
-				<UnitClass>UNITCLASS_SCOUT</UnitClass>
-				<UnitClass>UNITCLASS_EXPLORER</UnitClass>
+				<UnitClass>UNITCLASS_WARRIOR</UnitClass>
+				<UnitClass>UNITCLASS_WARRIOR</UnitClass>
 			</UnitsRequired>
 			<iNumUnits>1</iNumUnits>
 			<iNumUnitsGlobal>0</iNumUnitsGlobal>
@@ -5520,12 +5520,12 @@
 			<iAngry>0</iAngry>
 			<iUnhealthy>0</iUnhealthy>
 			<UnitsRequired>
-				<UnitClass>UNITCLASS_DESTROYER</UnitClass>
-				<UnitClass>UNITCLASS_BATTLESHIP</UnitClass>
-				<UnitClass>UNITCLASS_MISSILE_CRUISER</UnitClass>
-				<UnitClass>UNITCLASS_ATTACK_SUBMARINE</UnitClass>
-				<UnitClass>UNITCLASS_CARRIER</UnitClass>
-				<UnitClass>UNITCLASS_TRANSPORT</UnitClass>
+				<UnitClass>UNITCLASS_WARRIOR</UnitClass>
+				<UnitClass>UNITCLASS_WARRIOR</UnitClass>
+				<UnitClass>UNITCLASS_WARRIOR</UnitClass>
+				<UnitClass>UNITCLASS_WARRIOR</UnitClass>
+				<UnitClass>UNITCLASS_WARRIOR</UnitClass>
+				<UnitClass>UNITCLASS_WARRIOR</UnitClass>
 			</UnitsRequired>
 			<iNumUnits>1</iNumUnits>
 			<iNumUnitsGlobal>0</iNumUnitsGlobal>
@@ -6465,7 +6465,7 @@
 			<iAngry>0</iAngry>
 			<iUnhealthy>0</iUnhealthy>
 			<UnitsRequired>
-				<UnitClass>UNITCLASS_AIRSHIP</UnitClass>
+				<UnitClass>UNITCLASS_WARRIOR</UnitClass>
 			</UnitsRequired>
 			<iNumUnits>1</iNumUnits>
 			<iNumUnitsGlobal>0</iNumUnitsGlobal>
@@ -13263,19 +13263,19 @@
 			<iUnhealthy>0</iUnhealthy>
 			<!-- custom: caravel removed, remove UNITCLASS_CARAVEL from here too -->
 			<UnitsRequired>
-				<UnitClass>UNITCLASS_GALLEY</UnitClass>
-				<UnitClass>UNITCLASS_TRIREME</UnitClass>
-				<UnitClass>UNITCLASS_GALLEON</UnitClass>
-				<UnitClass>UNITCLASS_PRIVATEER</UnitClass>
-				<UnitClass>UNITCLASS_FRIGATE</UnitClass>
-				<UnitClass>UNITCLASS_SHIP_OF_THE_LINE</UnitClass>
-				<UnitClass>UNITCLASS_IRONCLAD</UnitClass>
-				<UnitClass>UNITCLASS_TRANSPORT</UnitClass>
-				<UnitClass>UNITCLASS_DESTROYER</UnitClass>
-				<UnitClass>UNITCLASS_BATTLESHIP</UnitClass>
-				<UnitClass>UNITCLASS_MISSILE_CRUISER</UnitClass>
-				<UnitClass>UNITCLASS_ATTACK_SUBMARINE</UnitClass>
-				<UnitClass>UNITCLASS_CARRIER</UnitClass>
+				<UnitClass>UNITCLASS_WARRIOR</UnitClass>
+				<UnitClass>UNITCLASS_WARRIOR</UnitClass>
+				<UnitClass>UNITCLASS_WARRIOR</UnitClass>
+				<UnitClass>UNITCLASS_WARRIOR</UnitClass>
+				<UnitClass>UNITCLASS_WARRIOR</UnitClass>
+				<UnitClass>UNITCLASS_WARRIOR</UnitClass>
+				<UnitClass>UNITCLASS_WARRIOR</UnitClass>
+				<UnitClass>UNITCLASS_WARRIOR</UnitClass>
+				<UnitClass>UNITCLASS_WARRIOR</UnitClass>
+				<UnitClass>UNITCLASS_WARRIOR</UnitClass>
+				<UnitClass>UNITCLASS_WARRIOR</UnitClass>
+				<UnitClass>UNITCLASS_WARRIOR</UnitClass>
+				<UnitClass>UNITCLASS_WARRIOR</UnitClass>
 			</UnitsRequired>
 			<iNumUnits>1</iNumUnits>
 			<iNumUnitsGlobal>0</iNumUnitsGlobal>
@@ -16159,7 +16159,7 @@
 			<iUnhealthy>0</iUnhealthy>
 			<!-- Unofficial Patch begin - force event to trigger only when espionage is enabled -->
 			<UnitsRequired>
-				<UnitClass>UNITCLASS_SPY</UnitClass>
+				<UnitClass>UNITCLASS_WARRIOR</UnitClass>
 			</UnitsRequired>
 			<iNumUnits>1</iNumUnits>
 			<!-- Unofficial Patch end -->
@@ -17256,6 +17256,7 @@
 		</EventTriggerInfo>
 	</EventTriggerInfos>
 </Civ4EventTriggerInfos>
+
 
 
 

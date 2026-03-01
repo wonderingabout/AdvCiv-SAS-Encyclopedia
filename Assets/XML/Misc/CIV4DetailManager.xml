@@ -29,7 +29,7 @@
 		<Key>%CAMERA_MAX_DISTANCE*1.1, 1.00</Key>
 	</Fader>
 	<Fader>
-		<Name>UNIT_SCALE</Name>
+		<Name>UNIT_WARRIOR</Name>
 		<Key>500.0,  0.85</Key>
 		<Key>1000.0, 1.07</Key>
 		<Key>1500.0, 1.21</Key>
@@ -292,23 +292,23 @@
 		<Value>10.0</Value>
 	</Fader>
 	<Fader>
-		<Name>UNIT_HEALTH_BILLBOARD_SCALE</Name>
+		<Name>UNIT_WARRIOR</Name>
 		<Key>700,	 3.0</Key>
 		<Key>2500,   2.0</Key>
 	</Fader>
 	<Fader>
-		<Name>UNIT_HEALTH_BILLBOARD_Z</Name>
+		<Name>UNIT_WARRIOR</Name>
 		<Key>700, 80.0</Key>
 		<Key>5000,70.0</Key>
 	</Fader>
 	<Fader>
-		<Name>UNIT_HEALTH_BILLBOARD_RADIUS</Name>
+		<Name>UNIT_WARRIOR</Name>
 		<Key>700, 0.0</Key>
 		<Key>2000,-60</Key>
 		<Key>5000, -80.0</Key>
 	</Fader>
 	<Fader>
-		<Name>UNIT_HEALTH_BILLBOARD_Z_VS_TURN</Name>
+		<Name>UNIT_WARRIOR</Name>
 		<Key>-0.785,-25.0</Key>
 		<Key> 0.000,0.0</Key>
 		<Key>+0.785,0.0</Key>
@@ -399,3 +399,4 @@
 		<Key>6000, 1.0</Key>
 	</Fader>
 </DetailManagerInfos>
+

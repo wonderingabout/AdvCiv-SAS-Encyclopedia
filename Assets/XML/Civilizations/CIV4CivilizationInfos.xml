@@ -88,13 +88,13 @@
 			</Buildings>
 			<Units>
 				<Unit>
-					<UnitClassType>UNITCLASS_RIFLEMAN</UnitClassType>
-					<UnitType>UNIT_USA_PATRIOT</UnitType>
+					<UnitClassType>UNITCLASS_WARRIOR</UnitClassType>
+					<UnitType>UNIT_WARRIOR</UnitType>
 				</Unit>
 			</Units>
 			<FreeUnitClasses>
 				<FreeUnitClass>
-					<UnitClassType>UNITCLASS_SETTLER</UnitClassType>
+					<UnitClassType>UNITCLASS_WARRIOR</UnitClassType>
 					<iFreeUnits>1</iFreeUnits>
 				</FreeUnitClass>
 			</FreeUnitClasses>
@@ -225,7 +225,7 @@
 			<Units/>
 			<FreeUnitClasses>
 				<FreeUnitClass>
-					<UnitClassType>UNITCLASS_SETTLER</UnitClassType>
+					<UnitClassType>UNITCLASS_WARRIOR</UnitClassType>
 					<iFreeUnits>1</iFreeUnits>
 				</FreeUnitClass>
 			</FreeUnitClasses>
@@ -519,105 +519,105 @@
 			<!-- custom: Long_Comments_XML.txt #348 -->
 			<Units>
 				<Unit>
-					<UnitClassType>UNITCLASS_WORKER</UnitClassType>
-					<UnitType>UNIT_BARBARIAN_WORKER</UnitType>
+					<UnitClassType>UNITCLASS_WARRIOR</UnitClassType>
+					<UnitType>UNIT_WARRIOR</UnitType>
 				</Unit>
 				<Unit>
-					<UnitClassType>UNITCLASS_WORKBOAT</UnitClassType>
-					<UnitType>UNIT_BARBARIAN_WORKBOAT</UnitType>
+					<UnitClassType>UNITCLASS_WARRIOR</UnitClassType>
+					<UnitType>UNIT_WARRIOR</UnitType>
 				</Unit>
 				<Unit>
-					<UnitClassType>UNITCLASS_SETTLER</UnitClassType>
+					<UnitClassType>UNITCLASS_WARRIOR</UnitClassType>
 					<UnitType>NONE</UnitType>
 				</Unit>
 				<Unit>
-					<UnitClassType>UNITCLASS_SCOUT</UnitClassType>
+					<UnitClassType>UNITCLASS_WARRIOR</UnitClassType>
 					<UnitType>NONE</UnitType>
 				</Unit>
 				<Unit>
-					<UnitClassType>UNITCLASS_EXPLORER</UnitClassType>
+					<UnitClassType>UNITCLASS_WARRIOR</UnitClassType>
 					<UnitType>NONE</UnitType>
 				</Unit>
 				<!-- custom: do not allow missionaries as core purpose remains to invade and warmongering -->
 				<Unit>
-					<UnitClassType>UNITCLASS_JEWISH_MISSIONARY</UnitClassType>
+					<UnitClassType>UNITCLASS_WARRIOR</UnitClassType>
 					<UnitType>NONE</UnitType>
 				</Unit>
 				<Unit>
-					<UnitClassType>UNITCLASS_CHRISTIAN_MISSIONARY</UnitClassType>
+					<UnitClassType>UNITCLASS_WARRIOR</UnitClassType>
 					<UnitType>NONE</UnitType>
 				</Unit>
 				<Unit>
-					<UnitClassType>UNITCLASS_ISLAMIC_MISSIONARY</UnitClassType>
+					<UnitClassType>UNITCLASS_WARRIOR</UnitClassType>
 					<UnitType>NONE</UnitType>
 				</Unit>
 				<Unit>
-					<UnitClassType>UNITCLASS_HINDU_MISSIONARY</UnitClassType>
+					<UnitClassType>UNITCLASS_WARRIOR</UnitClassType>
 					<UnitType>NONE</UnitType>
 				</Unit>
 				<Unit>
-					<UnitClassType>UNITCLASS_BUDDHIST_MISSIONARY</UnitClassType>
+					<UnitClassType>UNITCLASS_WARRIOR</UnitClassType>
 					<UnitType>NONE</UnitType>
 				</Unit>
 				<Unit>
-					<UnitClassType>UNITCLASS_PAGAN_MISSIONARY</UnitClassType>
+					<UnitClassType>UNITCLASS_WARRIOR</UnitClassType>
 					<UnitType>NONE</UnitType>
 				</Unit>
 				<Unit>
-					<UnitClassType>UNITCLASS_DAOIST_MISSIONARY</UnitClassType>
+					<UnitClassType>UNITCLASS_WARRIOR</UnitClassType>
 					<UnitType>NONE</UnitType>
 				</Unit>
 				<Unit>
-					<UnitClassType>UNITCLASS_EXECUTIVE_1</UnitClassType>
+					<UnitClassType>UNITCLASS_WARRIOR</UnitClassType>
 					<UnitType>NONE</UnitType>
 				</Unit>
 				<Unit>
-					<UnitClassType>UNITCLASS_EXECUTIVE_2</UnitClassType>
+					<UnitClassType>UNITCLASS_WARRIOR</UnitClassType>
 					<UnitType>NONE</UnitType>
 				</Unit>
 				<Unit>
-					<UnitClassType>UNITCLASS_EXECUTIVE_3</UnitClassType>
+					<UnitClassType>UNITCLASS_WARRIOR</UnitClassType>
 					<UnitType>NONE</UnitType>
 				</Unit>
 				<Unit>
-					<UnitClassType>UNITCLASS_EXECUTIVE_4</UnitClassType>
+					<UnitClassType>UNITCLASS_WARRIOR</UnitClassType>
 					<UnitType>NONE</UnitType>
 				</Unit>
 				<Unit>
-					<UnitClassType>UNITCLASS_EXECUTIVE_5</UnitClassType>
+					<UnitClassType>UNITCLASS_WARRIOR</UnitClassType>
 					<UnitType>NONE</UnitType>
 				</Unit>
 				<Unit>
-					<UnitClassType>UNITCLASS_EXECUTIVE_6</UnitClassType>
+					<UnitClassType>UNITCLASS_WARRIOR</UnitClassType>
 					<UnitType>NONE</UnitType>
 				</Unit>
 				<Unit>
-					<UnitClassType>UNITCLASS_EXECUTIVE_7</UnitClassType>
+					<UnitClassType>UNITCLASS_WARRIOR</UnitClassType>
 					<UnitType>NONE</UnitType>
 				</Unit>
 				<Unit>
-					<UnitClassType>UNITCLASS_SPY</UnitClassType>
+					<UnitClassType>UNITCLASS_WARRIOR</UnitClassType>
 					<UnitType>NONE</UnitType>
 				</Unit>
 				<!-- custom: also allow barbarians great prophets in case they are first to found a religion, so not putting a NON here for GREAT_PROPHET in case it would disallow a great prophet being born in a barbarian city -->
 				<Unit>
-					<UnitClassType>UNITCLASS_GREAT_ARTIST</UnitClassType>
+					<UnitClassType>UNITCLASS_WARRIOR</UnitClassType>
 					<UnitType>NONE</UnitType>
 				</Unit>
 				<Unit>
-					<UnitClassType>UNITCLASS_GREAT_SCIENTIST</UnitClassType>
+					<UnitClassType>UNITCLASS_WARRIOR</UnitClassType>
 					<UnitType>NONE</UnitType>
 				</Unit>
 				<Unit>
-					<UnitClassType>UNITCLASS_GREAT_MERCHANT</UnitClassType>
+					<UnitClassType>UNITCLASS_WARRIOR</UnitClassType>
 					<UnitType>NONE</UnitType>
 				</Unit>
 				<Unit>
-					<UnitClassType>UNITCLASS_GREAT_ENGINEER</UnitClassType>
+					<UnitClassType>UNITCLASS_WARRIOR</UnitClassType>
 					<UnitType>NONE</UnitType>
 				</Unit>
 				<Unit>
-					<UnitClassType>UNITCLASS_GREAT_SPY</UnitClassType>
+					<UnitClassType>UNITCLASS_WARRIOR</UnitClassType>
 					<UnitType>NONE</UnitType>
 				</Unit>
 			</Units>
@@ -680,6 +680,7 @@
 		</CivilizationInfo>
 	</CivilizationInfos>
 </Civ4CivilizationInfos>
+
 
 
 

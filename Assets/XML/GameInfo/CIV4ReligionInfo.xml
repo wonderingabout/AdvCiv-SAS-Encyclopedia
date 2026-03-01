@@ -14,7 +14,7 @@
 			<Civilopedia>TXT_KEY_RELIGION_PAGANISM_PEDIA</Civilopedia>
 			<!-- custom: Long_Comments_XML.txt #318 -->
 			<TechPrereq>TECH_HUNTING</TechPrereq>
-			<FreeUnitClass>UNITCLASS_PAGAN_MISSIONARY</FreeUnitClass>
+			<FreeUnitClass>UNITCLASS_WARRIOR</FreeUnitClass>
 			<iFreeUnits>1</iFreeUnits>
 			<iSpreadFactor>100</iSpreadFactor>
 			<GlobalReligionCommerces>
@@ -47,7 +47,7 @@
 			<Civilopedia>TXT_KEY_RELIGION_HINDUISM_PEDIA</Civilopedia>
 			<!-- custom: Long_Comments_XML.txt #316, was TECH_POLYTHEISM -->
 			<TechPrereq>TECH_HUNTING</TechPrereq>
-			<FreeUnitClass>UNITCLASS_HINDU_MISSIONARY</FreeUnitClass>
+			<FreeUnitClass>UNITCLASS_WARRIOR</FreeUnitClass>
 			<iFreeUnits>0</iFreeUnits>
 			<iSpreadFactor>100</iSpreadFactor>
 			<GlobalReligionCommerces>
@@ -78,7 +78,7 @@
 			<Adjective>TXT_KEY_RELIGION_JUDAISM_ADJECTIVE</Adjective>
 			<Civilopedia>TXT_KEY_RELIGION_JUDAISM_PEDIA</Civilopedia>
 			<TechPrereq>TECH_HUNTING</TechPrereq>
-			<FreeUnitClass>UNITCLASS_JEWISH_MISSIONARY</FreeUnitClass>
+			<FreeUnitClass>UNITCLASS_WARRIOR</FreeUnitClass>
 			<iFreeUnits>0</iFreeUnits>
 			<iSpreadFactor>100</iSpreadFactor>
 			<GlobalReligionCommerces>
@@ -110,7 +110,7 @@
 			<Civilopedia>TXT_KEY_RELIGION_DAOISM_PEDIA</Civilopedia>
 			<!-- custom: was TECH_PHILOSOPHY -->
 			<TechPrereq>TECH_HUNTING</TechPrereq>
-			<FreeUnitClass>UNITCLASS_DAOIST_MISSIONARY</FreeUnitClass>
+			<FreeUnitClass>UNITCLASS_WARRIOR</FreeUnitClass>
 			<iFreeUnits>1</iFreeUnits>
 			<iSpreadFactor>100</iSpreadFactor>
 			<GlobalReligionCommerces>
@@ -141,7 +141,7 @@
 			<Adjective>TXT_KEY_RELIGION_BUDDHISM_ADJECTIVE</Adjective>
 			<Civilopedia>TXT_KEY_RELIGION_BUDDHISM_PEDIA</Civilopedia>
 			<TechPrereq>TECH_HUNTING</TechPrereq>
-			<FreeUnitClass>UNITCLASS_BUDDHIST_MISSIONARY</FreeUnitClass>
+			<FreeUnitClass>UNITCLASS_WARRIOR</FreeUnitClass>
 			<iFreeUnits>0</iFreeUnits>
 			<iSpreadFactor>100</iSpreadFactor>
 			<GlobalReligionCommerces>
@@ -172,7 +172,7 @@
 			<Adjective>TXT_KEY_RELIGION_CHRISTIANITY_ADJECTIVE</Adjective>
 			<Civilopedia>TXT_KEY_RELIGION_CHRISTIANITY_PEDIA</Civilopedia>
 			<TechPrereq>TECH_HUNTING</TechPrereq>
-			<FreeUnitClass>UNITCLASS_CHRISTIAN_MISSIONARY</FreeUnitClass>
+			<FreeUnitClass>UNITCLASS_WARRIOR</FreeUnitClass>
 			<iFreeUnits>1</iFreeUnits>
 			<iSpreadFactor>100</iSpreadFactor>
 			<GlobalReligionCommerces>
@@ -203,7 +203,7 @@
 			<Adjective>TXT_KEY_RELIGION_ISLAM_ADJECTIVE</Adjective>
 			<Civilopedia>TXT_KEY_RELIGION_ISLAM_PEDIA</Civilopedia>
 			<TechPrereq>TECH_HUNTING</TechPrereq>
-			<FreeUnitClass>UNITCLASS_ISLAMIC_MISSIONARY</FreeUnitClass>
+			<FreeUnitClass>UNITCLASS_WARRIOR</FreeUnitClass>
 			<iFreeUnits>1</iFreeUnits>
 			<iSpreadFactor>100</iSpreadFactor>
 			<GlobalReligionCommerces>
@@ -230,4 +230,5 @@
 		</ReligionInfo>
 	</ReligionInfos>
 </Civ4ReligionInfo>
+
 
