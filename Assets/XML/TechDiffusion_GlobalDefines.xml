@@ -7,36 +7,4 @@
 <!-- -->
 <!-- custom: comments moved to as of now to (adjust to your mod path) C:\Program Files (x86)\Steam\steamapps\common\Sid Meier's Civilization IV Beyond the Sword\Beyond the Sword\Mods\AdvCiv-SAS\Long_Comments\ for concision and as they were too lengthy. Values not updated there, see this XML file here for updated values -->
 <Civ4Defines xmlns="x-schema:CIV4GlobalDefinesSchema.xml">
-	<Define>
-		<DefineName>TECH_DIFFUSION_ENABLE</DefineName>
-		<iDefineIntVal>0</iDefineIntVal>
-	</Define>
-	<Define>
-		<DefineName>TECH_DIFFUSION_KNOWN_TEAM_MODIFIER</DefineName>
-		<iDefineIntVal>30</iDefineIntVal>
-	</Define>
-	<Define>
-		<DefineName>TECH_DIFFUSION_WELFARE_THRESHOLD</DefineName>
-		<iDefineIntVal>88</iDefineIntVal>
-	</Define>
-	<Define>
-		<DefineName>TECH_DIFFUSION_WELFARE_MODIFIER</DefineName>
-		<iDefineIntVal>30</iDefineIntVal>
-	</Define>
-	<Define>
-		<DefineName>TECH_COST_FIRST_KNOWN_PREREQ_MODIFIER</DefineName>
-		<iDefineIntVal>0</iDefineIntVal>
-	</Define>
-	<Define>
-		<DefineName>TECH_COST_MODIFIER</DefineName>
-		<iDefineIntVal>0</iDefineIntVal>
-	</Define>
-	<Define>
-		<DefineName>AI_GROUNDBREAKING_PENALTY_ENABLE</DefineName>
-		<iDefineIntVal>0</iDefineIntVal>
-	</Define>
-	<Define>
-		<DefineName>HUMAN_GROUNDBREAKING_PENALTY_ENABLE</DefineName>
-		<iDefineIntVal>0</iDefineIntVal>
-	</Define>
 </Civ4Defines>
