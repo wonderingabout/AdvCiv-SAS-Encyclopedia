@@ -8,7 +8,7 @@ Created as part of AdvCiv-SAS improvements
 
 ## General information
 
-This is the general guidelines to follow for this repo of our mod AdvCiv-SAS that is based on AdvCiv 1.12, for AI helpers. You don't need to look at files mentioned in this sub-section for now, just get aware of their existence if you need them later in our tasks.
+This is the general guidelines to follow for this repo of our mod AdvCiv-SAS-Encyclopedia that is based on AdvCiv 1.12, for AI helpers. You don't need to look at files mentioned in this sub-section for now, just get aware of their existence if you need them later in our tasks.
 
 You can expand this [AGENTS.md](/AGENTS.md) freely as you see fit.
 
