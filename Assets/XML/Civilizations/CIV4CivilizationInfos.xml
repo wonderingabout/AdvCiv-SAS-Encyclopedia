@@ -20,65 +20,6 @@
 			<bAIPlayable>1</bAIPlayable>
 			<Cities>
 				<City>TXT_KEY_CITY_NAME_WASHINGTON</City>
-				<City>TXT_KEY_CITY_NAME_NEW_YORK</City>
-				<City>TXT_KEY_CITY_NAME_BOSTON</City>
-				<City>TXT_KEY_CITY_NAME_PHILADELPHIA</City>
-				<City>TXT_KEY_CITY_NAME_ATLANTA</City>
-				<City>TXT_KEY_CITY_NAME_CHICAGO</City>
-				<City>TXT_KEY_CITY_NAME_SEATTLE</City>
-				<City>TXT_KEY_CITY_NAME_SAN_FRANCISCO</City>
-				<City>TXT_KEY_CITY_NAME_LOS_ANGELES</City>
-				<City>TXT_KEY_CITY_NAME_HOUSTON</City>
-				<City>TXT_KEY_CITY_NAME_PORTLAND</City>
-				<City>TXT_KEY_CITY_NAME_ST_LOUIS</City>
-				<City>TXT_KEY_CITY_NAME_MIAMI</City>
-				<City>TXT_KEY_CITY_NAME_BUFFALO</City>
-				<City>TXT_KEY_CITY_NAME_DETROIT</City>
-				<City>TXT_KEY_CITY_NAME_NEW_ORLEANS</City>
-				<City>TXT_KEY_CITY_NAME_BALTIMORE</City>
-				<City>TXT_KEY_CITY_NAME_DENVER</City>
-				<City>TXT_KEY_CITY_NAME_CINCINNATI</City>
-				<City>TXT_KEY_CITY_NAME_DALLAS</City>
-				<City>TXT_KEY_CITY_NAME_MEMPHIS</City>
-				<City>TXT_KEY_CITY_NAME_CLEVELAN</City>
-				<City>TXT_KEY_CITY_NAME_KANSAS_CITY</City>
-				<City>TXT_KEY_CITY_NAME_SAN_DIEGO</City>
-				<City>TXT_KEY_CITY_NAME_RICHMOND</City>
-				<City>TXT_KEY_CITY_NAME_LAS_VEGAS</City>
-				<City>TXT_KEY_CITY_NAME_PHOENIX</City>
-				<City>TXT_KEY_CITY_NAME_ALBUQUERQUE</City>
-				<City>TXT_KEY_CITY_NAME_MINNEAPOLIS</City>
-				<City>TXT_KEY_CITY_NAME_PITTSBURGH</City>
-				<City>TXT_KEY_CITY_NAME_OAKLAND</City>
-				<City>TXT_KEY_CITY_NAME_TAMPA_BAY</City>
-				<City>TXT_KEY_CITY_NAME_ORLANDO</City>
-				<City>TXT_KEY_CITY_NAME_TACOMA</City>
-				<City>TXT_KEY_CITY_NAME_SANTA_FE</City>
-				<City>TXT_KEY_CITY_NAME_OLYMPIA</City>
-				<City>TXT_KEY_CITY_NAME_HUNT_VALLEY</City>
-				<City>TXT_KEY_CITY_NAME_SPRINGFIELD</City>
-				<City>TXT_KEY_CITY_NAME_PALO_ALTO</City>
-				<City>TXT_KEY_CITY_NAME_CENTRALIA</City>
-				<City>TXT_KEY_CITY_NAME_SPOKANE</City>
-				<City>TXT_KEY_CITY_NAME_JACKSONVILLE</City>
-				<City>TXT_KEY_CITY_NAME_SAVANNAH</City>
-				<City>TXT_KEY_CITY_NAME_CHARLESTON</City>
-				<City>TXT_KEY_CITY_NAME_SAN_ANTONIO</City>
-				<City>TXT_KEY_CITY_NAME_OMAHA</City>
-				<City>TXT_KEY_CITY_NAME_BIRMINGHAM</City>
-				<City>TXT_KEY_CITY_NAME_HONOLULU</City>
-				<City>TXT_KEY_CITY_NAME_ANCHORAGE</City>
-				<City>TXT_KEY_CITY_NAME_SACRAMENTO</City>
-				<City>TXT_KEY_CITY_NAME_SALT_LAKE_CITY</City>
-				<City>TXT_KEY_CITY_NAME_RENO</City>
-				<City>TXT_KEY_CITY_NAME_BOISE</City>
-				<City>TXT_KEY_CITY_NAME_MILWAUKEE</City>
-				<City>TXT_KEY_CITY_NAME_SANTA_CRUZ</City>
-				<City>TXT_KEY_CITY_NAME_MONTEREY</City>
-				<City>TXT_KEY_CITY_NAME_SANTA_MONICA</City>
-				<City>TXT_KEY_CITY_NAME_LITTLE_ROCK</City>
-				<City>TXT_KEY_CITY_NAME_COLUMBUS</City>
-				<City>TXT_KEY_CITY_NAME_LE_BAM</City>
 			</Cities>
 			<Buildings>
 				<Building>
@@ -128,14 +69,6 @@
 					<LeaderName>LEADER_WASHINGTON</LeaderName>
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
-				<Leader>
-					<LeaderName>LEADER_WASHINGTON</LeaderName>
-					<bLeaderAvailability>1</bLeaderAvailability>
-				</Leader>
-				<Leader>
-					<LeaderName>LEADER_WASHINGTON</LeaderName>
-					<bLeaderAvailability>1</bLeaderAvailability>
-				</Leader>
 			</Leaders>
 			<DerivativeCiv>NONE</DerivativeCiv>
 			<CivilizationSelectionSound>AS3D_AMERICA_SELECT</CivilizationSelectionSound>
@@ -155,71 +88,6 @@
 			<bAIPlayable>0</bAIPlayable>
 			<Cities>
 				<City>TXT_KEY_CITY_NAME_CHEROKEE</City>
-				<City>TXT_KEY_CITY_NAME_ANASAZI</City>
-				<City>TXT_KEY_CITY_NAME_TEOIHUACAN</City>
-				<City>TXT_KEY_CITY_NAME_OLMEC</City>
-				<City>TXT_KEY_CITY_NAME_ZAPOTEC</City>
-				<City>TXT_KEY_CITY_NAME_CHINOOK</City>
-				<City>TXT_KEY_CITY_NAME_APACHE</City>
-				<City>TXT_KEY_CITY_NAME_CHEHALIS</City>
-				<City>TXT_KEY_CITY_NAME_ILLINOIS</City>
-				<City>TXT_KEY_CITY_NAME_NAVAJO</City>
-				<City>TXT_KEY_CITY_NAME_CARIB</City>
-				<City>TXT_KEY_CITY_NAME_SAXON</City>
-				<City>TXT_KEY_CITY_NAME_VANDAL</City>
-				<City>TXT_KEY_CITY_NAME_GOTH</City>
-				<City>TXT_KEY_CITY_NAME_ANGLE</City>
-				<City>TXT_KEY_CITY_NAME_MAGYAR</City>
-				<City>TXT_KEY_CITY_NAME_KHAZAK</City>
-				<City>TXT_KEY_CITY_NAME_BULGAR</City>
-				<City>TXT_KEY_CITY_NAME_ALEMANNI</City>
-				<City>TXT_KEY_CITY_NAME_BURGUNDIAN</City>
-				<City>TXT_KEY_CITY_NAME_GEPID</City>
-				<City>TXT_KEY_CITY_NAME_HUN</City>
-				<City>TXT_KEY_CITY_NAME_JUTE</City>
-				<City>TXT_KEY_CITY_NAME_PHEONICIAN</City>
-				<City>TXT_KEY_CITY_NAME_ESTRUSCAN</City>
-				<City>TXT_KEY_CITY_NAME_THRACIAN</City>
-				<City>TXT_KEY_CITY_NAME_PHRYGIAN</City>
-				<City>TXT_KEY_CITY_NAME_GAUL</City>
-				<City>TXT_KEY_CITY_NAME_MINOAN</City>
-				<City>TXT_KEY_CITY_NAME_MYCENIAN</City>
-				<City>TXT_KEY_CITY_NAME_CIMMERIAN</City>
-				<City>TXT_KEY_CITY_NAME_LIGURIAN</City>
-				<City>TXT_KEY_CITY_NAME_NUMIDIAN</City>
-				<City>TXT_KEY_CITY_NAME_SARMATIAN</City>
-				<City>TXT_KEY_CITY_NAME_SCYTHIAN</City>
-				<City>TXT_KEY_CITY_NAME_VISIGOTH</City>
-				<City>TXT_KEY_CITY_NAME_ASSYRIAN</City>
-				<City>TXT_KEY_CITY_NAME_HITTITE</City>
-				<City>TXT_KEY_CITY_NAME_HARAPPAN</City>
-				<City>TXT_KEY_CITY_NAME_MAURYAN</City>
-				<City>TXT_KEY_CITY_NAME_PARTHIAN</City>
-				<!-- advc: Duplicate removed -->
-				<!--City>TXT_KEY_CITY_NAME_HARAPPAN</City-->
-				<City>TXT_KEY_CITY_NAME_NUBIAN</City>
-				<City>TXT_KEY_CITY_NAME_BACTRIAN</City>
-				<City>TXT_KEY_CITY_NAME_CIRCASSIAN</City>
-				<City>TXT_KEY_CITY_NAME_CUMAN</City>
-				<City>TXT_KEY_CITY_NAME_HURRIAN</City>
-				<City>TXT_KEY_CITY_NAME_KASSITE</City>
-				<City>TXT_KEY_CITY_NAME_BANTU</City>
-				<City>TXT_KEY_CITY_NAME_KHOISAN</City>
-				<City>TXT_KEY_CITY_NAME_LIBYAN</City>
-				<City>TXT_KEY_CITY_NAME_SHANGIAN</City>
-				<City>TXT_KEY_CITY_NAME_YAYOI</City>
-				<City>TXT_KEY_CITY_NAME_ZHOU</City>
-				<City>TXT_KEY_CITY_NAME_AINU</City>
-				<City>TXT_KEY_CITY_NAME_POLYNESIAN</City>
-				<City>TXT_KEY_CITY_NAME_ARYAN</City>
-				<City>TXT_KEY_CITY_NAME_AVAR</City>
-				<City>TXT_KEY_CITY_NAME_GHUZZ</City>
-				<City>TXT_KEY_CITY_NAME_HSUNGNU</City>
-				<City>TXT_KEY_CITY_NAME_KUSHANS</City>
-				<City>TXT_KEY_CITY_NAME_YUECHI</City>
-				<City>TXT_KEY_CITY_NAME_SAKAE</City>
-				<City>TXT_KEY_CITY_NAME_UZBEK</City>
-				<City>TXT_KEY_CITY_NAME_TARTAR</City>
 			</Cities>
 			<Buildings/>
 			<Units/>
@@ -236,22 +104,6 @@
 				</FreeBuildingClass>
 			</FreeBuildingClasses>
 			<FreeTechs>
-				<FreeTech>
-					<TechType>TECH_HUNTING</TechType>
-					<bFreeTech>1</bFreeTech>
-				</FreeTech>
-				<FreeTech>
-					<TechType>TECH_HUNTING</TechType>
-					<bFreeTech>1</bFreeTech>
-				</FreeTech>
-				<FreeTech>
-					<TechType>TECH_HUNTING</TechType>
-					<bFreeTech>1</bFreeTech>
-				</FreeTech>
-				<FreeTech>
-					<TechType>TECH_HUNTING</TechType>
-					<bFreeTech>1</bFreeTech>
-				</FreeTech>
 				<FreeTech>
 					<TechType>TECH_HUNTING</TechType>
 					<bFreeTech>1</bFreeTech>
@@ -292,71 +144,6 @@
 			<bAIPlayable>0</bAIPlayable>
 			<Cities>
 				<City>TXT_KEY_CITY_NAME_CHEROKEE</City>
-				<City>TXT_KEY_CITY_NAME_ANASAZI</City>
-				<City>TXT_KEY_CITY_NAME_TEOIHUACAN</City>
-				<City>TXT_KEY_CITY_NAME_OLMEC</City>
-				<City>TXT_KEY_CITY_NAME_ZAPOTEC</City>
-				<City>TXT_KEY_CITY_NAME_CHINOOK</City>
-				<City>TXT_KEY_CITY_NAME_APACHE</City>
-				<City>TXT_KEY_CITY_NAME_CHEHALIS</City>
-				<City>TXT_KEY_CITY_NAME_ILLINOIS</City>
-				<City>TXT_KEY_CITY_NAME_NAVAJO</City>
-				<City>TXT_KEY_CITY_NAME_CARIB</City>
-				<City>TXT_KEY_CITY_NAME_SAXON</City>
-				<City>TXT_KEY_CITY_NAME_VANDAL</City>
-				<City>TXT_KEY_CITY_NAME_GOTH</City>
-				<City>TXT_KEY_CITY_NAME_ANGLE</City>
-				<City>TXT_KEY_CITY_NAME_MAGYAR</City>
-				<City>TXT_KEY_CITY_NAME_KHAZAK</City>
-				<City>TXT_KEY_CITY_NAME_BULGAR</City>
-				<City>TXT_KEY_CITY_NAME_ALEMANNI</City>
-				<City>TXT_KEY_CITY_NAME_BURGUNDIAN</City>
-				<City>TXT_KEY_CITY_NAME_GEPID</City>
-				<City>TXT_KEY_CITY_NAME_HUN</City>
-				<City>TXT_KEY_CITY_NAME_JUTE</City>
-				<City>TXT_KEY_CITY_NAME_PHEONICIAN</City>
-				<City>TXT_KEY_CITY_NAME_ESTRUSCAN</City>
-				<City>TXT_KEY_CITY_NAME_THRACIAN</City>
-				<City>TXT_KEY_CITY_NAME_PHRYGIAN</City>
-				<City>TXT_KEY_CITY_NAME_GAUL</City>
-				<City>TXT_KEY_CITY_NAME_MINOAN</City>
-				<City>TXT_KEY_CITY_NAME_MYCENIAN</City>
-				<City>TXT_KEY_CITY_NAME_CIMMERIAN</City>
-				<City>TXT_KEY_CITY_NAME_LIGURIAN</City>
-				<City>TXT_KEY_CITY_NAME_NUMIDIAN</City>
-				<City>TXT_KEY_CITY_NAME_SARMATIAN</City>
-				<City>TXT_KEY_CITY_NAME_SCYTHIAN</City>
-				<City>TXT_KEY_CITY_NAME_VISIGOTH</City>
-				<City>TXT_KEY_CITY_NAME_ASSYRIAN</City>
-				<City>TXT_KEY_CITY_NAME_HITTITE</City>
-				<City>TXT_KEY_CITY_NAME_HARAPPAN</City>
-				<City>TXT_KEY_CITY_NAME_MAURYAN</City>
-				<City>TXT_KEY_CITY_NAME_PARTHIAN</City>
-				<!-- advc: Duplicate removed -->
-				<!--City>TXT_KEY_CITY_NAME_HARAPPAN</City-->
-				<City>TXT_KEY_CITY_NAME_NUBIAN</City>
-				<City>TXT_KEY_CITY_NAME_BACTRIAN</City>
-				<City>TXT_KEY_CITY_NAME_CIRCASSIAN</City>
-				<City>TXT_KEY_CITY_NAME_CUMAN</City>
-				<City>TXT_KEY_CITY_NAME_HURRIAN</City>
-				<City>TXT_KEY_CITY_NAME_KASSITE</City>
-				<City>TXT_KEY_CITY_NAME_BANTU</City>
-				<City>TXT_KEY_CITY_NAME_KHOISAN</City>
-				<City>TXT_KEY_CITY_NAME_LIBYAN</City>
-				<City>TXT_KEY_CITY_NAME_SHANGIAN</City>
-				<City>TXT_KEY_CITY_NAME_YAYOI</City>
-				<City>TXT_KEY_CITY_NAME_ZHOU</City>
-				<City>TXT_KEY_CITY_NAME_AINU</City>
-				<City>TXT_KEY_CITY_NAME_POLYNESIAN</City>
-				<City>TXT_KEY_CITY_NAME_ARYAN</City>
-				<City>TXT_KEY_CITY_NAME_AVAR</City>
-				<City>TXT_KEY_CITY_NAME_GHUZZ</City>
-				<City>TXT_KEY_CITY_NAME_HSUNGNU</City>
-				<City>TXT_KEY_CITY_NAME_KUSHANS</City>
-				<City>TXT_KEY_CITY_NAME_YUECHI</City>
-				<City>TXT_KEY_CITY_NAME_SAKAE</City>
-				<City>TXT_KEY_CITY_NAME_UZBEK</City>
-				<City>TXT_KEY_CITY_NAME_TARTAR</City>
 			</Cities>
 			<Buildings>
 				<!-- custom: (for barbarians) see code comment at FreeBuildingClasses for details -->
@@ -364,261 +151,12 @@
 					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
 					<BuildingType>BUILDING_PALACE</BuildingType>
 				</Building>
-				<Building>
-					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
-					<BuildingType>BUILDING_PALACE</BuildingType>
-				</Building>
-				<Building>
-					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
-					<BuildingType>BUILDING_PALACE</BuildingType>
-				</Building>
-				<Building>
-					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
-					<BuildingType>BUILDING_PALACE</BuildingType>
-				</Building>
-				<Building>
-					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
-					<BuildingType>BUILDING_PALACE</BuildingType>
-				</Building>
-				<Building>
-					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
-					<BuildingType>BUILDING_PALACE</BuildingType>
-				</Building>
-				<Building>
-					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
-					<BuildingType>BUILDING_PALACE</BuildingType>
-				</Building>
-				<!-- custom: Long_Comments_XML.txt #346 -->
-				<Building>
-					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
-					<BuildingType>NONE</BuildingType>
-				</Building>
-				<Building>
-					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
-					<BuildingType>NONE</BuildingType>
-				</Building>
-				<Building>
-					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
-					<BuildingType>NONE</BuildingType>
-				</Building>
-				<Building>
-					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
-					<BuildingType>NONE</BuildingType>
-				</Building>
-				<Building>
-					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
-					<BuildingType>NONE</BuildingType>
-				</Building>
-				<Building>
-					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
-					<BuildingType>NONE</BuildingType>
-				</Building>
-				<Building>
-					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
-					<BuildingType>NONE</BuildingType>
-				</Building>
-				<Building>
-					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
-					<BuildingType>NONE</BuildingType>
-				</Building>
-				<Building>
-					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
-					<BuildingType>NONE</BuildingType>
-				</Building>
-				<Building>
-					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
-					<BuildingType>NONE</BuildingType>
-				</Building>
-				<Building>
-					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
-					<BuildingType>NONE</BuildingType>
-				</Building>
-				<Building>
-					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
-					<BuildingType>NONE</BuildingType>
-				</Building>
-				<Building>
-					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
-					<BuildingType>NONE</BuildingType>
-				</Building>
-				<Building>
-					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
-					<BuildingType>NONE</BuildingType>
-				</Building>
-				<Building>
-					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
-					<BuildingType>NONE</BuildingType>
-				</Building>
-				<Building>
-					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
-					<BuildingType>NONE</BuildingType>
-				</Building>
-				<Building>
-					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
-					<BuildingType>NONE</BuildingType>
-				</Building>
-				<Building>
-					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
-					<BuildingType>NONE</BuildingType>
-				</Building>
-				<Building>
-					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
-					<BuildingType>NONE</BuildingType>
-				</Building>
-				<Building>
-					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
-					<BuildingType>NONE</BuildingType>
-				</Building>
-				<Building>
-					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
-					<BuildingType>NONE</BuildingType>
-				</Building>
-				<Building>
-					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
-					<BuildingType>NONE</BuildingType>
-				</Building>
-				<Building>
-					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
-					<BuildingType>NONE</BuildingType>
-				</Building>
-				<Building>
-					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
-					<BuildingType>NONE</BuildingType>
-				</Building>
-				<Building>
-					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
-					<BuildingType>NONE</BuildingType>
-				</Building>
-				<Building>
-					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
-					<BuildingType>NONE</BuildingType>
-				</Building>
-				<Building>
-					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
-					<BuildingType>NONE</BuildingType>
-				</Building>
-				<!-- custom: note: this seemingly does nothing as barbarians still build libraries -->
-				<Building>
-					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
-					<BuildingType>NONE</BuildingType>
-				</Building>
-				<Building>
-					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
-					<BuildingType>NONE</BuildingType>
-				</Building>
-				<Building>
-					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
-					<BuildingType>NONE</BuildingType>
-				</Building>
-				<Building>
-					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
-					<BuildingType>NONE</BuildingType>
-				</Building>
-				<!-- custom: Long_Comments_XML.txt #347 -->
 			</Buildings>
 			<!-- custom: Long_Comments_XML.txt #348 -->
 			<Units>
 				<Unit>
 					<UnitClassType>UNITCLASS_WARRIOR</UnitClassType>
 					<UnitType>UNIT_WARRIOR</UnitType>
-				</Unit>
-				<Unit>
-					<UnitClassType>UNITCLASS_WARRIOR</UnitClassType>
-					<UnitType>UNIT_WARRIOR</UnitType>
-				</Unit>
-				<Unit>
-					<UnitClassType>UNITCLASS_WARRIOR</UnitClassType>
-					<UnitType>NONE</UnitType>
-				</Unit>
-				<Unit>
-					<UnitClassType>UNITCLASS_WARRIOR</UnitClassType>
-					<UnitType>NONE</UnitType>
-				</Unit>
-				<Unit>
-					<UnitClassType>UNITCLASS_WARRIOR</UnitClassType>
-					<UnitType>NONE</UnitType>
-				</Unit>
-				<!-- custom: do not allow missionaries as core purpose remains to invade and warmongering -->
-				<Unit>
-					<UnitClassType>UNITCLASS_WARRIOR</UnitClassType>
-					<UnitType>NONE</UnitType>
-				</Unit>
-				<Unit>
-					<UnitClassType>UNITCLASS_WARRIOR</UnitClassType>
-					<UnitType>NONE</UnitType>
-				</Unit>
-				<Unit>
-					<UnitClassType>UNITCLASS_WARRIOR</UnitClassType>
-					<UnitType>NONE</UnitType>
-				</Unit>
-				<Unit>
-					<UnitClassType>UNITCLASS_WARRIOR</UnitClassType>
-					<UnitType>NONE</UnitType>
-				</Unit>
-				<Unit>
-					<UnitClassType>UNITCLASS_WARRIOR</UnitClassType>
-					<UnitType>NONE</UnitType>
-				</Unit>
-				<Unit>
-					<UnitClassType>UNITCLASS_WARRIOR</UnitClassType>
-					<UnitType>NONE</UnitType>
-				</Unit>
-				<Unit>
-					<UnitClassType>UNITCLASS_WARRIOR</UnitClassType>
-					<UnitType>NONE</UnitType>
-				</Unit>
-				<Unit>
-					<UnitClassType>UNITCLASS_WARRIOR</UnitClassType>
-					<UnitType>NONE</UnitType>
-				</Unit>
-				<Unit>
-					<UnitClassType>UNITCLASS_WARRIOR</UnitClassType>
-					<UnitType>NONE</UnitType>
-				</Unit>
-				<Unit>
-					<UnitClassType>UNITCLASS_WARRIOR</UnitClassType>
-					<UnitType>NONE</UnitType>
-				</Unit>
-				<Unit>
-					<UnitClassType>UNITCLASS_WARRIOR</UnitClassType>
-					<UnitType>NONE</UnitType>
-				</Unit>
-				<Unit>
-					<UnitClassType>UNITCLASS_WARRIOR</UnitClassType>
-					<UnitType>NONE</UnitType>
-				</Unit>
-				<Unit>
-					<UnitClassType>UNITCLASS_WARRIOR</UnitClassType>
-					<UnitType>NONE</UnitType>
-				</Unit>
-				<Unit>
-					<UnitClassType>UNITCLASS_WARRIOR</UnitClassType>
-					<UnitType>NONE</UnitType>
-				</Unit>
-				<Unit>
-					<UnitClassType>UNITCLASS_WARRIOR</UnitClassType>
-					<UnitType>NONE</UnitType>
-				</Unit>
-				<!-- custom: also allow barbarians great prophets in case they are first to found a religion, so not putting a NON here for GREAT_PROPHET in case it would disallow a great prophet being born in a barbarian city -->
-				<Unit>
-					<UnitClassType>UNITCLASS_WARRIOR</UnitClassType>
-					<UnitType>NONE</UnitType>
-				</Unit>
-				<Unit>
-					<UnitClassType>UNITCLASS_WARRIOR</UnitClassType>
-					<UnitType>NONE</UnitType>
-				</Unit>
-				<Unit>
-					<UnitClassType>UNITCLASS_WARRIOR</UnitClassType>
-					<UnitType>NONE</UnitType>
-				</Unit>
-				<Unit>
-					<UnitClassType>UNITCLASS_WARRIOR</UnitClassType>
-					<UnitType>NONE</UnitType>
-				</Unit>
-				<Unit>
-					<UnitClassType>UNITCLASS_WARRIOR</UnitClassType>
-					<UnitType>NONE</UnitType>
 				</Unit>
 			</Units>
 			<FreeUnitClasses/>
@@ -628,24 +166,8 @@
 					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
 					<bFreeBuildingClass>1</bFreeBuildingClass>
 				</FreeBuildingClass>
-				<FreeBuildingClass>
-					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
-					<bFreeBuildingClass>1</bFreeBuildingClass>
-				</FreeBuildingClass>
-				<FreeBuildingClass>
-					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
-					<bFreeBuildingClass>1</bFreeBuildingClass>
-				</FreeBuildingClass>
-				<FreeBuildingClass>
-					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
-					<bFreeBuildingClass>1</bFreeBuildingClass>
-				</FreeBuildingClass>
 			</FreeBuildingClasses>
 			<FreeTechs>
-				<FreeTech>
-					<TechType>TECH_HUNTING</TechType>
-					<bFreeTech>1</bFreeTech>
-				</FreeTech>
 				<FreeTech>
 					<TechType>TECH_HUNTING</TechType>
 					<bFreeTech>1</bFreeTech>

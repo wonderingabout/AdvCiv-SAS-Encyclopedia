@@ -23,14 +23,11 @@
 			<iTechTradeKnownPercent>0</iTechTradeKnownPercent>
 			<iMaxGoldTradePercent>0</iMaxGoldTradePercent>
 			<iMaxGoldPerTurnTradePercent>0</iMaxGoldPerTurnTradePercent>
-			<!-- BBAI Victory Strategy -->
 			<iCultureVictoryWeight>0</iCultureVictoryWeight>
 			<iSpaceVictoryWeight>0</iSpaceVictoryWeight>
-			<!-- custom: try to make barbarians more aggressive or conqueror like now that they have developped enough cities with many units to do so instead of keeping them too long in cities -->
 			<iConquestVictoryWeight>120</iConquestVictoryWeight>
 			<iDominationVictoryWeight>30</iDominationVictoryWeight>
 			<iDiplomacyVictoryWeight>0</iDiplomacyVictoryWeight>
-			<!-- BBAI Victory Strategy -->
 			<iMaxWarRand>0</iMaxWarRand>
 			<iMaxWarNearbyPowerRatio>0</iMaxWarNearbyPowerRatio>
 			<iMaxWarDistantPowerRatio>0</iMaxWarDistantPowerRatio>
@@ -42,16 +39,10 @@
 			<iDeclareWarTradeRand>0</iDeclareWarTradeRand>
 			<iDemandRebukedSneakProb>0</iDemandRebukedSneakProb>
 			<iDemandRebukedWarProb>0</iDemandRebukedWarProb>
-			<!-- custom: make barbarians more likely to destroy cities rather than conquer them; Long_Comments_XML.txt #349, was 10 -->
 			<iRazeCityProb>60</iRazeCityProb>
-			<!-- custom: The barbarians issue of them building wonders and completing them before other players now that they are economically strong enough is now fixed by a patch in the DLL in CvCityAI.cpp in advciv-sas, so no need to increase this too high, and so they keep mostly focusing on units, was 50 -->
 			<iBuildUnitProb>70</iBuildUnitProb>
-			<!-- custom: i want barbarians to be more cautious and calculating, they are not stupid and shouldn't be, but also to be generally more on the offensive when necessary. -->
-			<!-- advc.114d: was 0 -->
 			<iBaseAttackOddsChange>1</iBaseAttackOddsChange>
-			<!-- advc.114d: was 16 -->
 			<iAttackOddsChangeRand>16</iAttackOddsChangeRand>
-			<!-- custom: make them pick up on the weak is smart and more realistic too, they wouldn't attack someone they can't win against ideally i think, even if a bit less hopefully more accurate this way maybe -->
 			<iWorseRankDifferenceAttitudeChange>-2</iWorseRankDifferenceAttitudeChange>
 			<iBetterRankDifferenceAttitudeChange>0</iBetterRankDifferenceAttitudeChange>
 			<iCloseBordersAttitudeChange>-2</iCloseBordersAttitudeChange>
@@ -81,10 +72,8 @@
 			<DemandTributeAttitudeThreshold>NONE</DemandTributeAttitudeThreshold>
 			<NoGiveHelpAttitudeThreshold>NONE</NoGiveHelpAttitudeThreshold>
 			<TechRefuseAttitudeThreshold>NONE</TechRefuseAttitudeThreshold>
-			<!-- advc.ctr: start -->
 			<CityRefuseAttitudeThreshold>NONE</CityRefuseAttitudeThreshold>
 			<NativeCityRefuseAttitudeThreshold>NONE</NativeCityRefuseAttitudeThreshold>
-			<!-- advc.ctr: end -->
 			<StrategicBonusRefuseAttitudeThreshold>NONE</StrategicBonusRefuseAttitudeThreshold>
 			<HappinessBonusRefuseAttitudeThreshold>NONE</HappinessBonusRefuseAttitudeThreshold>
 			<HealthBonusRefuseAttitudeThreshold>NONE</HealthBonusRefuseAttitudeThreshold>
@@ -110,88 +99,13 @@
 			<MemoryDecays/>
 			<MemoryAttitudePercents/>
 			<NoWarAttitudeProbs/>
-			<!-- custom: focus more on raw force and light harass units like archers; Long_Comments_XML.txt #350 -->
-			<UnitAIWeightModifiers>
-				<UnitAIWeightModifier>
-					<UnitAIType>UNITAI_RESERVE</UnitAIType>
-					<iWeightModifier>75</iWeightModifier>
-				</UnitAIWeightModifier>
-				<UnitAIWeightModifier>
-					<UnitAIType>UNITAI_ATTACK_CITY</UnitAIType>
-					<iWeightModifier>75</iWeightModifier>
-				</UnitAIWeightModifier>
-				<UnitAIWeightModifier>
-					<UnitAIType>UNITAI_WORKER</UnitAIType>
-					<iWeightModifier>75</iWeightModifier>
-				</UnitAIWeightModifier>
-			</UnitAIWeightModifiers>
+			<UnitAIWeightModifiers/>
 			<ImprovementWeightModifiers/>
-			<!-- advc: Should be OK to collapse this -->
 			<DiplomacyIntroMusicPeace/>
-			<DiplomacyMusicPeace>
-				<DiploMusicPeaceEra>
-					<EraType>ERA_ANCIENT</EraType>
-					<DiploScriptId>AS2D_DIPLO_RAGNAR_EARLY</DiploScriptId>
-				</DiploMusicPeaceEra>
-				<DiploMusicPeaceEra>
-					<EraType>ERA_CLASSICAL</EraType>
-					<DiploScriptId>AS2D_DIPLO_RAGNAR_EARLY</DiploScriptId>
-				</DiploMusicPeaceEra>
-				<DiploMusicPeaceEra>
-					<EraType>ERA_MEDIEVAL</EraType>
-					<DiploScriptId>AS2D_DIPLO_RAGNAR_MIDDLE</DiploScriptId>
-				</DiploMusicPeaceEra>
-				<DiploMusicPeaceEra>
-					<EraType>ERA_RENAISSANCE</EraType>
-					<DiploScriptId>AS2D_DIPLO_RAGNAR_MIDDLE</DiploScriptId>
-				</DiploMusicPeaceEra>
-				<DiploMusicPeaceEra>
-					<EraType>ERA_INDUSTRIAL</EraType>
-					<DiploScriptId>AS2D_DIPLO_RAGNAR_LATE</DiploScriptId>
-				</DiploMusicPeaceEra>
-				<DiploMusicPeaceEra>
-					<EraType>ERA_MODERN</EraType>
-					<DiploScriptId>AS2D_DIPLO_RAGNAR_LATE</DiploScriptId>
-				</DiploMusicPeaceEra>
-				<DiploMusicPeaceEra>
-					<EraType>ERA_FUTURE</EraType>
-					<DiploScriptId>AS2D_DIPLO_RAGNAR_LATE</DiploScriptId>
-				</DiploMusicPeaceEra>
-			</DiplomacyMusicPeace>
-			<!-- advc: Should be OK to collapse this -->
+			<DiplomacyMusicPeace/>
 			<DiplomacyIntroMusicWar/>
-			<DiplomacyMusicWar>
-				<DiploMusicWarEra>
-					<EraType>ERA_ANCIENT</EraType>
-					<DiploScriptId>AS2D_DIPLO_WARDRUMS_EARLY</DiploScriptId>
-				</DiploMusicWarEra>
-				<DiploMusicWarEra>
-					<EraType>ERA_CLASSICAL</EraType>
-					<DiploScriptId>AS2D_DIPLO_WARDRUMS_EARLY</DiploScriptId>
-				</DiploMusicWarEra>
-				<DiploMusicWarEra>
-					<EraType>ERA_MEDIEVAL</EraType>
-					<DiploScriptId>AS2D_DIPLO_WARDRUMS_MIDDLE</DiploScriptId>
-				</DiploMusicWarEra>
-				<DiploMusicWarEra>
-					<EraType>ERA_RENAISSANCE</EraType>
-					<DiploScriptId>AS2D_DIPLO_WARDRUMS_MIDDLE</DiploScriptId>
-				</DiploMusicWarEra>
-				<DiploMusicWarEra>
-					<EraType>ERA_INDUSTRIAL</EraType>
-					<DiploScriptId>AS2D_DIPLO_WARDRUMS_LATE</DiploScriptId>
-				</DiploMusicWarEra>
-				<DiploMusicWarEra>
-					<EraType>ERA_MODERN</EraType>
-					<DiploScriptId>AS2D_DIPLO_WARDRUMS_LATE</DiploScriptId>
-				</DiploMusicWarEra>
-				<DiploMusicWarEra>
-					<EraType>ERA_FUTURE</EraType>
-					<DiploScriptId>AS2D_DIPLO_WARDRUMS_LATE</DiploScriptId>
-				</DiploMusicWarEra>
-			</DiplomacyMusicWar>
+			<DiplomacyMusicWar/>
 		</LeaderHeadInfo>
-		<!-- custom: fake leader_defaults to initialize defaults; Long_Comments_XML.txt #361 -->
 		<LeaderHeadInfo> <!-- custom: Defaults -->
 			<Type>LEADER_DEFAULTS</Type>
 			<Description></Description>
@@ -208,14 +122,11 @@
 			<iTechTradeKnownPercent>0</iTechTradeKnownPercent>
 			<iMaxGoldTradePercent>0</iMaxGoldTradePercent>
 			<iMaxGoldPerTurnTradePercent>10</iMaxGoldPerTurnTradePercent>
-			<!-- BBAI Victory Strategy: start -->
-			<!-- advc: Default changed from 0 to 30 -->
 			<iCultureVictoryWeight>30</iCultureVictoryWeight>
 			<iSpaceVictoryWeight>30</iSpaceVictoryWeight>
 			<iConquestVictoryWeight>30</iConquestVictoryWeight>
 			<iDominationVictoryWeight>30</iDominationVictoryWeight>
 			<iDiplomacyVictoryWeight>30</iDiplomacyVictoryWeight>
-			<!-- BBAI Victory Strategy: end -->
 			<iMaxWarRand>0</iMaxWarRand>
 			<iMaxWarNearbyPowerRatio>0</iMaxWarNearbyPowerRatio>
 			<iMaxWarDistantPowerRatio>0</iMaxWarDistantPowerRatio>
@@ -228,7 +139,6 @@
 			<iDemandRebukedSneakProb>0</iDemandRebukedSneakProb>
 			<iDemandRebukedWarProb>0</iDemandRebukedWarProb>
 			<iRazeCityProb>0</iRazeCityProb>
-			<!-- custom: additionally to iBuildUnitProb changes to some leaders, also increase all leaders iBuildUnitProb by 10 so they are more competitive and military focused overall and throughout the game; Long_Comments_XML.txt #351, was 0 -->
 			<iBuildUnitProb>10</iBuildUnitProb>
 			<iBaseAttackOddsChange>0</iBaseAttackOddsChange>
 			<iAttackOddsChangeRand>8</iAttackOddsChangeRand>
@@ -243,12 +153,8 @@
 			<iSameReligionAttitudeChange>1</iSameReligionAttitudeChange>
 			<iSameReligionAttitudeDivisor>10</iSameReligionAttitudeDivisor>
 			<iSameReligionAttitudeChangeLimit>0</iSameReligionAttitudeChangeLimit>
-			<!-- advc.130n: Was leader-specific, swapped with
-				 iDifferentReligionAttitudeChangeLimit -->
 			<iDifferentReligionAttitudeChange>-1</iDifferentReligionAttitudeChange>
-			<!-- advc.130n: was -5 -->
 			<iDifferentReligionAttitudeDivisor>-15</iDifferentReligionAttitudeDivisor>
-			<!-- advc.130n: Was -1 for all leaders, now leader-specific. -->
 			<iDifferentReligionAttitudeChangeLimit>0</iDifferentReligionAttitudeChangeLimit>
 			<iBonusTradeAttitudeDivisor>50</iBonusTradeAttitudeDivisor>
 			<iBonusTradeAttitudeChangeLimit>2</iBonusTradeAttitudeChangeLimit>
@@ -265,10 +171,8 @@
 			<DemandTributeAttitudeThreshold>ATTITUDE_CAUTIOUS</DemandTributeAttitudeThreshold>
 			<NoGiveHelpAttitudeThreshold>ATTITUDE_CAUTIOUS</NoGiveHelpAttitudeThreshold>
 			<TechRefuseAttitudeThreshold>NONE</TechRefuseAttitudeThreshold>
-			<!-- advc.ctr: start -->
 			<CityRefuseAttitudeThreshold>ATTITUDE_CAUTIOUS</CityRefuseAttitudeThreshold>
 			<NativeCityRefuseAttitudeThreshold>ATTITUDE_PLEASED</NativeCityRefuseAttitudeThreshold>
-			<!-- advc.ctr: end -->
 			<StrategicBonusRefuseAttitudeThreshold>NONE</StrategicBonusRefuseAttitudeThreshold>
 			<HappinessBonusRefuseAttitudeThreshold>NONE</HappinessBonusRefuseAttitudeThreshold>
 			<HealthBonusRefuseAttitudeThreshold>NONE</HealthBonusRefuseAttitudeThreshold>
@@ -289,576 +193,19 @@
 			<FavoriteReligion>NONE</FavoriteReligion>
 			<Traits/>
 			<Flavors/>
-			<!-- Most of the ContactRands should be set individually.
-				 The schema doesn't ensure this, so I do it in the DLL by
-				 verifying that none remain at -1. -->
-			<ContactRands>
-				<ContactRand>
-					<ContactType>CONTACT_RELIGION_PRESSURE</ContactType>
-					<iContactRand>-1</iContactRand>
-				</ContactRand>
-				<ContactRand>
-					<ContactType>CONTACT_CIVIC_PRESSURE</ContactType>
-					<iContactRand>-1</iContactRand>
-				</ContactRand>
-				<ContactRand>
-					<ContactType>CONTACT_JOIN_WAR</ContactType>
-					<iContactRand>-1</iContactRand>
-				</ContactRand>
-				<ContactRand>
-					<ContactType>CONTACT_STOP_TRADING</ContactType>
-					<iContactRand>-1</iContactRand>
-				</ContactRand>
-				<ContactRand>
-					<ContactType>CONTACT_GIVE_HELP</ContactType>
-					<iContactRand>-1</iContactRand>
-				</ContactRand>
-				<ContactRand>
-					<ContactType>CONTACT_ASK_FOR_HELP</ContactType>
-					<iContactRand>-1</iContactRand>
-				</ContactRand>
-				<ContactRand>
-					<ContactType>CONTACT_DEMAND_TRIBUTE</ContactType>
-					<iContactRand>-1</iContactRand>
-				</ContactRand>
-				<ContactRand>
-					<!-- advc.124: was 20 -->
-					<ContactType>CONTACT_OPEN_BORDERS</ContactType>
-					<iContactRand>10</iContactRand>
-				</ContactRand>
-				<ContactRand>
-					<ContactType>CONTACT_DEFENSIVE_PACT</ContactType>
-					<iContactRand>80</iContactRand>
-				</ContactRand>
-				<ContactRand>
-					<ContactType>CONTACT_PERMANENT_ALLIANCE</ContactType>
-					<iContactRand>80</iContactRand>
-				</ContactRand>
-				<!-- advc.134a (note): Taken times 4/3 by the DLL -->
-				<ContactRand>
-					<ContactType>CONTACT_PEACE_TREATY</ContactType>
-					<iContactRand>-1</iContactRand>
-				</ContactRand>
-				<ContactRand>
-					<ContactType>CONTACT_TRADE_TECH</ContactType>
-					<iContactRand>-1</iContactRand>
-				</ContactRand>
-				<ContactRand>
-					<ContactType>CONTACT_TRADE_BONUS</ContactType>
-					<iContactRand>-1</iContactRand>
-				</ContactRand>
-				<ContactRand>
-					<ContactType>CONTACT_TRADE_MAP</ContactType>
-					<iContactRand>20</iContactRand>
-				</ContactRand>
-			</ContactRands>
-			<ContactDelays>
-				<ContactDelay>
-					<ContactType>CONTACT_RELIGION_PRESSURE</ContactType>
-					<iContactDelay>50</iContactDelay>
-				</ContactDelay>
-				<ContactDelay>
-					<ContactType>CONTACT_CIVIC_PRESSURE</ContactType>
-					<iContactDelay>50</iContactDelay>
-				</ContactDelay>
-				<ContactDelay>
-					<ContactType>CONTACT_JOIN_WAR</ContactType>
-					<iContactDelay>20</iContactDelay>
-				</ContactDelay>
-				<ContactDelay>
-					<ContactType>CONTACT_STOP_TRADING</ContactType>
-					<iContactDelay>20</iContactDelay>
-				</ContactDelay>
-				<ContactDelay>
-					<ContactType>CONTACT_GIVE_HELP</ContactType>
-					<iContactDelay>50</iContactDelay>
-				</ContactDelay>
-				<ContactDelay>
-					<ContactType>CONTACT_ASK_FOR_HELP</ContactType>
-					<iContactDelay>50</iContactDelay>
-				</ContactDelay>
-				<ContactDelay>
-					<ContactType>CONTACT_DEMAND_TRIBUTE</ContactType>
-					<iContactDelay>50</iContactDelay>
-				</ContactDelay>
-				<ContactDelay>
-					<!-- advc.124: was 20 -->
-					<ContactType>CONTACT_OPEN_BORDERS</ContactType>
-					<iContactDelay>40</iContactDelay>
-				</ContactDelay>
-				<ContactDelay>
-					<ContactType>CONTACT_DEFENSIVE_PACT</ContactType>
-					<iContactDelay>20</iContactDelay>
-				</ContactDelay>
-				<ContactDelay>
-					<ContactType>CONTACT_PERMANENT_ALLIANCE</ContactType>
-					<iContactDelay>20</iContactDelay>
-				</ContactDelay>
-				<ContactDelay>
-					<ContactType>CONTACT_PEACE_TREATY</ContactType>
-					<iContactDelay>-1</iContactDelay>
-				</ContactDelay>
-				<ContactDelay>
-					<ContactType>CONTACT_TRADE_TECH</ContactType>
-					<iContactDelay>30</iContactDelay>
-				</ContactDelay>
-				<ContactDelay>
-					<ContactType>CONTACT_TRADE_BONUS</ContactType>
-					<iContactDelay>20</iContactDelay>
-				</ContactDelay>
-				<ContactDelay>
-					<ContactType>CONTACT_TRADE_MAP</ContactType>
-					<iContactDelay>50</iContactDelay>
-				</ContactDelay>
-			</ContactDelays>
-			<MemoryDecays>
-				<!-- advc.130r BEGIN -->
-				<MemoryDecay>
-					<MemoryType>MEMORY_HIRED_TRADE_EMBARGO</MemoryType>
-					<iMemoryRand>60</iMemoryRand>
-				</MemoryDecay>
-				<MemoryDecay>
-					<MemoryType>MEMORY_STOPPED_TRADING</MemoryType>
-					<iMemoryRand>60</iMemoryRand>
-				</MemoryDecay>
-				<MemoryDecay>
-					<MemoryType>MEMORY_MADE_DEMAND</MemoryType>
-					<iMemoryRand>30</iMemoryRand>
-				</MemoryDecay>
-				<!-- advc.143 -->
-				<MemoryDecay>
-					<MemoryType>MEMORY_CANCELLED_VASSAL_AGREEMENT</MemoryType>
-					<iMemoryRand>10</iMemoryRand>
-				</MemoryDecay>
-				<MemoryDecay>
-					<MemoryType>MEMORY_LIBERATED_CITIES</MemoryType>
-					<iMemoryRand>150</iMemoryRand>
-				</MemoryDecay>
-				<MemoryDecay>
-					<MemoryType>MEMORY_DECLARED_WAR</MemoryType>
-					<iMemoryRand>150</iMemoryRand>
-				</MemoryDecay>
-				<MemoryDecay>
-					<MemoryType>MEMORY_DECLARED_WAR_ON_FRIEND</MemoryType>
-					<iMemoryRand>120</iMemoryRand>
-				</MemoryDecay>
-				<MemoryDecay>
-					<MemoryType>MEMORY_HIRED_WAR_ALLY</MemoryType>
-					<iMemoryRand>75</iMemoryRand>
-				</MemoryDecay>
-				<MemoryDecay>
-					<MemoryType>MEMORY_NUKED_US</MemoryType>
-					<iMemoryRand>120</iMemoryRand>
-				</MemoryDecay>
-				<MemoryDecay>
-					<MemoryType>MEMORY_NUKED_FRIEND</MemoryType>
-					<iMemoryRand>80</iMemoryRand>
-				</MemoryDecay>
-				<MemoryDecay>
-					<MemoryType>MEMORY_RAZED_CITY</MemoryType>
-					<iMemoryRand>75</iMemoryRand>
-				</MemoryDecay>
-				<MemoryDecay>
-					<MemoryType>MEMORY_RAZED_HOLY_CITY</MemoryType>
-					<iMemoryRand>150</iMemoryRand>
-				</MemoryDecay>
-				<MemoryDecay>
-					<MemoryType>MEMORY_SPY_CAUGHT</MemoryType>
-					<iMemoryRand>40</iMemoryRand>
-				</MemoryDecay>
-				<MemoryDecay>
-					<MemoryType>MEMORY_INDEPENDENCE</MemoryType>
-					<iMemoryRand>30</iMemoryRand>
-				</MemoryDecay>
-				<!-- advc.104i -->
-				<MemoryDecay>
-					<MemoryType>MEMORY_DECLARED_WAR_RECENT</MemoryType>
-					<iMemoryRand>11</iMemoryRand>
-				</MemoryDecay>
-				<!-- advc.130r END -->
-				<!-- advc.144: was 200 -->
-				<MemoryDecay>
-					<MemoryType>MEMORY_GIVE_HELP</MemoryType>
-					<iMemoryRand>150</iMemoryRand>
-				</MemoryDecay>
-				<MemoryDecay>
-					<MemoryType>MEMORY_REFUSED_HELP</MemoryType>
-					<iMemoryRand>100</iMemoryRand>
-				</MemoryDecay>
-				<!-- advc.130o: was 50 -->
-				<MemoryDecay>
-					<MemoryType>MEMORY_ACCEPT_DEMAND</MemoryType>
-					<iMemoryRand>30</iMemoryRand>
-				</MemoryDecay>
-				<!-- advc.130o: was 150 -->
-				<MemoryDecay>
-					<MemoryType>MEMORY_REJECTED_DEMAND</MemoryType>
-					<iMemoryRand>90</iMemoryRand>
-				</MemoryDecay>
-				<MemoryDecay>
-					<MemoryType>MEMORY_ACCEPTED_RELIGION</MemoryType>
-					<iMemoryRand>100</iMemoryRand>
-				</MemoryDecay>
-				<MemoryDecay>
-					<MemoryType>MEMORY_DENIED_RELIGION</MemoryType>
-					<iMemoryRand>50</iMemoryRand>
-				</MemoryDecay>
-				<MemoryDecay>
-					<MemoryType>MEMORY_ACCEPTED_CIVIC</MemoryType>
-					<iMemoryRand>100</iMemoryRand>
-				</MemoryDecay>
-				<MemoryDecay>
-					<MemoryType>MEMORY_DENIED_CIVIC</MemoryType>
-					<iMemoryRand>50</iMemoryRand>
-				</MemoryDecay>
-				<!-- advc.130s: was 150 -->
-				<MemoryDecay>
-					<MemoryType>MEMORY_ACCEPTED_JOIN_WAR</MemoryType>
-					<iMemoryRand>100</iMemoryRand>
-				</MemoryDecay>
-				<MemoryDecay>
-					<MemoryType>MEMORY_DENIED_JOIN_WAR</MemoryType>
-					<iMemoryRand>100</iMemoryRand>
-				</MemoryDecay>
-				<!-- advc.130f: was 100 -->
-				<MemoryDecay>
-					<MemoryType>MEMORY_ACCEPTED_STOP_TRADING</MemoryType>
-					<iMemoryRand>50</iMemoryRand>
-				</MemoryDecay>
-				<MemoryDecay>
-					<MemoryType>MEMORY_DENIED_STOP_TRADING</MemoryType>
-					<iMemoryRand>50</iMemoryRand>
-				</MemoryDecay>
-				<!-- advc.130f: was 30 -->
-				<MemoryDecay>
-					<MemoryType>MEMORY_STOPPED_TRADING_RECENT</MemoryType>
-					<iMemoryRand>18</iMemoryRand>
-				</MemoryDecay>
-				<MemoryDecay>
-					<MemoryType>MEMORY_MADE_DEMAND_RECENT</MemoryType>
-					<iMemoryRand>20</iMemoryRand>
-				</MemoryDecay>
-				<MemoryDecay>
-					<MemoryType>MEMORY_CANCELLED_OPEN_BORDERS</MemoryType>
-					<iMemoryRand>10</iMemoryRand>
-				</MemoryDecay>
-				<!-- advc.130p -->
-				<MemoryDecay>
-					<MemoryType>MEMORY_CANCELLED_DEFENSIVE_PACT</MemoryType>
-					<iMemoryRand>10</iMemoryRand>
-				</MemoryDecay>
-				<!-- advc.553: was 100 -->
-				<MemoryDecay>
-					<MemoryType>MEMORY_TRADED_TECH_TO_US</MemoryType>
-					<iMemoryRand>25</iMemoryRand>
-				</MemoryDecay>
-				<MemoryDecay>
-					<MemoryType>MEMORY_RECEIVED_TECH_FROM_ANY</MemoryType>
-					<iMemoryRand>20</iMemoryRand>
-				</MemoryDecay>
-				<MemoryDecay>
-					<MemoryType>MEMORY_VOTED_AGAINST_US</MemoryType>
-					<iMemoryRand>10</iMemoryRand>
-				</MemoryDecay>
-				<MemoryDecay>
-					<MemoryType>MEMORY_VOTED_FOR_US</MemoryType>
-					<iMemoryRand>10</iMemoryRand>
-				</MemoryDecay>
-				<MemoryDecay>
-					<MemoryType>MEMORY_EVENT_GOOD_TO_US</MemoryType>
-					<iMemoryRand>50</iMemoryRand>
-				</MemoryDecay>
-				<MemoryDecay>
-					<MemoryType>MEMORY_EVENT_BAD_TO_US</MemoryType>
-					<iMemoryRand>50</iMemoryRand>
-				</MemoryDecay>
-			</MemoryDecays>
-			<MemoryAttitudePercents>
-				<MemoryAttitudePercent>
-					<MemoryType>MEMORY_DECLARED_WAR</MemoryType>
-					<iMemoryAttitudePercent>-300</iMemoryAttitudePercent>
-				</MemoryAttitudePercent>
-				<MemoryAttitudePercent>
-					<MemoryType>MEMORY_DECLARED_WAR_ON_FRIEND</MemoryType>
-					<iMemoryAttitudePercent>-100</iMemoryAttitudePercent>
-				</MemoryAttitudePercent>
-				<MemoryAttitudePercent>
-					<MemoryType>MEMORY_HIRED_WAR_ALLY</MemoryType>
-					<iMemoryAttitudePercent>-200</iMemoryAttitudePercent>
-				</MemoryAttitudePercent>
-				<MemoryAttitudePercent>
-					<MemoryType>MEMORY_NUKED_US</MemoryType>
-					<iMemoryAttitudePercent>-200</iMemoryAttitudePercent>
-				</MemoryAttitudePercent>
-				<MemoryAttitudePercent>
-					<MemoryType>MEMORY_NUKED_FRIEND</MemoryType>
-					<iMemoryAttitudePercent>-100</iMemoryAttitudePercent>
-				</MemoryAttitudePercent>
-				<MemoryAttitudePercent>
-					<MemoryType>MEMORY_RAZED_CITY</MemoryType>
-					<iMemoryAttitudePercent>-250</iMemoryAttitudePercent>
-				</MemoryAttitudePercent>
-				<MemoryAttitudePercent>
-					<MemoryType>MEMORY_RAZED_HOLY_CITY</MemoryType>
-					<iMemoryAttitudePercent>-200</iMemoryAttitudePercent>
-				</MemoryAttitudePercent>
-				<MemoryAttitudePercent>
-					<MemoryType>MEMORY_SPY_CAUGHT</MemoryType>
-					<iMemoryAttitudePercent>-100</iMemoryAttitudePercent>
-				</MemoryAttitudePercent>
-				<MemoryAttitudePercent>
-					<MemoryType>MEMORY_GIVE_HELP</MemoryType>
-					<iMemoryAttitudePercent>100</iMemoryAttitudePercent>
-				</MemoryAttitudePercent>
-				<MemoryAttitudePercent>
-					<MemoryType>MEMORY_REFUSED_HELP</MemoryType>
-					<iMemoryAttitudePercent>-100</iMemoryAttitudePercent>
-				</MemoryAttitudePercent>
-				<MemoryAttitudePercent>
-					<MemoryType>MEMORY_ACCEPT_DEMAND</MemoryType>
-					<iMemoryAttitudePercent>100</iMemoryAttitudePercent>
-				</MemoryAttitudePercent>
-				<MemoryAttitudePercent>
-					<MemoryType>MEMORY_REJECTED_DEMAND</MemoryType>
-					<iMemoryAttitudePercent>-100</iMemoryAttitudePercent>
-				</MemoryAttitudePercent>
-				<MemoryAttitudePercent>
-					<MemoryType>MEMORY_ACCEPTED_RELIGION</MemoryType>
-					<iMemoryAttitudePercent>100</iMemoryAttitudePercent>
-				</MemoryAttitudePercent>
-				<MemoryAttitudePercent>
-					<MemoryType>MEMORY_DENIED_RELIGION</MemoryType>
-					<iMemoryAttitudePercent>-100</iMemoryAttitudePercent>
-				</MemoryAttitudePercent>
-				<MemoryAttitudePercent>
-					<MemoryType>MEMORY_ACCEPTED_CIVIC</MemoryType>
-					<iMemoryAttitudePercent>100</iMemoryAttitudePercent>
-				</MemoryAttitudePercent>
-				<MemoryAttitudePercent>
-					<MemoryType>MEMORY_DENIED_CIVIC</MemoryType>
-					<iMemoryAttitudePercent>-100</iMemoryAttitudePercent>
-				</MemoryAttitudePercent>
-				<!-- advc.130s -->
-				<MemoryAttitudePercent>
-					<MemoryType>MEMORY_ACCEPTED_JOIN_WAR</MemoryType>
-					<iMemoryAttitudePercent>100</iMemoryAttitudePercent>
-				</MemoryAttitudePercent>
-				<MemoryAttitudePercent>
-					<MemoryType>MEMORY_DENIED_JOIN_WAR</MemoryType>
-					<iMemoryAttitudePercent>-100</iMemoryAttitudePercent>
-				</MemoryAttitudePercent>
-				<MemoryAttitudePercent>
-					<MemoryType>MEMORY_ACCEPTED_STOP_TRADING</MemoryType>
-					<iMemoryAttitudePercent>50</iMemoryAttitudePercent>
-				</MemoryAttitudePercent>
-				<MemoryAttitudePercent>
-					<MemoryType>MEMORY_DENIED_STOP_TRADING</MemoryType>
-					<iMemoryAttitudePercent>-100</iMemoryAttitudePercent>
-				</MemoryAttitudePercent>
-				<MemoryAttitudePercent>
-					<MemoryType>MEMORY_STOPPED_TRADING</MemoryType>
-					<iMemoryAttitudePercent>-100</iMemoryAttitudePercent>
-				</MemoryAttitudePercent>
-				<MemoryAttitudePercent>
-					<MemoryType>MEMORY_HIRED_TRADE_EMBARGO</MemoryType>
-					<iMemoryAttitudePercent>-100</iMemoryAttitudePercent>
-				</MemoryAttitudePercent>
-				<MemoryAttitudePercent>
-					<MemoryType>MEMORY_MADE_DEMAND</MemoryType>
-					<iMemoryAttitudePercent>-100</iMemoryAttitudePercent>
-				</MemoryAttitudePercent>
-				<!-- advc.143 -->
-				<MemoryAttitudePercent>
-					<MemoryType>MEMORY_CANCELLED_VASSAL_AGREEMENT</MemoryType>
-					<iMemoryAttitudePercent>0</iMemoryAttitudePercent>
-				</MemoryAttitudePercent>
-				<!-- Needs to be set for each leader individually.
-					 advc.553 (note): The DLL takes it times 0.8 and adds 4. -->
-				<MemoryAttitudePercent>
-					<MemoryType>MEMORY_TRADED_TECH_TO_US</MemoryType>
-					<iMemoryAttitudePercent>-1</iMemoryAttitudePercent>
-				</MemoryAttitudePercent>
-				<MemoryAttitudePercent>
-					<MemoryType>MEMORY_VOTED_AGAINST_US</MemoryType>
-					<iMemoryAttitudePercent>-200</iMemoryAttitudePercent>
-				</MemoryAttitudePercent>
-				<MemoryAttitudePercent>
-					<MemoryType>MEMORY_VOTED_FOR_US</MemoryType>
-					<iMemoryAttitudePercent>200</iMemoryAttitudePercent>
-				</MemoryAttitudePercent>
-				<MemoryAttitudePercent>
-					<MemoryType>MEMORY_EVENT_GOOD_TO_US</MemoryType>
-					<iMemoryAttitudePercent>100</iMemoryAttitudePercent>
-				</MemoryAttitudePercent>
-				<MemoryAttitudePercent>
-					<MemoryType>MEMORY_EVENT_BAD_TO_US</MemoryType>
-					<iMemoryAttitudePercent>-100</iMemoryAttitudePercent>
-				</MemoryAttitudePercent>
-				<MemoryAttitudePercent>
-					<MemoryType>MEMORY_LIBERATED_CITIES</MemoryType>
-					<iMemoryAttitudePercent>150</iMemoryAttitudePercent>
-				</MemoryAttitudePercent>
-				<!-- advc.130r -->
-				<MemoryAttitudePercent>
-					<MemoryType>MEMORY_INDEPENDENCE</MemoryType>
-					<iMemoryAttitudePercent>100</iMemoryAttitudePercent>
-				</MemoryAttitudePercent>
-				<!-- advc.104i -->
-				<MemoryAttitudePercent>
-					<MemoryType>MEMORY_DECLARED_WAR_RECENT</MemoryType>
-					<iMemoryAttitudePercent>0</iMemoryAttitudePercent>
-				</MemoryAttitudePercent>
-			</MemoryAttitudePercents>
-			<NoWarAttitudeProbs>
-				<NoWarAttitudeProb>
-					<AttitudeType>ATTITUDE_FURIOUS</AttitudeType>
-					<iNoWarProb>0</iNoWarProb>
-				</NoWarAttitudeProb>
-				<NoWarAttitudeProb>
-					<AttitudeType>ATTITUDE_ANNOYED</AttitudeType>
-					<iNoWarProb>0</iNoWarProb>
-				</NoWarAttitudeProb>
-				<NoWarAttitudeProb>
-					<AttitudeType>ATTITUDE_CAUTIOUS</AttitudeType>
-					<iNoWarProb>0</iNoWarProb>
-				</NoWarAttitudeProb>
-				<NoWarAttitudeProb>
-					<AttitudeType>ATTITUDE_PLEASED</AttitudeType>
-					<iNoWarProb>0</iNoWarProb>
-				</NoWarAttitudeProb>
-				<NoWarAttitudeProb>
-					<AttitudeType>ATTITUDE_FRIENDLY</AttitudeType>
-					<iNoWarProb>100</iNoWarProb>
-				</NoWarAttitudeProb>
-			</NoWarAttitudeProbs>
-			<!-- advc.104: No AdvCiv leader uses this; for mod-mods maybe. See
-				 UWAI_WEIGHT_LOVE_OF_PEACE in AI_Variables_GlobalDefines.xml.
-				 Also reduces war utility counted for "greed". -->
+			<ContactRands/>
+			<ContactDelays/>
+			<MemoryDecays/>
+			<MemoryAttitudePercents/>
+			<NoWarAttitudeProbs/>
 			<iLoveOfPeace>0</iLoveOfPeace>
 			<UnitAIWeightModifiers/>
 			<ImprovementWeightModifiers/>
-			<DiplomacyIntroMusicPeace>
-				<DiploMusicPeaceEra>
-					<EraType>ERA_ANCIENT</EraType>
-					<DiploScriptId></DiploScriptId>
-				</DiploMusicPeaceEra>
-				<DiploMusicPeaceEra>
-					<EraType>ERA_CLASSICAL</EraType>
-					<DiploScriptId></DiploScriptId>
-				</DiploMusicPeaceEra>
-				<DiploMusicPeaceEra>
-					<EraType>ERA_MEDIEVAL</EraType>
-					<DiploScriptId></DiploScriptId>
-				</DiploMusicPeaceEra>
-				<DiploMusicPeaceEra>
-					<EraType>ERA_RENAISSANCE</EraType>
-					<DiploScriptId></DiploScriptId>
-				</DiploMusicPeaceEra>
-				<DiploMusicPeaceEra>
-					<EraType>ERA_INDUSTRIAL</EraType>
-					<DiploScriptId></DiploScriptId>
-				</DiploMusicPeaceEra>
-				<DiploMusicPeaceEra>
-					<EraType>ERA_MODERN</EraType>
-					<DiploScriptId></DiploScriptId>
-				</DiploMusicPeaceEra>
-				<DiploMusicPeaceEra>
-					<EraType>ERA_FUTURE</EraType>
-					<DiploScriptId></DiploScriptId>
-				</DiploMusicPeaceEra>
-			</DiplomacyIntroMusicPeace>
-			<DiplomacyMusicPeace>
-				<DiploMusicPeaceEra>
-					<EraType>ERA_ANCIENT</EraType>
-					<DiploScriptId></DiploScriptId>
-				</DiploMusicPeaceEra>
-				<DiploMusicPeaceEra>
-					<EraType>ERA_CLASSICAL</EraType>
-					<DiploScriptId></DiploScriptId>
-				</DiploMusicPeaceEra>
-				<DiploMusicPeaceEra>
-					<EraType>ERA_MEDIEVAL</EraType>
-					<DiploScriptId></DiploScriptId>
-				</DiploMusicPeaceEra>
-				<DiploMusicPeaceEra>
-					<EraType>ERA_RENAISSANCE</EraType>
-					<DiploScriptId></DiploScriptId>
-				</DiploMusicPeaceEra>
-				<DiploMusicPeaceEra>
-					<EraType>ERA_INDUSTRIAL</EraType>
-					<DiploScriptId></DiploScriptId>
-				</DiploMusicPeaceEra>
-				<DiploMusicPeaceEra>
-					<EraType>ERA_MODERN</EraType>
-					<DiploScriptId></DiploScriptId>
-				</DiploMusicPeaceEra>
-				<DiploMusicPeaceEra>
-					<EraType>ERA_FUTURE</EraType>
-					<DiploScriptId></DiploScriptId>
-				</DiploMusicPeaceEra>
-			</DiplomacyMusicPeace>
-			<DiplomacyIntroMusicWar>
-				<DiploMusicWarEra>
-					<EraType>ERA_ANCIENT</EraType>
-					<DiploScriptId></DiploScriptId>
-				</DiploMusicWarEra>
-				<DiploMusicWarEra>
-					<EraType>ERA_CLASSICAL</EraType>
-					<DiploScriptId></DiploScriptId>
-				</DiploMusicWarEra>
-				<DiploMusicWarEra>
-					<EraType>ERA_MEDIEVAL</EraType>
-					<DiploScriptId></DiploScriptId>
-				</DiploMusicWarEra>
-				<DiploMusicWarEra>
-					<EraType>ERA_RENAISSANCE</EraType>
-					<DiploScriptId></DiploScriptId>
-				</DiploMusicWarEra>
-				<DiploMusicWarEra>
-					<EraType>ERA_INDUSTRIAL</EraType>
-					<DiploScriptId></DiploScriptId>
-				</DiploMusicWarEra>
-				<DiploMusicWarEra>
-					<EraType>ERA_MODERN</EraType>
-					<DiploScriptId></DiploScriptId>
-				</DiploMusicWarEra>
-				<DiploMusicWarEra>
-					<EraType>ERA_FUTURE</EraType>
-					<DiploScriptId></DiploScriptId>
-				</DiploMusicWarEra>
-			</DiplomacyIntroMusicWar>
-			<DiplomacyMusicWar>
-				<DiploMusicWarEra>
-					<EraType>ERA_ANCIENT</EraType>
-					<DiploScriptId>AS2D_DIPLO_WARDRUMS_EARLY</DiploScriptId>
-				</DiploMusicWarEra>
-				<DiploMusicWarEra>
-					<EraType>ERA_CLASSICAL</EraType>
-					<DiploScriptId>AS2D_DIPLO_WARDRUMS_EARLY</DiploScriptId>
-				</DiploMusicWarEra>
-				<DiploMusicWarEra>
-					<EraType>ERA_MEDIEVAL</EraType>
-					<DiploScriptId>AS2D_DIPLO_WARDRUMS_MIDDLE</DiploScriptId>
-				</DiploMusicWarEra>
-				<DiploMusicWarEra>
-					<EraType>ERA_RENAISSANCE</EraType>
-					<DiploScriptId>AS2D_DIPLO_WARDRUMS_MIDDLE</DiploScriptId>
-				</DiploMusicWarEra>
-				<DiploMusicWarEra>
-					<EraType>ERA_INDUSTRIAL</EraType>
-					<DiploScriptId>AS2D_DIPLO_WARDRUMS_LATE</DiploScriptId>
-				</DiploMusicWarEra>
-				<DiploMusicWarEra>
-					<EraType>ERA_MODERN</EraType>
-					<DiploScriptId>AS2D_DIPLO_WARDRUMS_LATE</DiploScriptId>
-				</DiploMusicWarEra>
-				<DiploMusicWarEra>
-					<EraType>ERA_FUTURE</EraType>
-					<DiploScriptId>AS2D_DIPLO_WARDRUMS_LATE</DiploScriptId>
-				</DiploMusicWarEra>
-			</DiplomacyMusicWar>
+			<DiplomacyIntroMusicPeace/>
+			<DiplomacyMusicPeace/>
+			<DiplomacyIntroMusicWar/>
+			<DiplomacyMusicWar/>
 		</LeaderHeadInfo>
-		<!-- advc.xmldefault (end) -->
 		<LeaderHeadInfo> <!-- custom: Washington -->
 			<Type>LEADER_WASHINGTON</Type>
 			<Description>TXT_KEY_LEADER_WASHINGTON</Description>
@@ -873,13 +220,11 @@
 			<iNoTechTradeThreshold>10</iNoTechTradeThreshold>
 			<iTechTradeKnownPercent>30</iTechTradeKnownPercent>
 			<iMaxGoldTradePercent>5</iMaxGoldTradePercent>
-			<!-- BBAI Victory Strategy -->
 			<iCultureVictoryWeight>40</iCultureVictoryWeight>
 			<iSpaceVictoryWeight>10</iSpaceVictoryWeight>
 			<iConquestVictoryWeight>45</iConquestVictoryWeight>
 			<iDominationVictoryWeight>30</iDominationVictoryWeight>
 			<iDiplomacyVictoryWeight>25</iDiplomacyVictoryWeight>
-			<!-- BBAI Victory Strategy -->
 			<iMaxWarRand>200</iMaxWarRand>
 			<iMaxWarNearbyPowerRatio>90</iMaxWarNearbyPowerRatio>
 			<iMaxWarDistantPowerRatio>80</iMaxWarDistantPowerRatio>
@@ -896,17 +241,13 @@
 			<iWorseRankDifferenceAttitudeChange>0</iWorseRankDifferenceAttitudeChange>
 			<iBetterRankDifferenceAttitudeChange>1</iBetterRankDifferenceAttitudeChange>
 			<iCloseBordersAttitudeChange>-2</iCloseBordersAttitudeChange>
-			<!-- advc.148: was 5 -->
 			<iSameReligionAttitudeChangeLimit>4</iSameReligionAttitudeChangeLimit>
-			<!-- advc.130n: was iDifferentReligionAttitudeChange -->
 			<iDifferentReligionAttitudeChangeLimit>-1</iDifferentReligionAttitudeChangeLimit>
 			<iShareWarAttitudeChangeLimit>3</iShareWarAttitudeChangeLimit>
 			<iFavoriteCivicAttitudeChangeLimit>4</iFavoriteCivicAttitudeChangeLimit>
 			<TechRefuseAttitudeThreshold>ATTITUDE_ANNOYED</TechRefuseAttitudeThreshold>
-			<!-- advc.ctr: start -->
 			<CityRefuseAttitudeThreshold>ATTITUDE_PLEASED</CityRefuseAttitudeThreshold>
 			<NativeCityRefuseAttitudeThreshold>ATTITUDE_FRIENDLY</NativeCityRefuseAttitudeThreshold>
-			<!-- advc.ctr: end -->
 			<StrategicBonusRefuseAttitudeThreshold>ATTITUDE_CAUTIOUS</StrategicBonusRefuseAttitudeThreshold>
 			<HappinessBonusRefuseAttitudeThreshold>ATTITUDE_FURIOUS</HappinessBonusRefuseAttitudeThreshold>
 			<HealthBonusRefuseAttitudeThreshold>ATTITUDE_ANNOYED</HealthBonusRefuseAttitudeThreshold>
@@ -920,176 +261,19 @@
 			<OpenBordersRefuseAttitudeThreshold>ATTITUDE_ANNOYED</OpenBordersRefuseAttitudeThreshold>
 			<VassalRefuseAttitudeThreshold>ATTITUDE_PLEASED</VassalRefuseAttitudeThreshold>
 			<iVassalPowerModifier>0</iVassalPowerModifier>
-			<!-- Washington: was CIVIC_FREE_SPEECH -->
-			<FavoriteCivic>CIVIC_REPRESENTATION</FavoriteCivic>
-			<FavoriteReligion>RELIGION_CHRISTIANITY</FavoriteReligion>
-			<!-- Washington — was TRAIT_EXPANSIVE and TRAIT_CHARISMATIC -->
-			<Traits>
-				<Trait>
-					<TraitType>TRAIT_PROTECTIVE</TraitType>
-					<bTrait>1</bTrait>
-				</Trait>
-				<Trait>
-					<TraitType>TRAIT_CHARISMATIC</TraitType>
-					<bTrait>1</bTrait>
-				</Trait>
-			</Traits>
-			<Flavors>
-				<Flavor>
-					<FlavorType>FLAVOR_MILITARY</FlavorType>
-					<iFlavor>5</iFlavor>
-				</Flavor>
-				<Flavor>
-					<FlavorType>FLAVOR_GROWTH</FlavorType>
-					<iFlavor>2</iFlavor>
-				</Flavor>
-			</Flavors>
-			<ContactRands>
-				<ContactRand>
-					<ContactType>CONTACT_RELIGION_PRESSURE</ContactType>
-					<iContactRand>250</iContactRand>
-				</ContactRand>
-				<ContactRand>
-					<ContactType>CONTACT_CIVIC_PRESSURE</ContactType>
-					<iContactRand>250</iContactRand>
-				</ContactRand>
-				<ContactRand>
-					<ContactType>CONTACT_JOIN_WAR</ContactType>
-					<iContactRand>20</iContactRand>
-				</ContactRand>
-				<ContactRand>
-					<ContactType>CONTACT_STOP_TRADING</ContactType>
-					<iContactRand>50</iContactRand>
-				</ContactRand>
-				<ContactRand>
-					<ContactType>CONTACT_GIVE_HELP</ContactType>
-					<iContactRand>100</iContactRand>
-				</ContactRand>
-				<ContactRand>
-					<ContactType>CONTACT_ASK_FOR_HELP</ContactType>
-					<iContactRand>250</iContactRand>
-				</ContactRand>
-				<ContactRand>
-					<ContactType>CONTACT_DEMAND_TRIBUTE</ContactType>
-					<iContactRand>1000</iContactRand>
-				</ContactRand>
-				<ContactRand>
-					<!-- advc.134a: was 20 -->
-					<ContactType>CONTACT_PEACE_TREATY</ContactType>
-					<iContactRand>15</iContactRand>
-				</ContactRand>
-				<ContactRand>
-					<ContactType>CONTACT_TRADE_TECH</ContactType>
-					<iContactRand>5</iContactRand>
-				</ContactRand>
-				<ContactRand>
-					<ContactType>CONTACT_TRADE_BONUS</ContactType>
-					<iContactRand>5</iContactRand>
-				</ContactRand>
-			</ContactRands>
-			<ContactDelays>
-				<ContactDelay>
-					<ContactType>CONTACT_PEACE_TREATY</ContactType>
-					<iContactDelay>10</iContactDelay>
-				</ContactDelay>
-			</ContactDelays>
+			<FavoriteCivic>NONE</FavoriteCivic>
+			<FavoriteReligion>NONE</FavoriteReligion>
+			<Traits/>
+			<Flavors/>
+			<ContactRands/>
+			<ContactDelays/>
 			<MemoryDecays/>
-			<MemoryAttitudePercents>
-				<!-- advc.001g: Was duplicated; one said 10, the other 5. -->
-				<MemoryAttitudePercent>
-					<MemoryType>MEMORY_TRADED_TECH_TO_US</MemoryType>
-					<iMemoryAttitudePercent>7</iMemoryAttitudePercent>
-				</MemoryAttitudePercent>
-			</MemoryAttitudePercents>
-			<NoWarAttitudeProbs>
-				<NoWarAttitudeProb>
-					<AttitudeType>ATTITUDE_ANNOYED</AttitudeType>
-					<iNoWarProb>20</iNoWarProb>
-				</NoWarAttitudeProb>
-				<NoWarAttitudeProb>
-					<AttitudeType>ATTITUDE_CAUTIOUS</AttitudeType>
-					<iNoWarProb>70</iNoWarProb>
-				</NoWarAttitudeProb>
-				<NoWarAttitudeProb>
-					<AttitudeType>ATTITUDE_PLEASED</AttitudeType>
-					<iNoWarProb>100</iNoWarProb>
-				</NoWarAttitudeProb>
-			</NoWarAttitudeProbs>
-			<!-- advc.005a: Was Reserve 100. Capture the colonization of the
-				 West and privateers in the Revolutionary War. -->
-			<UnitAIWeightModifiers>
-				<UnitAIWeightModifier>
-					<UnitAIType>UNITAI_SETTLE</UnitAIType>
-					<iWeightModifier>25</iWeightModifier>
-				</UnitAIWeightModifier>
-				<UnitAIWeightModifier>
-					<UnitAIType>UNITAI_PIRATE_SEA</UnitAIType>
-					<iWeightModifier>25</iWeightModifier>
-				</UnitAIWeightModifier>
-			</UnitAIWeightModifiers>
-			<!-- advc.005a: was Farm and Windmill -->
-			<ImprovementWeightModifiers>
-				<ImprovementWeightModifier>
-					<ImprovementType>IMPROVEMENT_FARM</ImprovementType>
-					<iWeightModifier>20</iWeightModifier>
-				</ImprovementWeightModifier>
-				<ImprovementWeightModifier>
-					<ImprovementType>IMPROVEMENT_TOWN</ImprovementType>
-					<iWeightModifier>20</iWeightModifier>
-				</ImprovementWeightModifier>
-			</ImprovementWeightModifiers>
-			<DiplomacyIntroMusicPeace>
-				<DiploMusicPeaceEra>
-					<EraType>ERA_ANCIENT</EraType>
-					<DiploScriptId>AS2D_DIPLO_WASHINGTON_EARLY_INTRO</DiploScriptId>
-				</DiploMusicPeaceEra>
-				<DiploMusicPeaceEra>
-					<EraType>ERA_CLASSICAL</EraType>
-					<DiploScriptId>AS2D_DIPLO_WASHINGTON_EARLY_INTRO</DiploScriptId>
-				</DiploMusicPeaceEra>
-				<DiploMusicPeaceEra>
-					<EraType>ERA_INDUSTRIAL</EraType>
-					<DiploScriptId>AS2D_DIPLO_WASHINGTON_LATE_INTRO</DiploScriptId>
-				</DiploMusicPeaceEra>
-				<DiploMusicPeaceEra>
-					<EraType>ERA_MODERN</EraType>
-					<DiploScriptId>AS2D_DIPLO_WASHINGTON_LATE_INTRO</DiploScriptId>
-				</DiploMusicPeaceEra>
-				<DiploMusicPeaceEra>
-					<EraType>ERA_FUTURE</EraType>
-					<DiploScriptId>AS2D_DIPLO_WASHINGTON_LATE_INTRO</DiploScriptId>
-				</DiploMusicPeaceEra>
-			</DiplomacyIntroMusicPeace>
-			<DiplomacyMusicPeace>
-				<DiploMusicPeaceEra>
-					<EraType>ERA_ANCIENT</EraType>
-					<DiploScriptId>AS2D_DIPLO_WASHINGTON_EARLY_LP</DiploScriptId>
-				</DiploMusicPeaceEra>
-				<DiploMusicPeaceEra>
-					<EraType>ERA_CLASSICAL</EraType>
-					<DiploScriptId>AS2D_DIPLO_WASHINGTON_EARLY_LP</DiploScriptId>
-				</DiploMusicPeaceEra>
-				<DiploMusicPeaceEra>
-					<EraType>ERA_MEDIEVAL</EraType>
-					<DiploScriptId>AS2D_DIPLO_WASHINGTON_MIDDLE</DiploScriptId>
-				</DiploMusicPeaceEra>
-				<DiploMusicPeaceEra>
-					<EraType>ERA_RENAISSANCE</EraType>
-					<DiploScriptId>AS2D_DIPLO_WASHINGTON_MIDDLE</DiploScriptId>
-				</DiploMusicPeaceEra>
-				<DiploMusicPeaceEra>
-					<EraType>ERA_INDUSTRIAL</EraType>
-					<DiploScriptId>AS2D_DIPLO_WASHINGTON_LATE_LP</DiploScriptId>
-				</DiploMusicPeaceEra>
-				<DiploMusicPeaceEra>
-					<EraType>ERA_MODERN</EraType>
-					<DiploScriptId>AS2D_DIPLO_WASHINGTON_LATE_LP</DiploScriptId>
-				</DiploMusicPeaceEra>
-				<DiploMusicPeaceEra>
-					<EraType>ERA_FUTURE</EraType>
-					<DiploScriptId>AS2D_DIPLO_WASHINGTON_LATE_LP</DiploScriptId>
-				</DiploMusicPeaceEra>
-			</DiplomacyMusicPeace>
+			<MemoryAttitudePercents/>
+			<NoWarAttitudeProbs/>
+			<UnitAIWeightModifiers/>
+			<ImprovementWeightModifiers/>
+			<DiplomacyIntroMusicPeace/>
+			<DiplomacyMusicPeace/>
 			<DiplomacyIntroMusicWar/>
 			<DiplomacyMusicWar/>
 		</LeaderHeadInfo>
