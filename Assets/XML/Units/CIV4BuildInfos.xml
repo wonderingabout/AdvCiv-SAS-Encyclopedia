@@ -12,7 +12,7 @@
 			<Description>TXT_KEY_BUILD_ROAD</Description>
 			<Help>TXT_KEY_BUILD_ROAD_HELP</Help>
 			<Civilopedia>TXT_KEY_BUILD_ROAD_PEDIA</Civilopedia>
-			<PrereqTech>TECH_THE_WHEEL</PrereqTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<iTime>200</iTime>
 			<iCost>0</iCost>
 			<bKill>0</bKill>
@@ -33,7 +33,7 @@
 			<Help>TXT_KEY_BUILD_RAILROAD_HELP</Help>
 			<Civilopedia>TXT_KEY_BUILD_RAILROAD_PEDIA</Civilopedia>
 			<!-- custom: TECH_RAILROAD is an inefficient or inaccuratetech and is now removed from our tech tree, put at TECH_STEAM_POWER instead so railroads can be relevant sooner in the game too favouring endgame being sooner -->
-			<PrereqTech>TECH_STEAM_POWER</PrereqTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<iTime>300</iTime>
 			<iCost>0</iCost>
 			<bKill>0</bKill>
@@ -53,7 +53,7 @@
 			<Description>TXT_KEY_BUILD_FARM</Description>
 			<Help>TXT_KEY_BUILD_FARM_HELP</Help>
 			<Civilopedia>TXT_KEY_BUILD_FARM_PEDIA</Civilopedia>
-			<PrereqTech>TECH_AGRICULTURE</PrereqTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<iTime>500</iTime>
 			<iCost>0</iCost>
 			<bKill>0</bKill>
@@ -64,14 +64,14 @@
 			<FeatureStructs>
 				<FeatureStruct>
 					<FeatureType>FEATURE_JUNGLE</FeatureType>
-					<PrereqTech>TECH_MASONRY</PrereqTech>
+					<PrereqTech>TECH_HUNTING</PrereqTech>
 					<iTime>400</iTime>
 					<iProduction>20</iProduction>
 					<bRemove>1</bRemove>
 				</FeatureStruct>
 				<FeatureStruct>
 					<FeatureType>FEATURE_FOREST</FeatureType>
-					<PrereqTech>TECH_MASONRY</PrereqTech>
+					<PrereqTech>TECH_HUNTING</PrereqTech>
 					<iTime>300</iTime>
 					<iProduction>30</iProduction>
 					<bRemove>1</bRemove>
@@ -79,7 +79,7 @@
 				<!-- kekm.9 -->
 				<FeatureStruct>
 					<FeatureType>FEATURE_FALLOUT</FeatureType>
-					<PrereqTech>TECH_ECOLOGY</PrereqTech>
+					<PrereqTech>TECH_HUNTING</PrereqTech>
 					<iTime>600</iTime>
 					<iProduction>0</iProduction>
 					<bRemove>1</bRemove>
@@ -97,7 +97,7 @@
 			<Description>TXT_KEY_BUILD_FISHING_BOATS</Description>
 			<Help>TXT_KEY_BUILD_FISHING_BOATS_HELP</Help>
 			<Civilopedia>TXT_KEY_BUILD_FISHING_BOATS_PEDIA</Civilopedia>
-			<PrereqTech>TECH_FISHING</PrereqTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<iTime>0</iTime>
 			<iCost>0</iCost>
 			<bKill>1</bKill>
@@ -117,7 +117,7 @@
 			<Description>TXT_KEY_BUILD_WHALING_BOATS</Description>
 			<Help>TXT_KEY_BUILD_WHALING_BOATS_HELP</Help>
 			<Civilopedia>TXT_KEY_BUILD_WHALING_BOATS_PEDIA</Civilopedia>
-			<PrereqTech>TECH_SEAFARING</PrereqTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<iTime>0</iTime>
 			<iCost>0</iCost>
 			<bKill>1</bKill>
@@ -137,7 +137,7 @@
 			<Description>TXT_KEY_BUILD_MINE</Description>
 			<Help>TXT_KEY_BUILD_MINE_HELP</Help>
 			<Civilopedia>TXT_KEY_BUILD_MINE_PEDIA</Civilopedia>
-			<PrereqTech>TECH_MINING</PrereqTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<iTime>400</iTime>
 			<iCost>0</iCost>
 			<bKill>0</bKill>
@@ -148,14 +148,14 @@
 			<FeatureStructs>
 				<FeatureStruct>
 					<FeatureType>FEATURE_JUNGLE</FeatureType>
-					<PrereqTech>TECH_MASONRY</PrereqTech>
+					<PrereqTech>TECH_HUNTING</PrereqTech>
 					<iTime>400</iTime>
 					<iProduction>20</iProduction>
 					<bRemove>1</bRemove>
 				</FeatureStruct>
 				<FeatureStruct>
 					<FeatureType>FEATURE_FOREST</FeatureType>
-					<PrereqTech>TECH_MASONRY</PrereqTech>
+					<PrereqTech>TECH_HUNTING</PrereqTech>
 					<iTime>300</iTime>
 					<iProduction>30</iProduction>
 					<bRemove>1</bRemove>
@@ -163,7 +163,7 @@
 				<!-- kekm.9 -->
 				<FeatureStruct>
 					<FeatureType>FEATURE_FALLOUT</FeatureType>
-					<PrereqTech>TECH_ECOLOGY</PrereqTech>
+					<PrereqTech>TECH_HUNTING</PrereqTech>
 					<iTime>600</iTime>
 					<iProduction>0</iProduction>
 					<bRemove>1</bRemove>
@@ -182,7 +182,7 @@
 			<Help>TXT_KEY_BUILD_WORKSHOP_HELP</Help>
 			<Civilopedia>TXT_KEY_BUILD_WORKSHOP_PEDIA</Civilopedia>
 			<!-- custom: nerf the workshop a bit as it was a bit too op, was TECH_METAL_CASTING -->
-			<PrereqTech>TECH_IRON_WORKING</PrereqTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<iTime>600</iTime>
 			<iCost>0</iCost>
 			<bKill>0</bKill>
@@ -193,14 +193,14 @@
 			<FeatureStructs>
 				<FeatureStruct>
 					<FeatureType>FEATURE_JUNGLE</FeatureType>
-					<PrereqTech>TECH_MASONRY</PrereqTech>
+					<PrereqTech>TECH_HUNTING</PrereqTech>
 					<iTime>400</iTime>
 					<iProduction>20</iProduction>
 					<bRemove>1</bRemove>
 				</FeatureStruct>
 				<FeatureStruct>
 					<FeatureType>FEATURE_FOREST</FeatureType>
-					<PrereqTech>TECH_MASONRY</PrereqTech>
+					<PrereqTech>TECH_HUNTING</PrereqTech>
 					<iTime>300</iTime>
 					<iProduction>30</iProduction>
 					<bRemove>1</bRemove>
@@ -208,7 +208,7 @@
 				<!-- kekm.9 -->
 				<FeatureStruct>
 					<FeatureType>FEATURE_FALLOUT</FeatureType>
-					<PrereqTech>TECH_ECOLOGY</PrereqTech>
+					<PrereqTech>TECH_HUNTING</PrereqTech>
 					<iTime>600</iTime>
 					<iProduction>0</iProduction>
 					<bRemove>1</bRemove>
@@ -228,7 +228,7 @@
 			<Civilopedia>TXT_KEY_BUILD_LUMBERMILL_PEDIA</Civilopedia>
 			<!-- custom: historically more accurate in our reworked tech tree at least qutie accurate and functional in terms of gameplay, guilds are way too early in our reworked tech tree for lumbermill, machinery is a bit late but fine, plus buffes tech_machinery too, was TECH_GUILDS (now removed) -->
 			<!-- K-Mod: was REPLACEABLE_PARTS -->
-			<PrereqTech>TECH_MACHINERY</PrereqTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<!-- advc.902: was 800 -->
 			<iTime>500</iTime>
 			<iCost>0</iCost>
@@ -249,7 +249,7 @@
 			<Description>TXT_KEY_BUILD_WINDMILL</Description>
 			<Help>TXT_KEY_BUILD_WINDMILL_HELP</Help>
 			<Civilopedia>TXT_KEY_BUILD_WINDMILL_PEDIA</Civilopedia>
-			<PrereqTech>TECH_MACHINERY</PrereqTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<iTime>500</iTime>
 			<iCost>0</iCost>
 			<bKill>0</bKill>
@@ -260,14 +260,14 @@
 			<FeatureStructs>
 				<FeatureStruct>
 					<FeatureType>FEATURE_JUNGLE</FeatureType>
-					<PrereqTech>TECH_MASONRY</PrereqTech>
+					<PrereqTech>TECH_HUNTING</PrereqTech>
 					<iTime>400</iTime>
 					<iProduction>20</iProduction>
 					<bRemove>1</bRemove>
 				</FeatureStruct>
 				<FeatureStruct>
 					<FeatureType>FEATURE_FOREST</FeatureType>
-					<PrereqTech>TECH_MASONRY</PrereqTech>
+					<PrereqTech>TECH_HUNTING</PrereqTech>
 					<iTime>300</iTime>
 					<iProduction>30</iProduction>
 					<bRemove>1</bRemove>
@@ -275,7 +275,7 @@
 				<!-- kekm.9 -->
 				<FeatureStruct>
 					<FeatureType>FEATURE_FALLOUT</FeatureType>
-					<PrereqTech>TECH_ECOLOGY</PrereqTech>
+					<PrereqTech>TECH_HUNTING</PrereqTech>
 					<iTime>600</iTime>
 					<iProduction>0</iProduction>
 					<bRemove>1</bRemove>
@@ -295,7 +295,7 @@
 			<Help>TXT_KEY_BUILD_WATERMILL_HELP</Help>
 			<Civilopedia>TXT_KEY_BUILD_WATERMILL_PEDIA</Civilopedia>
 			<!-- custom: seems historically more accurate or meshes or fits better with our reworked tech tree sooner, was TECH_MACHINERY -->
-			<PrereqTech>TECH_WATER_WHEEL</PrereqTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<iTime>400</iTime>
 			<iCost>0</iCost>
 			<bKill>0</bKill>
@@ -306,14 +306,14 @@
 			<FeatureStructs>
 				<FeatureStruct>
 					<FeatureType>FEATURE_JUNGLE</FeatureType>
-					<PrereqTech>TECH_MASONRY</PrereqTech>
+					<PrereqTech>TECH_HUNTING</PrereqTech>
 					<iTime>400</iTime>
 					<iProduction>20</iProduction>
 					<bRemove>1</bRemove>
 				</FeatureStruct>
 				<FeatureStruct>
 					<FeatureType>FEATURE_FOREST</FeatureType>
-					<PrereqTech>TECH_MASONRY</PrereqTech>
+					<PrereqTech>TECH_HUNTING</PrereqTech>
 					<iTime>300</iTime>
 					<iProduction>30</iProduction>
 					<bRemove>1</bRemove>
@@ -321,7 +321,7 @@
 				<!-- kekm.9 -->
 				<FeatureStruct>
 					<FeatureType>FEATURE_FALLOUT</FeatureType>
-					<PrereqTech>TECH_ECOLOGY</PrereqTech>
+					<PrereqTech>TECH_HUNTING</PrereqTech>
 					<iTime>600</iTime>
 					<iProduction>0</iProduction>
 					<bRemove>1</bRemove>
@@ -339,7 +339,7 @@
 			<Description>TXT_KEY_BUILD_PLANTATION</Description>
 			<Help>TXT_KEY_BUILD_PLANTATION_HELP</Help>
 			<Civilopedia>TXT_KEY_BUILD_PLANTATION_PEDIA</Civilopedia>
-			<PrereqTech>TECH_CALENDAR</PrereqTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<iTime>500</iTime>
 			<iCost>0</iCost>
 			<bKill>0</bKill>
@@ -350,14 +350,14 @@
 			<FeatureStructs>
 				<FeatureStruct>
 					<FeatureType>FEATURE_JUNGLE</FeatureType>
-					<PrereqTech>TECH_MASONRY</PrereqTech>
+					<PrereqTech>TECH_HUNTING</PrereqTech>
 					<iTime>400</iTime>
 					<iProduction>20</iProduction>
 					<bRemove>1</bRemove>
 				</FeatureStruct>
 				<FeatureStruct>
 					<FeatureType>FEATURE_FOREST</FeatureType>
-					<PrereqTech>TECH_MASONRY</PrereqTech>
+					<PrereqTech>TECH_HUNTING</PrereqTech>
 					<iTime>300</iTime>
 					<iProduction>30</iProduction>
 					<bRemove>1</bRemove>
@@ -365,7 +365,7 @@
 				<!-- kekm.9 -->
 				<FeatureStruct>
 					<FeatureType>FEATURE_FALLOUT</FeatureType>
-					<PrereqTech>TECH_ECOLOGY</PrereqTech>
+					<PrereqTech>TECH_HUNTING</PrereqTech>
 					<iTime>600</iTime>
 					<iProduction>0</iProduction>
 					<bRemove>1</bRemove>
@@ -384,7 +384,7 @@
 			<Help>TXT_KEY_BUILD_QUARRY_HELP</Help>
 			<Civilopedia>TXT_KEY_BUILD_QUARRY_PEDIA</Civilopedia>
 			<!-- custom: build_quarry moved earlier at same time as mining i mean build mine, if i remember corretly from my research about techs if i may say i wanted/assessed quarry and mining to be at same historical time or tech tree, after rechecking hehe or not heheis indeed as such in tech tree i had made originally so fine to keep this way as well for this reason too for the build improvement tech prereq, was TECH_MASONRY -->
-			<PrereqTech>TECH_MINING</PrereqTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<iTime>600</iTime>
 			<iCost>0</iCost>
 			<bKill>0</bKill>
@@ -395,14 +395,14 @@
 			<FeatureStructs>
 				<FeatureStruct>
 					<FeatureType>FEATURE_JUNGLE</FeatureType>
-					<PrereqTech>TECH_MASONRY</PrereqTech>
+					<PrereqTech>TECH_HUNTING</PrereqTech>
 					<iTime>400</iTime>
 					<iProduction>20</iProduction>
 					<bRemove>1</bRemove>
 				</FeatureStruct>
 				<FeatureStruct>
 					<FeatureType>FEATURE_FOREST</FeatureType>
-					<PrereqTech>TECH_MASONRY</PrereqTech>
+					<PrereqTech>TECH_HUNTING</PrereqTech>
 					<iTime>300</iTime>
 					<iProduction>30</iProduction>
 					<bRemove>1</bRemove>
@@ -410,7 +410,7 @@
 				<!-- kekm.9 -->
 				<FeatureStruct>
 					<FeatureType>FEATURE_FALLOUT</FeatureType>
-					<PrereqTech>TECH_ECOLOGY</PrereqTech>
+					<PrereqTech>TECH_HUNTING</PrereqTech>
 					<iTime>600</iTime>
 					<iProduction>0</iProduction>
 					<bRemove>1</bRemove>
@@ -428,7 +428,7 @@
 			<Description>TXT_KEY_BUILD_PASTURE</Description>
 			<Help>TXT_KEY_BUILD_PASTURE_HELP</Help>
 			<Civilopedia>TXT_KEY_BUILD_PASTURE_PEDIA</Civilopedia>
-			<PrereqTech>TECH_ANIMAL_HUSBANDRY</PrereqTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<iTime>400</iTime>
 			<iCost>0</iCost>
 			<bKill>0</bKill>
@@ -439,14 +439,14 @@
 			<FeatureStructs>
 				<FeatureStruct>
 					<FeatureType>FEATURE_JUNGLE</FeatureType>
-					<PrereqTech>TECH_MASONRY</PrereqTech>
+					<PrereqTech>TECH_HUNTING</PrereqTech>
 					<iTime>400</iTime>
 					<iProduction>20</iProduction>
 					<bRemove>1</bRemove>
 				</FeatureStruct>
 				<FeatureStruct>
 					<FeatureType>FEATURE_FOREST</FeatureType>
-					<PrereqTech>TECH_MASONRY</PrereqTech>
+					<PrereqTech>TECH_HUNTING</PrereqTech>
 					<iTime>300</iTime>
 					<iProduction>30</iProduction>
 					<bRemove>1</bRemove>
@@ -454,7 +454,7 @@
 				<!-- kekm.9 -->
 				<FeatureStruct>
 					<FeatureType>FEATURE_FALLOUT</FeatureType>
-					<PrereqTech>TECH_ECOLOGY</PrereqTech>
+					<PrereqTech>TECH_HUNTING</PrereqTech>
 					<iTime>600</iTime>
 					<iProduction>0</iProduction>
 					<bRemove>1</bRemove>
@@ -483,7 +483,7 @@
 			<FeatureStructs>
 				<FeatureStruct>
 					<FeatureType>FEATURE_FALLOUT</FeatureType>
-					<PrereqTech>TECH_ECOLOGY</PrereqTech>
+					<PrereqTech>TECH_HUNTING</PrereqTech>
 					<iTime>600</iTime>
 					<iProduction>0</iProduction>
 					<bRemove>1</bRemove>
@@ -501,7 +501,7 @@
 			<Description>TXT_KEY_BUILD_WELL</Description>
 			<Help>TXT_KEY_BUILD_WELL_HELP</Help>
 			<Civilopedia>TXT_KEY_BUILD_WELL_PEDIA</Civilopedia>
-			<PrereqTech>TECH_COMBUSTION</PrereqTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<iTime>1000</iTime>
 			<iCost>0</iCost>
 			<bKill>0</bKill>
@@ -512,14 +512,14 @@
 			<FeatureStructs>
 				<FeatureStruct>
 					<FeatureType>FEATURE_JUNGLE</FeatureType>
-					<PrereqTech>TECH_MASONRY</PrereqTech>
+					<PrereqTech>TECH_HUNTING</PrereqTech>
 					<iTime>400</iTime>
 					<iProduction>20</iProduction>
 					<bRemove>1</bRemove>
 				</FeatureStruct>
 				<FeatureStruct>
 					<FeatureType>FEATURE_FOREST</FeatureType>
-					<PrereqTech>TECH_MASONRY</PrereqTech>
+					<PrereqTech>TECH_HUNTING</PrereqTech>
 					<iTime>300</iTime>
 					<iProduction>30</iProduction>
 					<bRemove>1</bRemove>
@@ -527,7 +527,7 @@
 				<!-- kekm.9 -->
 				<FeatureStruct>
 					<FeatureType>FEATURE_FALLOUT</FeatureType>
-					<PrereqTech>TECH_ECOLOGY</PrereqTech>
+					<PrereqTech>TECH_HUNTING</PrereqTech>
 					<iTime>600</iTime>
 					<iProduction>0</iProduction>
 					<bRemove>1</bRemove>
@@ -546,7 +546,7 @@
 			<Help>TXT_KEY_BUILD_OFFSHORE_PLATFORM_HELP</Help>
 			<Civilopedia>TXT_KEY_BUILD_OFFSHORE_PLATFORM_PEDIA</Civilopedia>
 			<!-- custom: was the now removed TECH_PLASTICS -->
-			<PrereqTech>TECH_MARINE_TECHNOLOGY</PrereqTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<iTime>0</iTime>
 			<iCost>0</iCost>
 			<bKill>1</bKill>
@@ -566,7 +566,7 @@
 			<Description>TXT_KEY_BUILD_COTTAGE</Description>
 			<Help>TXT_KEY_BUILD_COTTAGE_HELP</Help>
 			<Civilopedia>TXT_KEY_BUILD_COTTAGE_PEDIA</Civilopedia>
-			<PrereqTech>TECH_POTTERY</PrereqTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<iTime>400</iTime>
 			<iCost>0</iCost>
 			<bKill>0</bKill>
@@ -577,14 +577,14 @@
 			<FeatureStructs>
 				<FeatureStruct>
 					<FeatureType>FEATURE_JUNGLE</FeatureType>
-					<PrereqTech>TECH_MASONRY</PrereqTech>
+					<PrereqTech>TECH_HUNTING</PrereqTech>
 					<iTime>400</iTime>
 					<iProduction>20</iProduction>
 					<bRemove>1</bRemove>
 				</FeatureStruct>
 				<FeatureStruct>
 					<FeatureType>FEATURE_FOREST</FeatureType>
-					<PrereqTech>TECH_MASONRY</PrereqTech>
+					<PrereqTech>TECH_HUNTING</PrereqTech>
 					<iTime>300</iTime>
 					<iProduction>30</iProduction>
 					<bRemove>1</bRemove>
@@ -592,7 +592,7 @@
 				<!-- kekm.9 -->
 				<FeatureStruct>
 					<FeatureType>FEATURE_FALLOUT</FeatureType>
-					<PrereqTech>TECH_ECOLOGY</PrereqTech>
+					<PrereqTech>TECH_HUNTING</PrereqTech>
 					<iTime>600</iTime>
 					<iProduction>0</iProduction>
 					<bRemove>1</bRemove>
@@ -611,7 +611,7 @@
 			<Help>TXT_KEY_BUILD_FORT_HELP</Help>
 			<Civilopedia>TXT_KEY_BUILD_FORT_PEDIA</Civilopedia>
 			<!-- custom: move fort building a bit later in tech, hopefully a bit less or less soon nonsensical or unfit fort building, not reworking this/the code parts that seem(ed at least at that time in advciv issues threat in the civfanatics forum (issue) i mean i had created at that time), delaying it a bit hopefully helps and or is also more consistent with fortifications era (didnt check, maybe tech_engineering is an accurate enough time for this), was TECH_MATHEMATICS -->
-			<PrereqTech>TECH_ENGINEERING</PrereqTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<iTime>1000</iTime>
 			<iCost>0</iCost>
 			<bKill>0</bKill>
@@ -622,7 +622,7 @@
 			<FeatureStructs>
 				<FeatureStruct>
 					<FeatureType>FEATURE_FALLOUT</FeatureType>
-					<PrereqTech>TECH_ECOLOGY</PrereqTech>
+					<PrereqTech>TECH_HUNTING</PrereqTech>
 					<iTime>600</iTime>
 					<iProduction>0</iProduction>
 					<bRemove>1</bRemove>
@@ -652,7 +652,7 @@
 			<FeatureStructs>
 				<FeatureStruct>
 					<FeatureType>FEATURE_JUNGLE</FeatureType>
-					<PrereqTech>TECH_MASONRY</PrereqTech>
+					<PrereqTech>TECH_HUNTING</PrereqTech>
 					<iTime>400</iTime>
 					<iProduction>20</iProduction>
 					<bRemove>1</bRemove>
@@ -682,7 +682,7 @@
 			<FeatureStructs>
 				<FeatureStruct>
 					<FeatureType>FEATURE_FOREST</FeatureType>
-					<PrereqTech>TECH_MASONRY</PrereqTech>
+					<PrereqTech>TECH_HUNTING</PrereqTech>
 					<iTime>300</iTime>
 					<iProduction>30</iProduction>
 					<bRemove>1</bRemove>
@@ -713,7 +713,7 @@
 			<FeatureStructs>
 				<FeatureStruct>
 					<FeatureType>FEATURE_FALLOUT</FeatureType>
-					<PrereqTech>TECH_FISSION</PrereqTech>
+					<PrereqTech>TECH_HUNTING</PrereqTech>
 					<iTime>600</iTime>
 					<iProduction>0</iProduction>
 					<bRemove>1</bRemove>
@@ -732,7 +732,7 @@
 			<Help>TXT_KEY_BUILD_FOREST_PRESERVE_HELP</Help>
 			<Civilopedia>TXT_KEY_BUILD_FOREST_PRESERVE_PEDIA</Civilopedia>
 			<!-- advc.901: was SciMethod -->
-			<PrereqTech>TECH_BIOLOGY</PrereqTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<iTime>800</iTime>
 			<iCost>0</iCost>
 			<bKill>0</bKill>
@@ -749,3 +749,4 @@
 		</BuildInfo>
 	</BuildInfos>
 </Civ4BuildInfos>
+

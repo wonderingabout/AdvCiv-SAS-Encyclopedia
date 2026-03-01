@@ -10,7 +10,7 @@
 			<Type>PROCESS_WEALTH</Type>
 			<Description>TXT_KEY_PROCESS_WEALTH</Description>
 			<Strategy>TXT_KEY_PROCESS_WEALTH_STRATEGY</Strategy>
-			<TechPrereq>TECH_CURRENCY</TechPrereq>
+			<TechPrereq>TECH_HUNTING</TechPrereq>
 			<ProductionToCommerceModifiers>
 				<iProductionToCommerceModifier>50</iProductionToCommerceModifier>
 				<iProductionToCommerceModifier>0</iProductionToCommerceModifier>
@@ -23,7 +23,7 @@
 			<Description>TXT_KEY_PROCESS_RESEARCH</Description>
 			<Strategy>TXT_KEY_PROCESS_RESEARCH_STRATEGY</Strategy>
 			<!-- custom: Long_Comments_XML.txt #318, was TECH_NATURALISM -->
-			<TechPrereq>TECH_WRITING</TechPrereq>
+			<TechPrereq>TECH_HUNTING</TechPrereq>
 			<ProductionToCommerceModifiers>
 				<iProductionToCommerceModifier>0</iProductionToCommerceModifier>
 				<iProductionToCommerceModifier>50</iProductionToCommerceModifier>
@@ -36,7 +36,7 @@
 			<Description>TXT_KEY_PROCESS_CULTURE</Description>
 			<Strategy>TXT_KEY_PROCESS_CULTURE_STRATEGY</Strategy>
 			<!-- custom: GPT-5.2-Codex: Long_Comments_XML.txt #22 -->
-			<TechPrereq>TECH_AESTHETICS</TechPrereq>
+			<TechPrereq>TECH_HUNTING</TechPrereq>
 			<ProductionToCommerceModifiers>
 				<iProductionToCommerceModifier>0</iProductionToCommerceModifier>
 				<iProductionToCommerceModifier>0</iProductionToCommerceModifier>

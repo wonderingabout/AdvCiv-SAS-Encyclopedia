@@ -2082,7 +2082,7 @@
 			<PrereqReligion>NONE</PrereqReligion>
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
-			<ObsoleteTech>TECH_ASTRONOMY</ObsoleteTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
 			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes/>
 			<BonusType>NONE</BonusType>
@@ -2316,8 +2316,8 @@
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
 			<!-- custom: was TECH_NAVIGATION -->
-			<ObsoleteTech>TECH_MILITARY_SCIENCE</ObsoleteTech>
-			<PrereqTech>TECH_ASTRONOMY</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes/>
 			<BonusType>NONE</BonusType>
 			<PrereqBonuses/>
@@ -2552,8 +2552,8 @@
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
 			<!-- custom: was TECH_PHYSICS -->
-			<ObsoleteTech>TECH_SPACE_EXPLORATION</ObsoleteTech>
-			<PrereqTech>TECH_MILITARY_SCIENCE</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes/>
 			<BonusType>NONE</BonusType>
 			<PrereqBonuses/>
@@ -2782,10 +2782,10 @@
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
 			<ObsoleteTech>NONE</ObsoleteTech>
-			<PrereqTech>TECH_SPACE_EXPLORATION</PrereqTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes>
-				<PrereqTech>TECH_AI</PrereqTech>
-				<PrereqTech>TECH_ADVANCED_FLIGHT</PrereqTech>
+				<PrereqTech>TECH_HUNTING</PrereqTech>
+				<PrereqTech>TECH_HUNTING</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 			</TechTypes>
 			<!-- custom: like other/most if not all robotic units -->
@@ -2970,7 +2970,7 @@
 			<PrereqBuilding>NONE</PrereqBuilding>
 			<!-- custom: was TECH_ALPHABET (now removed) -->
 			<ObsoleteTech>NONE</ObsoleteTech>
-			<PrereqTech>TECH_CALENDAR</PrereqTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes/>
 			<BonusType>NONE</BonusType>
 			<PrereqBonuses/>
@@ -3151,9 +3151,9 @@
 			<PrereqBuilding>NONE</PrereqBuilding>
 			<!-- custom: Executives now require tech(s) to be built, matching their corresponding corporation's required tech(s); Long_Comments_XML.txt #374, was PrereqTech NONE and TechTypes empty -->
 			<ObsoleteTech>NONE</ObsoleteTech>
-			<PrereqTech>TECH_ECOLOGY</PrereqTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes>
-				<PrereqTech>TECH_CORPORATION</PrereqTech>
+				<PrereqTech>TECH_HUNTING</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 			</TechTypes>
@@ -3324,9 +3324,9 @@
 			<PrereqBuilding>NONE</PrereqBuilding>
 			<!-- custom: Executives now require a tech. See code comment at UNITCLASS_EXECUTIVE_1; was PrereqTech NONE and TechTypes empty -->
 			<ObsoleteTech>NONE</ObsoleteTech>
-			<PrereqTech>TECH_MARINE_TECHNOLOGY</PrereqTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes>
-				<PrereqTech>TECH_CORPORATION</PrereqTech>
+				<PrereqTech>TECH_HUNTING</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 			</TechTypes>
@@ -3497,9 +3497,9 @@
 			<PrereqBuilding>NONE</PrereqBuilding>
 			<!-- custom: Executives now require a tech. See code comment at UNITCLASS_EXECUTIVE_1; was PrereqTech NONE and TechTypes empty -->
 			<ObsoleteTech>NONE</ObsoleteTech>
-			<PrereqTech>TECH_COMBUSTION</PrereqTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes>
-				<PrereqTech>TECH_CORPORATION</PrereqTech>
+				<PrereqTech>TECH_HUNTING</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 			</TechTypes>
@@ -3670,9 +3670,9 @@
 			<PrereqBuilding>NONE</PrereqBuilding>
 			<!-- custom: Executives now require a tech. See code comment at UNITCLASS_EXECUTIVE_1; was PrereqTech NONE and TechTypes empty -->
 			<ObsoleteTech>NONE</ObsoleteTech>
-			<PrereqTech>TECH_RADIO</PrereqTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes>
-				<PrereqTech>TECH_CORPORATION</PrereqTech>
+				<PrereqTech>TECH_HUNTING</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 			</TechTypes>
@@ -3843,9 +3843,9 @@
 			<PrereqBuilding>NONE</PrereqBuilding>
 			<!-- custom: Executives now require a tech. See code comment at UNITCLASS_EXECUTIVE_1; was PrereqTech NONE and TechTypes empty -->
 			<ObsoleteTech>NONE</ObsoleteTech>
-			<PrereqTech>TECH_ELECTRICITY</PrereqTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes>
-				<PrereqTech>TECH_CORPORATION</PrereqTech>
+				<PrereqTech>TECH_HUNTING</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 			</TechTypes>
@@ -4016,9 +4016,9 @@
 			<PrereqBuilding>NONE</PrereqBuilding>
 			<!-- custom: Executives now require a tech. See code comment at UNITCLASS_EXECUTIVE_1; was PrereqTech NONE and TechTypes empty -->
 			<ObsoleteTech>NONE</ObsoleteTech>
-			<PrereqTech>TECH_ASSEMBLY_LINE</PrereqTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes>
-				<PrereqTech>TECH_CORPORATION</PrereqTech>
+				<PrereqTech>TECH_HUNTING</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 			</TechTypes>
@@ -4189,7 +4189,7 @@
 			<PrereqBuilding>NONE</PrereqBuilding>
 			<!-- custom: Executives now require a tech. See code comment at UNITCLASS_EXECUTIVE_1; was PrereqTech NONE and TechTypes empty -->
 			<ObsoleteTech>NONE</ObsoleteTech>
-			<PrereqTech>TECH_CORPORATION</PrereqTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes/>
 			<BonusType>NONE</BonusType>
 			<PrereqBonuses/>
@@ -5578,7 +5578,7 @@
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
 			<!-- custom: this unit is useless especially soon, yet AIs often produce it; Long_Comments_XML.txt #372 . Most importantly, this tech is on the Hunting path, so it as of now guarantees archers are available. -->
-			<ObsoleteTech>TECH_ANIMAL_HUSBANDRY</ObsoleteTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
 			<PrereqTech>NONE</PrereqTech>
 			<TechTypes/>
 			<BonusType>NONE</BonusType>
@@ -5771,8 +5771,8 @@
 			<PrereqReligion>NONE</PrereqReligion>
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
-			<ObsoleteTech>TECH_CIVIL_SERVICE</ObsoleteTech>
-			<PrereqTech>TECH_BRONZE_WORKING</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes/>
 			<BonusType>NONE</BonusType>
 			<PrereqBonuses>
@@ -5992,8 +5992,8 @@
 			<PrereqReligion>NONE</PrereqReligion>
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
-			<ObsoleteTech>TECH_CIVIL_SERVICE</ObsoleteTech>
-			<PrereqTech>TECH_BRONZE_WORKING</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes/>
 			<BonusType>NONE</BonusType>
 			<PrereqBonuses>
@@ -6212,8 +6212,8 @@
 			<PrereqReligion>NONE</PrereqReligion>
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
-			<ObsoleteTech>TECH_CIVIL_SERVICE</ObsoleteTech>
-			<PrereqTech>TECH_BRONZE_WORKING</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes/>
 			<BonusType>NONE</BonusType>
 			<PrereqBonuses/>
@@ -6451,8 +6451,8 @@
 			<PrereqReligion>NONE</PrereqReligion>
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
-			<ObsoleteTech>TECH_CIVIL_SERVICE</ObsoleteTech>
-			<PrereqTech>TECH_BRONZE_WORKING</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes/>
 			<BonusType>NONE</BonusType>
 			<PrereqBonuses/>
@@ -6669,8 +6669,8 @@
 			<PrereqReligion>NONE</PrereqReligion>
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
-			<ObsoleteTech>TECH_CIVIL_SERVICE</ObsoleteTech>
-			<PrereqTech>TECH_IRON_WORKING</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes/>
 			<BonusType>BONUS_IRON</BonusType>
 			<PrereqBonuses/>
@@ -6852,8 +6852,8 @@
 			<PrereqReligion>NONE</PrereqReligion>
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
-			<ObsoleteTech>TECH_CIVIL_SERVICE</ObsoleteTech>
-			<PrereqTech>TECH_IRON_WORKING</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes/>
 			<BonusType>NONE</BonusType>
 			<PrereqBonuses>
@@ -7068,8 +7068,8 @@
 			<PrereqReligion>NONE</PrereqReligion>
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
-			<ObsoleteTech>TECH_CIVIL_SERVICE</ObsoleteTech>
-			<PrereqTech>TECH_IRON_WORKING</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes/>
 			<!-- custom: the gallic_warrior had it so no reason why the roman_legionary can't, historically they could use copper/bronze just as well i guess, since it's their civ-specific unit it better be a good one!; as of now only applied to civ-specific swordsmen for balance and to keep strategic importance of iron, was BonusType bonus_iron and PrereqBonuses empty-->
 			<BonusType>NONE</BonusType>
@@ -7299,8 +7299,8 @@
 			<PrereqReligion>NONE</PrereqReligion>
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
-			<ObsoleteTech>TECH_CIVIL_SERVICE</ObsoleteTech>
-			<PrereqTech>TECH_IRON_WORKING</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes/>
 			<!-- custom: the gallic_warrior had it so no reason why the roman_legionary can't, historically they could use copper/bronze just as well i guess, since it's their civ-specific unit it better be a good one!; as of now only applied to civ-specific swordsmen for balance and to keep strategic importance of iron, was BonusType bonus_iron and PrereqBonuses empty-->
 			<BonusType>NONE</BonusType>
@@ -7523,8 +7523,8 @@
 			<PrereqReligion>NONE</PrereqReligion>
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
-			<ObsoleteTech>TECH_CIVIL_SERVICE</ObsoleteTech>
-			<PrereqTech>TECH_IRON_WORKING</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes/>
 			<!-- custom: in our mod the quechua_warrior is as of now swordsman based, but as for bonuses required, see code comment at the roman_legionary or other civ-specific swordsman class units -->
 			<BonusType>NONE</BonusType>
@@ -7750,10 +7750,10 @@
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
 			<!-- custom: was TECH_CIVIL_SERVICE and TECH_MACHINERY -->
-			<ObsoleteTech>TECH_FIREARMS</ObsoleteTech>
-			<PrereqTech>TECH_CIVIL_SERVICE</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes>
-				<PrereqTech>TECH_IRON_WORKING</PrereqTech>
+				<PrereqTech>TECH_HUNTING</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 			</TechTypes>
@@ -7955,10 +7955,10 @@
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
 			<!-- custom: was TECH_CIVIL_SERVICE and TECH_MACHINERY -->
-			<ObsoleteTech>TECH_FIREARMS</ObsoleteTech>
-			<PrereqTech>TECH_CIVIL_SERVICE</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes>
-				<PrereqTech>TECH_IRON_WORKING</PrereqTech>
+				<PrereqTech>TECH_HUNTING</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 			</TechTypes>
@@ -8191,10 +8191,10 @@
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
 			<!-- custom: was TECH_CIVIL_SERVICE and TECH_MACHINERY -->
-			<ObsoleteTech>TECH_FIREARMS</ObsoleteTech>
-			<PrereqTech>TECH_CIVIL_SERVICE</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes>
-				<PrereqTech>TECH_IRON_WORKING</PrereqTech>
+				<PrereqTech>TECH_HUNTING</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 			</TechTypes>
@@ -8434,8 +8434,8 @@
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
 			<!-- custom: was TECH_HUNTING -->
-			<ObsoleteTech>TECH_FEUDALISM</ObsoleteTech>
-			<PrereqTech>TECH_BRONZE_WORKING</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes/>
 			<BonusType>NONE</BonusType>
 			<PrereqBonuses>
@@ -8663,8 +8663,8 @@
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
 			<!-- custom: was TECH_HUNTING -->
-			<ObsoleteTech>TECH_FEUDALISM</ObsoleteTech>
-			<PrereqTech>TECH_BRONZE_WORKING</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes/>
 			<BonusType>NONE</BonusType>
 			<PrereqBonuses>
@@ -8900,8 +8900,8 @@
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
 			<!-- custom: was TECH_HUNTING -->
-			<ObsoleteTech>TECH_FEUDALISM</ObsoleteTech>
-			<PrereqTech>TECH_BRONZE_WORKING</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes/>
 			<BonusType>NONE</BonusType>
 			<PrereqBonuses/>
@@ -9138,8 +9138,8 @@
 			<PrereqReligion>NONE</PrereqReligion>
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
-			<ObsoleteTech>TECH_FEUDALISM</ObsoleteTech>
-			<PrereqTech>TECH_BRONZE_WORKING</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes/>
 			<BonusType>NONE</BonusType>
 			<PrereqBonuses>
@@ -9386,10 +9386,10 @@
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
 			<!-- custom: Long_Comments_XML.txt #322 -->
-			<ObsoleteTech>TECH_FIREARMS</ObsoleteTech>
-			<PrereqTech>TECH_FEUDALISM</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes>
-				<PrereqTech>TECH_IRON_WORKING</PrereqTech>
+				<PrereqTech>TECH_HUNTING</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 			</TechTypes>
@@ -9630,7 +9630,7 @@
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
 			<!-- custom: was TECH_ARCHERY (now removed) -->
-			<ObsoleteTech>TECH_CONSTRUCTION</ObsoleteTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
 			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes/>
 			<BonusType>NONE</BonusType>
@@ -9876,8 +9876,8 @@
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
 			<!-- custom: was TECH_FEUDALISM -->
-			<ObsoleteTech>TECH_FIREARMS</ObsoleteTech>
-			<PrereqTech>TECH_CONSTRUCTION</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes>
 				<PrereqTech>TECH_HUNTING</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
@@ -10109,8 +10109,8 @@
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
 			<!-- custom: was TECH_ARCHERY (now removed) and tech types empty -->
-			<ObsoleteTech>TECH_FIREARMS</ObsoleteTech>
-			<PrereqTech>TECH_CONSTRUCTION</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes>
 				<PrereqTech>TECH_HUNTING</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
@@ -10376,8 +10376,8 @@
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
 			<!-- custom: was TECH_ARCHERY (now removed) and tech types empty -->
-			<ObsoleteTech>TECH_FIREARMS</ObsoleteTech>
-			<PrereqTech>TECH_CONSTRUCTION</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes>
 				<PrereqTech>TECH_HUNTING</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
@@ -10604,8 +10604,8 @@
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
 			<!-- custom: was TECH_FEUDALISM + TECH_ARCHERY (now removed) -->
-			<ObsoleteTech>TECH_FIREARMS</ObsoleteTech>
-			<PrereqTech>TECH_CIVIL_SERVICE</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes>
 				<PrereqTech>TECH_HUNTING</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
@@ -10803,8 +10803,8 @@
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
 			<!-- custom: was TECH_FEUDALISM + TECH_ARCHERY (now removed) -->
-			<ObsoleteTech>TECH_FIREARMS</ObsoleteTech>
-			<PrereqTech>TECH_CIVIL_SERVICE</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes>
 				<PrereqTech>TECH_HUNTING</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
@@ -11037,8 +11037,8 @@
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
 			<!-- custom: was TECH_FEUDALISM + TECH_ARCHERY (now removed) -->
-			<ObsoleteTech>TECH_FIREARMS</ObsoleteTech>
-			<PrereqTech>TECH_CIVIL_SERVICE</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes>
 				<PrereqTech>TECH_HUNTING</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
@@ -11277,8 +11277,8 @@
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
 			<!-- custom: was TECH_FEUDALISM + TECH_ARCHERY (now removed) -->
-			<ObsoleteTech>TECH_FIREARMS</ObsoleteTech>
-			<PrereqTech>TECH_CIVIL_SERVICE</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes>
 				<PrereqTech>TECH_HUNTING</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
@@ -11498,8 +11498,8 @@
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
 			<!-- custom: was TECH_GUNPOWDER -->
-			<ObsoleteTech>TECH_MILITARY_TRADITION</ObsoleteTech>
-			<PrereqTech>TECH_FIREARMS</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes/>
 			<BonusType>NONE</BonusType>
 			<PrereqBonuses/>
@@ -11687,8 +11687,8 @@
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
 			<!-- custom: was TECH_GUNPOWDER -->
-			<ObsoleteTech>TECH_MILITARY_TRADITION</ObsoleteTech>
-			<PrereqTech>TECH_FIREARMS</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes/>
 			<BonusType>NONE</BonusType>
 			<PrereqBonuses/>
@@ -11907,8 +11907,8 @@
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
 			<!-- custom: was TECH_GUNPOWDER -->
-			<ObsoleteTech>TECH_MILITARY_TRADITION</ObsoleteTech>
-			<PrereqTech>TECH_FIREARMS</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes/>
 			<BonusType>NONE</BonusType>
 			<PrereqBonuses/>
@@ -12137,8 +12137,8 @@
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
 			<!-- custom: was TECH_GUNPOWDER -->
-			<ObsoleteTech>TECH_MILITARY_TRADITION</ObsoleteTech>
-			<PrereqTech>TECH_FIREARMS</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes/>
 			<BonusType>NONE</BonusType>
 			<PrereqBonuses/>
@@ -12372,10 +12372,10 @@
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
 			<!-- custom: rifleman units moved later in tech tree as per our reworked tech tree, seems more balanced this way giving early gun (+/- monted) units, as well as indirectly old melee or non-gun (+/- mounted) units some time to still be relevant, perhaps more historically accurate too even though i didn't check in detail but checked bit for other units, was TECH_FIREARMS with techTypes empty -->
-			<ObsoleteTech>TECH_FASCISM</ObsoleteTech>
-			<PrereqTech>TECH_MILITARY_TRADITION</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes>
-				<PrereqTech>TECH_FIREARMS</PrereqTech>
+				<PrereqTech>TECH_HUNTING</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 			</TechTypes>
@@ -12577,10 +12577,10 @@
 			<PrereqReligion>NONE</PrereqReligion>
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
-			<ObsoleteTech>TECH_FASCISM</ObsoleteTech>
-			<PrereqTech>TECH_MILITARY_TRADITION</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes>
-				<PrereqTech>TECH_FIREARMS</PrereqTech>
+				<PrereqTech>TECH_HUNTING</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 			</TechTypes>
@@ -12798,10 +12798,10 @@
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
 			<!-- custom: see code comment at UNIT_RIFLEMAN -->
-			<ObsoleteTech>TECH_FASCISM</ObsoleteTech>
-			<PrereqTech>TECH_MILITARY_TRADITION</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes>
-				<PrereqTech>TECH_FIREARMS</PrereqTech>
+				<PrereqTech>TECH_HUNTING</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 			</TechTypes>
@@ -13050,10 +13050,10 @@
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
 			<!-- custom: was TECH_ASSEMBLY_LINE and tech types TECH_FIREARMS -->
-			<ObsoleteTech>TECH_INDUSTRIALISM</ObsoleteTech>
-			<PrereqTech>TECH_FASCISM</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes>
-				<PrereqTech>TECH_ASSEMBLY_LINE</PrereqTech>
+				<PrereqTech>TECH_HUNTING</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 			</TechTypes>
@@ -13258,10 +13258,10 @@
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
 			<!-- custom: was tech_industrialism and tech_types tech_FIREARMS -->
-			<ObsoleteTech>TECH_TRANSHUMANISM</ObsoleteTech>
-			<PrereqTech>TECH_INDUSTRIALISM</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes>
-				<PrereqTech>TECH_FASCISM</PrereqTech>
+				<PrereqTech>TECH_HUNTING</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 			</TechTypes>
@@ -13454,8 +13454,8 @@
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
 			<!-- custom: tech requirements reworked, was flight + tech types fascism and rifling -->
-			<ObsoleteTech>TECH_TRANSHUMANISM</ObsoleteTech>
-			<PrereqTech>TECH_ADVANCED_FLIGHT</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes/>
 			<BonusType>NONE</BonusType>
 			<PrereqBonuses/>
@@ -13640,9 +13640,9 @@
 			<PrereqBuilding>NONE</PrereqBuilding>
 			<!-- custom: making it out of main scientific path so that military path is not too rewarded and other strategies are just as vlaid or at least worth profits -->
 			<ObsoleteTech>NONE</ObsoleteTech>
-			<PrereqTech>TECH_TRANSHUMANISM</PrereqTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes>
-				<PrereqTech>TECH_AI</PrereqTech>
+				<PrereqTech>TECH_HUNTING</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 			</TechTypes>
@@ -13852,8 +13852,8 @@
 			<PrereqReligion>NONE</PrereqReligion>
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
-			<ObsoleteTech>TECH_ARTILLERY</ObsoleteTech>
-			<PrereqTech>TECH_MILITARY_SCIENCE</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes/>
 			<BonusType>NONE</BonusType>
 			<PrereqBonuses/>
@@ -14051,10 +14051,10 @@
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
 			<!-- custom: add TECH_ARTILLERY as it seems from very quick glances of it it seems they launch rockets/bazookas/rpgs and such from very little i know or guess of it, so fits more and quite well tech_artillery rather maybe, would make anti_tanks not appear too soon in history  too in the game, was TECH_ASSEMBLY_LINE -->
-			<ObsoleteTech>TECH_ADVANCED_FLIGHT</ObsoleteTech>
-			<PrereqTech>TECH_ARTILLERY</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes>
-				<PrereqTech>TECH_ASSEMBLY_LINE</PrereqTech>
+				<PrereqTech>TECH_HUNTING</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 			</TechTypes>
@@ -14259,11 +14259,11 @@
 			<PrereqReligion>NONE</PrereqReligion>
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
-			<ObsoleteTech>TECH_SPACE_EXPLORATION</ObsoleteTech>
-			<PrereqTech>TECH_ADVANCED_FLIGHT</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<!-- custom: was empty -->
 			<TechTypes>
-				<PrereqTech>TECH_ASSEMBLY_LINE</PrereqTech>
+				<PrereqTech>TECH_HUNTING</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 			</TechTypes>
@@ -14470,10 +14470,10 @@
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
 			<!-- custom: was TECH_ASSEMBLY_LINE -->
-			<ObsoleteTech>TECH_INDUSTRIALISM</ObsoleteTech>
-			<PrereqTech>TECH_FASCISM</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes>
-				<PrereqTech>TECH_ASSEMBLY_LINE</PrereqTech>
+				<PrereqTech>TECH_HUNTING</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 			</TechTypes>
@@ -14677,8 +14677,8 @@
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
 			<!-- custom: was the now removed TECH_ROBOT_RIGHTS and TECH_FIREARMS -->
-			<ObsoleteTech>TECH_ROBOT_RIGHTS</ObsoleteTech>
-			<PrereqTech>TECH_INDUSTRIALISM</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes/>
 			<BonusType>NONE</BonusType>
 			<PrereqBonuses/>
@@ -14860,8 +14860,8 @@
 			<PrereqReligion>NONE</PrereqReligion>
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
-			<ObsoleteTech>TECH_ROCKETRY</ObsoleteTech>
-			<PrereqTech>TECH_FLIGHT</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes/>
 			<BonusType>NONE</BonusType>
 			<PrereqBonuses/>
@@ -15042,7 +15042,7 @@
 			<PrereqBuilding>NONE</PrereqBuilding>
 			<!-- custom: was the now removed TECH_LASER and NONE NONE NONE -->
 			<ObsoleteTech>NONE</ObsoleteTech>
-			<PrereqTech>TECH_ROCKETRY</PrereqTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes/>
 			<BonusType>BONUS_OIL</BonusType>
 			<PrereqBonuses/>
@@ -15225,8 +15225,8 @@
 			<PrereqReligion>NONE</PrereqReligion>
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
-			<ObsoleteTech>TECH_MOUNTED_COMBAT</ObsoleteTech>
-			<PrereqTech>TECH_THE_WHEEL</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes/>
 			<BonusType>BONUS_HORSE</BonusType>
 			<PrereqBonuses/>
@@ -15447,8 +15447,8 @@
 			<PrereqReligion>NONE</PrereqReligion>
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
-			<ObsoleteTech>TECH_MOUNTED_COMBAT</ObsoleteTech>
-			<PrereqTech>TECH_THE_WHEEL</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes/>
 			<BonusType>BONUS_HORSE</BonusType>
 			<PrereqBonuses/>
@@ -15694,8 +15694,8 @@
 			<PrereqReligion>NONE</PrereqReligion>
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
-			<ObsoleteTech>TECH_CHIVALRY</ObsoleteTech>
-			<PrereqTech>TECH_MOUNTED_COMBAT</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes>
 				<PrereqTech>TECH_HUNTING</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
@@ -15901,8 +15901,8 @@
 			<PrereqReligion>NONE</PrereqReligion>
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
-			<ObsoleteTech>TECH_CHIVALRY</ObsoleteTech>
-			<PrereqTech>TECH_MOUNTED_COMBAT</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes>
 				<PrereqTech>TECH_HUNTING</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
@@ -16142,8 +16142,8 @@
 			<PrereqReligion>NONE</PrereqReligion>
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
-			<ObsoleteTech>TECH_CHIVALRY</ObsoleteTech>
-			<PrereqTech>TECH_MOUNTED_COMBAT</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes>
 				<PrereqTech>TECH_HUNTING</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
@@ -16354,10 +16354,10 @@
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
 			<!-- custom: was TECH_CONSTRUCTION and TECH_MOUNTED_COMBAT -->
-			<ObsoleteTech>TECH_CHIVALRY</ObsoleteTech>
-			<PrereqTech>TECH_MOUNTED_COMBAT</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes>
-				<PrereqTech>TECH_ANIMAL_HUSBANDRY</PrereqTech>
+				<PrereqTech>TECH_HUNTING</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 			</TechTypes>
@@ -16582,10 +16582,10 @@
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
 			<!-- custom: was TECH_CONSTRUCTION and TECH_MOUNTED_COMBAT -->
-			<ObsoleteTech>TECH_CHIVALRY</ObsoleteTech>
-			<PrereqTech>TECH_MOUNTED_COMBAT</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes>
-				<PrereqTech>TECH_ANIMAL_HUSBANDRY</PrereqTech>
+				<PrereqTech>TECH_HUNTING</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 			</TechTypes>
@@ -16800,10 +16800,10 @@
 			<PrereqReligion>NONE</PrereqReligion>
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
-			<ObsoleteTech>TECH_FIREARMS</ObsoleteTech>
-			<PrereqTech>TECH_CHIVALRY</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes>
-				<PrereqTech>TECH_MOUNTED_COMBAT</PrereqTech>
+				<PrereqTech>TECH_HUNTING</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 			</TechTypes>
@@ -17016,10 +17016,10 @@
 			<PrereqReligion>NONE</PrereqReligion>
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
-			<ObsoleteTech>TECH_FIREARMS</ObsoleteTech>
-			<PrereqTech>TECH_CHIVALRY</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes>
-				<PrereqTech>TECH_MOUNTED_COMBAT</PrereqTech>
+				<PrereqTech>TECH_HUNTING</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 			</TechTypes>
@@ -17259,10 +17259,10 @@
 			<PrereqReligion>NONE</PrereqReligion>
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
-			<ObsoleteTech>TECH_FIREARMS</ObsoleteTech>
-			<PrereqTech>TECH_CHIVALRY</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes>
-				<PrereqTech>TECH_MOUNTED_COMBAT</PrereqTech>
+				<PrereqTech>TECH_HUNTING</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 			</TechTypes>
@@ -17496,10 +17496,10 @@
 			<PrereqReligion>NONE</PrereqReligion>
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
-			<ObsoleteTech>TECH_FIREARMS</ObsoleteTech>
-			<PrereqTech>TECH_CHIVALRY</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes>
-				<PrereqTech>TECH_MOUNTED_COMBAT</PrereqTech>
+				<PrereqTech>TECH_HUNTING</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 			</TechTypes>
@@ -17725,10 +17725,10 @@
 			<PrereqReligion>NONE</PrereqReligion>
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
-			<ObsoleteTech>TECH_FIREARMS</ObsoleteTech>
-			<PrereqTech>TECH_CHIVALRY</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes>
-				<PrereqTech>TECH_MOUNTED_COMBAT</PrereqTech>
+				<PrereqTech>TECH_HUNTING</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 			</TechTypes>
@@ -17949,10 +17949,10 @@
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
 			<!-- custom: was TECH_MILITARY_TRADITION and techTypes TECH_GUNPOWDER and TECH_MOUNTED_COMBAT -->
-			<ObsoleteTech>TECH_MILITARY_TRADITION</ObsoleteTech>
-			<PrereqTech>TECH_FIREARMS</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes>
-				<PrereqTech>TECH_MOUNTED_COMBAT</PrereqTech>
+				<PrereqTech>TECH_HUNTING</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 			</TechTypes>
@@ -18166,10 +18166,10 @@
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
 			<!-- custom: was TECH_MILITARY_TRADITION and techTypes TECH_GUNPOWDER and TECH_MOUNTED_COMBAT -->
-			<ObsoleteTech>TECH_MILITARY_TRADITION</ObsoleteTech>
-			<PrereqTech>TECH_FIREARMS</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes>
-				<PrereqTech>TECH_MOUNTED_COMBAT</PrereqTech>
+				<PrereqTech>TECH_HUNTING</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 			</TechTypes>
@@ -18394,10 +18394,10 @@
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
 			<!-- custom: was TECH_MILITARY_TRADITION and techTypes TECH_GUNPOWDER and TECH_MOUNTED_COMBAT -->
-			<ObsoleteTech>TECH_MILITARY_TRADITION</ObsoleteTech>
-			<PrereqTech>TECH_FIREARMS</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes>
-				<PrereqTech>TECH_MOUNTED_COMBAT</PrereqTech>
+				<PrereqTech>TECH_HUNTING</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 			</TechTypes>
@@ -18613,11 +18613,11 @@
 			<PrereqReligion>NONE</PrereqReligion>
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
-			<ObsoleteTech>TECH_FASCISM</ObsoleteTech>
-			<PrereqTech>TECH_MILITARY_TRADITION</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes>
-				<PrereqTech>TECH_FIREARMS</PrereqTech>
-				<PrereqTech>TECH_MOUNTED_COMBAT</PrereqTech>
+				<PrereqTech>TECH_HUNTING</PrereqTech>
+				<PrereqTech>TECH_HUNTING</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 			</TechTypes>
 			<BonusType>BONUS_HORSE</BonusType>
@@ -18820,11 +18820,11 @@
 			<PrereqReligion>NONE</PrereqReligion>
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
-			<ObsoleteTech>TECH_FASCISM</ObsoleteTech>
-			<PrereqTech>TECH_MILITARY_TRADITION</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes>
-				<PrereqTech>TECH_FIREARMS</PrereqTech>
-				<PrereqTech>TECH_MOUNTED_COMBAT</PrereqTech>
+				<PrereqTech>TECH_HUNTING</PrereqTech>
+				<PrereqTech>TECH_HUNTING</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 			</TechTypes>
 			<BonusType>BONUS_HORSE</BonusType>
@@ -19057,11 +19057,11 @@
 			<PrereqReligion>NONE</PrereqReligion>
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
-			<ObsoleteTech>TECH_FASCISM</ObsoleteTech>
-			<PrereqTech>TECH_MILITARY_TRADITION</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes>
-				<PrereqTech>TECH_FIREARMS</PrereqTech>
-				<PrereqTech>TECH_MOUNTED_COMBAT</PrereqTech>
+				<PrereqTech>TECH_HUNTING</PrereqTech>
+				<PrereqTech>TECH_HUNTING</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 			</TechTypes>
 			<BonusType>BONUS_HORSE</BonusType>
@@ -19275,10 +19275,10 @@
 			<!-- custom: be careful as this seems to not be about building class, may lead to imposible condition if some civ has a civ-specific version of this but check to be sure; Long_Comments_XML.txt #332, was NONE -->
 			<PrereqBuilding>BUILDING_FACTORY</PrereqBuilding>
 			<!-- custom: was TECH_ASSEMBLY_LINE -->
-			<ObsoleteTech>TECH_COMPOSITES</ObsoleteTech>
-			<PrereqTech>TECH_FASCISM</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes>
-				<PrereqTech>TECH_ASSEMBLY_LINE</PrereqTech>
+				<PrereqTech>TECH_HUNTING</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 			</TechTypes>
@@ -19471,10 +19471,10 @@
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<!-- custom: see code comment at UNIT_TANK, was NONE -->
 			<PrereqBuilding>BUILDING_FACTORY</PrereqBuilding>
-			<ObsoleteTech>TECH_FUSION</ObsoleteTech>
-			<PrereqTech>TECH_COMPOSITES</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes>
-				<PrereqTech>TECH_COMPUTERS</PrereqTech>
+				<PrereqTech>TECH_HUNTING</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 			</TechTypes>
@@ -19668,9 +19668,9 @@
 			<PrereqBuilding>BUILDING_FACTORY</PrereqBuilding>
 			<!-- custom: making it out of main scientific path so that military path is not too rewarded and other strategies are just as vlaid or at least worth profits -->
 			<ObsoleteTech>NONE</ObsoleteTech>
-			<PrereqTech>TECH_FUSION</PrereqTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes>
-				<PrereqTech>TECH_AI</PrereqTech>
+				<PrereqTech>TECH_HUNTING</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 			</TechTypes>
@@ -19871,8 +19871,8 @@
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
 			<!-- custom: was TECH_CONSTRUCTION -->
-			<ObsoleteTech>TECH_CHEMISTRY</ObsoleteTech>
-			<PrereqTech>TECH_ENGINEERING</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes/>
 			<BonusType>NONE</BonusType>
 			<PrereqBonuses/>
@@ -20111,8 +20111,8 @@
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
 			<!-- custom: was TECH_ENGINEERING -->
-			<ObsoleteTech>TECH_CHEMISTRY</ObsoleteTech>
-			<PrereqTech>TECH_WATER_WHEEL</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes/>
 			<BonusType>NONE</BonusType>
 			<PrereqBonuses/>
@@ -20326,11 +20326,11 @@
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
 			<!-- custom: moved here as per tech rework, also buffs physics tech which is quite weak otherwise at least as of now, is a counter to main military gun path too strategically so interesting perhaps from gameplay standpoint to not overcrowd one tech and having alternate (or alternative?) strategies if one may say, was TECH_STEEL (now removed) -->
-			<ObsoleteTech>TECH_ARTILLERY</ObsoleteTech>
-			<PrereqTech>TECH_CHEMISTRY</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<!-- custom: was empty -->
 			<TechTypes>
-				<PrereqTech>TECH_MACHINERY</PrereqTech>
+				<PrereqTech>TECH_HUNTING</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 			</TechTypes>
@@ -20520,11 +20520,11 @@
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
 			<!-- custom: was TECH_CHEMISTRY in the generic cannon unit -->
-			<ObsoleteTech>TECH_ARTILLERY</ObsoleteTech>
-			<PrereqTech>TECH_CHEMISTRY</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<!-- custom: was empty -->
 			<TechTypes>
-				<PrereqTech>TECH_MACHINERY</PrereqTech>
+				<PrereqTech>TECH_HUNTING</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 			</TechTypes>
@@ -20744,11 +20744,11 @@
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
 			<!-- custom: moved here as per tech rework, also buffs physics tech which is quite weak otherwise at least as of now, is a counter to main military gun path too strategically so interesting perhaps from gameplay standpoint to not overcrowd one tech and having alternate (or alternative?) strategies if one may say, was TECH_STEEL (now removed) -->
-			<ObsoleteTech>TECH_ARTILLERY</ObsoleteTech>
-			<PrereqTech>TECH_CHEMISTRY</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<!-- custom: was empty -->
 			<TechTypes>
-				<PrereqTech>TECH_MACHINERY</PrereqTech>
+				<PrereqTech>TECH_HUNTING</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 			</TechTypes>
@@ -20977,8 +20977,8 @@
 			<PrereqReligion>NONE</PrereqReligion>
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
-			<ObsoleteTech>TECH_INDUSTRIALISM</ObsoleteTech>
-			<PrereqTech>TECH_ARTILLERY</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes/>
 			<BonusType>NONE</BonusType>
 			<PrereqBonuses/>
@@ -21167,10 +21167,10 @@
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
 			<!-- custom: move later in our reworked tech tree, was the now removed TECH_LASER and techTypes TECH_ARTILLERY -->
-			<ObsoleteTech>TECH_QUANTUM_MECHANICS</ObsoleteTech>
-			<PrereqTech>TECH_INDUSTRIALISM</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes>
-				<PrereqTech>TECH_ARTILLERY</PrereqTech>
+				<PrereqTech>TECH_HUNTING</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 			</TechTypes>
@@ -21359,9 +21359,9 @@
 			<PrereqBuilding>NONE</PrereqBuilding>
 			<!-- custom: making it at latest tech(s) so that aoe effect is not abused early in robotic/future era; suits also well its atypical effect or extra perks if i may say toosuch as of now move impassable or such -->
 			<ObsoleteTech>NONE</ObsoleteTech>
-			<PrereqTech>TECH_QUANTUM_MECHANICS</PrereqTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes>
-				<PrereqTech>TECH_AI</PrereqTech>
+				<PrereqTech>TECH_HUNTING</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 			</TechTypes>
@@ -21568,7 +21568,7 @@
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
 			<ObsoleteTech>NONE</ObsoleteTech>
-			<PrereqTech>TECH_FISHING</PrereqTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes/>
 			<BonusType>NONE</BonusType>
 			<PrereqBonuses/>
@@ -21611,7 +21611,7 @@
 			<TerrainPassableTechs>
 				<TerrainPassableTech>
 					<TerrainType>TERRAIN_OCEAN</TerrainType>
-					<PassableTech>TECH_ASTRONOMY</PassableTech>
+					<PassableTech>TECH_HUNTING</PassableTech>
 				</TerrainPassableTech>
 			</TerrainPassableTechs>
 			<FeaturePassableTechs/>
@@ -21768,7 +21768,7 @@
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
 			<ObsoleteTech>NONE</ObsoleteTech>
-			<PrereqTech>TECH_FISHING</PrereqTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes/>
 			<BonusType>NONE</BonusType>
 			<PrereqBonuses/>
@@ -21811,7 +21811,7 @@
 			<TerrainPassableTechs>
 				<TerrainPassableTech>
 					<TerrainType>TERRAIN_OCEAN</TerrainType>
-					<PassableTech>TECH_ASTRONOMY</PassableTech>
+					<PassableTech>TECH_HUNTING</PassableTech>
 				</TerrainPassableTech>
 			</TerrainPassableTechs>
 			<FeaturePassableTechs/>
@@ -21967,8 +21967,8 @@
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
 			<!-- custom: was TECH_SEAFARING -->
-			<ObsoleteTech>TECH_ASTRONOMY</ObsoleteTech>
-			<PrereqTech>TECH_SAILING</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes/>
 			<BonusType>NONE</BonusType>
 			<PrereqBonuses/>
@@ -22164,8 +22164,8 @@
 			<PrereqReligion>NONE</PrereqReligion>
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
-			<ObsoleteTech>TECH_COMBUSTION</ObsoleteTech>
-			<PrereqTech>TECH_ASTRONOMY</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes/>
 			<BonusType>NONE</BonusType>
 			<PrereqBonuses/>
@@ -22355,8 +22355,8 @@
 			<PrereqReligion>NONE</PrereqReligion>
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
-			<ObsoleteTech>TECH_COMBUSTION</ObsoleteTech>
-			<PrereqTech>TECH_ASTRONOMY</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes/>
 			<BonusType>NONE</BonusType>
 			<PrereqBonuses/>
@@ -22553,7 +22553,7 @@
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
 			<ObsoleteTech>NONE</ObsoleteTech>
-			<PrereqTech>TECH_COMBUSTION</PrereqTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes/>
 			<BonusType>NONE</BonusType>
 			<!-- advc.905b: Removed BONUS_URANIUM -->
@@ -22760,8 +22760,8 @@
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
 			<!-- custom: was TECH_METAL_CASTING and techTypes TECH_SEAFARING -->
-			<ObsoleteTech>TECH_ASTRONOMY</ObsoleteTech>
-			<PrereqTech>TECH_NAVIGATION</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes/>
 			<BonusType>NONE</BonusType>
 			<PrereqBonuses/>
@@ -22960,10 +22960,10 @@
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
 			<!-- custom: i want to have the privateers / representing the pirate ships have their own era / time of history in civ4 where they are relevant, make it at tech_astronomy so they are relevant sooner, was tech_astronomy + tech_chemistry -->
-			<ObsoleteTech>TECH_MILITARY_SCIENCE</ObsoleteTech>
-			<PrereqTech>TECH_PROFESSIONAL_ARMY</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes>
-				<PrereqTech>TECH_MACHINERY</PrereqTech>
+				<PrereqTech>TECH_HUNTING</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 			</TechTypes>
@@ -23162,10 +23162,10 @@
 			<PrereqReligion>NONE</PrereqReligion>
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
-			<ObsoleteTech>TECH_MILITARY_SCIENCE</ObsoleteTech>
-			<PrereqTech>TECH_CHEMISTRY</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes>
-				<PrereqTech>TECH_ASTRONOMY</PrereqTech>
+				<PrereqTech>TECH_HUNTING</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 			</TechTypes>
@@ -23348,11 +23348,11 @@
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
 			<!-- custom: adjusted as per reworked tech tree to a closer tech, was TECH_MILITARY_SCIENCE and techTypes TECH_ASTRONOMY -->
-			<ObsoleteTech>TECH_MILITARY_SCIENCE</ObsoleteTech>
-			<PrereqTech>TECH_PHYSICS</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes>
-				<PrereqTech>TECH_GUNPOWDER</PrereqTech>
-				<PrereqTech>TECH_ASTRONOMY</PrereqTech>
+				<PrereqTech>TECH_HUNTING</PrereqTech>
+				<PrereqTech>TECH_HUNTING</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 			</TechTypes>
 			<BonusType>NONE</BonusType>
@@ -23559,12 +23559,12 @@
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
 			<!-- advc.905b: was STEEL -->
-			<ObsoleteTech>TECH_MARINE_TECHNOLOGY</ObsoleteTech>
-			<PrereqTech>TECH_MILITARY_SCIENCE</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<!-- advc.905b: was STEAM_POWER -->
 			<!-- custom: was NONE NONE NONE -->
 			<TechTypes>
-				<PrereqTech>TECH_STEAM_POWER</PrereqTech>
+				<PrereqTech>TECH_HUNTING</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 			</TechTypes>
@@ -23763,7 +23763,7 @@
 			<PrereqBuilding>NONE</PrereqBuilding>
 			<!-- custom: was TECH_COMBUSTION -->
 			<ObsoleteTech>NONE</ObsoleteTech>
-			<PrereqTech>TECH_MARINE_TECHNOLOGY</PrereqTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes/>
 			<BonusType>NONE</BonusType>
 			<PrereqBonuses>
@@ -23953,8 +23953,8 @@
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
 			<!-- custom: move it sooner in tech, seems historically accurate from tiny bits i read of the sevopedia description (declines during world war 2, so build it sooner), plus tech_industrialism is bloated and too strong, was TECH_INDUSTRIALISM -->
-			<ObsoleteTech>TECH_ROCKETRY</ObsoleteTech>
-			<PrereqTech>TECH_MARINE_TECHNOLOGY</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes/>
 			<BonusType>NONE</BonusType>
 			<PrereqBonuses>
@@ -24140,10 +24140,10 @@
 			<PrereqBuilding>NONE</PrereqBuilding>
 			<!-- custom: was TECH_ROBOT_RIGHTS -->
 			<ObsoleteTech>NONE</ObsoleteTech>
-			<PrereqTech>TECH_ROCKETRY</PrereqTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<!-- custom: was empty -->
 			<TechTypes>
-				<PrereqTech>TECH_MARINE_TECHNOLOGY</PrereqTech>
+				<PrereqTech>TECH_HUNTING</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 			</TechTypes>
@@ -24335,9 +24335,9 @@
 			<PrereqBuilding>NONE</PrereqBuilding>
 			<!-- advc.906: was ROCKETRY plus RADIO and COMBUSTION -->
 			<ObsoleteTech>NONE</ObsoleteTech>
-			<PrereqTech>TECH_MARINE_TECHNOLOGY</PrereqTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes>
-				<PrereqTech>TECH_COMBUSTION</PrereqTech>
+				<PrereqTech>TECH_HUNTING</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 			</TechTypes>
@@ -24523,7 +24523,7 @@
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
 			<ObsoleteTech>NONE</ObsoleteTech>
-			<PrereqTech>TECH_FLIGHT</PrereqTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes/>
 			<BonusType>NONE</BonusType>
 			<PrereqBonuses>
@@ -24705,8 +24705,8 @@
 			<PrereqReligion>NONE</PrereqReligion>
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
-			<ObsoleteTech>TECH_ADVANCED_FLIGHT</ObsoleteTech>
-			<PrereqTech>TECH_FLIGHT</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes/>
 			<BonusType>BONUS_OIL</BonusType>
 			<PrereqBonuses/>
@@ -24878,7 +24878,7 @@
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
 			<ObsoleteTech>NONE</ObsoleteTech>
-			<PrereqTech>TECH_ADVANCED_FLIGHT</PrereqTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes/>
 			<BonusType>BONUS_OIL</BonusType>
 			<PrereqBonuses>
@@ -25056,8 +25056,8 @@
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
 			<!-- custom: Long_Comments_XML.txt #335 -->
-			<ObsoleteTech>TECH_ADVANCED_FLIGHT</ObsoleteTech>
-			<PrereqTech>TECH_FLIGHT</PrereqTech>
+			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes/>
 			<BonusType>BONUS_OIL</BonusType>
 			<PrereqBonuses/>
@@ -25231,9 +25231,9 @@
 			<PrereqBuilding>NONE</PrereqBuilding>
 			<!-- custom: was the now removed TECH_STEALTH and tech types TECH_ROBOT_RIGHTS -->
 			<ObsoleteTech>NONE</ObsoleteTech>
-			<PrereqTech>TECH_ADVANCED_FLIGHT</PrereqTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes>
-				<PrereqTech>TECH_ROCKETRY</PrereqTech>
+				<PrereqTech>TECH_HUNTING</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 			</TechTypes>
 			<BonusType>BONUS_OIL</BonusType>
@@ -25413,9 +25413,9 @@
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
 			<ObsoleteTech>NONE</ObsoleteTech>
-			<PrereqTech>TECH_ROCKETRY</PrereqTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes>
-				<PrereqTech>TECH_RADIO</PrereqTech>
+				<PrereqTech>TECH_HUNTING</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 			</TechTypes>
@@ -25585,9 +25585,9 @@
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
 			<ObsoleteTech>NONE</ObsoleteTech>
-			<PrereqTech>TECH_FISSION</PrereqTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes>
-				<PrereqTech>TECH_ROCKETRY</PrereqTech>
+				<PrereqTech>TECH_HUNTING</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 			</TechTypes>
@@ -25756,9 +25756,9 @@
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<PrereqBuilding>NONE</PrereqBuilding>
 			<ObsoleteTech>NONE</ObsoleteTech>
-			<PrereqTech>TECH_FISSION</PrereqTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes>
-				<PrereqTech>TECH_ROCKETRY</PrereqTech>
+				<PrereqTech>TECH_HUNTING</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 				<PrereqTech>NONE</PrereqTech>
 			</TechTypes>
@@ -27452,3 +27452,4 @@
 		</UnitInfo>
 	</UnitInfos>
 </Civ4UnitInfos>
+

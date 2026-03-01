@@ -14,7 +14,7 @@
 			<Description>TXT_KEY_SPECIALBUILDING_BOMB_SHELTER</Description>
 			<ObsoleteTech>NONE</ObsoleteTech>
 			<!-- custom: seems strictly related to nukes unlike the bunker, and not at all to tech_assembly_line which is bloated and op, while tech_fission has some room we could use i mean more balanced if feasable, was TECH_ASSEMBLY_LINE -->
-			<TechPrereq>TECH_FISSION</TechPrereq>
+			<TechPrereq>TECH_HUNTING</TechPrereq>
 			<TechPrereqAnyone>NONE</TechPrereqAnyone>
 			<bValid>0</bValid>
 			<ProductionTraits/>
@@ -26,7 +26,7 @@
 			<Type>SPECIALBUILDING_TEMPLE</Type>
 			<Description>TXT_KEY_SPECIALBUILDING_TEMPLE</Description>
 			<ObsoleteTech>NONE</ObsoleteTech>
-			<TechPrereq>TECH_POLYTHEISM</TechPrereq>
+			<TechPrereq>TECH_HUNTING</TechPrereq>
 			<TechPrereqAnyone>NONE</TechPrereqAnyone>
 			<bValid>1</bValid>
 			<ProductionTraits>
@@ -43,7 +43,7 @@
 			<Description>TXT_KEY_SPECIALBUILDING_CATHEDRAL</Description>
 			<ObsoleteTech>NONE</ObsoleteTech>
 			<!-- custom: was TECH_PRIESTHOOD (now removed) -->
-			<TechPrereq>TECH_MONOTHEISM</TechPrereq>
+			<TechPrereq>TECH_HUNTING</TechPrereq>
 			<TechPrereqAnyone>NONE</TechPrereqAnyone>
 			<bValid>1</bValid>
 			<ProductionTraits/>
@@ -56,7 +56,7 @@
 			<!-- custom: GPT-5.2-Codex: Long_Comments_XML.txt #16 -->
 			<ObsoleteTech>NONE</ObsoleteTech>
 			<!-- custom: was TECH_PRIESTHOOD (now removed) -->
-			<TechPrereq>TECH_MONARCHY</TechPrereq>
+			<TechPrereq>TECH_HUNTING</TechPrereq>
 			<TechPrereqAnyone>NONE</TechPrereqAnyone>
 			<bValid>1</bValid>
 			<!-- custom: makes it more interesting to think of them as being willing to meditate rather than going to a generic religious office maybe at least i'd want to represent it as such in advciv-sas -->
@@ -70,3 +70,4 @@
 		</SpecialBuildingInfo>
 	</SpecialBuildingInfos>
 </Civ4SpecialBuildingInfos>
+

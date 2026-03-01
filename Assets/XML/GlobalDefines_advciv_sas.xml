@@ -799,7 +799,7 @@ Created as part of AdvCiv-SAS improvements
 	</Define>
 	<Define>
 		<DefineName>SAS_MOUNTED_UNITS_TECH_NAME</DefineName>
-		<DefineTextVal>TECH_MOUNTED_COMBAT</DefineTextVal>
+		<DefineTextVal>TECH_HUNTING</DefineTextVal>
 	</Define>
 
 
@@ -1920,3 +1920,4 @@ Created as part of AdvCiv-SAS improvements
 		<iDefineIntVal>1</iDefineIntVal>
 	</Define>
 </Civ4Defines>
+

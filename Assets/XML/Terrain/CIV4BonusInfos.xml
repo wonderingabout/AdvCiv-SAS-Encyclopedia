@@ -19,8 +19,8 @@
 			<BonusClassType>BONUSCLASS_MODERN</BonusClassType>
 			<ArtDefineTag>ART_DEF_BONUS_ALUMINUM</ArtDefineTag>
 			<!-- custom: was TECH_INDUSTRIALISM -->
-			<TechReveal>TECH_ASSEMBLY_LINE</TechReveal>
-			<TechCityTrade>TECH_MINING</TechCityTrade>
+			<TechReveal>TECH_HUNTING</TechReveal>
+			<TechCityTrade>TECH_HUNTING</TechCityTrade>
 			<TechObsolete>NONE</TechObsolete>
 			<YieldChanges>
 				<iYieldChange>0</iYieldChange>
@@ -79,8 +79,8 @@
 			<Civilopedia>TXT_KEY_BONUS_COAL_PEDIA</Civilopedia>
 			<BonusClassType>BONUSCLASS_GENERAL</BonusClassType>
 			<ArtDefineTag>ART_DEF_BONUS_COAL</ArtDefineTag>
-			<TechReveal>TECH_STEAM_POWER</TechReveal>
-			<TechCityTrade>TECH_MINING</TechCityTrade>
+			<TechReveal>TECH_HUNTING</TechReveal>
+			<TechCityTrade>TECH_HUNTING</TechCityTrade>
 			<TechObsolete>NONE</TechObsolete>
 			<YieldChanges>
 				<iYieldChange>0</iYieldChange>
@@ -133,8 +133,8 @@
 			<Civilopedia>TXT_KEY_BONUS_COPPER_PEDIA</Civilopedia>
 			<BonusClassType>BONUSCLASS_RUSH</BonusClassType>
 			<ArtDefineTag>ART_DEF_BONUS_COPPER</ArtDefineTag>
-			<TechReveal>TECH_BRONZE_WORKING</TechReveal>
-			<TechCityTrade>TECH_MINING</TechCityTrade>
+			<TechReveal>TECH_HUNTING</TechReveal>
+			<TechCityTrade>TECH_HUNTING</TechCityTrade>
 			<TechObsolete>NONE</TechObsolete>
 			<YieldChanges>
 				<iYieldChange>0</iYieldChange>
@@ -200,8 +200,8 @@
 			<Civilopedia>TXT_KEY_BONUS_HORSE_PEDIA</Civilopedia>
 			<BonusClassType>BONUSCLASS_RUSH</BonusClassType>
 			<ArtDefineTag>ART_DEF_BONUS_HORSE</ArtDefineTag>
-			<TechReveal>TECH_ANIMAL_HUSBANDRY</TechReveal>
-			<TechCityTrade>TECH_ANIMAL_HUSBANDRY</TechCityTrade>
+			<TechReveal>TECH_HUNTING</TechReveal>
+			<TechCityTrade>TECH_HUNTING</TechCityTrade>
 			<TechObsolete>NONE</TechObsolete>
 			<!-- custom: now giving food like most if not all food strategic animals, hammer is adjusted through their specific improvement (for example pasture) rather, was 0 / 1 / 0 -->
 			<YieldChanges>
@@ -263,8 +263,8 @@
 			<Civilopedia>TXT_KEY_BONUS_IRON_PEDIA</Civilopedia>
 			<BonusClassType>BONUSCLASS_RUSH</BonusClassType>
 			<ArtDefineTag>ART_DEF_BONUS_IRON</ArtDefineTag>
-			<TechReveal>TECH_IRON_WORKING</TechReveal>
-			<TechCityTrade>TECH_MINING</TechCityTrade>
+			<TechReveal>TECH_HUNTING</TechReveal>
+			<TechCityTrade>TECH_HUNTING</TechCityTrade>
 			<TechObsolete>NONE</TechObsolete>
 			<YieldChanges>
 				<iYieldChange>0</iYieldChange>
@@ -334,7 +334,7 @@
 			<BonusClassType>BONUSCLASS_WONDER</BonusClassType>
 			<ArtDefineTag>ART_DEF_BONUS_MARBLE</ArtDefineTag>
 			<TechReveal>NONE</TechReveal>
-			<TechCityTrade>TECH_MASONRY</TechCityTrade>
+			<TechCityTrade>TECH_HUNTING</TechCityTrade>
 			<TechObsolete>NONE</TechObsolete>
 			<YieldChanges>
 				<iYieldChange>0</iYieldChange>
@@ -394,8 +394,8 @@
 			<BonusClassType>BONUSCLASS_MODERN</BonusClassType>
 			<ArtDefineTag>ART_DEF_BONUS_OIL</ArtDefineTag>
 			<!-- custom: was TECH_SCIENTIFIC_METHOD (now removed) -->
-			<TechReveal>TECH_COMBUSTION</TechReveal>
-			<TechCityTrade>TECH_COMBUSTION</TechCityTrade>
+			<TechReveal>TECH_HUNTING</TechReveal>
+			<TechCityTrade>TECH_HUNTING</TechCityTrade>
 			<TechObsolete>NONE</TechObsolete>
 			<YieldChanges>
 				<iYieldChange>0</iYieldChange>
@@ -469,7 +469,7 @@
 			<BonusClassType>BONUSCLASS_WONDER</BonusClassType>
 			<ArtDefineTag>ART_DEF_BONUS_STONE</ArtDefineTag>
 			<TechReveal>NONE</TechReveal>
-			<TechCityTrade>TECH_MASONRY</TechCityTrade>
+			<TechCityTrade>TECH_HUNTING</TechCityTrade>
 			<TechObsolete>NONE</TechObsolete>
 			<YieldChanges>
 				<iYieldChange>0</iYieldChange>
@@ -525,8 +525,8 @@
 			<BonusClassType>BONUSCLASS_MODERN</BonusClassType>
 			<ArtDefineTag>ART_DEF_BONUS_URANIUM</ArtDefineTag>
 			<!-- custom: was TECH_PHYSICS -->
-			<TechReveal>TECH_RADIO</TechReveal>
-			<TechCityTrade>TECH_FISSION</TechCityTrade>
+			<TechReveal>TECH_HUNTING</TechReveal>
+			<TechCityTrade>TECH_HUNTING</TechCityTrade>
 			<TechObsolete>NONE</TechObsolete>
 			<YieldChanges>
 				<iYieldChange>0</iYieldChange>
@@ -624,7 +624,7 @@
 			<BonusClassType>BONUSCLASS_GENERAL</BonusClassType>
 			<ArtDefineTag>ART_DEF_BONUS_BANANA</ArtDefineTag>
 			<TechReveal>NONE</TechReveal>
-			<TechCityTrade>TECH_CALENDAR</TechCityTrade>
+			<TechCityTrade>TECH_HUNTING</TechCityTrade>
 			<TechObsolete>NONE</TechObsolete>
 			<YieldChanges>
 				<iYieldChange>1</iYieldChange>
@@ -738,7 +738,7 @@
 			<BonusClassType>BONUSCLASS_GRAIN</BonusClassType>
 			<ArtDefineTag>ART_DEF_BONUS_MAIZE</ArtDefineTag>
 			<TechReveal>NONE</TechReveal>
-			<TechCityTrade>TECH_AGRICULTURE</TechCityTrade>
+			<TechCityTrade>TECH_HUNTING</TechCityTrade>
 			<TechObsolete>NONE</TechObsolete>
 			<YieldChanges>
 				<iYieldChange>1</iYieldChange>
@@ -789,7 +789,7 @@
 			<BonusClassType>BONUSCLASS_LIVESTOCK</BonusClassType>
 			<ArtDefineTag>ART_DEF_BONUS_CATTLE</ArtDefineTag>
 			<TechReveal>NONE</TechReveal>
-			<TechCityTrade>TECH_ANIMAL_HUSBANDRY</TechCityTrade>
+			<TechCityTrade>TECH_HUNTING</TechCityTrade>
 			<TechObsolete>NONE</TechObsolete>
 			<YieldChanges>
 				<iYieldChange>1</iYieldChange>
@@ -1018,7 +1018,7 @@
 			<BonusClassType>BONUSCLASS_LIVESTOCK</BonusClassType>
 			<ArtDefineTag>ART_DEF_BONUS_PIG</ArtDefineTag>
 			<TechReveal>NONE</TechReveal>
-			<TechCityTrade>TECH_ANIMAL_HUSBANDRY</TechCityTrade>
+			<TechCityTrade>TECH_HUNTING</TechCityTrade>
 			<TechObsolete>NONE</TechObsolete>
 			<YieldChanges>
 				<iYieldChange>1</iYieldChange>
@@ -1082,7 +1082,7 @@
 			<BonusClassType>BONUSCLASS_GRAIN</BonusClassType>
 			<ArtDefineTag>ART_DEF_BONUS_RICE</ArtDefineTag>
 			<TechReveal>NONE</TechReveal>
-			<TechCityTrade>TECH_AGRICULTURE</TechCityTrade>
+			<TechCityTrade>TECH_HUNTING</TechCityTrade>
 			<TechObsolete>NONE</TechObsolete>
 			<YieldChanges>
 				<iYieldChange>1</iYieldChange>
@@ -1143,7 +1143,7 @@
 			<BonusClassType>BONUSCLASS_LIVESTOCK</BonusClassType>
 			<ArtDefineTag>ART_DEF_BONUS_SHEEP</ArtDefineTag>
 			<TechReveal>NONE</TechReveal>
-			<TechCityTrade>TECH_ANIMAL_HUSBANDRY</TechCityTrade>
+			<TechCityTrade>TECH_HUNTING</TechCityTrade>
 			<TechObsolete>NONE</TechObsolete>
 			<YieldChanges>
 				<iYieldChange>1</iYieldChange>
@@ -1197,7 +1197,7 @@
 			<BonusClassType>BONUSCLASS_GRAIN</BonusClassType>
 			<ArtDefineTag>ART_DEF_BONUS_WHEAT</ArtDefineTag>
 			<TechReveal>NONE</TechReveal>
-			<TechCityTrade>TECH_AGRICULTURE</TechCityTrade>
+			<TechCityTrade>TECH_HUNTING</TechCityTrade>
 			<TechObsolete>NONE</TechObsolete>
 			<YieldChanges>
 				<iYieldChange>1</iYieldChange>
@@ -1248,7 +1248,7 @@
 			<BonusClassType>BONUSCLASS_GENERAL</BonusClassType>
 			<ArtDefineTag>ART_DEF_BONUS_DYE</ArtDefineTag>
 			<TechReveal>NONE</TechReveal>
-			<TechCityTrade>TECH_CALENDAR</TechCityTrade>
+			<TechCityTrade>TECH_HUNTING</TechCityTrade>
 			<TechObsolete>NONE</TechObsolete>
 			<YieldChanges>
 				<iYieldChange>0</iYieldChange>
@@ -1305,7 +1305,7 @@
 			<TechReveal>NONE</TechReveal>
 			<TechCityTrade>TECH_HUNTING</TechCityTrade>
 			<!-- custom: was the now removed TECH_PLASTICS -->
-			<TechObsolete>TECH_ENVIRONMENTALISM</TechObsolete>
+			<TechObsolete>TECH_HUNTING</TechObsolete>
 			<YieldChanges>
 				<iYieldChange>0</iYieldChange>
 				<iYieldChange>0</iYieldChange>
@@ -1376,7 +1376,7 @@
 			<BonusClassType>BONUSCLASS_PRECIOUS</BonusClassType>
 			<ArtDefineTag>ART_DEF_BONUS_GEMSTONES</ArtDefineTag>
 			<TechReveal>NONE</TechReveal>
-			<TechCityTrade>TECH_MINING</TechCityTrade>
+			<TechCityTrade>TECH_HUNTING</TechCityTrade>
 			<TechObsolete>NONE</TechObsolete>
 			<YieldChanges>
 				<iYieldChange>0</iYieldChange>
@@ -1455,7 +1455,7 @@
 			<BonusClassType>BONUSCLASS_PRECIOUS</BonusClassType>
 			<ArtDefineTag>ART_DEF_BONUS_GOLD</ArtDefineTag>
 			<TechReveal>NONE</TechReveal>
-			<TechCityTrade>TECH_MINING</TechCityTrade>
+			<TechCityTrade>TECH_HUNTING</TechCityTrade>
 			<TechObsolete>NONE</TechObsolete>
 			<YieldChanges>
 				<iYieldChange>0</iYieldChange>
@@ -1520,7 +1520,7 @@
 			<BonusClassType>BONUSCLASS_GENERAL</BonusClassType>
 			<ArtDefineTag>ART_DEF_BONUS_INCENSE</ArtDefineTag>
 			<TechReveal>NONE</TechReveal>
-			<TechCityTrade>TECH_CALENDAR</TechCityTrade>
+			<TechCityTrade>TECH_HUNTING</TechCityTrade>
 			<TechObsolete>NONE</TechObsolete>
 			<!-- custom: incense increases productivity theme, helps with focus or such. -->
 			<YieldChanges>
@@ -1573,7 +1573,7 @@
 			<TechReveal>NONE</TechReveal>
 			<TechCityTrade>TECH_HUNTING</TechCityTrade>
 			<!-- custom: was TECH_INDUSTRIALISM -->
-			<TechObsolete>TECH_ENVIRONMENTALISM</TechObsolete>
+			<TechObsolete>TECH_HUNTING</TechObsolete>
 			<!-- custom: now giving food like most if not all food strategic animals, hammer is adjusted through their specific improvement (for example pasture) rather, was 0 / 1 / 0 -->
 			<YieldChanges>
 				<iYieldChange>1</iYieldChange>
@@ -1642,7 +1642,7 @@
 			<BonusClassType>BONUSCLASS_GENERAL</BonusClassType>
 			<ArtDefineTag>ART_DEF_BONUS_SILK</ArtDefineTag>
 			<TechReveal>NONE</TechReveal>
-			<TechCityTrade>TECH_CALENDAR</TechCityTrade>
+			<TechCityTrade>TECH_HUNTING</TechCityTrade>
 			<TechObsolete>NONE</TechObsolete>
 			<YieldChanges>
 				<iYieldChange>0</iYieldChange>
@@ -1703,7 +1703,7 @@
 			<BonusClassType>BONUSCLASS_PRECIOUS</BonusClassType>
 			<ArtDefineTag>ART_DEF_BONUS_SILVER</ArtDefineTag>
 			<TechReveal>NONE</TechReveal>
-			<TechCityTrade>TECH_MINING</TechCityTrade>
+			<TechCityTrade>TECH_HUNTING</TechCityTrade>
 			<TechObsolete>NONE</TechObsolete>
 			<YieldChanges>
 				<iYieldChange>0</iYieldChange>
@@ -1771,7 +1771,7 @@
 			<BonusClassType>BONUSCLASS_GENERAL</BonusClassType>
 			<ArtDefineTag>ART_DEF_BONUS_SPICES</ArtDefineTag>
 			<TechReveal>NONE</TechReveal>
-			<TechCityTrade>TECH_CALENDAR</TechCityTrade>
+			<TechCityTrade>TECH_HUNTING</TechCityTrade>
 			<TechObsolete>NONE</TechObsolete>
 			<!-- custom: bonus increases productivity theme -->
 			<YieldChanges>
@@ -1837,7 +1837,7 @@
 			<BonusClassType>BONUSCLASS_GENERAL</BonusClassType>
 			<ArtDefineTag>ART_DEF_BONUS_SUGAR</ArtDefineTag>
 			<TechReveal>NONE</TechReveal>
-			<TechCityTrade>TECH_CALENDAR</TechCityTrade>
+			<TechCityTrade>TECH_HUNTING</TechCityTrade>
 			<TechObsolete>NONE</TechObsolete>
 			<!-- custom: bonus increases productivity theme -->
 			<YieldChanges>
@@ -1898,7 +1898,7 @@
 			<BonusClassType>BONUSCLASS_GENERAL</BonusClassType>
 			<ArtDefineTag>ART_DEF_BONUS_GRAPES</ArtDefineTag>
 			<TechReveal>NONE</TechReveal>
-			<TechCityTrade>TECH_AGRICULTURE</TechCityTrade>
+			<TechCityTrade>TECH_HUNTING</TechCityTrade>
 			<TechObsolete>NONE</TechObsolete>
 			<!-- custom: now that this is based on grapes not on wine anymore, it makes more sense to give food instead of gold, buffing wine (now grapes) at same that was/were bit weak so wishable hopefully at least is what i want for grapes -->
 			<YieldChanges>
@@ -1953,9 +1953,9 @@
 			<BonusClassType>BONUSCLASS_GENERAL</BonusClassType>
 			<ArtDefineTag>ART_DEF_BONUS_WHALE</ArtDefineTag>
 			<TechReveal>NONE</TechReveal>
-			<TechCityTrade>TECH_SEAFARING</TechCityTrade>
+			<TechCityTrade>TECH_HUNTING</TechCityTrade>
 			<!-- custom: was TECH_COMBUSTION -->
-			<TechObsolete>TECH_ENVIRONMENTALISM</TechObsolete>
+			<TechObsolete>TECH_HUNTING</TechObsolete>
 			<!-- custom: not so easy to capture without proper installations, but attracts folks as in people perhaps and folks as in stories perhaps. -->
 			<YieldChanges>
 				<iYieldChange>0</iYieldChange>
@@ -2012,9 +2012,9 @@
 			<BonusClassType>BONUSCLASS_DISABLED</BonusClassType>
 			<ArtDefineTag>ART_DEF_BONUS_DRAMA</ArtDefineTag>
 			<!-- custom: was NONE NONE NONE -->
-			<TechReveal>TECH_DEPOPULATION</TechReveal>
-			<TechCityTrade>TECH_DEPOPULATION</TechCityTrade>
-			<TechObsolete>TECH_DEPOPULATION</TechObsolete>
+			<TechReveal>TECH_HUNTING</TechReveal>
+			<TechCityTrade>TECH_HUNTING</TechCityTrade>
+			<TechObsolete>TECH_HUNTING</TechObsolete>
 			<YieldChanges/>
 			<iAITradeModifier>0</iAITradeModifier>
 			<iAIObjective>0</iAIObjective>
@@ -2055,9 +2055,9 @@
 			<BonusClassType>BONUSCLASS_DISABLED</BonusClassType>
 			<ArtDefineTag>ART_DEF_BONUS_MUSIC</ArtDefineTag>
 			<!-- custom: was NONE NONE NONE -->
-			<TechReveal>TECH_DEPOPULATION</TechReveal>
-			<TechCityTrade>TECH_DEPOPULATION</TechCityTrade>
-			<TechObsolete>TECH_DEPOPULATION</TechObsolete>
+			<TechReveal>TECH_HUNTING</TechReveal>
+			<TechCityTrade>TECH_HUNTING</TechCityTrade>
+			<TechObsolete>TECH_HUNTING</TechObsolete>
 			<YieldChanges/>
 			<iAITradeModifier>0</iAITradeModifier>
 			<iAIObjective>0</iAIObjective>
@@ -2097,8 +2097,8 @@
 			<Civilopedia>TXT_KEY_BONUS_CAMEL_PEDIA</Civilopedia>
 			<BonusClassType>BONUSCLASS_GENERAL</BonusClassType>
 			<ArtDefineTag>ART_DEF_BONUS_CAMEL</ArtDefineTag>
-			<TechReveal>TECH_ANIMAL_HUSBANDRY</TechReveal>
-			<TechCityTrade>TECH_ANIMAL_HUSBANDRY</TechCityTrade>
+			<TechReveal>TECH_HUNTING</TechReveal>
+			<TechCityTrade>TECH_HUNTING</TechCityTrade>
 			<TechObsolete>NONE</TechObsolete>
 			<!-- custom: now giving food like most if not all food strategic animals, hammer is adjusted through their specific improvement (for example pasture) rather; giving more food than horse ressource to make it a super nutritious food ressource, should be accurate even though i dindt check... storing water + flesh meat in desert, i could be mistaken too if i may say or maybe not or not too much -->
 			<YieldChanges>
@@ -2152,3 +2152,4 @@
 		</BonusInfo>
 	</BonusInfos>
 </Civ4BonusInfos>
+

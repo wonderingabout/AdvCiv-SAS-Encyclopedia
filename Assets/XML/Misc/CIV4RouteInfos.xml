@@ -22,7 +22,7 @@
 			<Yields/>
 			<TechMovementChanges>
 				<TechMovementChange>
-					<PrereqTech>TECH_ENGINEERING</PrereqTech>
+					<PrereqTech>TECH_HUNTING</PrereqTech>
 					<iMovementChange>-10</iMovementChange>
 				</TechMovementChange>
 			</TechMovementChanges>
@@ -55,3 +55,4 @@
 		</RouteInfo>
 	</RouteInfos>
 </Civ4RouteInfos>
+

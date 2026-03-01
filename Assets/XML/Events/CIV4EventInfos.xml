@@ -2761,7 +2761,7 @@
 			<iFreeUnitSupport>0</iFreeUnitSupport>
 			<iInflationMod>0</iInflationMod>
 			<iSpaceProductionMod>0</iSpaceProductionMod>
-			<Tech>TECH_FLIGHT</Tech>
+			<Tech>TECH_HUNTING</Tech>
 			<TechFlavors/>
 			<iTechPercent>15</iTechPercent>
 			<iTechCostPercent>0</iTechCostPercent>
@@ -2847,7 +2847,7 @@
 			<iFreeUnitSupport>0</iFreeUnitSupport>
 			<iInflationMod>0</iInflationMod>
 			<iSpaceProductionMod>0</iSpaceProductionMod>
-			<Tech>TECH_FLIGHT</Tech>
+			<Tech>TECH_HUNTING</Tech>
 			<TechFlavors/>
 			<iTechPercent>20</iTechPercent>
 			<iTechCostPercent>0</iTechCostPercent>
@@ -5413,7 +5413,7 @@
 			<iTechPercent>0</iTechPercent>
 			<iTechCostPercent>0</iTechCostPercent>
 			<iTechMinTurnsLeft>0</iTechMinTurnsLeft>
-			<PrereqTech>TECH_RADIO</PrereqTech>
+			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<UnitClass>NONE</UnitClass>
 			<iNumFreeUnits>0</iNumFreeUnits>
 			<bDisbandUnit>0</bDisbandUnit>
@@ -28498,3 +28498,4 @@
 		</EventInfo>
 	</EventInfos>
 </Civ4EventInfos>
+

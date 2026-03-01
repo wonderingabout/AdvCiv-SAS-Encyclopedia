@@ -816,7 +816,7 @@
 			<PromotionPrereqOr1>PROMOTION_COMBAT1</PromotionPrereqOr1>
 			<PromotionPrereqOr2>PROMOTION_FIRST_STRIKE1</PromotionPrereqOr2>
 			<!-- custom: was TECH_GUNPOWDER -->
-			<TechPrereq>TECH_FIREARMS</TechPrereq>
+			<TechPrereq>TECH_HUNTING</TechPrereq>
 			<StateReligionPrereq>NONE</StateReligionPrereq>
 			<bLeader>0</bLeader>
 			<iBlitz>0</iBlitz>
@@ -1099,7 +1099,7 @@
 			<!-- advc.200: PROMOTION_FIRST_STRIKE1 in K-Mod; reverted -->
 			<PromotionPrereqOr2>NONE</PromotionPrereqOr2>
 			<!-- custom: was NONE -->
-			<TechPrereq>TECH_ENGINEERING</TechPrereq>
+			<TechPrereq>TECH_HUNTING</TechPrereq>
 			<StateReligionPrereq>NONE</StateReligionPrereq>
 			<bLeader>0</bLeader>
 			<iBlitz>0</iBlitz>
@@ -1184,7 +1184,7 @@
 			<PromotionPrereqOr1>PROMOTION_COMBAT2</PromotionPrereqOr1>
 			<PromotionPrereqOr2>PROMOTION_FIRST_STRIKE2</PromotionPrereqOr2>
 			<!-- custom: was NONE -->
-			<TechPrereq>TECH_ARTILLERY</TechPrereq>
+			<TechPrereq>TECH_HUNTING</TechPrereq>
 			<StateReligionPrereq>NONE</StateReligionPrereq>
 			<bLeader>0</bLeader>
 			<iBlitz>0</iBlitz>
@@ -1276,7 +1276,7 @@
 			<!-- advc.200: PROMOTION_FIRST_STRIKE2 in K-Mod; reverted -->
 			<PromotionPrereqOr2>NONE</PromotionPrereqOr2>
 			<!-- custom: was NONE -->
-			<TechPrereq>TECH_SAILING</TechPrereq>
+			<TechPrereq>TECH_HUNTING</TechPrereq>
 			<StateReligionPrereq>NONE</StateReligionPrereq>
 			<bLeader>0</bLeader>
 			<iBlitz>0</iBlitz>
@@ -1362,7 +1362,7 @@
 			<PromotionPrereqOr1>PROMOTION_CITY_RAIDER1</PromotionPrereqOr1>
 			<PromotionPrereqOr2>PROMOTION_COMBAT1</PromotionPrereqOr2>
 			<!-- custom: reduce tech prerequirement, seems to have been used in classical era if not sooner from quick search about it, was TECH_MILITARY_SCIENCE -->
-			<TechPrereq>TECH_PROFESSIONAL_ARMY</TechPrereq>
+			<TechPrereq>TECH_HUNTING</TechPrereq>
 			<StateReligionPrereq>NONE</StateReligionPrereq>
 			<bLeader>0</bLeader>
 			<!-- advc.164: No change to the value. 1 means 1 extra attack now;
@@ -1448,7 +1448,7 @@
 			<PromotionPrereq>NONE</PromotionPrereq>
 			<PromotionPrereqOr1>NONE</PromotionPrereqOr1>
 			<PromotionPrereqOr2>NONE</PromotionPrereqOr2>
-			<TechPrereq>TECH_POTTERY</TechPrereq>
+			<TechPrereq>TECH_HUNTING</TechPrereq>
 			<StateReligionPrereq>NONE</StateReligionPrereq>
 			<bLeader>0</bLeader>
 			<iBlitz>0</iBlitz>
@@ -1547,7 +1547,7 @@
 			<PromotionPrereq>PROMOTION_MEDIC1</PromotionPrereq>
 			<PromotionPrereqOr1>NONE</PromotionPrereqOr1>
 			<PromotionPrereqOr2>NONE</PromotionPrereqOr2>
-			<TechPrereq>TECH_WRITING</TechPrereq>
+			<TechPrereq>TECH_HUNTING</TechPrereq>
 			<StateReligionPrereq>NONE</StateReligionPrereq>
 			<bLeader>0</bLeader>
 			<iBlitz>0</iBlitz>
@@ -1646,7 +1646,7 @@
 			<PromotionPrereq>PROMOTION_MEDIC2</PromotionPrereq>
 			<PromotionPrereqOr1>PROMOTION_MEDIC_AMBULATORY</PromotionPrereqOr1>
 			<PromotionPrereqOr2>NONE</PromotionPrereqOr2>
-			<TechPrereq>TECH_MEDICINE</TechPrereq>
+			<TechPrereq>TECH_HUNTING</TechPrereq>
 			<StateReligionPrereq>NONE</StateReligionPrereq>
 			<bLeader>0</bLeader>
 			<iBlitz>0</iBlitz>
@@ -1745,7 +1745,7 @@
 			<PromotionPrereq>PROMOTION_MEDIC3</PromotionPrereq>
 			<PromotionPrereqOr1>NONE</PromotionPrereqOr1>
 			<PromotionPrereqOr2>NONE</PromotionPrereqOr2>
-			<TechPrereq>TECH_GENETICS</TechPrereq>
+			<TechPrereq>TECH_HUNTING</TechPrereq>
 			<StateReligionPrereq>NONE</StateReligionPrereq>
 			<bLeader>0</bLeader>
 			<iBlitz>0</iBlitz>
@@ -1846,7 +1846,7 @@
 			<PromotionPrereqOr1>PROMOTION_MEDIC1</PromotionPrereqOr1>
 			<PromotionPrereqOr2>PROMOTION_LOGISTICS</PromotionPrereqOr2>
 			<PromotionPrereqOr3>PROMOTION_FIRST_STRIKE2</PromotionPrereqOr3>
-			<TechPrereq>TECH_MEDICINE</TechPrereq>
+			<TechPrereq>TECH_HUNTING</TechPrereq>
 			<StateReligionPrereq>NONE</StateReligionPrereq>
 			<bLeader>0</bLeader>
 			<iBlitz>0</iBlitz>
@@ -4193,7 +4193,7 @@
 			<PromotionPrereqOr1>PROMOTION_RETREAT1</PromotionPrereqOr1>
 			<PromotionPrereqOr2>NONE</PromotionPrereqOr2>
 			<!-- custom: was NONE -->
-			<TechPrereq>TECH_NAVIGATION</TechPrereq>
+			<TechPrereq>TECH_HUNTING</TechPrereq>
 			<StateReligionPrereq>NONE</StateReligionPrereq>
 			<bLeader>0</bLeader>
 			<iBlitz>0</iBlitz>
@@ -4473,7 +4473,7 @@
 			<!-- custom: extend eligible prerequired promotions, was NONE -->
 			<PromotionPrereqOr2>PROMOTION_CITY_RAIDER1</PromotionPrereqOr2>
 			<!-- custom: no reason to go so far in tech tree to require it, make it to the wheel for example, where roads are discovered, may make more sense, was TECH_MILITARY_SCIENCE -->
-			<TechPrereq>TECH_THE_WHEEL</TechPrereq>
+			<TechPrereq>TECH_HUNTING</TechPrereq>
 			<StateReligionPrereq>NONE</StateReligionPrereq>
 			<bLeader>0</bLeader>
 			<iBlitz>0</iBlitz>
@@ -4807,7 +4807,7 @@
 			<PromotionPrereq>PROMOTION_AIR_RANGE1</PromotionPrereq>
 			<PromotionPrereqOr1>PROMOTION_COMBAT2</PromotionPrereqOr1>
 			<PromotionPrereqOr2>NONE</PromotionPrereqOr2>
-			<TechPrereq>TECH_ADVANCED_FLIGHT</TechPrereq>
+			<TechPrereq>TECH_HUNTING</TechPrereq>
 			<StateReligionPrereq>NONE</StateReligionPrereq>
 			<bLeader>0</bLeader>
 			<iBlitz>0</iBlitz>
@@ -5021,7 +5021,7 @@
 			<PromotionPrereq>PROMOTION_AIR_INTERCEPTION2</PromotionPrereq>
 			<PromotionPrereqOr1>PROMOTION_COMBAT2</PromotionPrereqOr1>
 			<PromotionPrereqOr2>NONE</PromotionPrereqOr2>
-			<TechPrereq>TECH_ADVANCED_FLIGHT</TechPrereq>
+			<TechPrereq>TECH_HUNTING</TechPrereq>
 			<StateReligionPrereq>NONE</StateReligionPrereq>
 			<bLeader>0</bLeader>
 			<iBlitz>0</iBlitz>
@@ -5090,7 +5090,7 @@
 			<PromotionPrereq>PROMOTION_AIR_INTERCEPTION3</PromotionPrereq>
 			<PromotionPrereqOr1>PROMOTION_COMBAT3</PromotionPrereqOr1>
 			<PromotionPrereqOr2>NONE</PromotionPrereqOr2>
-			<TechPrereq>TECH_SATELLITES</TechPrereq>
+			<TechPrereq>TECH_HUNTING</TechPrereq>
 			<StateReligionPrereq>NONE</StateReligionPrereq>
 			<bLeader>0</bLeader>
 			<iBlitz>0</iBlitz>
@@ -5158,7 +5158,7 @@
 			<PromotionPrereq>PROMOTION_COMBAT2</PromotionPrereq>
 			<PromotionPrereqOr1>NONE</PromotionPrereqOr1>
 			<PromotionPrereqOr2>NONE</PromotionPrereqOr2>
-			<TechPrereq>TECH_FLIGHT</TechPrereq>
+			<TechPrereq>TECH_HUNTING</TechPrereq>
 			<StateReligionPrereq>NONE</StateReligionPrereq>
 			<bLeader>0</bLeader>
 			<iBlitz>0</iBlitz>
@@ -5224,3 +5224,4 @@
 		<!-- custom: GPT-5.2-Codex: Long_Comments_XML.txt #81 -->
 	</PromotionInfos>
 </Civ4PromotionInfos>
+

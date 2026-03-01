@@ -278,7 +278,7 @@
 			<ImprovementUpgrade/>
 			<TechYieldChanges>
 				<TechYieldChange>
-					<PrereqTech>TECH_BIOLOGY</PrereqTech>
+					<PrereqTech>TECH_HUNTING</PrereqTech>
 					<TechYields>
 						<iYield>1</iYield>
 						<iYield>0</iYield>
@@ -618,7 +618,7 @@
 			<!-- custom: nerf the workshop a bit as it was a bit too op, was as of now first PrereqTech TECH_GUILDS (now removed) and TECH_CHEMISTRY; also add more hammer at fusion or similar tech, idea i got from rfc doc mod -->
 			<TechYieldChanges>
 				<TechYieldChange>
-					<PrereqTech>TECH_MACHINERY</PrereqTech>
+					<PrereqTech>TECH_HUNTING</PrereqTech>
 					<TechYields>
 						<iYield>0</iYield>
 						<iYield>1</iYield>
@@ -626,7 +626,7 @@
 					</TechYields>
 				</TechYieldChange>
 				<TechYieldChange>
-					<PrereqTech>TECH_ASSEMBLY_LINE</PrereqTech>
+					<PrereqTech>TECH_HUNTING</PrereqTech>
 					<TechYields>
 						<iYield>0</iYield>
 						<iYield>1</iYield>
@@ -634,7 +634,7 @@
 					</TechYields>
 				</TechYieldChange>
 				<TechYieldChange>
-					<PrereqTech>TECH_FUSION</PrereqTech>
+					<PrereqTech>TECH_HUNTING</PrereqTech>
 					<TechYields>
 						<iYield>0</iYield>
 						<iYield>1</iYield>
@@ -697,7 +697,7 @@
 			<!-- custom: seems more historically accurate and meshes quite well with our reworked tech tree to buff it at tech_steam_power instead, see also BUILD_LUMBERMILL code comment as well for additional info if any are there, was TECH_GAME_THEORY -->
 			<TechYieldChanges>
 				<TechYieldChange>
-					<PrereqTech>TECH_STEAM_POWER</PrereqTech>
+					<PrereqTech>TECH_HUNTING</PrereqTech>
 					<TechYields>
 						<iYield>0</iYield>
 						<iYield>1</iYield>
@@ -758,7 +758,7 @@
 			<!-- custom: seems more historically accurate or making sense for our reworked tech tree, was TECH_GAME_THEORY -->
 			<TechYieldChanges>
 				<TechYieldChange>
-					<PrereqTech>TECH_PHYSICS</PrereqTech>
+					<PrereqTech>TECH_HUNTING</PrereqTech>
 					<TechYields>
 						<iYield>0</iYield>
 						<iYield>1</iYield>
@@ -766,7 +766,7 @@
 					</TechYields>
 				</TechYieldChange>
 				<TechYieldChange>
-					<PrereqTech>TECH_ELECTRICITY</PrereqTech>
+					<PrereqTech>TECH_HUNTING</PrereqTech>
 					<TechYields>
 						<iYield>0</iYield>
 						<iYield>0</iYield>
@@ -819,7 +819,7 @@
 			<!-- custom: TechYieldChange prereq tech, sems more accurate and buffes them too, while making middle game sooner and more relevant, was TECH_GAME_THEORY -->
 			<TechYieldChanges>
 				<TechYieldChange>
-					<PrereqTech>TECH_MACHINERY</PrereqTech>
+					<PrereqTech>TECH_HUNTING</PrereqTech>
 					<TechYields>
 						<iYield>0</iYield>
 						<iYield>1</iYield>
@@ -827,7 +827,7 @@
 					</TechYields>
 				</TechYieldChange>
 				<TechYieldChange>
-					<PrereqTech>TECH_ELECTRICITY</PrereqTech>
+					<PrereqTech>TECH_HUNTING</PrereqTech>
 					<TechYields>
 						<iYield>0</iYield>
 						<iYield>0</iYield>
@@ -956,7 +956,7 @@
 			<!-- custom: Long_Comments_XML.txt #296 -->
 			<TechYieldChanges>
 				<TechYieldChange>
-					<PrereqTech>TECH_BIOENGINEERING</PrereqTech>
+					<PrereqTech>TECH_HUNTING</PrereqTech>
 					<TechYields>
 						<iYield>1</iYield>
 						<iYield>0</iYield>
@@ -1131,7 +1131,7 @@
 			<!-- custom: see code comment at plantation 's techyieldchanges -->
 			<TechYieldChanges>
 				<TechYieldChange>
-					<PrereqTech>TECH_BIOENGINEERING</PrereqTech>
+					<PrereqTech>TECH_HUNTING</PrereqTech>
 					<TechYields>
 						<iYield>1</iYield>
 						<iYield>0</iYield>
@@ -1491,7 +1491,7 @@
 			<ImprovementUpgrade>IMPROVEMENT_TOWN</ImprovementUpgrade>
 			<TechYieldChanges>
 				<TechYieldChange>
-					<PrereqTech>TECH_PRINTING_PRESS</PrereqTech>
+					<PrereqTech>TECH_HUNTING</PrereqTech>
 					<TechYields>
 						<iYield>0</iYield>
 						<iYield>0</iYield>
@@ -1561,7 +1561,7 @@
 			<!-- custom: see code comment at plantation 's techyieldchanges -->
 			<TechYieldChanges>
 				<TechYieldChange>
-					<PrereqTech>TECH_PRINTING_PRESS</PrereqTech>
+					<PrereqTech>TECH_HUNTING</PrereqTech>
 					<TechYields>
 						<iYield>0</iYield>
 						<iYield>0</iYield>
@@ -1569,7 +1569,7 @@
 					</TechYields>
 				</TechYieldChange>
 				<TechYieldChange>
-					<PrereqTech>TECH_TERRAFORMING</PrereqTech>
+					<PrereqTech>TECH_HUNTING</PrereqTech>
 					<TechYields>
 						<iYield>0</iYield>
 						<iYield>0</iYield>
@@ -1696,7 +1696,7 @@
 			<!-- custom: see code comment at plantation 's techyieldchanges -->
 			<TechYieldChanges>
 				<TechYieldChange>
-					<PrereqTech>TECH_ENVIRONMENTALISM</PrereqTech>
+					<PrereqTech>TECH_HUNTING</PrereqTech>
 					<TechYields>
 						<iYield>0</iYield>
 						<iYield>0</iYield>
@@ -1709,3 +1709,4 @@
 		</ImprovementInfo>
 	</ImprovementInfos>
 </Civ4ImprovementInfos>
+

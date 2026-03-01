@@ -13,7 +13,7 @@
 			<Adjective>TXT_KEY_RELIGION_PAGANISM_ADJECTIVE</Adjective>
 			<Civilopedia>TXT_KEY_RELIGION_PAGANISM_PEDIA</Civilopedia>
 			<!-- custom: Long_Comments_XML.txt #318 -->
-			<TechPrereq>TECH_POLYTHEISM</TechPrereq>
+			<TechPrereq>TECH_HUNTING</TechPrereq>
 			<FreeUnitClass>UNITCLASS_PAGAN_MISSIONARY</FreeUnitClass>
 			<iFreeUnits>1</iFreeUnits>
 			<iSpreadFactor>100</iSpreadFactor>
@@ -46,7 +46,7 @@
 			<Adjective>TXT_KEY_RELIGION_HINDUISM_ADJECTIVE</Adjective>
 			<Civilopedia>TXT_KEY_RELIGION_HINDUISM_PEDIA</Civilopedia>
 			<!-- custom: Long_Comments_XML.txt #316, was TECH_POLYTHEISM -->
-			<TechPrereq>TECH_MONARCHY</TechPrereq>
+			<TechPrereq>TECH_HUNTING</TechPrereq>
 			<FreeUnitClass>UNITCLASS_HINDU_MISSIONARY</FreeUnitClass>
 			<iFreeUnits>0</iFreeUnits>
 			<iSpreadFactor>100</iSpreadFactor>
@@ -77,7 +77,7 @@
 			<Description>TXT_KEY_RELIGION_JUDAISM</Description>
 			<Adjective>TXT_KEY_RELIGION_JUDAISM_ADJECTIVE</Adjective>
 			<Civilopedia>TXT_KEY_RELIGION_JUDAISM_PEDIA</Civilopedia>
-			<TechPrereq>TECH_MONOTHEISM</TechPrereq>
+			<TechPrereq>TECH_HUNTING</TechPrereq>
 			<FreeUnitClass>UNITCLASS_JEWISH_MISSIONARY</FreeUnitClass>
 			<iFreeUnits>0</iFreeUnits>
 			<iSpreadFactor>100</iSpreadFactor>
@@ -109,7 +109,7 @@
 			<Adjective>TXT_KEY_RELIGION_DAOISM_ADJECTIVE</Adjective>
 			<Civilopedia>TXT_KEY_RELIGION_DAOISM_PEDIA</Civilopedia>
 			<!-- custom: was TECH_PHILOSOPHY -->
-			<TechPrereq>TECH_PAPER</TechPrereq>
+			<TechPrereq>TECH_HUNTING</TechPrereq>
 			<FreeUnitClass>UNITCLASS_DAOIST_MISSIONARY</FreeUnitClass>
 			<iFreeUnits>1</iFreeUnits>
 			<iSpreadFactor>100</iSpreadFactor>
@@ -140,7 +140,7 @@
 			<Description>TXT_KEY_RELIGION_BUDDHISM</Description>
 			<Adjective>TXT_KEY_RELIGION_BUDDHISM_ADJECTIVE</Adjective>
 			<Civilopedia>TXT_KEY_RELIGION_BUDDHISM_PEDIA</Civilopedia>
-			<TechPrereq>TECH_MEDITATION</TechPrereq>
+			<TechPrereq>TECH_HUNTING</TechPrereq>
 			<FreeUnitClass>UNITCLASS_BUDDHIST_MISSIONARY</FreeUnitClass>
 			<iFreeUnits>0</iFreeUnits>
 			<iSpreadFactor>100</iSpreadFactor>
@@ -171,7 +171,7 @@
 			<Description>TXT_KEY_RELIGION_CHRISTIANITY</Description>
 			<Adjective>TXT_KEY_RELIGION_CHRISTIANITY_ADJECTIVE</Adjective>
 			<Civilopedia>TXT_KEY_RELIGION_CHRISTIANITY_PEDIA</Civilopedia>
-			<TechPrereq>TECH_POSTAXIAL_RELIGION</TechPrereq>
+			<TechPrereq>TECH_HUNTING</TechPrereq>
 			<FreeUnitClass>UNITCLASS_CHRISTIAN_MISSIONARY</FreeUnitClass>
 			<iFreeUnits>1</iFreeUnits>
 			<iSpreadFactor>100</iSpreadFactor>
@@ -202,7 +202,7 @@
 			<Description>TXT_KEY_RELIGION_ISLAM</Description>
 			<Adjective>TXT_KEY_RELIGION_ISLAM_ADJECTIVE</Adjective>
 			<Civilopedia>TXT_KEY_RELIGION_ISLAM_PEDIA</Civilopedia>
-			<TechPrereq>TECH_LATER_ABRAHAMISM</TechPrereq>
+			<TechPrereq>TECH_HUNTING</TechPrereq>
 			<FreeUnitClass>UNITCLASS_ISLAMIC_MISSIONARY</FreeUnitClass>
 			<iFreeUnits>1</iFreeUnits>
 			<iSpreadFactor>100</iSpreadFactor>
@@ -230,3 +230,4 @@
 		</ReligionInfo>
 	</ReligionInfos>
 </Civ4ReligionInfo>
+
