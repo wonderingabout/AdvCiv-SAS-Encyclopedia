@@ -3,7 +3,7 @@
 This mod is a modified version of [AdvCiv-SAS (Simple Advanced Strategy)](https://github.com/wonderingabout/AdvCiv-SAS) ([Discussion thread here](https://forums.civfanatics.com/threads/advciv-sas-simple-advanced-strategy.699716/)), aiming to:
 
 - use it as a NIF gallery mod (non-playable)
-- aggressively strip almost all assets (so it is lighter and we don't need them)
+- aggressively strip almost all assets (so it is lighter and we don't need them), notably using `minOccurs="0"` for almost all leaderHead XML info resulting in very compact XML per leaderhead (suits minimal NIF Gallery need)
 
 For documentation, see AdvCiv-SAS' github page rather.
 

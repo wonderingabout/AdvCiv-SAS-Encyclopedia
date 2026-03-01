@@ -202,18 +202,18 @@
 	<ElementType name="LeaderHeadInfo" content="eltOnly">
 		<element type="Type"/>
 		<element type="Description"/>
-		<element type="Civilopedia"/>
+		<element type="Civilopedia" minOccurs="0"/>
 		<element type="ArtDefineTag"/>
-		<element type="iWonderConstructRand"/>
-		<element type="iBaseAttitude"/>
-		<element type="iBasePeaceWeight"/>
+		<element type="iWonderConstructRand" minOccurs="0"/>
+		<element type="iBaseAttitude" minOccurs="0"/>
+		<element type="iBasePeaceWeight" minOccurs="0"/>
 		<element type="iPeaceWeightRand" minOccurs="0"/>
-		<element type="iWarmongerRespect"/>
-		<element type="iEspionageWeight"/>
-		<element type="iRefuseToTalkWarThreshold"/>
-		<element type="iNoTechTradeThreshold"/>
-		<element type="iTechTradeKnownPercent"/>
-		<element type="iMaxGoldTradePercent"/>
+		<element type="iWarmongerRespect" minOccurs="0"/>
+		<element type="iEspionageWeight" minOccurs="0"/>
+		<element type="iRefuseToTalkWarThreshold" minOccurs="0"/>
+		<element type="iNoTechTradeThreshold" minOccurs="0"/>
+		<element type="iTechTradeKnownPercent" minOccurs="0"/>
+		<element type="iMaxGoldTradePercent" minOccurs="0"/>
 		<element type="iMaxGoldPerTurnTradePercent" minOccurs="0"/>
 		<!-- BBAI Victory Strategy: start
 			 advc: Optional, the DLL assigns 30 by default. -->
@@ -223,24 +223,24 @@
 		<element type="iDominationVictoryWeight" minOccurs="0"/>
 		<element type="iDiplomacyVictoryWeight" minOccurs="0"/>
 		<!-- BBAI Victory Strategy: end -->
-		<element type="iMaxWarRand"/>
-		<element type="iMaxWarNearbyPowerRatio"/>
-		<element type="iMaxWarDistantPowerRatio"/>
-		<element type="iMaxWarMinAdjacentLandPercent"/>
-		<element type="iLimitedWarRand"/>
-		<element type="iLimitedWarPowerRatio"/>
-		<element type="iDogpileWarRand"/>
-		<element type="iMakePeaceRand"/>
+		<element type="iMaxWarRand" minOccurs="0"/>
+		<element type="iMaxWarNearbyPowerRatio" minOccurs="0"/>
+		<element type="iMaxWarDistantPowerRatio" minOccurs="0"/>
+		<element type="iMaxWarMinAdjacentLandPercent" minOccurs="0"/>
+		<element type="iLimitedWarRand" minOccurs="0"/>
+		<element type="iLimitedWarPowerRatio" minOccurs="0"/>
+		<element type="iDogpileWarRand" minOccurs="0"/>
+		<element type="iMakePeaceRand" minOccurs="0"/>
 		<element type="iDeclareWarTradeRand" minOccurs="0"/>
-		<element type="iDemandRebukedSneakProb"/>
-		<element type="iDemandRebukedWarProb"/>
-		<element type="iRazeCityProb"/>
-		<element type="iBuildUnitProb"/>
-		<element type="iBaseAttackOddsChange"/>
+		<element type="iDemandRebukedSneakProb" minOccurs="0"/>
+		<element type="iDemandRebukedWarProb" minOccurs="0"/>
+		<element type="iRazeCityProb" minOccurs="0"/>
+		<element type="iBuildUnitProb" minOccurs="0"/>
+		<element type="iBaseAttackOddsChange" minOccurs="0"/>
 		<element type="iAttackOddsChangeRand" minOccurs="0"/>
-		<element type="iWorseRankDifferenceAttitudeChange"/>
-		<element type="iBetterRankDifferenceAttitudeChange"/>
-		<element type="iCloseBordersAttitudeChange"/>
+		<element type="iWorseRankDifferenceAttitudeChange" minOccurs="0"/>
+		<element type="iBetterRankDifferenceAttitudeChange" minOccurs="0"/>
+		<element type="iCloseBordersAttitudeChange" minOccurs="0"/>
 		<element type="iLostWarAttitudeChange" minOccurs="0"/>
 		<element type="iAtWarAttitudeDivisor" minOccurs="0"/>
 		<element type="iAtWarAttitudeChangeLimit" minOccurs="0"/>
@@ -248,7 +248,7 @@
 		<element type="iAtPeaceAttitudeChangeLimit" minOccurs="0"/>
 		<element type="iSameReligionAttitudeChange" minOccurs="0"/>
 		<element type="iSameReligionAttitudeDivisor" minOccurs="0"/>
-		<element type="iSameReligionAttitudeChangeLimit"/>
+		<element type="iSameReligionAttitudeChangeLimit" minOccurs="0"/>
 		<element type="iDifferentReligionAttitudeChange" minOccurs="0"/>
 		<element type="iDifferentReligionAttitudeDivisor" minOccurs="0"/>
 		<element type="iDifferentReligionAttitudeChangeLimit" minOccurs="0"/>
@@ -260,50 +260,50 @@
 		<element type="iDefensivePactAttitudeChangeLimit" minOccurs="0"/>
 		<element type="iShareWarAttitudeChange" minOccurs="0"/>
 		<element type="iShareWarAttitudeDivisor" minOccurs="0"/>
-		<element type="iShareWarAttitudeChangeLimit"/>
+		<element type="iShareWarAttitudeChangeLimit" minOccurs="0"/>
 		<element type="iFavoriteCivicAttitudeChange" minOccurs="0"/>
 		<element type="iFavoriteCivicAttitudeDivisor" minOccurs="0"/>
-		<element type="iFavoriteCivicAttitudeChangeLimit"/>
+		<element type="iFavoriteCivicAttitudeChangeLimit" minOccurs="0"/>
 		<element type="DemandTributeAttitudeThreshold" minOccurs="0"/>
 		<element type="NoGiveHelpAttitudeThreshold" minOccurs="0"/>
-		<element type="TechRefuseAttitudeThreshold"/>
+		<element type="TechRefuseAttitudeThreshold" minOccurs="0"/>
 		<!-- advc.ctr: start -->
 		<element type="CityRefuseAttitudeThreshold" minOccurs="0"/>
 		<element type="NativeCityRefuseAttitudeThreshold" minOccurs="0"/>
 		<!-- advc.ctr: end -->
-		<element type="StrategicBonusRefuseAttitudeThreshold"/>
-		<element type="HappinessBonusRefuseAttitudeThreshold"/>
-		<element type="HealthBonusRefuseAttitudeThreshold"/>
-		<element type="MapRefuseAttitudeThreshold"/>
-		<element type="DeclareWarRefuseAttitudeThreshold"/>
-		<element type="DeclareWarThemRefuseAttitudeThreshold"/>
-		<element type="StopTradingRefuseAttitudeThreshold"/>
-		<element type="StopTradingThemRefuseAttitudeThreshold"/>
-		<element type="AdoptCivicRefuseAttitudeThreshold"/>
-		<element type="ConvertReligionRefuseAttitudeThreshold"/>
-		<element type="OpenBordersRefuseAttitudeThreshold"/>
+		<element type="StrategicBonusRefuseAttitudeThreshold" minOccurs="0"/>
+		<element type="HappinessBonusRefuseAttitudeThreshold" minOccurs="0"/>
+		<element type="HealthBonusRefuseAttitudeThreshold" minOccurs="0"/>
+		<element type="MapRefuseAttitudeThreshold" minOccurs="0"/>
+		<element type="DeclareWarRefuseAttitudeThreshold" minOccurs="0"/>
+		<element type="DeclareWarThemRefuseAttitudeThreshold" minOccurs="0"/>
+		<element type="StopTradingRefuseAttitudeThreshold" minOccurs="0"/>
+		<element type="StopTradingThemRefuseAttitudeThreshold" minOccurs="0"/>
+		<element type="AdoptCivicRefuseAttitudeThreshold" minOccurs="0"/>
+		<element type="ConvertReligionRefuseAttitudeThreshold" minOccurs="0"/>
+		<element type="OpenBordersRefuseAttitudeThreshold" minOccurs="0"/>
 		<element type="DefensivePactRefuseAttitudeThreshold" minOccurs="0"/>
 		<element type="PermanentAllianceRefuseAttitudeThreshold" minOccurs="0"/>
-		<element type="VassalRefuseAttitudeThreshold"/>
-		<element type="iVassalPowerModifier"/>
+		<element type="VassalRefuseAttitudeThreshold" minOccurs="0"/>
+		<element type="iVassalPowerModifier" minOccurs="0"/>
 		<element type="iFreedomAppreciation" minOccurs="0"/>
-		<element type="FavoriteCivic"/>
-		<element type="FavoriteReligion"/>
-		<element type="Traits"/>
-		<element type="Flavors"/>
-		<element type="ContactRands"/>
-		<element type="ContactDelays"/>
-		<element type="MemoryDecays"/>
-		<element type="MemoryAttitudePercents"/>
-		<element type="NoWarAttitudeProbs"/>
+		<element type="FavoriteCivic" minOccurs="0"/>
+		<element type="FavoriteReligion" minOccurs="0"/>
+		<element type="Traits" minOccurs="0"/>
+		<element type="Flavors" minOccurs="0"/>
+		<element type="ContactRands" minOccurs="0"/>
+		<element type="ContactDelays" minOccurs="0"/>
+		<element type="MemoryDecays" minOccurs="0"/>
+		<element type="MemoryAttitudePercents" minOccurs="0"/>
+		<element type="NoWarAttitudeProbs" minOccurs="0"/>
 		<!-- advc.104 -->
 		<element type="iLoveOfPeace" minOccurs="0"/>
-		<element type="UnitAIWeightModifiers"/>
-		<element type="ImprovementWeightModifiers"/>
-		<element type="DiplomacyIntroMusicPeace"/>
-		<element type="DiplomacyMusicPeace"/>
-		<element type="DiplomacyIntroMusicWar"/>
-		<element type="DiplomacyMusicWar"/>
+		<element type="UnitAIWeightModifiers" minOccurs="0"/>
+		<element type="ImprovementWeightModifiers" minOccurs="0"/>
+		<element type="DiplomacyIntroMusicPeace" minOccurs="0"/>
+		<element type="DiplomacyMusicPeace" minOccurs="0"/>
+		<element type="DiplomacyIntroMusicWar" minOccurs="0"/>
+		<element type="DiplomacyMusicWar" minOccurs="0"/>
 	</ElementType>
 	<ElementType name="LeaderHeadInfos" content="eltOnly">
 		<element type="LeaderHeadInfo" maxOccurs="*"/>
