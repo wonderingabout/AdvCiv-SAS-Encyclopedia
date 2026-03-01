@@ -578,36 +578,8 @@ Created as part of AdvCiv-SAS improvements
 
 
 	<TEXT>
-		<Tag>TXT_KEY_GAMESPEED_NITRO</Tag>
-		<English>Nitro (165 / 33%)</English>
-	</TEXT>
-	<TEXT>
-		<Tag>TXT_KEY_GAMESPEED_TURBO</Tag>
-		<English>Turbo (250 / 50%)</English>
-	</TEXT>
-	<TEXT>
-		<Tag>TXT_KEY_GAMESPEED_QUICK</Tag>
-		<English>Quick (330 / 67%)</English>
-	</TEXT>
-	<TEXT>
 		<Tag>TXT_KEY_GAMESPEED_NORMAL</Tag>
 		<English>Normal (500 / 100%)</English>
-	</TEXT>
-	<TEXT>
-		<Tag>TXT_KEY_GAMESPEED_EPIC</Tag>
-		<English>Epic (750 / 150%)</English>
-	</TEXT>
-	<TEXT>
-		<Tag>TXT_KEY_GAMESPEED_MARATHON</Tag>
-		<English>Marathon (1000 / 200%)</English>
-	</TEXT>
-	<TEXT>
-		<Tag>TXT_KEY_GAMESPEED_SLOW</Tag>
-		<English>Slow (1500 / 300%)</English>
-	</TEXT>
-	<TEXT>
-		<Tag>TXT_KEY_GAMESPEED_VERY_SLOW</Tag>
-		<English>Very Slow (2000 / 400%)</English>
 	</TEXT>
 
 
@@ -1687,40 +1659,8 @@ Created as part of AdvCiv-SAS improvements
 
 
 	<TEXT>
-		<Tag>TXT_KEY_GAMESPEED_NITRO_HELP</Tag>
-		<English>A faster game speed than Turbo: Research, growth, building and unit production take less time.</English>
-	</TEXT>
-	<TEXT>
-		<Tag>TXT_KEY_GAMESPEED_TURBO_HELP</Tag>
-		<English>A faster game speed than Quick: Research, growth, building and unit production take less time.</English>
-	</TEXT>
-	<!-- custom: reworded to emphasize it's fast, not slow. -->
-	<TEXT>
-		<Tag>TXT_KEY_GAMESPEED_QUICK_HELP</Tag>
-		<English>Research, growth and production are faster than on normal speed. Still, as unit movement is unaffected by game speed, warfare is not necessarily that much faster. This setting is worth considering especially for multiplayer games and small maps.</English>
-	</TEXT>
-	<!-- custom: i've only removed the turn number here (we don't want to maintain it, easier and clearer to show it in header / field name directly). -->
-	<!-- I've only added the turn number here (assuming Ancient-era start and
-		 enabled Time victory) -->
-	<TEXT>
 		<Tag>TXT_KEY_GAMESPEED_NORMAL_HELP</Tag>
 		<English>This is the traditional game speed for Civ.</English>
-	</TEXT>
-	<TEXT>
-		<Tag>TXT_KEY_GAMESPEED_EPIC_HELP</Tag>
-		<English>Research, growth and production take longer than on normal speed. As unit movement is unaffected by game speed, this setting allows more time for warfare in each era.</English>
-	</TEXT>
-	<TEXT>
-		<Tag>TXT_KEY_GAMESPEED_MARATHON_HELP</Tag>
-		<English>Less turns than in BTS and than in base AdvCiv. Research, growth, building and unit production take longer than on normal speed. This setting favors warfare and demands much patience.</English>
-	</TEXT>
-	<TEXT>
-		<Tag>TXT_KEY_GAMESPEED_SLOW_HELP</Tag>
-		<English>A slower game speed than Marathon: Research, growth, building and unit production take longer.</English>
-	</TEXT>
-	<TEXT>
-		<Tag>TXT_KEY_GAMESPEED_VERY_SLOW_HELP</Tag>
-		<English>A slower game speed than Slow: Research, growth, building and unit production take longer.</English>
 	</TEXT>
 
 
