@@ -11,10 +11,7 @@
 			<Description>TXT_KEY_CIV_AMERICA_DESC</Description>
 			<ArtDefineTag>ART_DEF_CIVILIZATION_AMERICA</ArtDefineTag>
 			<Leaders>
-				<Leader>
-					<LeaderName>LEADER_WASHINGTON</LeaderName>
-					<bLeaderAvailability>1</bLeaderAvailability>
-				</Leader>
+				<Leader><LeaderName>LEADER_WASHINGTON</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 			</Leaders>
 		</CivilizationInfo>
 		<CivilizationInfo>

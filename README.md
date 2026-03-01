@@ -27,7 +27,7 @@ For License and Reuse, see [License and reuse](/README.md#license-and-reuse).
 ```xml
 <Civ4LeaderHeadInfos xmlns="x-schema:CIV4CivilizationsSchema.xml">
 	<LeaderHeadInfos>
-		<LeaderHeadInfo> <!-- custom: Washington -->
+		<LeaderHeadInfo>
 			<Type>LEADER_WASHINGTON</Type>
 			<Description>TXT_KEY_LEADER_WASHINGTON</Description>
 			<ArtDefineTag>ART_DEF_LEADER_WASHINGTON</ArtDefineTag>
@@ -44,10 +44,7 @@ For License and Reuse, see [License and reuse](/README.md#license-and-reuse).
 			<Description>TXT_KEY_CIV_AMERICA_DESC</Description>
 			<ArtDefineTag>ART_DEF_CIVILIZATION_AMERICA</ArtDefineTag>
 			<Leaders>
-				<Leader>
-					<LeaderName>LEADER_WASHINGTON</LeaderName>
-					<bLeaderAvailability>1</bLeaderAvailability>
-				</Leader>
+				<Leader><LeaderName>LEADER_WASHINGTON</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 			</Leaders>
 		</CivilizationInfo>
 	</CivilizationInfos>

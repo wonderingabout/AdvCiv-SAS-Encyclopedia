@@ -7,7 +7,7 @@
 <!-- custom: remember or be careful to put leaders in their alphabetical order (per TXT_KEY ingame visible name (for example "Roosevelt" not "FRANKLIN_ROOSEVELT")) so they are correctly alphabetically sorted in custom game leader dropdown  -->
 <Civ4LeaderHeadInfos xmlns="x-schema:CIV4CivilizationsSchema.xml">
 	<LeaderHeadInfos>
-		<LeaderHeadInfo> <!-- custom: Barbarian (useful for VS Code upper tree view while scrolling) -->
+		<LeaderHeadInfo>
 			<Type>LEADER_BARBARIAN</Type>
 			<Description>TXT_KEY_LEADER_BARBARIAN</Description>
 			<ArtDefineTag>ART_DEF_LEADER_BARBARIAN</ArtDefineTag>
@@ -112,7 +112,7 @@
 			<DiplomacyIntroMusicWar/>
 			<DiplomacyMusicWar/>
 		</LeaderHeadInfo>
-		<LeaderHeadInfo> <!-- custom: Washington -->
+		<LeaderHeadInfo>
 			<Type>LEADER_WASHINGTON</Type>
 			<Description>TXT_KEY_LEADER_WASHINGTON</Description>
 			<ArtDefineTag>ART_DEF_LEADER_WASHINGTON</ArtDefineTag>
