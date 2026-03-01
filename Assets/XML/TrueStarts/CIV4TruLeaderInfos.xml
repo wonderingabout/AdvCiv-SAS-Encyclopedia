@@ -2,11 +2,6 @@
 <!-- advc.tsl: Per-leader data for the True Starts game option -->
 <Civ4TruLeaderInfos xmlns="x-schema:CIV4TrueStartsSchema.xml">
 	<TruLeaderInfos>
-		<TruLeaderInfo>
-			<Type>TRU_ALEXANDER</Type>
-			<LeaderType>LEADER_WASHINGTON</LeaderType>
-			<iStartOfReign>-336</iStartOfReign>
-		</TruLeaderInfo>
 	</TruLeaderInfos>
 </Civ4TruLeaderInfos>
 

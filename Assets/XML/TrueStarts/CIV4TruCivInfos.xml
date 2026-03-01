@@ -5,29 +5,6 @@
 	 but each civ has just one city list, so ... -->
 <Civ4TruCivInfos xmlns="x-schema:CIV4TrueStartsSchema.xml">
 	<TruCivInfos>
-		<TruCivInfo>
-			<Type>TRU_AMERICA</Type>
-			<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
-			<iLatitudeTimes10>389</iLatitudeTimes10>
-			<iLongitudeTimes10>-770</iLongitudeTimes10>
-			<iPrecipitation>1062</iPrecipitation>
-			<!-- The 13 Colonies weren't all that diverse,
-				 especially not wrt. precipitation. -->
-			<iClimateVariation>35</iClimateVariation>
-			<iOceanity>35</iOceanity>
-			<!-- Considering only the Northeast here -->
-			<iMaxElevation>1917</iMaxElevation>
-			<iMountainousArea>25</iMountainousArea>
-			<!-- Present day area of US, H-stretch is really closer to 200,
-				 but that seems a bit extreme for a civ that also covers
-				 a large north-south distance. But mainly I do want there
-				 to be a western (or eastern) frontier. -->
-			<iTotalArea>9827</iTotalArea>
-			<iHStretch>175</iHStretch>
-			<iBias>7</iBias>
-			<!-- Use this for both Americas; all the maize growers. -->
-			<GeoRegion>ARTSTYLE_SOUTH_AMERICA</GeoRegion>
-		</TruCivInfo>
 	</TruCivInfos>
 </Civ4TruCivInfos>
 
