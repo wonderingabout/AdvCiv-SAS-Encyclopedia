@@ -129,11 +129,11 @@
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 				<Leader>
-					<LeaderName>LEADER_FRANKLIN_ROOSEVELT</LeaderName>
+					<LeaderName>LEADER_WASHINGTON</LeaderName>
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 				<Leader>
-					<LeaderName>LEADER_LINCOLN</LeaderName>
+					<LeaderName>LEADER_WASHINGTON</LeaderName>
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 			</Leaders>
@@ -235,7 +235,7 @@
 			</InitialCivics>
 			<Leaders>
 				<Leader>
-					<LeaderName>LEADER_SALADIN</LeaderName>
+					<LeaderName>LEADER_WASHINGTON</LeaderName>
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 			</Leaders>
@@ -337,7 +337,7 @@
 			</InitialCivics>
 			<Leaders>
 				<Leader>
-					<LeaderName>LEADER_MOCTEZUMA</LeaderName>
+					<LeaderName>LEADER_WASHINGTON</LeaderName>
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 			</Leaders>
@@ -443,7 +443,7 @@
 			</InitialCivics>
 			<Leaders>
 				<Leader>
-					<LeaderName>LEADER_HAMMURABI</LeaderName>
+					<LeaderName>LEADER_WASHINGTON</LeaderName>
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 			</Leaders>
@@ -553,7 +553,7 @@
 			</InitialCivics>
 			<Leaders>
 				<Leader>
-					<LeaderName>LEADER_JUSTINIAN</LeaderName>
+					<LeaderName>LEADER_WASHINGTON</LeaderName>
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 			</Leaders>
@@ -660,7 +660,7 @@
 			</InitialCivics>
 			<Leaders>
 				<Leader>
-					<LeaderName>LEADER_HANNIBAL</LeaderName>
+					<LeaderName>LEADER_WASHINGTON</LeaderName>
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 			</Leaders>
@@ -771,11 +771,11 @@
 			</InitialCivics>
 			<Leaders>
 				<Leader>
-					<LeaderName>LEADER_BRENNUS</LeaderName>
+					<LeaderName>LEADER_WASHINGTON</LeaderName>
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 				<Leader>
-					<LeaderName>LEADER_BOUDICA</LeaderName>
+					<LeaderName>LEADER_WASHINGTON</LeaderName>
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 			</Leaders>
@@ -885,11 +885,11 @@
 			</InitialCivics>
 			<Leaders>
 				<Leader>
-					<LeaderName>LEADER_QIN_SHI_HUANG</LeaderName>
+					<LeaderName>LEADER_WASHINGTON</LeaderName>
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 				<Leader>
-					<LeaderName>LEADER_MAO_ZEDONG</LeaderName>
+					<LeaderName>LEADER_WASHINGTON</LeaderName>
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 			</Leaders>
@@ -1011,11 +1011,11 @@
 			</InitialCivics>
 			<Leaders>
 				<Leader>
-					<LeaderName>LEADER_HATSHEPSUT</LeaderName>
+					<LeaderName>LEADER_WASHINGTON</LeaderName>
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 				<Leader>
-					<LeaderName>LEADER_RAMESSES</LeaderName>
+					<LeaderName>LEADER_WASHINGTON</LeaderName>
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 			</Leaders>
@@ -1119,15 +1119,15 @@
 			</InitialCivics>
 			<Leaders>
 				<Leader>
-					<LeaderName>LEADER_ELIZABETH</LeaderName>
+					<LeaderName>LEADER_WASHINGTON</LeaderName>
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 				<Leader>
-					<LeaderName>LEADER_VICTORIA</LeaderName>
+					<LeaderName>LEADER_WASHINGTON</LeaderName>
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 				<Leader>
-					<LeaderName>LEADER_CHURCHILL</LeaderName>
+					<LeaderName>LEADER_WASHINGTON</LeaderName>
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 			</Leaders>
@@ -1231,7 +1231,7 @@
 			</InitialCivics>
 			<Leaders>
 				<Leader>
-					<LeaderName>LEADER_ZARA_YAQOB</LeaderName>
+					<LeaderName>LEADER_WASHINGTON</LeaderName>
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 			</Leaders>
@@ -1335,11 +1335,11 @@
 			</InitialCivics>
 			<Leaders>
 				<Leader>
-					<LeaderName>LEADER_GRACE_OMALLEY</LeaderName>
+					<LeaderName>LEADER_WASHINGTON</LeaderName>
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 				<Leader>
-					<LeaderName>LEADER_MICHAEL_COLLINS</LeaderName>
+					<LeaderName>LEADER_WASHINGTON</LeaderName>
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 			</Leaders>
@@ -1445,7 +1445,7 @@
 			</InitialCivics>
 			<Leaders>
 				<Leader>
-					<LeaderName>LEADER_EWUARE</LeaderName>
+					<LeaderName>LEADER_WASHINGTON</LeaderName>
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 			</Leaders>
@@ -1551,15 +1551,15 @@
 			</InitialCivics>
 			<Leaders>
 				<Leader>
-					<LeaderName>LEADER_LOUIS_XIV</LeaderName>
+					<LeaderName>LEADER_WASHINGTON</LeaderName>
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 				<Leader>
-					<LeaderName>LEADER_NAPOLEON</LeaderName>
+					<LeaderName>LEADER_WASHINGTON</LeaderName>
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 				<Leader>
-					<LeaderName>LEADER_DE_GAULLE</LeaderName>
+					<LeaderName>LEADER_WASHINGTON</LeaderName>
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 			</Leaders>
@@ -1678,11 +1678,11 @@
 			</InitialCivics>
 			<Leaders>
 				<Leader>
-					<LeaderName>LEADER_FREDERICK</LeaderName>
+					<LeaderName>LEADER_WASHINGTON</LeaderName>
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 				<Leader>
-					<LeaderName>LEADER_BISMARCK</LeaderName>
+					<LeaderName>LEADER_WASHINGTON</LeaderName>
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 			</Leaders>
@@ -1793,11 +1793,11 @@
 			</InitialCivics>
 			<Leaders>
 				<Leader>
-					<LeaderName>LEADER_ALEXANDER</LeaderName>
+					<LeaderName>LEADER_WASHINGTON</LeaderName>
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 				<Leader>
-					<LeaderName>LEADER_PERICLES</LeaderName>
+					<LeaderName>LEADER_WASHINGTON</LeaderName>
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 			</Leaders>
@@ -1909,7 +1909,7 @@
 			</InitialCivics>
 			<Leaders>
 				<Leader>
-					<LeaderName>LEADER_CHARLEMAGNE</LeaderName>
+					<LeaderName>LEADER_WASHINGTON</LeaderName>
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 			</Leaders>
@@ -2009,7 +2009,7 @@
 			</InitialCivics>
 			<Leaders>
 				<Leader>
-					<LeaderName>LEADER_HUAYNA_CAPAC</LeaderName>
+					<LeaderName>LEADER_WASHINGTON</LeaderName>
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 			</Leaders>
@@ -2172,11 +2172,11 @@
 			</InitialCivics>
 			<Leaders>
 				<Leader>
-					<LeaderName>LEADER_ASOKA</LeaderName>
+					<LeaderName>LEADER_WASHINGTON</LeaderName>
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 				<Leader>
-					<LeaderName>LEADER_GANDHI</LeaderName>
+					<LeaderName>LEADER_WASHINGTON</LeaderName>
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 			</Leaders>
@@ -2277,7 +2277,7 @@
 			</InitialCivics>
 			<Leaders>
 				<Leader>
-					<LeaderName>LEADER_TOKUGAWA</LeaderName>
+					<LeaderName>LEADER_WASHINGTON</LeaderName>
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 			</Leaders>
@@ -2385,7 +2385,7 @@
 			</InitialCivics>
 			<Leaders>
 				<Leader>
-					<LeaderName>LEADER_SURYAVARMAN</LeaderName>
+					<LeaderName>LEADER_WASHINGTON</LeaderName>
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 			</Leaders>
@@ -2482,7 +2482,7 @@
 			</InitialCivics>
 			<Leaders>
 				<Leader>
-					<LeaderName>LEADER_WANGKON</LeaderName>
+					<LeaderName>LEADER_WASHINGTON</LeaderName>
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 			</Leaders>
@@ -2578,7 +2578,7 @@
 			</InitialCivics>
 			<Leaders>
 				<Leader>
-					<LeaderName>LEADER_MANSA_MUSA</LeaderName>
+					<LeaderName>LEADER_WASHINGTON</LeaderName>
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 			</Leaders>
@@ -2688,7 +2688,7 @@
 			</InitialCivics>
 			<Leaders>
 				<Leader>
-					<LeaderName>LEADER_PACAL</LeaderName>
+					<LeaderName>LEADER_WASHINGTON</LeaderName>
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 			</Leaders>
@@ -2787,11 +2787,11 @@
 			</InitialCivics>
 			<Leaders>
 				<Leader>
-					<LeaderName>LEADER_GENGHIS_KHAN</LeaderName>
+					<LeaderName>LEADER_WASHINGTON</LeaderName>
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 				<Leader>
-					<LeaderName>LEADER_KUBLAI_KHAN</LeaderName>
+					<LeaderName>LEADER_WASHINGTON</LeaderName>
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 			</Leaders>
@@ -2907,7 +2907,7 @@
 			</InitialCivics>
 			<Leaders>
 				<Leader>
-					<LeaderName>LEADER_SITTING_BULL</LeaderName>
+					<LeaderName>LEADER_WASHINGTON</LeaderName>
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 			</Leaders>
@@ -3020,7 +3020,7 @@
 			</InitialCivics>
 			<Leaders>
 				<Leader>
-					<LeaderName>LEADER_WILLEM_VAN_ORANJE</LeaderName>
+					<LeaderName>LEADER_WASHINGTON</LeaderName>
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 			</Leaders>
@@ -3122,11 +3122,11 @@
 			</InitialCivics>
 			<Leaders>
 				<Leader>
-					<LeaderName>LEADER_MEHMED</LeaderName>
+					<LeaderName>LEADER_WASHINGTON</LeaderName>
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 				<Leader>
-					<LeaderName>LEADER_SULEIMAN</LeaderName>
+					<LeaderName>LEADER_WASHINGTON</LeaderName>
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 			</Leaders>
@@ -3257,11 +3257,11 @@
 			</InitialCivics>
 			<Leaders>
 				<Leader>
-					<LeaderName>LEADER_CYRUS</LeaderName>
+					<LeaderName>LEADER_WASHINGTON</LeaderName>
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 				<Leader>
-					<LeaderName>LEADER_DARIUS</LeaderName>
+					<LeaderName>LEADER_WASHINGTON</LeaderName>
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 			</Leaders>
@@ -3372,7 +3372,7 @@
 			</InitialCivics>
 			<Leaders>
 				<Leader>
-					<LeaderName>LEADER_JOAO</LeaderName>
+					<LeaderName>LEADER_WASHINGTON</LeaderName>
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 			</Leaders>
@@ -3493,11 +3493,11 @@
 			</InitialCivics>
 			<Leaders>
 				<Leader>
-					<LeaderName>LEADER_JULIUS_CAESAR</LeaderName>
+					<LeaderName>LEADER_WASHINGTON</LeaderName>
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 				<Leader>
-					<LeaderName>LEADER_AUGUSTUS</LeaderName>
+					<LeaderName>LEADER_WASHINGTON</LeaderName>
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 			</Leaders>
@@ -3601,15 +3601,15 @@
 			</InitialCivics>
 			<Leaders>
 				<Leader>
-					<LeaderName>LEADER_PETER</LeaderName>
+					<LeaderName>LEADER_WASHINGTON</LeaderName>
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 				<Leader>
-					<LeaderName>LEADER_CATHERINE</LeaderName>
+					<LeaderName>LEADER_WASHINGTON</LeaderName>
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 				<Leader>
-					<LeaderName>LEADER_STALIN</LeaderName>
+					<LeaderName>LEADER_WASHINGTON</LeaderName>
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 			</Leaders>
@@ -3715,7 +3715,7 @@
 			</InitialCivics>
 			<Leaders>
 				<Leader>
-					<LeaderName>LEADER_RAGNAR</LeaderName>
+					<LeaderName>LEADER_WASHINGTON</LeaderName>
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 			</Leaders>
@@ -3822,7 +3822,7 @@
 			</InitialCivics>
 			<Leaders>
 				<Leader>
-					<LeaderName>LEADER_ISABELLA</LeaderName>
+					<LeaderName>LEADER_WASHINGTON</LeaderName>
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 			</Leaders>
@@ -3925,7 +3925,7 @@
 			</InitialCivics>
 			<Leaders>
 				<Leader>
-					<LeaderName>LEADER_GILGAMESH</LeaderName>
+					<LeaderName>LEADER_WASHINGTON</LeaderName>
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 			</Leaders>
@@ -4027,7 +4027,7 @@
 			</InitialCivics>
 			<Leaders>
 				<Leader>
-					<LeaderName>LEADER_SHAKA</LeaderName>
+					<LeaderName>LEADER_WASHINGTON</LeaderName>
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 			</Leaders>
@@ -4574,6 +4574,7 @@
 		</CivilizationInfo>
 	</CivilizationInfos>
 </Civ4CivilizationInfos>
+
 
 
 
