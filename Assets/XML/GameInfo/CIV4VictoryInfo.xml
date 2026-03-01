@@ -101,7 +101,7 @@
 			<iLandPercent>0</iLandPercent>
 			<iMinLandPercent>0</iMinLandPercent>
 			<iReligionPercent>0</iReligionPercent>
-			<CityCulture>CULTURELEVEL_LEGENDARY</CityCulture>
+			<CityCulture>CULTURELEVEL_NONE</CityCulture>
 			<iNumCultureCities>3</iNumCultureCities>
 			<iTotalCultureRatio>0</iTotalCultureRatio>
 			<iVictoryDelayTurns>0</iVictoryDelayTurns>
