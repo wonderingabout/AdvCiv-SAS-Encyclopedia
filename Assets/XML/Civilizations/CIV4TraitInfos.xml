@@ -57,7 +57,7 @@
 			<!-- custom: was PROMOTION_COMBAT1 -->
 			<FreePromotions>
 				<FreePromotion>
-					<PromotionType>PROMOTION_LEADERSHIP</PromotionType>
+					<PromotionType>PROMOTION_COMBAT1</PromotionType>
 					<bFreePromotion>1</bFreePromotion>
 				</FreePromotion>
 			</FreePromotions>
@@ -272,7 +272,7 @@
 			</CommerceModifiers>
 			<FreePromotions>
 				<FreePromotion>
-					<PromotionType>PROMOTION_CITY_GARRISON1</PromotionType>
+					<PromotionType>PROMOTION_COMBAT1</PromotionType>
 					<bFreePromotion>1</bFreePromotion>
 				</FreePromotion>
 			</FreePromotions>
@@ -330,3 +330,4 @@
 		</TraitInfo>
 	</TraitInfos>
 </Civ4TraitInfos>
+

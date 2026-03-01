@@ -9,6 +9,7 @@
 from CvPythonExtensions import *
 import CvUtil
 from SASUtils import getInfoTypeOrFail
+from SASUtils import getInfoTypeOrMinusOne
 
 from _sevopedia_helpers import *
 
@@ -96,10 +97,10 @@ class SevoPediaTerrain:
 		self.I_TERRAIN_COAST = getInfoTypeOrFail("TERRAIN_COAST")
 		self.I_TERRAIN_OCEAN = getInfoTypeOrFail("TERRAIN_OCEAN")
 
-		self.I_PROMOTION_HILLS_MASTER1 = getInfoTypeOrFail("PROMOTION_HILLS_MASTER1")
-		self.I_PROMOTION_HILLS_MASTER2 = getInfoTypeOrFail("PROMOTION_HILLS_MASTER2")
-		self.I_PROMOTION_HILLS_MASTER3 = getInfoTypeOrFail("PROMOTION_HILLS_MASTER3")
-		self.I_PROMOTION_NAVIGATOR = getInfoTypeOrFail("PROMOTION_NAVIGATOR")
+		self.I_PROMOTION_HILLS_MASTER1 = getInfoTypeOrMinusOne("PROMOTION_HILLS_MASTER1")
+		self.I_PROMOTION_HILLS_MASTER2 = getInfoTypeOrMinusOne("PROMOTION_HILLS_MASTER2")
+		self.I_PROMOTION_HILLS_MASTER3 = getInfoTypeOrMinusOne("PROMOTION_HILLS_MASTER3")
+		self.I_PROMOTION_NAVIGATOR = getInfoTypeOrMinusOne("PROMOTION_NAVIGATOR")
 
 
 
@@ -463,9 +464,9 @@ class SevoPediaTerrain:
 				iHillsAttack = unitInfo.getHillsAttackModifier()
 				iHillsDefense = unitInfo.getHillsDefenseModifier()
 
-				isHasHM1 = unitInfo.getFreePromotions(self.I_PROMOTION_HILLS_MASTER1)
-				isHasHM2 = unitInfo.getFreePromotions(self.I_PROMOTION_HILLS_MASTER2)
-				isHasHM3 = unitInfo.getFreePromotions(self.I_PROMOTION_HILLS_MASTER3)
+				isHasHM1 = (self.I_PROMOTION_HILLS_MASTER1 != -1 and unitInfo.getFreePromotions(self.I_PROMOTION_HILLS_MASTER1))
+				isHasHM2 = (self.I_PROMOTION_HILLS_MASTER2 != -1 and unitInfo.getFreePromotions(self.I_PROMOTION_HILLS_MASTER2))
+				isHasHM3 = (self.I_PROMOTION_HILLS_MASTER3 != -1 and unitInfo.getFreePromotions(self.I_PROMOTION_HILLS_MASTER3))
 
 				if ((iHillsAttack != 0) or (iHillsDefense != 0) or isHasHM1 or isHasHM2 or isHasHM3):
 					screen.appendMultiListButton(rowListName, unitInfo.getButton(), SEVOPEDIA_MULTILIST_COLUMN_INDEX_AUTO, WidgetTypes.WIDGET_PEDIA_JUMP_TO_UNIT, iUnit, 1, False)
@@ -507,7 +508,7 @@ class SevoPediaTerrain:
 				iTerrainAttack = unitInfo.getTerrainAttackModifier(self.iTerrain)
 				iTerrainDefense = unitInfo.getTerrainDefenseModifier(self.iTerrain)
 
-				isHasN = unitInfo.getFreePromotions(self.I_PROMOTION_NAVIGATOR)
+				isHasN = (self.I_PROMOTION_NAVIGATOR != -1 and unitInfo.getFreePromotions(self.I_PROMOTION_NAVIGATOR))
 
 				if (unitInfo.isCanMoveAllTerrain() or ((unitInfo.getDomainType() == DomainTypes.DOMAIN_SEA) and (not unitInfo.getTerrainImpassable(self.iTerrain)) and (unitInfo.getTerrainPassableTech(self.iTerrain) == -1)) or (iTerrainAttack != 0) or (iTerrainDefense != 0) or isHasN):
 					screen.appendMultiListButton(rowListName, unitInfo.getButton(), SEVOPEDIA_MULTILIST_COLUMN_INDEX_AUTO, WidgetTypes.WIDGET_PEDIA_JUMP_TO_UNIT, iUnit, 1, False)
@@ -649,3 +650,5 @@ class SevoPediaTerrain:
 
 	def handleInput (self, inputClass):
 		return 0
+
+

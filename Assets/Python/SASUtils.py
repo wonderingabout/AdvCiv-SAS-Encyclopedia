@@ -18,9 +18,15 @@ def getInfoTypeOrFail(tag):
 
 
 
+# <!-- custom: optional XML lookup for stripped encyclopedia builds; return -1 so callers can skip optional UI hooks without aborting Sevopedia init. Keep getInfoTypeOrFail for strict required tags. (GPT-5.3-Codex) -->
+def getInfoTypeOrMinusOne(tag):
+	return gc.getInfoTypeForString(tag)
+
+
 # <!-- custom: shared helper to resolve NewConcept IDs by XML type (e.g. "CONCEPT_SAS_SCORE_TAB_COLUMNS" for the Score-tab Legend clickable Sevopedia/NewConcept entry). Returns -1 when missing so callers can skip optional links safely. (GPT-5.3-Codex) -->
 def getNewConceptID(szConceptType):
 	for i in range(gc.getNumNewConceptInfos()):
 		if gc.getNewConceptInfo(i).getType() == szConceptType:
 			return i
 	return -1
+

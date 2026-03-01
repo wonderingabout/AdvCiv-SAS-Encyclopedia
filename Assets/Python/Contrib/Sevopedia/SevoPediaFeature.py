@@ -11,6 +11,7 @@ import CvUtil
 import ScreenInput
 import SevoScreenEnums
 from SASUtils import getInfoTypeOrFail
+from SASUtils import getInfoTypeOrMinusOne
 
 from _sevopedia_helpers import *
 
@@ -146,9 +147,9 @@ class SevoPediaFeature:
 		self.I_FEATURE_FOREST = getInfoTypeOrFail("FEATURE_FOREST")
 		self.I_FEATURE_JUNGLE = getInfoTypeOrFail("FEATURE_JUNGLE")
 
-		self.I_PROMOTION_WOODSMAN1 = getInfoTypeOrFail("PROMOTION_WOODSMAN1")
-		self.I_PROMOTION_WOODSMAN2 = getInfoTypeOrFail("PROMOTION_WOODSMAN2")
-		self.I_PROMOTION_WOODSMAN3 = getInfoTypeOrFail("PROMOTION_WOODSMAN3")
+		self.I_PROMOTION_WOODSMAN1 = getInfoTypeOrMinusOne("PROMOTION_WOODSMAN1")
+		self.I_PROMOTION_WOODSMAN2 = getInfoTypeOrMinusOne("PROMOTION_WOODSMAN2")
+		self.I_PROMOTION_WOODSMAN3 = getInfoTypeOrMinusOne("PROMOTION_WOODSMAN3")
 
 
 
@@ -447,9 +448,9 @@ class SevoPediaFeature:
 				iFeatureAttack = unitInfo.getFeatureAttackModifier(self.iFeature)
 				iFeatureDefense = unitInfo.getFeatureDefenseModifier(self.iFeature)
 
-				isHasW1 = unitInfo.getFreePromotions(self.I_PROMOTION_WOODSMAN1)
-				isHasW2 = unitInfo.getFreePromotions(self.I_PROMOTION_WOODSMAN2)
-				isHasW3 = unitInfo.getFreePromotions(self.I_PROMOTION_WOODSMAN3)
+				isHasW1 = (self.I_PROMOTION_WOODSMAN1 != -1 and unitInfo.getFreePromotions(self.I_PROMOTION_WOODSMAN1))
+				isHasW2 = (self.I_PROMOTION_WOODSMAN2 != -1 and unitInfo.getFreePromotions(self.I_PROMOTION_WOODSMAN2))
+				isHasW3 = (self.I_PROMOTION_WOODSMAN3 != -1 and unitInfo.getFreePromotions(self.I_PROMOTION_WOODSMAN3))
 
 				if ((iFeatureAttack != 0) or (iFeatureDefense != 0) or isHasW1 or isHasW2 or isHasW3):
 					screen.appendMultiListButton(rowListName, unitInfo.getButton(), SEVOPEDIA_MULTILIST_COLUMN_INDEX_AUTO, WidgetTypes.WIDGET_PEDIA_JUMP_TO_UNIT, iUnit, 1, False)
@@ -595,3 +596,5 @@ class SevoPediaFeature:
 
 	def handleInput (self, inputClass):
 		return 0
+
+
