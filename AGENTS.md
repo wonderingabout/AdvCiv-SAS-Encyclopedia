@@ -3,7 +3,7 @@
 ## Credit
 
 AI, UI, or other modifications
-Created as part of AdvCiv-SAS-NIF-Gallery improvements
+Created as part of the AdvCiv-SAS-NIF-Gallery mod
 (c) 2026 wonderingabout & AI helpers (see Authors in root README.md)
 
 ## General information
@@ -180,11 +180,9 @@ These are general guidelines, not irrevocable requirements; adjust based on task
 
 ## XML
 
-- Any new XML text should to our AdvCiv-SAS-NIF-Gallery files such as [AdvCiv-SAS_main.xml](/Assets/XML/Text/AdvCiv-SAS_main.xml) (e.g., `TXT_KEY_BUILDING_KOREAN_GYEONGDANG`), and only in `<English>`.
-- Example of exception: long Civilopedia blurbs (e.g., `TXT_KEY_BUILDING_KOREAN_GYEONGDANG_PEDIA`) in [AdvCiv-SAS_Sevopedia_Lengthy.xml](/Assets/XML/Text/AdvCiv-SAS_Sevopedia_Lengthy.xml), even when it uses a stub (becuase it will be filled later with lengthy content).
+- Any new XML text should to our AdvCiv-SAS-NIF-Gallery file [AdvCiv-SAS_NIF_Gallery.xml](/Assets/XML/Text/AdvCiv-SAS_NIF_Gallery.xml).
 - Move XML texts we modify from other files to our AdvCiv-SAS-NIF-Gallery files too and remove other languages while doing so.
 - Avoid to comment in deep-nested XML just in case. For example, comment before `<ObsoleteSafeCommerceChanges>`, not before its child `<iCommerce>`.
-- Prefer ISO-8859-1 in XML Text files, because it correctly detects and displays characters like `è` or `î` (unlike UTF-8), and because it seems to be the native supported for these files.
 
 ## C++
 
