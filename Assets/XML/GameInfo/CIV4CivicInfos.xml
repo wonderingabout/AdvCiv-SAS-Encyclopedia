@@ -639,7 +639,7 @@
 			<!-- custom: was empty -->
 			<BuildingHappinessChanges>
 				<BuildingHappinessChange>
-					<BuildingType>BUILDINGCLASS_UNIVERSITY</BuildingType>
+					<BuildingType>BUILDINGCLASS_PALACE</BuildingType>
 					<iHappinessChange>1</iHappinessChange>
 				</BuildingHappinessChange>
 			</BuildingHappinessChanges>
@@ -722,15 +722,15 @@
 			<!-- custom: more iconic, possibly more balanced, less generic, and in some cases stronger, as chatgpt 5.1 confirms; Long_Comments_XML.txt #119. Was BUILDINGCLASS_BARRACKS 2 -->
 			<BuildingHappinessChanges>
 				<BuildingHappinessChange>
-					<BuildingType>BUILDINGCLASS_COLOSSEUM</BuildingType>
+					<BuildingType>BUILDINGCLASS_PALACE</BuildingType>
 					<iHappinessChange>1</iHappinessChange>
 				</BuildingHappinessChange>
 				<BuildingHappinessChange>
-					<BuildingType>BUILDINGCLASS_COURTHOUSE</BuildingType>
+					<BuildingType>BUILDINGCLASS_PALACE</BuildingType>
 					<iHappinessChange>1</iHappinessChange>
 				</BuildingHappinessChange>
 				<BuildingHappinessChange>
-					<BuildingType>BUILDINGCLASS_JAIL</BuildingType>
+					<BuildingType>BUILDINGCLASS_PALACE</BuildingType>
 					<iHappinessChange>1</iHappinessChange>
 				</BuildingHappinessChange>
 			</BuildingHappinessChanges>
@@ -1356,7 +1356,7 @@
 			</SpecialistValids>
 			<BuildingHappinessChanges>
 				<BuildingHappinessChange>
-					<BuildingType>BUILDINGCLASS_CUSTOM_HOUSE</BuildingType>
+					<BuildingType>BUILDINGCLASS_PALACE</BuildingType>
 					<iHappinessChange>1</iHappinessChange>
 				</BuildingHappinessChange>
 			</BuildingHappinessChanges>
@@ -1436,7 +1436,7 @@
 			<!-- custom: was empty -->
 			<BuildingHappinessChanges>
 				<BuildingHappinessChange>
-					<BuildingType>BUILDINGCLASS_SUPERMARKET</BuildingType>
+					<BuildingType>BUILDINGCLASS_PALACE</BuildingType>
 					<iHappinessChange>1</iHappinessChange>
 				</BuildingHappinessChange>
 			</BuildingHappinessChanges>
@@ -1902,4 +1902,6 @@
 		</CivicInfo>
 	</CivicInfos>
 </Civ4CivicInfos>
+
+
 

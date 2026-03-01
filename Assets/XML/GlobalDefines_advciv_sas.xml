@@ -934,7 +934,7 @@ Created as part of AdvCiv-SAS improvements
 	<!-- custom: e.g. as of now in advciv-sas, "stable" class buildings (including civ-specific variants) to give XP to mounted untis such as horse knights, chariots, camel cuirassiers, war elephants, etc.). Adjust as per your xml. -->
 	<Define>
 		<DefineName>SAS_AI_BUILDING_VALUE_MOUNTED_UNITS_EXP_BUILDINGCLASS_NAME</DefineName>
-		<DefineTextVal>BUILDINGCLASS_STABLE</DefineTextVal>
+		<DefineTextVal>BUILDINGCLASS_PALACE</DefineTextVal>
 	</Define>
 	<!-- custom: e.g. as of now in advciv-sas is as such; adjust as per your xml. -->
 	<Define>
@@ -1779,17 +1779,17 @@ Created as part of AdvCiv-SAS improvements
 	<!-- custom: whichever XML name is for the water food building class (in advciv-sas the harbor buildings give +1 food on water tile, adjust based on your building info xml to prioritize building this if low food and coastal if you want to) -->
 	<Define>
 		<DefineName>SAS_WATER_FOOD_BUILDING_BUILDINGCLASS_FULL_NAME</DefineName>
-		<DefineTextVal>BUILDINGCLASS_HARBOR</DefineTextVal>
+		<DefineTextVal>BUILDINGCLASS_PALACE</DefineTextVal>
 	</Define>
 	<!-- custom: similarly, XML name of the water hammer building class, adjust based on your xml names/assets (e.g. if it's no longer the port class in your mod) -->
 	<Define>
 		<DefineName>SAS_WATER_HAMMER_BUILDING_BUILDINGCLASS_FULL_NAME</DefineName>
-		<DefineTextVal>BUILDINGCLASS_PORT</DefineTextVal>
+		<DefineTextVal>BUILDINGCLASS_PALACE</DefineTextVal>
 	</Define>
 	<!-- custom: similarly, XML name of the water gold building class, adjust based on your xml names/assets (e.g. if it's no longer the lighthouse class in your mod) -->
 	<Define>
 		<DefineName>SAS_WATER_GOLD_BUILDING_BUILDINGCLASS_FULL_NAME</DefineName>
-		<DefineTextVal>BUILDINGCLASS_LIGHTHOUSE</DefineTextVal>
+		<DefineTextVal>BUILDINGCLASS_PALACE</DefineTextVal>
 	</Define>
 
 
@@ -1834,7 +1834,7 @@ Created as part of AdvCiv-SAS improvements
 	<!-- custom: adjust as per your xml if your defense buildings to urgently build are not the walls and the castle -->
 	<Define>
 		<DefineName>SAS_DO_TURN_FORCE_DEFENSE_BUILDINGS_1_BUILDINGCLASS_FULL_NAME</DefineName>
-		<DefineTextVal>BUILDINGCLASS_WALLS</DefineTextVal>
+		<DefineTextVal>BUILDINGCLASS_PALACE</DefineTextVal>
 	</Define>
 	<!-- custom: don't force walls or whichever building you set too soon, threats are not high, and we risk halting key settler units. Turn 100 at normal is for example turn 100 * 1.5 = turn 150 at gamespeed epic -->
 	<Define>
@@ -1843,7 +1843,7 @@ Created as part of AdvCiv-SAS improvements
 	</Define>
 	<Define>
 		<DefineName>SAS_DO_TURN_FORCE_DEFENSE_BUILDINGS_2_BUILDINGCLASS_FULL_NAME</DefineName>
-		<DefineTextVal>BUILDINGCLASS_CASTLE</DefineTextVal>
+		<DefineTextVal>BUILDINGCLASS_PALACE</DefineTextVal>
 	</Define>
 	<!-- custom: don't force castle or whichever building you set too soon similarly -->
 	<Define>
@@ -1898,7 +1898,7 @@ Created as part of AdvCiv-SAS improvements
 	<!-- custom: if city has or is building this buildingclass, increase the above value by this number (adjust as per your xml for which building it is) -->
 	<Define>
 		<DefineName>SAS_GREAT_GENERAL_AS_MILITARY_INSTRUCTOR_TOP_N_HAMMER_EXTRA_VALUING_BUILDINGCLASS_FULL_NAME</DefineName>
-		<DefineTextVal>BUILDINGCLASS_HEROIC_EPIC</DefineTextVal>
+		<DefineTextVal>BUILDINGCLASS_PALACE</DefineTextVal>
 	</Define>
 	<!-- custom: Long_Comments_XML.txt #235 -->
 	<Define>
@@ -1920,4 +1920,6 @@ Created as part of AdvCiv-SAS improvements
 		<iDefineIntVal>1</iDefineIntVal>
 	</Define>
 </Civ4Defines>
+
+
 

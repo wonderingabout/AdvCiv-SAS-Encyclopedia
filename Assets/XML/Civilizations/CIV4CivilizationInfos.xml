@@ -82,8 +82,8 @@
 			</Cities>
 			<Buildings>
 				<Building>
-					<BuildingClassType>BUILDINGCLASS_SUPERMARKET</BuildingClassType>
-					<BuildingType>BUILDING_AMERICAN_MALL</BuildingType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
+					<BuildingType>BUILDING_PALACE</BuildingType>
 				</Building>
 			</Buildings>
 			<Units>
@@ -193,8 +193,8 @@
 			</Cities>
 			<Buildings>
 				<Building>
-					<BuildingClassType>BUILDINGCLASS_UNIVERSITY</BuildingClassType>
-					<BuildingType>BUILDING_ARABIAN_MADRASSA</BuildingType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
+					<BuildingType>BUILDING_PALACE</BuildingType>
 				</Building>
 			</Buildings>
 			<Units>
@@ -295,8 +295,8 @@
 			</Cities>
 			<Buildings>
 				<Building>
-					<BuildingClassType>BUILDINGCLASS_MONUMENT</BuildingClassType>
-					<BuildingType>BUILDING_AZTEC_SACRIFICIAL_ALTAR</BuildingType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
+					<BuildingType>BUILDING_PALACE</BuildingType>
 				</Building>
 			</Buildings>
 			<Units>
@@ -401,8 +401,8 @@
 			</Cities>
 			<Buildings>
 				<Building>
-					<BuildingClassType>BUILDINGCLASS_COLOSSEUM</BuildingClassType>
-					<BuildingType>BUILDING_BABYLON_GARDEN</BuildingType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
+					<BuildingType>BUILDING_PALACE</BuildingType>
 				</Building>
 			</Buildings>
 			<Units>
@@ -511,8 +511,8 @@
 			</Cities>
 			<Buildings>
 				<Building>
-					<BuildingClassType>BUILDINGCLASS_STABLE</BuildingClassType>
-					<BuildingType>BUILDING_BYZANTINE_HIPPODROME</BuildingType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
+					<BuildingType>BUILDING_PALACE</BuildingType>
 				</Building>
 			</Buildings>
 			<Units>
@@ -618,8 +618,8 @@
 			</Cities>
 			<Buildings>
 				<Building>
-					<BuildingClassType>BUILDINGCLASS_PORT</BuildingClassType>
-					<BuildingType>BUILDING_CARTHAGE_COTHON</BuildingType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
+					<BuildingType>BUILDING_PALACE</BuildingType>
 				</Building>
 			</Buildings>
 			<Units>
@@ -729,8 +729,8 @@
 			</Cities>
 			<Buildings>
 				<Building>
-					<BuildingClassType>BUILDINGCLASS_FORGE</BuildingClassType>
-					<BuildingType>BUILDING_CELTIC_LA_TENE_SMITHY</BuildingType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
+					<BuildingType>BUILDING_PALACE</BuildingType>
 				</Building>
 			</Buildings>
 			<Units>
@@ -843,8 +843,8 @@
 			</Cities>
 			<Buildings>
 				<Building>
-					<BuildingClassType>BUILDINGCLASS_MARKET</BuildingClassType>
-					<BuildingType>BUILDING_CHINESE_CHANGPINGCANG</BuildingType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
+					<BuildingType>BUILDING_PALACE</BuildingType>
 				</Building>
 			</Buildings>
 			<Units>
@@ -969,8 +969,8 @@
 			</Cities>
 			<Buildings>
 				<Building>
-					<BuildingClassType>BUILDINGCLASS_MONUMENT</BuildingClassType>
-					<BuildingType>BUILDING_EGYPTIAN_OBELISK</BuildingType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
+					<BuildingType>BUILDING_PALACE</BuildingType>
 				</Building>
 			</Buildings>
 			<Units>
@@ -1077,8 +1077,8 @@
 			</Cities>
 			<Buildings>
 				<Building>
-					<BuildingClassType>BUILDINGCLASS_BANK</BuildingClassType>
-					<BuildingType>BUILDING_ENGLISH_STOCK_EXCHANGE</BuildingType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
+					<BuildingType>BUILDING_PALACE</BuildingType>
 				</Building>
 			</Buildings>
 			<Units>
@@ -1189,8 +1189,8 @@
 			</Cities>
 			<Buildings>
 				<Building>
-					<BuildingClassType>BUILDINGCLASS_LIBRARY</BuildingClassType>
-					<BuildingType>BUILDING_ETHIOPIAN_METSEHAF_BET</BuildingType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
+					<BuildingType>BUILDING_PALACE</BuildingType>
 				</Building>
 			</Buildings>
 			<Units>
@@ -1293,8 +1293,8 @@
 			</Cities>
 			<Buildings>
 				<Building>
-					<BuildingClassType>BUILDINGCLASS_UNIVERSITY</BuildingClassType>
-					<BuildingType>BUILDING_IRELAND_SCRIPTORIUM</BuildingType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
+					<BuildingType>BUILDING_PALACE</BuildingType>
 				</Building>
 			</Buildings>
 			<Units>
@@ -1403,8 +1403,8 @@
 			</Cities>
 			<Buildings>
 				<Building>
-					<BuildingClassType>BUILDINGCLASS_AQUEDUCT</BuildingClassType>
-					<BuildingType>BUILDING_KINGDOM_OF_BENIN_IMPLUVIUM</BuildingType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
+					<BuildingType>BUILDING_PALACE</BuildingType>
 				</Building>
 			</Buildings>
 			<Units>
@@ -1509,8 +1509,8 @@
 			</Cities>
 			<Buildings>
 				<Building>
-					<BuildingClassType>BUILDINGCLASS_UNIVERSITY</BuildingClassType>
-					<BuildingType>BUILDING_FRENCH_SALON</BuildingType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
+					<BuildingType>BUILDING_PALACE</BuildingType>
 				</Building>
 			</Buildings>
 			<Units>
@@ -1636,8 +1636,8 @@
 			</Cities>
 			<Buildings>
 				<Building>
-					<BuildingClassType>BUILDINGCLASS_GRANARY</BuildingClassType>
-					<BuildingType>BUILDING_GERMAN_LONGHOUSE</BuildingType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
+					<BuildingType>BUILDING_PALACE</BuildingType>
 				</Building>
 			</Buildings>
 			<Units>
@@ -1751,8 +1751,8 @@
 			</Cities>
 			<Buildings>
 				<Building>
-					<BuildingClassType>BUILDINGCLASS_COLOSSEUM</BuildingClassType>
-					<BuildingType>BUILDING_GREEK_ODEON</BuildingType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
+					<BuildingType>BUILDING_PALACE</BuildingType>
 				</Building>
 			</Buildings>
 			<Units>
@@ -1867,8 +1867,8 @@
 			</Cities>
 			<Buildings>
 				<Building>
-					<BuildingClassType>BUILDINGCLASS_COURTHOUSE</BuildingClassType>
-					<BuildingType>BUILDING_HOLY_ROMAN_RATHAUS</BuildingType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
+					<BuildingType>BUILDING_PALACE</BuildingType>
 				</Building>
 			</Buildings>
 			<Units>
@@ -1967,8 +1967,8 @@
 			</Cities>
 			<Buildings>
 				<Building>
-					<BuildingClassType>BUILDINGCLASS_GRANARY</BuildingClassType>
-					<BuildingType>BUILDING_INCAN_QULLQA</BuildingType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
+					<BuildingType>BUILDING_PALACE</BuildingType>
 				</Building>
 			</Buildings>
 			<Units>
@@ -2130,8 +2130,8 @@
 			</Cities>
 			<Buildings>
 				<Building>
-					<BuildingClassType>BUILDINGCLASS_JAIL</BuildingClassType>
-					<BuildingType>BUILDING_INDIAN_MAUSOLEUM</BuildingType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
+					<BuildingType>BUILDING_PALACE</BuildingType>
 				</Building>
 			</Buildings>
 			<Units>
@@ -2235,8 +2235,8 @@
 			</Cities>
 			<Buildings>
 				<Building>
-					<BuildingClassType>BUILDINGCLASS_JAIL</BuildingClassType>
-					<BuildingType>BUILDING_JAPAN_DOUJOU</BuildingType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
+					<BuildingType>BUILDING_PALACE</BuildingType>
 				</Building>
 			</Buildings>
 			<Units>
@@ -2343,8 +2343,8 @@
 			</Cities>
 			<Buildings>
 				<Building>
-					<BuildingClassType>BUILDINGCLASS_AQUEDUCT</BuildingClassType>
-					<BuildingType>BUILDING_KHMER_BARAY</BuildingType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
+					<BuildingType>BUILDING_PALACE</BuildingType>
 				</Building>
 			</Buildings>
 			<Units>
@@ -2439,8 +2439,8 @@
 			</Cities>
 			<Buildings>
 				<Building>
-					<BuildingClassType>BUILDINGCLASS_LIBRARY</BuildingClassType>
-					<BuildingType>BUILDING_KOREAN_GYEONGDANG</BuildingType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
+					<BuildingType>BUILDING_PALACE</BuildingType>
 				</Building>
 			</Buildings>
 			<!-- custom: was UNITCLASS_CATAPULT -->
@@ -2536,8 +2536,8 @@
 			</Cities>
 			<Buildings>
 				<Building>
-					<BuildingClassType>BUILDINGCLASS_FORGE</BuildingClassType>
-					<BuildingType>BUILDING_MALI_MINT</BuildingType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
+					<BuildingType>BUILDING_PALACE</BuildingType>
 				</Building>
 			</Buildings>
 			<Units>
@@ -2646,8 +2646,8 @@
 			</Cities>
 			<Buildings>
 				<Building>
-					<BuildingClassType>BUILDINGCLASS_COLOSSEUM</BuildingClassType>
-					<BuildingType>BUILDING_MAYA_BALL_COURT</BuildingType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
+					<BuildingType>BUILDING_PALACE</BuildingType>
 				</Building>
 			</Buildings>
 			<Units>
@@ -2745,8 +2745,8 @@
 			</Cities>
 			<Buildings>
 				<Building>
-					<BuildingClassType>BUILDINGCLASS_STABLE</BuildingClassType>
-					<BuildingType>BUILDING_MONGOL_GER</BuildingType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
+					<BuildingType>BUILDING_PALACE</BuildingType>
 				</Building>
 			</Buildings>
 			<Units>
@@ -2865,8 +2865,8 @@
 			</Cities>
 			<Buildings>
 				<Building>
-					<BuildingClassType>BUILDINGCLASS_MONUMENT</BuildingClassType>
-					<BuildingType>BUILDING_NATIVE_AMERICA_TOTEM</BuildingType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
+					<BuildingType>BUILDING_PALACE</BuildingType>
 				</Building>
 			</Buildings>
 			<Units>
@@ -2976,8 +2976,8 @@
 			</Cities>
 			<Buildings>
 				<Building>
-					<BuildingClassType>BUILDINGCLASS_LEVEE</BuildingClassType>
-					<BuildingType>BUILDING_NETHERLANDS_DIKE</BuildingType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
+					<BuildingType>BUILDING_PALACE</BuildingType>
 				</Building>
 			</Buildings>
 			<!-- custom: east indiaman of class frigate now replaced with DUTCH_SWIFT_WORKER of class worker -->
@@ -3080,8 +3080,8 @@
 			</Cities>
 			<Buildings>
 				<Building>
-					<BuildingClassType>BUILDINGCLASS_AQUEDUCT</BuildingClassType>
-					<BuildingType>BUILDING_OTTOMAN_HAMMAM</BuildingType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
+					<BuildingType>BUILDING_PALACE</BuildingType>
 				</Building>
 			</Buildings>
 			<Units>
@@ -3215,8 +3215,8 @@
 			</Cities>
 			<Buildings>
 				<Building>
-					<BuildingClassType>BUILDINGCLASS_GROCER</BuildingClassType>
-					<BuildingType>BUILDING_PERSIAN_APOTHECARY</BuildingType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
+					<BuildingType>BUILDING_PALACE</BuildingType>
 				</Building>
 			</Buildings>
 			<Units>
@@ -3330,8 +3330,8 @@
 			</Cities>
 			<Buildings>
 				<Building>
-					<BuildingClassType>BUILDINGCLASS_CUSTOM_HOUSE</BuildingClassType>
-					<BuildingType>BUILDING_PORTUGAL_FEITORIA</BuildingType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
+					<BuildingType>BUILDING_PALACE</BuildingType>
 				</Building>
 			</Buildings>
 			<Units>
@@ -3451,8 +3451,8 @@
 			</Cities>
 			<Buildings>
 				<Building>
-					<BuildingClassType>BUILDINGCLASS_MARKET</BuildingClassType>
-					<BuildingType>BUILDING_ROMAN_FORUM</BuildingType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
+					<BuildingType>BUILDING_PALACE</BuildingType>
 				</Building>
 			</Buildings>
 			<Units>
@@ -3559,8 +3559,8 @@
 			</Cities>
 			<Buildings>
 				<Building>
-					<BuildingClassType>BUILDINGCLASS_CASTLE</BuildingClassType>
-					<BuildingType>BUILDING_RUSSIAN_GORD</BuildingType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
+					<BuildingType>BUILDING_PALACE</BuildingType>
 				</Building>
 			</Buildings>
 			<Units>
@@ -3673,8 +3673,8 @@
 			</Cities>
 			<Buildings>
 				<Building>
-					<BuildingClassType>BUILDINGCLASS_PORT</BuildingClassType>
-					<BuildingType>BUILDING_SCANDINAVIA_TRADING_POST</BuildingType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
+					<BuildingType>BUILDING_PALACE</BuildingType>
 				</Building>
 			</Buildings>
 			<Units>
@@ -3780,8 +3780,8 @@
 			</Cities>
 			<Buildings>
 				<Building>
-					<BuildingClassType>BUILDINGCLASS_CASTLE</BuildingClassType>
-					<BuildingType>BUILDING_SPANISH_CITADEL</BuildingType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
+					<BuildingType>BUILDING_PALACE</BuildingType>
 				</Building>
 			</Buildings>
 			<Units>
@@ -3883,8 +3883,8 @@
 			</Cities>
 			<Buildings>
 				<Building>
-					<BuildingClassType>BUILDINGCLASS_MONUMENT</BuildingClassType>
-					<BuildingType>BUILDING_SUMERIAN_ZIGGURAT</BuildingType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
+					<BuildingType>BUILDING_PALACE</BuildingType>
 				</Building>
 			</Buildings>
 			<Units>
@@ -3985,8 +3985,8 @@
 			</Cities>
 			<Buildings>
 				<Building>
-					<BuildingClassType>BUILDINGCLASS_BARRACKS</BuildingClassType>
-					<BuildingType>BUILDING_ZULU_IKHANDA</BuildingType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
+					<BuildingType>BUILDING_PALACE</BuildingType>
 				</Building>
 			</Buildings>
 			<Units>
@@ -4256,156 +4256,156 @@
 				<!-- custom: (for barbarians) see code comment at FreeBuildingClasses for details -->
 				<Building>
 					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
-					<BuildingType>BUILDING_BARBARIAN_PALACE</BuildingType>
+					<BuildingType>BUILDING_PALACE</BuildingType>
 				</Building>
 				<Building>
-					<BuildingClassType>BUILDINGCLASS_BARRACKS</BuildingClassType>
-					<BuildingType>BUILDING_BARBARIAN_BARRACKS</BuildingType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
+					<BuildingType>BUILDING_PALACE</BuildingType>
 				</Building>
 				<Building>
-					<BuildingClassType>BUILDINGCLASS_GRANARY</BuildingClassType>
-					<BuildingType>BUILDING_BARBARIAN_GRANARY</BuildingType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
+					<BuildingType>BUILDING_PALACE</BuildingType>
 				</Building>
 				<Building>
-					<BuildingClassType>BUILDINGCLASS_HARBOR</BuildingClassType>
-					<BuildingType>BUILDING_BARBARIAN_HARBOR</BuildingType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
+					<BuildingType>BUILDING_PALACE</BuildingType>
 				</Building>
 				<Building>
-					<BuildingClassType>BUILDINGCLASS_LIGHTHOUSE</BuildingClassType>
-					<BuildingType>BUILDING_BARBARIAN_LIGHTHOUSE</BuildingType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
+					<BuildingType>BUILDING_PALACE</BuildingType>
 				</Building>
 				<Building>
-					<BuildingClassType>BUILDINGCLASS_WALLS</BuildingClassType>
-					<BuildingType>BUILDING_BARBARIAN_WALLS</BuildingType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
+					<BuildingType>BUILDING_PALACE</BuildingType>
 				</Building>
 				<Building>
-					<BuildingClassType>BUILDINGCLASS_CASTLE</BuildingClassType>
-					<BuildingType>BUILDING_BARBARIAN_CASTLE</BuildingType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
+					<BuildingType>BUILDING_PALACE</BuildingType>
 				</Building>
 				<!-- custom: Long_Comments_XML.txt #346 -->
 				<Building>
-					<BuildingClassType>BUILDINGCLASS_AQUEDUCT</BuildingClassType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
 					<BuildingType>NONE</BuildingType>
 				</Building>
 				<Building>
-					<BuildingClassType>BUILDINGCLASS_FORGE</BuildingClassType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
 					<BuildingType>NONE</BuildingType>
 				</Building>
 				<Building>
-					<BuildingClassType>BUILDINGCLASS_STABLE</BuildingClassType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
 					<BuildingType>NONE</BuildingType>
 				</Building>
 				<Building>
-					<BuildingClassType>BUILDINGCLASS_MONUMENT</BuildingClassType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
 					<BuildingType>NONE</BuildingType>
 				</Building>
 				<Building>
-					<BuildingClassType>BUILDINGCLASS_CUSTOM_HOUSE</BuildingClassType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
 					<BuildingType>NONE</BuildingType>
 				</Building>
 				<Building>
-					<BuildingClassType>BUILDINGCLASS_PORT</BuildingClassType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
 					<BuildingType>NONE</BuildingType>
 				</Building>
 				<Building>
-					<BuildingClassType>BUILDINGCLASS_COURTHOUSE</BuildingClassType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
 					<BuildingType>NONE</BuildingType>
 				</Building>
 				<Building>
-					<BuildingClassType>BUILDINGCLASS_MARKET</BuildingClassType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
 					<BuildingType>NONE</BuildingType>
 				</Building>
 				<Building>
-					<BuildingClassType>BUILDINGCLASS_GROCER</BuildingClassType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
 					<BuildingType>NONE</BuildingType>
 				</Building>
 				<Building>
-					<BuildingClassType>BUILDINGCLASS_BANK</BuildingClassType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
 					<BuildingType>NONE</BuildingType>
 				</Building>
 				<Building>
-					<BuildingClassType>BUILDINGCLASS_DRYDOCK</BuildingClassType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
 					<BuildingType>NONE</BuildingType>
 				</Building>
 				<Building>
-					<BuildingClassType>BUILDINGCLASS_LEVEE</BuildingClassType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
 					<BuildingType>NONE</BuildingType>
 				</Building>
 				<Building>
-					<BuildingClassType>BUILDINGCLASS_JAIL</BuildingClassType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
 					<BuildingType>NONE</BuildingType>
 				</Building>
 				<Building>
-					<BuildingClassType>BUILDINGCLASS_ACADEMY</BuildingClassType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
 					<BuildingType>NONE</BuildingType>
 				</Building>
 				<Building>
-					<BuildingClassType>BUILDINGCLASS_INTELLIGENCE_AGENCY</BuildingClassType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
 					<BuildingType>NONE</BuildingType>
 				</Building>
 				<Building>
-					<BuildingClassType>BUILDINGCLASS_SECURITY_BUREAU</BuildingClassType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
 					<BuildingType>NONE</BuildingType>
 				</Building>
 				<Building>
-					<BuildingClassType>BUILDINGCLASS_FACTORY</BuildingClassType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
 					<BuildingType>NONE</BuildingType>
 				</Building>
 				<Building>
-					<BuildingClassType>BUILDINGCLASS_INDUSTRIAL_PARK</BuildingClassType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
 					<BuildingType>NONE</BuildingType>
 				</Building>
 				<Building>
-					<BuildingClassType>BUILDINGCLASS_PUBLIC_TRANSPORTATION</BuildingClassType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
 					<BuildingType>NONE</BuildingType>
 				</Building>
 				<Building>
-					<BuildingClassType>BUILDINGCLASS_COAL_PLANT</BuildingClassType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
 					<BuildingType>NONE</BuildingType>
 				</Building>
 				<Building>
-					<BuildingClassType>BUILDINGCLASS_HYDRO_PLANT</BuildingClassType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
 					<BuildingType>NONE</BuildingType>
 				</Building>
 				<Building>
-					<BuildingClassType>BUILDINGCLASS_NUCLEAR_PLANT</BuildingClassType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
 					<BuildingType>NONE</BuildingType>
 				</Building>
 				<Building>
-					<BuildingClassType>BUILDINGCLASS_RECYCLING_CENTER</BuildingClassType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
 					<BuildingType>NONE</BuildingType>
 				</Building>
 				<Building>
-					<BuildingClassType>BUILDINGCLASS_BROADCAST_TOWER</BuildingClassType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
 					<BuildingType>NONE</BuildingType>
 				</Building>
 				<Building>
-					<BuildingClassType>BUILDINGCLASS_HOSPITAL</BuildingClassType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
 					<BuildingType>NONE</BuildingType>
 				</Building>
 				<Building>
-					<BuildingClassType>BUILDINGCLASS_BOMB_SHELTER</BuildingClassType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
 					<BuildingType>NONE</BuildingType>
 				</Building>
 				<Building>
-					<BuildingClassType>BUILDINGCLASS_SUPERMARKET</BuildingClassType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
 					<BuildingType>NONE</BuildingType>
 				</Building>
 				<!-- custom: note: this seemingly does nothing as barbarians still build libraries -->
 				<Building>
-					<BuildingClassType>BUILDINGCLASS_LIBRARY</BuildingClassType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
 					<BuildingType>NONE</BuildingType>
 				</Building>
 				<Building>
-					<BuildingClassType>BUILDINGCLASS_UNIVERSITY</BuildingClassType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
 					<BuildingType>NONE</BuildingType>
 				</Building>
 				<Building>
-					<BuildingClassType>BUILDINGCLASS_LABORATORY</BuildingClassType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
 					<BuildingType>NONE</BuildingType>
 				</Building>
 				<Building>
-					<BuildingClassType>BUILDINGCLASS_THEATRE</BuildingClassType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
 					<BuildingType>NONE</BuildingType>
 				</Building>
 				<!-- custom: Long_Comments_XML.txt #347 -->
@@ -4523,15 +4523,15 @@
 					<bFreeBuildingClass>1</bFreeBuildingClass>
 				</FreeBuildingClass>
 				<FreeBuildingClass>
-					<BuildingClassType>BUILDINGCLASS_BARRACKS</BuildingClassType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
 					<bFreeBuildingClass>1</bFreeBuildingClass>
 				</FreeBuildingClass>
 				<FreeBuildingClass>
-					<BuildingClassType>BUILDINGCLASS_GRANARY</BuildingClassType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
 					<bFreeBuildingClass>1</bFreeBuildingClass>
 				</FreeBuildingClass>
 				<FreeBuildingClass>
-					<BuildingClassType>BUILDINGCLASS_WALLS</BuildingClassType>
+					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
 					<bFreeBuildingClass>1</bFreeBuildingClass>
 				</FreeBuildingClass>
 			</FreeBuildingClasses>
@@ -4574,4 +4574,6 @@
 		</CivilizationInfo>
 	</CivilizationInfos>
 </Civ4CivilizationInfos>
+
+
 

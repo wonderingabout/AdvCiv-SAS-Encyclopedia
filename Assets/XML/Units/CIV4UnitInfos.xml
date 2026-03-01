@@ -4356,7 +4356,7 @@
 			<StateReligion>NONE</StateReligion>
 			<PrereqReligion>RELIGION_PAGANISM</PrereqReligion>
 			<PrereqCorporation>NONE</PrereqCorporation>
-			<PrereqBuilding>BUILDING_PAGAN_MONASTERY</PrereqBuilding>
+			<PrereqBuilding>BUILDING_PALACE</PrereqBuilding>
 			<ObsoleteTech>NONE</ObsoleteTech>
 			<PrereqTech>NONE</PrereqTech>
 			<TechTypes/>
@@ -4525,7 +4525,7 @@
 			<StateReligion>NONE</StateReligion>
 			<PrereqReligion>RELIGION_HINDUISM</PrereqReligion>
 			<PrereqCorporation>NONE</PrereqCorporation>
-			<PrereqBuilding>BUILDING_HINDU_MONASTERY</PrereqBuilding>
+			<PrereqBuilding>BUILDING_PALACE</PrereqBuilding>
 			<ObsoleteTech>NONE</ObsoleteTech>
 			<PrereqTech>NONE</PrereqTech>
 			<TechTypes/>
@@ -4694,7 +4694,7 @@
 			<StateReligion>NONE</StateReligion>
 			<PrereqReligion>RELIGION_JUDAISM</PrereqReligion>
 			<PrereqCorporation>NONE</PrereqCorporation>
-			<PrereqBuilding>BUILDING_JEWISH_MONASTERY</PrereqBuilding>
+			<PrereqBuilding>BUILDING_PALACE</PrereqBuilding>
 			<ObsoleteTech>NONE</ObsoleteTech>
 			<PrereqTech>NONE</PrereqTech>
 			<TechTypes/>
@@ -4863,7 +4863,7 @@
 			<StateReligion>NONE</StateReligion>
 			<PrereqReligion>RELIGION_DAOISM</PrereqReligion>
 			<PrereqCorporation>NONE</PrereqCorporation>
-			<PrereqBuilding>BUILDING_DAOIST_MONASTERY</PrereqBuilding>
+			<PrereqBuilding>BUILDING_PALACE</PrereqBuilding>
 			<ObsoleteTech>NONE</ObsoleteTech>
 			<PrereqTech>NONE</PrereqTech>
 			<TechTypes/>
@@ -5032,7 +5032,7 @@
 			<StateReligion>NONE</StateReligion>
 			<PrereqReligion>RELIGION_BUDDHISM</PrereqReligion>
 			<PrereqCorporation>NONE</PrereqCorporation>
-			<PrereqBuilding>BUILDING_BUDDHIST_MONASTERY</PrereqBuilding>
+			<PrereqBuilding>BUILDING_PALACE</PrereqBuilding>
 			<ObsoleteTech>NONE</ObsoleteTech>
 			<PrereqTech>NONE</PrereqTech>
 			<TechTypes/>
@@ -5201,7 +5201,7 @@
 			<StateReligion>NONE</StateReligion>
 			<PrereqReligion>RELIGION_CHRISTIANITY</PrereqReligion>
 			<PrereqCorporation>NONE</PrereqCorporation>
-			<PrereqBuilding>BUILDING_CHRISTIAN_MONASTERY</PrereqBuilding>
+			<PrereqBuilding>BUILDING_PALACE</PrereqBuilding>
 			<ObsoleteTech>NONE</ObsoleteTech>
 			<PrereqTech>NONE</PrereqTech>
 			<TechTypes/>
@@ -5370,7 +5370,7 @@
 			<StateReligion>NONE</StateReligion>
 			<PrereqReligion>RELIGION_ISLAM</PrereqReligion>
 			<PrereqCorporation>NONE</PrereqCorporation>
-			<PrereqBuilding>BUILDING_ISLAMIC_MONASTERY</PrereqBuilding>
+			<PrereqBuilding>BUILDING_PALACE</PrereqBuilding>
 			<ObsoleteTech>NONE</ObsoleteTech>
 			<PrereqTech>NONE</PrereqTech>
 			<TechTypes/>
@@ -19273,7 +19273,7 @@
 			<PrereqReligion>NONE</PrereqReligion>
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<!-- custom: be careful as this seems to not be about building class, may lead to imposible condition if some civ has a civ-specific version of this but check to be sure; Long_Comments_XML.txt #332, was NONE -->
-			<PrereqBuilding>BUILDING_FACTORY</PrereqBuilding>
+			<PrereqBuilding>BUILDING_PALACE</PrereqBuilding>
 			<!-- custom: was TECH_ASSEMBLY_LINE -->
 			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
 			<PrereqTech>TECH_HUNTING</PrereqTech>
@@ -19470,7 +19470,7 @@
 			<PrereqReligion>NONE</PrereqReligion>
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<!-- custom: see code comment at UNIT_TANK, was NONE -->
-			<PrereqBuilding>BUILDING_FACTORY</PrereqBuilding>
+			<PrereqBuilding>BUILDING_PALACE</PrereqBuilding>
 			<ObsoleteTech>TECH_HUNTING</ObsoleteTech>
 			<PrereqTech>TECH_HUNTING</PrereqTech>
 			<TechTypes>
@@ -19665,7 +19665,7 @@
 			<PrereqReligion>NONE</PrereqReligion>
 			<PrereqCorporation>NONE</PrereqCorporation>
 			<!-- custom: see code comment at UNIT_TANK, was NONE -->
-			<PrereqBuilding>BUILDING_FACTORY</PrereqBuilding>
+			<PrereqBuilding>BUILDING_PALACE</PrereqBuilding>
 			<!-- custom: making it out of main scientific path so that military path is not too rewarded and other strategies are just as vlaid or at least worth profits -->
 			<ObsoleteTech>NONE</ObsoleteTech>
 			<PrereqTech>TECH_HUNTING</PrereqTech>
@@ -25954,31 +25954,31 @@
 			</GreatPeoples>
 			<Buildings>
 				<Building>
-					<BuildingType>BUILDING_JEWISH_SHRINE</BuildingType>
+					<BuildingType>BUILDING_PALACE</BuildingType>
 					<bBuilding>1</bBuilding>
 				</Building>
 				<Building>
-					<BuildingType>BUILDING_CHRISTIAN_SHRINE</BuildingType>
+					<BuildingType>BUILDING_PALACE</BuildingType>
 					<bBuilding>1</bBuilding>
 				</Building>
 				<Building>
-					<BuildingType>BUILDING_ISLAMIC_SHRINE</BuildingType>
+					<BuildingType>BUILDING_PALACE</BuildingType>
 					<bBuilding>1</bBuilding>
 				</Building>
 				<Building>
-					<BuildingType>BUILDING_HINDU_SHRINE</BuildingType>
+					<BuildingType>BUILDING_PALACE</BuildingType>
 					<bBuilding>1</bBuilding>
 				</Building>
 				<Building>
-					<BuildingType>BUILDING_BUDDHIST_SHRINE</BuildingType>
+					<BuildingType>BUILDING_PALACE</BuildingType>
 					<bBuilding>1</bBuilding>
 				</Building>
 				<Building>
-					<BuildingType>BUILDING_PAGAN_SHRINE</BuildingType>
+					<BuildingType>BUILDING_PALACE</BuildingType>
 					<bBuilding>1</bBuilding>
 				</Building>
 				<Building>
-					<BuildingType>BUILDING_DAOIST_SHRINE</BuildingType>
+					<BuildingType>BUILDING_PALACE</BuildingType>
 					<bBuilding>1</bBuilding>
 				</Building>
 			</Buildings>
@@ -26197,7 +26197,7 @@
 			</GreatPeoples>
 			<Buildings>
 				<Building>
-					<BuildingType>BUILDING_CORPORATION_7</BuildingType>
+					<BuildingType>BUILDING_PALACE</BuildingType>
 					<bBuilding>1</bBuilding>
 				</Building>
 			</Buildings>
@@ -26424,15 +26424,15 @@
 			</GreatPeoples>
 			<Buildings>
 				<Building>
-					<BuildingType>BUILDING_CORPORATION_3</BuildingType>
+					<BuildingType>BUILDING_PALACE</BuildingType>
 					<bBuilding>1</bBuilding>
 				</Building>
 				<Building>
-					<BuildingType>BUILDING_CORPORATION_6</BuildingType>
+					<BuildingType>BUILDING_PALACE</BuildingType>
 					<bBuilding>1</bBuilding>
 				</Building>
 				<Building>
-					<BuildingType>BUILDING_ACADEMY</BuildingType>
+					<BuildingType>BUILDING_PALACE</BuildingType>
 					<bBuilding>1</bBuilding>
 				</Building>
 			</Buildings>
@@ -26646,11 +26646,11 @@
 			</GreatPeoples>
 			<Buildings>
 				<Building>
-					<BuildingType>BUILDING_CORPORATION_1</BuildingType>
+					<BuildingType>BUILDING_PALACE</BuildingType>
 					<bBuilding>1</bBuilding>
 				</Building>
 				<Building>
-					<BuildingType>BUILDING_CORPORATION_2</BuildingType>
+					<BuildingType>BUILDING_PALACE</BuildingType>
 					<bBuilding>1</bBuilding>
 				</Building>
 			</Buildings>
@@ -26866,11 +26866,11 @@
 			</GreatPeoples>
 			<Buildings>
 				<Building>
-					<BuildingType>BUILDING_CORPORATION_4</BuildingType>
+					<BuildingType>BUILDING_PALACE</BuildingType>
 					<bBuilding>1</bBuilding>
 				</Building>
 				<Building>
-					<BuildingType>BUILDING_CORPORATION_5</BuildingType>
+					<BuildingType>BUILDING_PALACE</BuildingType>
 					<bBuilding>1</bBuilding>
 				</Building>
 			</Buildings>
@@ -27094,7 +27094,7 @@
 			</GreatPeoples>
 			<Buildings>
 				<Building>
-					<BuildingType>BUILDING_MILITARY_ACADEMY</BuildingType>
+					<BuildingType>BUILDING_PALACE</BuildingType>
 					<bBuilding>1</bBuilding>
 				</Building>
 			</Buildings>
@@ -27334,7 +27334,7 @@
 			</GreatPeoples>
 			<Buildings>
 				<Building>
-					<BuildingType>BUILDING_SCOTLAND_YARD</BuildingType>
+					<BuildingType>BUILDING_PALACE</BuildingType>
 					<bBuilding>1</bBuilding>
 				</Building>
 			</Buildings>
@@ -27452,4 +27452,6 @@
 		</UnitInfo>
 	</UnitInfos>
 </Civ4UnitInfos>
+
+
 

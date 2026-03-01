@@ -1608,7 +1608,7 @@
 			<UnitName/>
 			<UnitCombatPromotions/>
 			<UnitClassPromotions/>
-			<BuildingClass>BUILDINGCLASS_FORGE</BuildingClass>
+			<BuildingClass>BUILDINGCLASS_PALACE</BuildingClass>
 			<iBuildingChange>-1</iBuildingChange>
 			<BuildingExtraYields/>
 			<BuildingExtraCommerces/>
@@ -1689,7 +1689,7 @@
 			<UnitName/>
 			<UnitCombatPromotions/>
 			<UnitClassPromotions/>
-			<BuildingClass>BUILDINGCLASS_FORGE</BuildingClass>
+			<BuildingClass>BUILDINGCLASS_PALACE</BuildingClass>
 			<iBuildingChange>-1</iBuildingChange>
 			<BuildingExtraYields/>
 			<BuildingExtraCommerces/>
@@ -5342,7 +5342,7 @@
 			<UnitName/>
 			<UnitCombatPromotions/>
 			<UnitClassPromotions/>
-			<BuildingClass>BUILDINGCLASS_THEATRE</BuildingClass>
+			<BuildingClass>BUILDINGCLASS_PALACE</BuildingClass>
 			<iBuildingChange>0</iBuildingChange>
 			<BuildingExtraYields/>
 			<BuildingExtraCommerces/>
@@ -9395,7 +9395,7 @@
 			<BuildingExtraYields/>
 			<BuildingExtraCommerces>
 				<BuildingExtraCommerce>
-					<BuildingClass>BUILDINGCLASS_LIBRARY</BuildingClass>
+					<BuildingClass>BUILDINGCLASS_PALACE</BuildingClass>
 					<CommerceType>COMMERCE_RESEARCH</CommerceType>
 					<iExtraCommerce>1</iExtraCommerce>
 				</BuildingExtraCommerce>
@@ -9481,7 +9481,7 @@
 			<iBuildingChange>0</iBuildingChange>
 			<BuildingExtraYields>
 				<BuildingExtraYield>
-					<BuildingClass>BUILDINGCLASS_FORGE</BuildingClass>
+					<BuildingClass>BUILDINGCLASS_PALACE</BuildingClass>
 					<YieldType>YIELD_PRODUCTION</YieldType>
 					<iExtraYield>1</iExtraYield>
 				</BuildingExtraYield>
@@ -9568,7 +9568,7 @@
 			<iBuildingChange>0</iBuildingChange>
 			<BuildingExtraYields>
 				<BuildingExtraYield>
-					<BuildingClass>BUILDINGCLASS_GROCER</BuildingClass>
+					<BuildingClass>BUILDINGCLASS_PALACE</BuildingClass>
 					<YieldType>YIELD_FOOD</YieldType>
 					<iExtraYield>1</iExtraYield>
 				</BuildingExtraYield>
@@ -9656,7 +9656,7 @@
 			<BuildingExtraYields/>
 			<BuildingExtraCommerces>
 				<BuildingExtraCommerce>
-					<BuildingClass>BUILDINGCLASS_MARKET</BuildingClass>
+					<BuildingClass>BUILDINGCLASS_PALACE</BuildingClass>
 					<CommerceType>COMMERCE_GOLD</CommerceType>
 					<iExtraCommerce>1</iExtraCommerce>
 				</BuildingExtraCommerce>
@@ -10497,7 +10497,7 @@
 			<BuildingExtraCommerces/>
 			<BuildingExtraHappies>
 				<BuildingExtraHappy>
-					<BuildingClass>BUILDINGCLASS_AIRPORT</BuildingClass>
+					<BuildingClass>BUILDINGCLASS_PALACE</BuildingClass>
 					<iHappy>1</iHappy>
 				</BuildingExtraHappy>
 			</BuildingExtraHappies>
@@ -10582,7 +10582,7 @@
 			<BuildingExtraYields/>
 			<BuildingExtraCommerces>
 				<BuildingExtraCommerce>
-					<BuildingClass>BUILDINGCLASS_LABORATORY</BuildingClass>
+					<BuildingClass>BUILDINGCLASS_PALACE</BuildingClass>
 					<CommerceType>COMMERCE_RESEARCH</CommerceType>
 					<iExtraCommerce>2</iExtraCommerce>
 				</BuildingExtraCommerce>
@@ -10668,7 +10668,7 @@
 			<iBuildingChange>0</iBuildingChange>
 			<BuildingExtraYields>
 				<BuildingExtraYield>
-					<BuildingClass>BUILDINGCLASS_PUBLIC_TRANSPORTATION</BuildingClass>
+					<BuildingClass>BUILDINGCLASS_PALACE</BuildingClass>
 					<YieldType>YIELD_COMMERCE</YieldType>
 					<iExtraYield>5</iExtraYield>
 				</BuildingExtraYield>
@@ -13399,7 +13399,7 @@
 			<UnitName/>
 			<UnitCombatPromotions/>
 			<UnitClassPromotions/>
-			<BuildingClass>BUILDINGCLASS_THEATRE</BuildingClass>
+			<BuildingClass>BUILDINGCLASS_PALACE</BuildingClass>
 			<iBuildingChange>-1</iBuildingChange>
 			<BuildingExtraYields/>
 			<BuildingExtraCommerces/>
@@ -13480,7 +13480,7 @@
 			<UnitName/>
 			<UnitCombatPromotions/>
 			<UnitClassPromotions/>
-			<BuildingClass>BUILDINGCLASS_THEATRE</BuildingClass>
+			<BuildingClass>BUILDINGCLASS_PALACE</BuildingClass>
 			<iBuildingChange>-1</iBuildingChange>
 			<BuildingExtraYields/>
 			<BuildingExtraCommerces/>
@@ -16363,7 +16363,7 @@
 			<iBuildingChange>0</iBuildingChange>
 			<BuildingExtraYields>
 				<BuildingExtraYield>
-					<BuildingClass>BUILDINGCLASS_STABLE</BuildingClass>
+					<BuildingClass>BUILDINGCLASS_PALACE</BuildingClass>
 					<YieldType>YIELD_FOOD</YieldType>
 					<iExtraYield>1</iExtraYield>
 				</BuildingExtraYield>
@@ -16628,7 +16628,7 @@
 			<BuildingExtraYields/>
 			<BuildingExtraCommerces>
 				<BuildingExtraCommerce>
-					<BuildingClass>BUILDINGCLASS_HARBOR</BuildingClass>
+					<BuildingClass>BUILDINGCLASS_PALACE</BuildingClass>
 					<CommerceType>COMMERCE_GOLD</CommerceType>
 					<iExtraCommerce>1</iExtraCommerce>
 				</BuildingExtraCommerce>
@@ -16892,7 +16892,7 @@
 			<BuildingExtraYields/>
 			<BuildingExtraCommerces>
 				<BuildingExtraCommerce>
-					<BuildingClass>BUILDINGCLASS_LIBRARY</BuildingClass>
+					<BuildingClass>BUILDINGCLASS_PALACE</BuildingClass>
 					<CommerceType>COMMERCE_RESEARCH</CommerceType>
 					<iExtraCommerce>2</iExtraCommerce>
 				</BuildingExtraCommerce>
@@ -17767,7 +17767,7 @@
 			<BuildingExtraYields/>
 			<BuildingExtraCommerces>
 				<BuildingExtraCommerce>
-					<BuildingClass>BUILDINGCLASS_GREAT_WALL</BuildingClass>
+					<BuildingClass>BUILDINGCLASS_PALACE</BuildingClass>
 					<CommerceType>COMMERCE_ESPIONAGE</CommerceType>
 					<iExtraCommerce>25</iExtraCommerce>
 				</BuildingExtraCommerce>
@@ -17941,7 +17941,7 @@
 			<BuildingExtraCommerces/>
 			<BuildingExtraHappies>
 				<BuildingExtraHappy>
-					<BuildingClass>BUILDINGCLASS_COLOSSEUM</BuildingClass>
+					<BuildingClass>BUILDINGCLASS_PALACE</BuildingClass>
 					<iHappy>1</iHappy>
 				</BuildingExtraHappy>
 			</BuildingExtraHappies>
@@ -18031,7 +18031,7 @@
 			<BuildingExtraYields/>
 			<BuildingExtraCommerces>
 				<BuildingExtraCommerce>
-					<BuildingClass>BUILDINGCLASS_COLOSSEUM</BuildingClass>
+					<BuildingClass>BUILDINGCLASS_PALACE</BuildingClass>
 					<CommerceType>COMMERCE_CULTURE</CommerceType>
 					<iExtraCommerce>4</iExtraCommerce>
 				</BuildingExtraCommerce>
@@ -18548,7 +18548,7 @@
 			<BuildingExtraYields/>
 			<BuildingExtraCommerces>
 				<BuildingExtraCommerce>
-					<BuildingClass>BUILDINGCLASS_WALLS</BuildingClass>
+					<BuildingClass>BUILDINGCLASS_PALACE</BuildingClass>
 					<CommerceType>COMMERCE_GOLD</CommerceType>
 					<iExtraCommerce>1</iExtraCommerce>
 				</BuildingExtraCommerce>
@@ -18716,7 +18716,7 @@
 			<BuildingExtraYields/>
 			<BuildingExtraCommerces>
 				<BuildingExtraCommerce>
-					<BuildingClass>BUILDINGCLASS_THEATRE</BuildingClass>
+					<BuildingClass>BUILDINGCLASS_PALACE</BuildingClass>
 					<CommerceType>COMMERCE_GOLD</CommerceType>
 					<iExtraCommerce>1</iExtraCommerce>
 				</BuildingExtraCommerce>
@@ -18803,7 +18803,7 @@
 			<BuildingExtraYields/>
 			<BuildingExtraCommerces>
 				<BuildingExtraCommerce>
-					<BuildingClass>BUILDINGCLASS_THEATRE</BuildingClass>
+					<BuildingClass>BUILDINGCLASS_PALACE</BuildingClass>
 					<CommerceType>COMMERCE_CULTURE</CommerceType>
 					<iExtraCommerce>3</iExtraCommerce>
 				</BuildingExtraCommerce>
@@ -18971,7 +18971,7 @@
 			<BuildingExtraYields/>
 			<BuildingExtraCommerces>
 				<BuildingExtraCommerce>
-					<BuildingClass>BUILDINGCLASS_COLOSSEUM</BuildingClass>
+					<BuildingClass>BUILDINGCLASS_PALACE</BuildingClass>
 					<CommerceType>COMMERCE_CULTURE</CommerceType>
 					<iExtraCommerce>2</iExtraCommerce>
 				</BuildingExtraCommerce>
@@ -19635,7 +19635,7 @@
 			<BuildingExtraYields/>
 			<BuildingExtraCommerces>
 				<BuildingExtraCommerce>
-					<BuildingClass>BUILDINGCLASS_HOSPITAL</BuildingClass>
+					<BuildingClass>BUILDINGCLASS_PALACE</BuildingClass>
 					<CommerceType>COMMERCE_GOLD</CommerceType>
 					<iExtraCommerce>2</iExtraCommerce>
 				</BuildingExtraCommerce>
@@ -19723,13 +19723,13 @@
 			<BuildingExtraCommerces/>
 			<BuildingExtraHappies>
 				<BuildingExtraHappy>
-					<BuildingClass>BUILDINGCLASS_HOSPITAL</BuildingClass>
+					<BuildingClass>BUILDINGCLASS_PALACE</BuildingClass>
 					<iHappy>1</iHappy>
 				</BuildingExtraHappy>
 			</BuildingExtraHappies>
 			<BuildingExtraHealths>
 				<BuildingExtraHealth>
-					<BuildingClass>BUILDINGCLASS_HOSPITAL</BuildingClass>
+					<BuildingClass>BUILDINGCLASS_PALACE</BuildingClass>
 					<iHealth>1</iHealth>
 				</BuildingExtraHealth>
 			</BuildingExtraHealths>
@@ -19813,7 +19813,7 @@
 			<BuildingExtraYields/>
 			<BuildingExtraCommerces>
 				<BuildingExtraCommerce>
-					<BuildingClass>BUILDINGCLASS_AIRPORT</BuildingClass>
+					<BuildingClass>BUILDINGCLASS_PALACE</BuildingClass>
 					<CommerceType>COMMERCE_GOLD</CommerceType>
 					<iExtraCommerce>2</iExtraCommerce>
 				</BuildingExtraCommerce>
@@ -19895,7 +19895,7 @@
 			<UnitName/>
 			<UnitCombatPromotions/>
 			<UnitClassPromotions/>
-			<BuildingClass>BUILDINGCLASS_FACTORY</BuildingClass>
+			<BuildingClass>BUILDINGCLASS_PALACE</BuildingClass>
 			<iBuildingChange>-1</iBuildingChange>
 			<BuildingExtraYields/>
 			<BuildingExtraCommerces/>
@@ -20143,7 +20143,7 @@
 			<BuildingExtraYields/>
 			<BuildingExtraCommerces>
 				<BuildingExtraCommerce>
-					<BuildingClass>BUILDINGCLASS_DRYDOCK</BuildingClass>
+					<BuildingClass>BUILDINGCLASS_PALACE</BuildingClass>
 					<CommerceType>COMMERCE_GOLD</CommerceType>
 					<iExtraCommerce>2</iExtraCommerce>
 				</BuildingExtraCommerce>
@@ -20225,7 +20225,7 @@
 			<UnitName/>
 			<UnitCombatPromotions/>
 			<UnitClassPromotions/>
-			<BuildingClass>BUILDINGCLASS_MILITARY_ACADEMY</BuildingClass>
+			<BuildingClass>BUILDINGCLASS_PALACE</BuildingClass>
 			<iBuildingChange>1</iBuildingChange>
 			<BuildingExtraYields/>
 			<BuildingExtraCommerces/>
@@ -20979,7 +20979,7 @@
 			<BuildingExtraYields/>
 			<BuildingExtraCommerces>
 				<BuildingExtraCommerce>
-					<BuildingClass>BUILDINGCLASS_BARRACKS</BuildingClass>
+					<BuildingClass>BUILDINGCLASS_PALACE</BuildingClass>
 					<CommerceType>COMMERCE_ESPIONAGE</CommerceType>
 					<iExtraCommerce>2</iExtraCommerce>
 				</BuildingExtraCommerce>
@@ -21228,7 +21228,7 @@
 			<BuildingExtraYields/>
 			<BuildingExtraCommerces>
 				<BuildingExtraCommerce>
-					<BuildingClass>BUILDINGCLASS_COURTHOUSE</BuildingClass>
+					<BuildingClass>BUILDINGCLASS_PALACE</BuildingClass>
 					<CommerceType>COMMERCE_GOLD</CommerceType>
 					<iExtraCommerce>1</iExtraCommerce>
 				</BuildingExtraCommerce>
@@ -21315,7 +21315,7 @@
 			<BuildingExtraYields/>
 			<BuildingExtraCommerces>
 				<BuildingExtraCommerce>
-					<BuildingClass>BUILDINGCLASS_COURTHOUSE</BuildingClass>
+					<BuildingClass>BUILDINGCLASS_PALACE</BuildingClass>
 					<CommerceType>COMMERCE_CULTURE</CommerceType>
 					<iExtraCommerce>3</iExtraCommerce>
 				</BuildingExtraCommerce>
@@ -22514,7 +22514,7 @@
 			<iBuildingChange>0</iBuildingChange>
 			<BuildingExtraYields>
 				<BuildingExtraYield>
-					<BuildingClass>BUILDINGCLASS_HARBOR</BuildingClass>
+					<BuildingClass>BUILDINGCLASS_PALACE</BuildingClass>
 					<YieldType>YIELD_COMMERCE</YieldType>
 					<iExtraYield>2</iExtraYield>
 				</BuildingExtraYield>
@@ -23492,7 +23492,7 @@
 			<iBuildingChange>0</iBuildingChange>
 			<BuildingExtraYields>
 				<BuildingExtraYield>
-					<BuildingClass>BUILDINGCLASS_HARBOR</BuildingClass>
+					<BuildingClass>BUILDINGCLASS_PALACE</BuildingClass>
 					<YieldType>YIELD_COMMERCE</YieldType>
 					<iExtraYield>5</iExtraYield>
 				</BuildingExtraYield>
@@ -24086,7 +24086,7 @@
 			<BuildingExtraYields/>
 			<BuildingExtraCommerces>
 				<BuildingExtraCommerce>
-					<BuildingClass>BUILDINGCLASS_UNIVERSITY</BuildingClass>
+					<BuildingClass>BUILDINGCLASS_PALACE</BuildingClass>
 					<CommerceType>COMMERCE_RESEARCH</CommerceType>
 					<iExtraCommerce>3</iExtraCommerce>
 				</BuildingExtraCommerce>
@@ -25330,7 +25330,7 @@
 			<UnitName/>
 			<UnitCombatPromotions/>
 			<UnitClassPromotions/>
-			<BuildingClass>BUILDINGCLASS_ACADEMY</BuildingClass>
+			<BuildingClass>BUILDINGCLASS_PALACE</BuildingClass>
 			<iBuildingChange>1</iBuildingChange>
 			<BuildingExtraYields/>
 			<BuildingExtraCommerces/>
@@ -26311,7 +26311,7 @@
 			<iBuildingChange>0</iBuildingChange>
 			<BuildingExtraYields>
 				<BuildingExtraYield>
-					<BuildingClass>BUILDINGCLASS_COAL_PLANT</BuildingClass>
+					<BuildingClass>BUILDINGCLASS_PALACE</BuildingClass>
 					<YieldType>YIELD_PRODUCTION</YieldType>
 					<iExtraYield>4</iExtraYield>
 				</BuildingExtraYield>
@@ -26398,7 +26398,7 @@
 			<iBuildingChange>0</iBuildingChange>
 			<BuildingExtraYields>
 				<BuildingExtraYield>
-					<BuildingClass>BUILDINGCLASS_DRYDOCK</BuildingClass>
+					<BuildingClass>BUILDINGCLASS_PALACE</BuildingClass>
 					<YieldType>YIELD_PRODUCTION</YieldType>
 					<iExtraYield>2</iExtraYield>
 				</BuildingExtraYield>
@@ -26407,7 +26407,7 @@
 			<BuildingExtraHappies/>
 			<BuildingExtraHealths>
 				<BuildingExtraHealth>
-					<BuildingClass>BUILDINGCLASS_DRYDOCK</BuildingClass>
+					<BuildingClass>BUILDINGCLASS_PALACE</BuildingClass>
 					<iHealth>1</iHealth>
 				</BuildingExtraHealth>
 			</BuildingExtraHealths>
@@ -26486,7 +26486,7 @@
 			<UnitName/>
 			<UnitCombatPromotions/>
 			<UnitClassPromotions/>
-			<BuildingClass>BUILDINGCLASS_HYDRO_PLANT</BuildingClass>
+			<BuildingClass>BUILDINGCLASS_PALACE</BuildingClass>
 			<iBuildingChange>-1</iBuildingChange>
 			<BuildingExtraYields/>
 			<BuildingExtraCommerces/>
@@ -26901,12 +26901,12 @@
 			<BuildingExtraYields/>
 			<BuildingExtraCommerces>
 				<BuildingExtraCommerce>
-					<BuildingClass>BUILDINGCLASS_JEWISH_MONASTERY</BuildingClass>
+					<BuildingClass>BUILDINGCLASS_PALACE</BuildingClass>
 					<CommerceType>COMMERCE_CULTURE</CommerceType>
 					<iExtraCommerce>8</iExtraCommerce>
 				</BuildingExtraCommerce>
 				<BuildingExtraCommerce>
-					<BuildingClass>BUILDINGCLASS_JEWISH_MONASTERY</BuildingClass>
+					<BuildingClass>BUILDINGCLASS_PALACE</BuildingClass>
 					<CommerceType>COMMERCE_GOLD</CommerceType>
 					<iExtraCommerce>5</iExtraCommerce>
 				</BuildingExtraCommerce>
@@ -27074,7 +27074,7 @@
 			<BuildingExtraYields/>
 			<BuildingExtraCommerces>
 				<BuildingExtraCommerce>
-					<BuildingClass>BUILDINGCLASS_FORGE</BuildingClass>
+					<BuildingClass>BUILDINGCLASS_PALACE</BuildingClass>
 					<CommerceType>COMMERCE_CULTURE</CommerceType>
 					<iExtraCommerce>6</iExtraCommerce>
 				</BuildingExtraCommerce>
@@ -27242,7 +27242,7 @@
 			<BuildingExtraYields/>
 			<BuildingExtraCommerces>
 				<BuildingExtraCommerce>
-					<BuildingClass>BUILDINGCLASS_CHRISTIAN_MONASTERY</BuildingClass>
+					<BuildingClass>BUILDINGCLASS_PALACE</BuildingClass>
 					<CommerceType>COMMERCE_CULTURE</CommerceType>
 					<iExtraCommerce>2</iExtraCommerce>
 				</BuildingExtraCommerce>
@@ -27329,12 +27329,12 @@
 			<BuildingExtraYields/>
 			<BuildingExtraCommerces>
 				<BuildingExtraCommerce>
-					<BuildingClass>BUILDINGCLASS_CHRISTIAN_MONASTERY</BuildingClass>
+					<BuildingClass>BUILDINGCLASS_PALACE</BuildingClass>
 					<CommerceType>COMMERCE_RESEARCH</CommerceType>
 					<iExtraCommerce>4</iExtraCommerce>
 				</BuildingExtraCommerce>
 				<BuildingExtraCommerce>
-					<BuildingClass>BUILDINGCLASS_CHRISTIAN_MONASTERY</BuildingClass>
+					<BuildingClass>BUILDINGCLASS_PALACE</BuildingClass>
 					<CommerceType>COMMERCE_CULTURE</CommerceType>
 					<iExtraCommerce>2</iExtraCommerce>
 				</BuildingExtraCommerce>
@@ -27745,12 +27745,12 @@
 			<BuildingExtraYields/>
 			<BuildingExtraCommerces>
 				<BuildingExtraCommerce>
-					<BuildingClass>BUILDINGCLASS_LIBRARY</BuildingClass>
+					<BuildingClass>BUILDINGCLASS_PALACE</BuildingClass>
 					<CommerceType>COMMERCE_RESEARCH</CommerceType>
 					<iExtraCommerce>2</iExtraCommerce>
 				</BuildingExtraCommerce>
 				<BuildingExtraCommerce>
-					<BuildingClass>BUILDINGCLASS_LIBRARY</BuildingClass>
+					<BuildingClass>BUILDINGCLASS_PALACE</BuildingClass>
 					<CommerceType>COMMERCE_CULTURE</CommerceType>
 					<iExtraCommerce>2</iExtraCommerce>
 				</BuildingExtraCommerce>
@@ -27913,7 +27913,7 @@
 			<UnitName/>
 			<UnitCombatPromotions/>
 			<UnitClassPromotions/>
-			<BuildingClass>BUILDINGCLASS_BROADCAST_TOWER</BuildingClass>
+			<BuildingClass>BUILDINGCLASS_PALACE</BuildingClass>
 			<iBuildingChange>-1</iBuildingChange>
 			<BuildingExtraYields/>
 			<BuildingExtraCommerces/>
@@ -28079,7 +28079,7 @@
 			<iBuildingChange>0</iBuildingChange>
 			<BuildingExtraYields>
 				<BuildingExtraYield>
-					<BuildingClass>BUILDINGCLASS_FACTORY</BuildingClass>
+					<BuildingClass>BUILDINGCLASS_PALACE</BuildingClass>
 					<YieldType>YIELD_PRODUCTION</YieldType>
 					<iExtraYield>2</iExtraYield>
 				</BuildingExtraYield>
@@ -28253,37 +28253,37 @@
 			<BuildingExtraYields/>
 			<BuildingExtraCommerces>
 				<BuildingExtraCommerce>
-					<BuildingClass>BUILDINGCLASS_JEWISH_CATHEDRAL</BuildingClass>
+					<BuildingClass>BUILDINGCLASS_PALACE</BuildingClass>
 					<CommerceType>COMMERCE_GOLD</CommerceType>
 					<iExtraCommerce>2</iExtraCommerce>
 				</BuildingExtraCommerce>
 				<BuildingExtraCommerce>
-					<BuildingClass>BUILDINGCLASS_HINDU_CATHEDRAL</BuildingClass>
+					<BuildingClass>BUILDINGCLASS_PALACE</BuildingClass>
 					<CommerceType>COMMERCE_GOLD</CommerceType>
 					<iExtraCommerce>2</iExtraCommerce>
 				</BuildingExtraCommerce>
 				<BuildingExtraCommerce>
-					<BuildingClass>BUILDINGCLASS_BUDDHIST_CATHEDRAL</BuildingClass>
+					<BuildingClass>BUILDINGCLASS_PALACE</BuildingClass>
 					<CommerceType>COMMERCE_GOLD</CommerceType>
 					<iExtraCommerce>2</iExtraCommerce>
 				</BuildingExtraCommerce>
 				<BuildingExtraCommerce>
-					<BuildingClass>BUILDINGCLASS_PAGAN_CATHEDRAL</BuildingClass>
+					<BuildingClass>BUILDINGCLASS_PALACE</BuildingClass>
 					<CommerceType>COMMERCE_GOLD</CommerceType>
 					<iExtraCommerce>2</iExtraCommerce>
 				</BuildingExtraCommerce>
 				<BuildingExtraCommerce>
-					<BuildingClass>BUILDINGCLASS_CHRISTIAN_CATHEDRAL</BuildingClass>
+					<BuildingClass>BUILDINGCLASS_PALACE</BuildingClass>
 					<CommerceType>COMMERCE_GOLD</CommerceType>
 					<iExtraCommerce>2</iExtraCommerce>
 				</BuildingExtraCommerce>
 				<BuildingExtraCommerce>
-					<BuildingClass>BUILDINGCLASS_DAOIST_CATHEDRAL</BuildingClass>
+					<BuildingClass>BUILDINGCLASS_PALACE</BuildingClass>
 					<CommerceType>COMMERCE_GOLD</CommerceType>
 					<iExtraCommerce>2</iExtraCommerce>
 				</BuildingExtraCommerce>
 				<BuildingExtraCommerce>
-					<BuildingClass>BUILDINGCLASS_ISLAMIC_CATHEDRAL</BuildingClass>
+					<BuildingClass>BUILDINGCLASS_PALACE</BuildingClass>
 					<CommerceType>COMMERCE_GOLD</CommerceType>
 					<iExtraCommerce>2</iExtraCommerce>
 				</BuildingExtraCommerce>
@@ -28450,7 +28450,7 @@
 			<iBuildingChange>0</iBuildingChange>
 			<BuildingExtraYields>
 				<BuildingExtraYield>
-					<BuildingClass>BUILDINGCLASS_COURTHOUSE</BuildingClass>
+					<BuildingClass>BUILDINGCLASS_PALACE</BuildingClass>
 					<YieldType>YIELD_PRODUCTION</YieldType>
 					<iExtraYield>2</iExtraYield>
 				</BuildingExtraYield>
@@ -28498,4 +28498,6 @@
 		</EventInfo>
 	</EventInfos>
 </Civ4EventInfos>
+
+
 
