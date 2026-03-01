@@ -180,7 +180,7 @@ These are general guidelines, not irrevocable requirements; adjust based on task
 
 ## XML
 
-- Any new XML text should to our AdvCiv-SAS-Encyclopedia files such as [AdvCiv-SAS-Encyclopedia_main.xml](/Assets/XML/Text/AdvCiv-SAS-Encyclopedia_main.xml) (e.g., `TXT_KEY_BUILDING_KOREAN_GYEONGDANG`), and only in `<English>`.
+- Any new XML text should to our AdvCiv-SAS-Encyclopedia files such as [AdvCiv-SAS_main.xml](/Assets/XML/Text/AdvCiv-SAS_main.xml) (e.g., `TXT_KEY_BUILDING_KOREAN_GYEONGDANG`), and only in `<English>`.
 - Example of exception: long Civilopedia blurbs (e.g., `TXT_KEY_BUILDING_KOREAN_GYEONGDANG_PEDIA`) in [AdvCiv-SAS-Encyclopedia_Sevopedia_Lengthy.xml](/Assets/XML/Text/AdvCiv-SAS-Encyclopedia_Sevopedia_Lengthy.xml), even when it uses a stub (becuase it will be filled later with lengthy content).
 - Move XML texts we modify from other files to our AdvCiv-SAS-Encyclopedia files too and remove other languages while doing so.
 - Avoid to comment in deep-nested XML just in case. For example, comment before `<ObsoleteSafeCommerceChanges>`, not before its child `<iCommerce>`.
