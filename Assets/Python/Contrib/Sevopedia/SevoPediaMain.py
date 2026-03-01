@@ -2094,6 +2094,15 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 						# <!-- custom: End - Based on C2C mod's implementation thanks: add navigation of the item list with the UP/DOWN arrow keys. Code adjusted for AdvCiv-SAS with the help of chatgpt 5.2 and claude opus 4.5. -->
 
 		if (inputClass.getNotifyCode() == NotifyCode.NOTIFY_LISTBOX_ITEM_SELECTED):
+			# <!-- custom: Route leader list row selection directly to PEDIA_LEADERS so leaders without a unique civ mapping
+			# (data2 can be -1 for WIDGET_PEDIA_JUMP_TO_LEADER) still open from the Leaders category list. (GPT-5.3-Codex) -->
+			if inputClass.getFunctionName() == self.ITEM_LIST_ID and self.iCategory == SevoScreenEnums.PEDIA_LEADERS:
+				iRow = inputClass.getData()
+				iListIdx = self.SAS_rowToListIdx.get(iRow, None)
+				if iListIdx is not None:
+					item = self.list[iListIdx]
+					if item[1] != -1:
+						return self.pediaJump(SevoScreenEnums.PEDIA_LEADERS, item[1], True, False)
 			if inputClass.getFunctionName() == self.ITEM_LIST_ID and self.iCategory == SevoScreenEnums.PEDIA_BUILDS:
 				iRow = inputClass.getData()
 				iListIdx = self.SAS_rowToListIdx.get(iRow, None)
