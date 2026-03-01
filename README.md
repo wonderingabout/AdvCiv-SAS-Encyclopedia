@@ -15,11 +15,46 @@ For License and Reuse, see [License and reuse](/README.md#license-and-reuse).
 
 ## Menu
 
+[Example of minimal compact XML info](/README.md#example-of-minimal-compact-xml-info)  
 [Copyright and Disclaimer](/README.md#copyright-and-disclaimer)  
 [Credits](/README.md#credits)  
 [Some Useful tools while doing this](/README.md#some-useful-tools-while-doing-this)  
 [License and reuse](/README.md#license-and-reuse)  
 [Authors](/README.md#authors)  
+
+## Example of minimal compact XML info
+
+```xml
+<Civ4LeaderHeadInfos xmlns="x-schema:CIV4CivilizationsSchema.xml">
+	<LeaderHeadInfos>
+		<LeaderHeadInfo> <!-- custom: Washington -->
+			<Type>LEADER_WASHINGTON</Type>
+			<Description>TXT_KEY_LEADER_WASHINGTON</Description>
+			<ArtDefineTag>ART_DEF_LEADER_WASHINGTON</ArtDefineTag>
+		</LeaderHeadInfo>
+	</LeaderHeadInfos>
+</Civ4LeaderHeadInfos>
+```
+
+```xml
+<Civ4CivilizationInfos xmlns="x-schema:CIV4CivilizationsSchema.xml">
+	<CivilizationInfos>
+		<CivilizationInfo>
+			<Type>CIVILIZATION_AMERICA</Type>
+			<Description>TXT_KEY_CIV_AMERICA_DESC</Description>
+			<ArtDefineTag>ART_DEF_CIVILIZATION_AMERICA</ArtDefineTag>
+			<Leaders>
+				<Leader>
+					<LeaderName>LEADER_WASHINGTON</LeaderName>
+					<bLeaderAvailability>1</bLeaderAvailability>
+				</Leader>
+			</Leaders>
+		</CivilizationInfo>
+	</CivilizationInfos>
+</Civ4CivilizationInfos>
+```
+
+Done with the help of GPT-5.3-Codex thanks.
 
 ## Copyright and Disclaimer
 

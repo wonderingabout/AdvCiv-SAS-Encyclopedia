@@ -9,196 +9,23 @@
 		<CivilizationInfo>
 			<Type>CIVILIZATION_AMERICA</Type>
 			<Description>TXT_KEY_CIV_AMERICA_DESC</Description>
-			<ShortDescription>TXT_KEY_CIV_AMERICA_SHORT_DESC</ShortDescription>
-			<Adjective>TXT_KEY_CIV_AMERICA_ADJECTIVE</Adjective>
-			<Civilopedia>TXT_KEY_CIV_AMERICA_PEDIA</Civilopedia>
-			<DefaultPlayerColor>PLAYERCOLOR_BLUE</DefaultPlayerColor>
 			<ArtDefineTag>ART_DEF_CIVILIZATION_AMERICA</ArtDefineTag>
-			<ArtStyleType>ARTSTYLE_EUROPEAN</ArtStyleType>
-			<UnitArtStyleType>UNIT_ARTSTYLE_EUROPEAN</UnitArtStyleType>
-			<bPlayable>1</bPlayable>
-			<bAIPlayable>1</bAIPlayable>
-			<Cities>
-				<City>TXT_KEY_CITY_NAME_WASHINGTON</City>
-			</Cities>
-			<Buildings>
-				<Building>
-					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
-					<BuildingType>BUILDING_PALACE</BuildingType>
-				</Building>
-			</Buildings>
-			<Units>
-				<Unit>
-					<UnitClassType>UNITCLASS_WARRIOR</UnitClassType>
-					<UnitType>UNIT_WARRIOR</UnitType>
-				</Unit>
-			</Units>
-			<FreeUnitClasses>
-				<FreeUnitClass>
-					<UnitClassType>UNITCLASS_WARRIOR</UnitClassType>
-					<iFreeUnits>1</iFreeUnits>
-				</FreeUnitClass>
-			</FreeUnitClasses>
-			<FreeBuildingClasses>
-				<FreeBuildingClass>
-					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
-					<bFreeBuildingClass>1</bFreeBuildingClass>
-				</FreeBuildingClass>
-			</FreeBuildingClasses>
-			<!-- custom: techs updated with the big and thanks a lot but of me toohelp of chatgpt 5, see readme_tech_tree.md for details; also check if accurate -->
-			<FreeTechs>
-				<FreeTech>
-					<TechType>TECH_HUNTING</TechType>
-					<bFreeTech>1</bFreeTech>
-				</FreeTech>
-				<FreeTech>
-					<TechType>TECH_HUNTING</TechType>
-					<bFreeTech>1</bFreeTech>
-				</FreeTech>
-			</FreeTechs>
-			<DisableTechs/>
-			<InitialCivics>
-				<CivicType>CIVIC_DESPOTISM</CivicType>
-				<CivicType>CIVIC_BARBARISM</CivicType>
-				<CivicType>CIVIC_TRIBALISM</CivicType>
-				<CivicType>CIVIC_DECENTRALIZATION</CivicType>
-				<CivicType>CIVIC_PREHISTORIC_RELIGION</CivicType>
-			</InitialCivics>
 			<Leaders>
 				<Leader>
 					<LeaderName>LEADER_WASHINGTON</LeaderName>
 					<bLeaderAvailability>1</bLeaderAvailability>
 				</Leader>
 			</Leaders>
-			<DerivativeCiv>NONE</DerivativeCiv>
-			<CivilizationSelectionSound>AS3D_AMERICA_SELECT</CivilizationSelectionSound>
-			<CivilizationActionSound>AS3D_AMERICA_ORDER</CivilizationActionSound>
 		</CivilizationInfo>
 		<CivilizationInfo>
 			<Type>CIVILIZATION_MINOR</Type>
 			<Description>TXT_KEY_CIV_MINOR_DESC</Description>
-			<ShortDescription>TXT_KEY_CIV_MINOR_SHORT_DESC</ShortDescription>
-			<Adjective>TXT_KEY_CIV_MINOR_ADJECTIVE</Adjective>
-			<Civilopedia>TXT_KEY_CIV_MINOR_PEDIA</Civilopedia>
-			<!-- advc.002i: was WHITE (clashes with England) -->
-			<DefaultPlayerColor>PLAYERCOLOR_BLACK_AND_GREEN</DefaultPlayerColor>
 			<ArtDefineTag>ART_DEF_CIVILIZATION_MINOR</ArtDefineTag>
-			<ArtStyleType>ARTSTYLE_BARBARIAN</ArtStyleType>
-			<bPlayable>0</bPlayable>
-			<bAIPlayable>0</bAIPlayable>
-			<Cities>
-				<City>TXT_KEY_CITY_NAME_CHEROKEE</City>
-			</Cities>
-			<Buildings/>
-			<Units/>
-			<FreeUnitClasses>
-				<FreeUnitClass>
-					<UnitClassType>UNITCLASS_WARRIOR</UnitClassType>
-					<iFreeUnits>1</iFreeUnits>
-				</FreeUnitClass>
-			</FreeUnitClasses>
-			<FreeBuildingClasses>
-				<FreeBuildingClass>
-					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
-					<bFreeBuildingClass>1</bFreeBuildingClass>
-				</FreeBuildingClass>
-			</FreeBuildingClasses>
-			<FreeTechs>
-				<FreeTech>
-					<TechType>TECH_HUNTING</TechType>
-					<bFreeTech>1</bFreeTech>
-				</FreeTech>
-				<FreeTech>
-					<TechType>TECH_HUNTING</TechType>
-					<bFreeTech>1</bFreeTech>
-				</FreeTech>
-			</FreeTechs>
-			<DisableTechs/>
-			<InitialCivics>
-				<CivicType>CIVIC_DESPOTISM</CivicType>
-				<CivicType>CIVIC_BARBARISM</CivicType>
-				<CivicType>CIVIC_TRIBALISM</CivicType>
-				<CivicType>CIVIC_DECENTRALIZATION</CivicType>
-				<CivicType>CIVIC_PREHISTORIC_RELIGION</CivicType>
-			</InitialCivics>
-			<Leaders>
-				<Leader>
-					<LeaderName>LEADER_BARBARIAN</LeaderName>
-					<bLeaderAvailability>1</bLeaderAvailability>
-				</Leader>
-			</Leaders>
-			<DerivativeCiv>NONE</DerivativeCiv>
-			<CivilizationSelectionSound/>
-			<CivilizationActionSound/>
 		</CivilizationInfo>
 		<CivilizationInfo>
 			<Type>CIVILIZATION_BARBARIAN</Type>
 			<Description>TXT_KEY_CIV_BARBARIAN_DESC</Description>
-			<ShortDescription>TXT_KEY_CIV_BARBARIAN_SHORT_DESC</ShortDescription>
-			<Adjective>TXT_KEY_CIV_BARBARIAN_ADJECTIVE</Adjective>
-			<Civilopedia>TXT_KEY_CIV_BARBARIAN_PEDIA</Civilopedia>
-			<DefaultPlayerColor>PLAYERCOLOR_BLACK</DefaultPlayerColor>
 			<ArtDefineTag>ART_DEF_CIVILIZATION_BARBARIAN</ArtDefineTag>
-			<ArtStyleType>ARTSTYLE_BARBARIAN</ArtStyleType>
-			<bPlayable>0</bPlayable>
-			<bAIPlayable>0</bAIPlayable>
-			<Cities>
-				<City>TXT_KEY_CITY_NAME_CHEROKEE</City>
-			</Cities>
-			<Buildings>
-				<!-- custom: (for barbarians) see code comment at FreeBuildingClasses for details -->
-				<Building>
-					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
-					<BuildingType>BUILDING_PALACE</BuildingType>
-				</Building>
-			</Buildings>
-			<!-- custom: Long_Comments_XML.txt #348 -->
-			<Units>
-				<Unit>
-					<UnitClassType>UNITCLASS_WARRIOR</UnitClassType>
-					<UnitType>UNIT_WARRIOR</UnitType>
-				</Unit>
-			</Units>
-			<FreeUnitClasses/>
-			<!-- custom: GPT-5.2-Codex: Long_Comments_XML.txt #17 -->
-			<FreeBuildingClasses>
-				<FreeBuildingClass>
-					<BuildingClassType>BUILDINGCLASS_PALACE</BuildingClassType>
-					<bFreeBuildingClass>1</bFreeBuildingClass>
-				</FreeBuildingClass>
-			</FreeBuildingClasses>
-			<FreeTechs>
-				<FreeTech>
-					<TechType>TECH_HUNTING</TechType>
-					<bFreeTech>1</bFreeTech>
-				</FreeTech>
-				<FreeTech>
-					<TechType>TECH_HUNTING</TechType>
-					<bFreeTech>1</bFreeTech>
-				</FreeTech>
-				<!-- custom: not putting mysticism here to reduce the likeliness of barbarians having a holy city for religions such as paganism, judaism, hinduism -->
-				<FreeTech>
-					<TechType>TECH_HUNTING</TechType>
-					<bFreeTech>1</bFreeTech>
-				</FreeTech>
-			</FreeTechs>
-			<DisableTechs/>
-			<InitialCivics>
-				<CivicType>CIVIC_DESPOTISM</CivicType>
-				<CivicType>CIVIC_BARBARISM</CivicType>
-				<CivicType>CIVIC_TRIBALISM</CivicType>
-				<CivicType>CIVIC_DECENTRALIZATION</CivicType>
-				<CivicType>CIVIC_PREHISTORIC_RELIGION</CivicType>
-			</InitialCivics>
-			<Leaders>
-				<Leader>
-					<LeaderName>LEADER_BARBARIAN</LeaderName>
-					<bLeaderAvailability>1</bLeaderAvailability>
-				</Leader>
-			</Leaders>
-			<DerivativeCiv>NONE</DerivativeCiv>
-			<CivilizationSelectionSound/>
-			<CivilizationActionSound/>
 		</CivilizationInfo>
 	</CivilizationInfos>
 </Civ4CivilizationInfos>

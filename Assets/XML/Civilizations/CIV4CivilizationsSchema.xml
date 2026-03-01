@@ -479,30 +479,30 @@
 	<ElementType name="CivilizationActionSound" content="textOnly"/>
 	<ElementType name="UnitArtStyleType" content="textOnly"/>
 	<ElementType name="CivilizationInfo" content="eltOnly">
-		<element type="Type"/>
-		<element type="Description"/>
-		<element type="ShortDescription"/>
-		<element type="Adjective"/>
-		<element type="Civilopedia"/>
-		<element type="DefaultPlayerColor"/>
-		<element type="ArtDefineTag"/>
-		<element type="ArtStyleType"/>
+		<element type="Type" minOccurs="0"/>
+		<element type="Description" minOccurs="0"/>
+		<element type="ShortDescription" minOccurs="0"/>
+		<element type="Adjective" minOccurs="0"/>
+		<element type="Civilopedia" minOccurs="0"/>
+		<element type="DefaultPlayerColor" minOccurs="0"/>
+		<element type="ArtDefineTag" minOccurs="0"/>
+		<element type="ArtStyleType" minOccurs="0"/>
 		<element type="UnitArtStyleType" minOccurs="0" maxOccurs="1"/>
-		<element type="bPlayable"/>
-		<element type="bAIPlayable"/>
-		<element type="Cities"/>
-		<element type="Buildings"/>
-		<element type="Units"/>
-		<element type="FreeUnitClasses"/>
-		<element type="FreeBuildingClasses"/>
-		<element type="FreeTechs"/>
-		<element type="DisableTechs"/>
-		<element type="InitialCivics"/>
+		<element type="bPlayable" minOccurs="0"/>
+		<element type="bAIPlayable" minOccurs="0"/>
+		<element type="Cities" minOccurs="0"/>
+		<element type="Buildings" minOccurs="0"/>
+		<element type="Units" minOccurs="0"/>
+		<element type="FreeUnitClasses" minOccurs="0"/>
+		<element type="FreeBuildingClasses" minOccurs="0"/>
+		<element type="FreeTechs" minOccurs="0"/>
+		<element type="DisableTechs" minOccurs="0"/>
+		<element type="InitialCivics" minOccurs="0"/>
 		<element type="AnarchyCivics" minOccurs="0"/>
 		<element type="Leaders" minOccurs="0"/>
-		<element type="DerivativeCiv"/>
-		<element type="CivilizationSelectionSound"/>
-		<element type="CivilizationActionSound"/>
+		<element type="DerivativeCiv" minOccurs="0"/>
+		<element type="CivilizationSelectionSound" minOccurs="0"/>
+		<element type="CivilizationActionSound" minOccurs="0"/>
 	</ElementType>
 	<ElementType name="CivilizationInfos" content="eltOnly">
 		<element type="CivilizationInfo" maxOccurs="*"/>
@@ -548,3 +548,4 @@
 		<element type="UnitArtStyleTypeInfos" minOccurs="0" maxOccurs="*"/>
 	</ElementType>
 </Schema>
+
