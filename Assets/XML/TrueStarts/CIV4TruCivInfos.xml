@@ -30,7 +30,7 @@
 		</TruCivInfo>
 		<TruCivInfo>
 			<Type>TRU_ARABIA</Type>
-			<CivilizationType>CIVILIZATION_ARABIA</CivilizationType>
+			<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 			<!-- Actually 214, but that tends to be quite close to the
 				 Jungle belt. Especially considering that the DLL tends to
 				 start civs at slightly lower latitude than this file says
@@ -53,7 +53,7 @@
 		</TruCivInfo>
 		<TruCivInfo>
 			<Type>TRU_AZTEC</Type>
-			<CivilizationType>CIVILIZATION_AZTEC</CivilizationType>
+			<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 			<iLatitudeTimes10>194</iLatitudeTimes10>
 			<iLongitudeTimes10>-991</iLongitudeTimes10>
 			<iPrecipitation>851</iPrecipitation>
@@ -70,7 +70,7 @@
 		</TruCivInfo>
 		<TruCivInfo>
 			<Type>TRU_BABYLON</Type>
-			<CivilizationType>CIVILIZATION_BABYLON</CivilizationType>
+			<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 			<iLatitudeTimes10>325</iLatitudeTimes10>
 			<iLongitudeTimes10>444</iLongitudeTimes10>
 			<iPrecipitation>156</iPrecipitation>
@@ -90,7 +90,7 @@
 		</TruCivInfo>
 		<TruCivInfo>
 			<Type>TRU_BYZANTIUM</Type>
-			<CivilizationType>CIVILIZATION_BYZANTIUM</CivilizationType>
+			<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 			<iLatitudeTimes10>410</iLatitudeTimes10>
 			<iLongitudeTimes10>290</iLongitudeTimes10>
 			<iPrecipitation>850</iPrecipitation>
@@ -108,7 +108,7 @@
 		</TruCivInfo>
 		<TruCivInfo>
 			<Type>TRU_CARTHAGE</Type>
-			<CivilizationType>CIVILIZATION_CARTHAGE</CivilizationType>
+			<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 			<iLatitudeTimes10>369</iLatitudeTimes10>
 			<iLongitudeTimes10>103</iLongitudeTimes10>
 			<iPrecipitation>472</iPrecipitation>
@@ -127,7 +127,7 @@
 		</TruCivInfo>
 		<TruCivInfo>
 			<Type>TRU_CELT</Type>
-			<CivilizationType>CIVILIZATION_CELT</CivilizationType>
+			<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 			<iLatitudeTimes10>469</iLatitudeTimes10>
 			<iLongitudeTimes10>40</iLongitudeTimes10>
 			<!-- Dijon - which seems dry for its region, but Boudica's
@@ -149,7 +149,7 @@
 		</TruCivInfo>
 		<TruCivInfo>
 			<Type>TRU_CHINA</Type>
-			<CivilizationType>CIVILIZATION_CHINA</CivilizationType>
+			<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 			<!-- Mean of Beijing (399) and Xi'an (343) b/c the high latitude
 				 value gets China chosen over European civs too often. -->
 			<iLatitudeTimes10>371</iLatitudeTimes10>
@@ -175,7 +175,7 @@
 		</TruCivInfo>
 		<TruCivInfo>
 			<Type>TRU_EGYPT</Type>
-			<CivilizationType>CIVILIZATION_EGYPT</CivilizationType>
+			<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 			<iLatitudeTimes10>298</iLatitudeTimes10>
 			<iLongitudeTimes10>310</iLongitudeTimes10>
 			<!-- Thebes is extremely dry -->
@@ -196,7 +196,7 @@
 		</TruCivInfo>
 		<TruCivInfo>
 			<Type>TRU_ENGLAND</Type>
-			<CivilizationType>CIVILIZATION_ENGLAND</CivilizationType>
+			<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 			<!-- Moved south by 1 degree to account for the mild climate -->
 			<iLatitudeTimes10>505</iLatitudeTimes10>
 			<iLongitudeTimes10>1</iLongitudeTimes10>
@@ -214,7 +214,7 @@
 		</TruCivInfo>
 		<TruCivInfo>
 			<Type>TRU_ETHIOPIA</Type>
-			<CivilizationType>CIVILIZATION_ETHIOPIA</CivilizationType>
+			<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 			<!-- (Could use a somewhat lower value to account for Zara Yaqob's
 				 capital being in Central Ethiopia) -->
 			<iLatitudeTimes10>147</iLatitudeTimes10>
@@ -234,7 +234,7 @@
 		</TruCivInfo>
 		<TruCivInfo>
 			<Type>TRU_FRANCE</Type>
-			<CivilizationType>CIVILIZATION_FRANCE</CivilizationType>
+			<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 			<iLatitudeTimes10>489</iLatitudeTimes10>
 			<iLongitudeTimes10>24</iLongitudeTimes10>
 			<iPrecipitation>850</iPrecipitation>
@@ -247,7 +247,7 @@
 		</TruCivInfo>
 		<TruCivInfo>
 			<Type>TRU_GERMANY</Type>
-			<CivilizationType>CIVILIZATION_GERMANY</CivilizationType>
+			<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 			<iLatitudeTimes10>525</iLatitudeTimes10>
 			<iLongitudeTimes10>130</iLongitudeTimes10>
 			<iPrecipitation>700</iPrecipitation>
@@ -263,7 +263,7 @@
 		</TruCivInfo>
 		<TruCivInfo>
 			<Type>TRU_GREECE</Type>
-			<CivilizationType>CIVILIZATION_GREECE</CivilizationType>
+			<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 			<iLatitudeTimes10>379</iLatitudeTimes10>
 			<iLongitudeTimes10>237</iLongitudeTimes10>
 			<iPrecipitation>433</iPrecipitation>
@@ -279,7 +279,7 @@
 		</TruCivInfo>
 		<TruCivInfo>
 			<Type>TRU_HOLY_ROMAN</Type>
-			<CivilizationType>CIVILIZATION_HOLY_ROMAN</CivilizationType>
+			<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 			<iLatitudeTimes10>508</iLatitudeTimes10>
 			<iLongitudeTimes10>61</iLongitudeTimes10>
 			<iPrecipitation>837</iPrecipitation>
@@ -294,7 +294,7 @@
 		</TruCivInfo>
 		<TruCivInfo>
 			<Type>TRU_INCA</Type>
-			<CivilizationType>CIVILIZATION_INCA</CivilizationType>
+			<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 			<iLatitudeTimes10>-135</iLatitudeTimes10>
 			<iLongitudeTimes10>-720</iLongitudeTimes10>
 			<!-- Cuzco; seems that other Inca cities tend to be drier,
@@ -313,7 +313,7 @@
 		</TruCivInfo>
 		<TruCivInfo>
 			<Type>TRU_INDIA</Type>
-			<CivilizationType>CIVILIZATION_INDIA</CivilizationType>
+			<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 			<iLatitudeTimes10>286</iLatitudeTimes10>
 			<iLongitudeTimes10>772</iLongitudeTimes10>
 			<!-- Delhi 762, across the country 1100. The south is quite far
@@ -331,7 +331,7 @@
 		</TruCivInfo>
 		<TruCivInfo>
 			<Type>TRU_JAPAN</Type>
-			<CivilizationType>CIVILIZATION_JAPAN</CivilizationType>
+			<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 			<iLatitudeTimes10>350</iLatitudeTimes10>
 			<iLongitudeTimes10>1358</iLongitudeTimes10>
 			<!-- 1523 in Kyoto; Tokyo even more. Across Japan I've found
@@ -349,7 +349,7 @@
 		</TruCivInfo>
 		<TruCivInfo>
 			<Type>TRU_KHMER</Type>
-			<CivilizationType>CIVILIZATION_KHMER</CivilizationType>
+			<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 			<iLatitudeTimes10>134</iLatitudeTimes10>
 			<iLongitudeTimes10>1038</iLongitudeTimes10>
 			<iPrecipitation>1406</iPrecipitation>
@@ -365,7 +365,7 @@
 		</TruCivInfo>
 		<TruCivInfo>
 			<Type>TRU_KOREA</Type>
-			<CivilizationType>CIVILIZATION_KOREA</CivilizationType>
+			<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 			<iLatitudeTimes10>376</iLatitudeTimes10>
 			<iLongitudeTimes10>1269</iLongitudeTimes10>
 			<!-- Mean of Seoul and Pyongyang -->
@@ -380,7 +380,7 @@
 		</TruCivInfo>
 		<TruCivInfo>
 			<Type>TRU_MALI</Type>
-			<CivilizationType>CIVILIZATION_MALI</CivilizationType>
+			<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 			<iLatitudeTimes10>168</iLatitudeTimes10>
 			<iLongitudeTimes10>30</iLongitudeTimes10>
 			<iPrecipitation>183</iPrecipitation>
@@ -398,7 +398,7 @@
 		</TruCivInfo>
 		<TruCivInfo>
 			<Type>TRU_MAYA</Type>
-			<CivilizationType>CIVILIZATION_MAYA</CivilizationType>
+			<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 			<iLatitudeTimes10>172</iLatitudeTimes10>
 			<iLongitudeTimes10>-896</iLongitudeTimes10>
 			<!-- 2000 around Flores. Let's go a bit higher rather than set
@@ -417,7 +417,7 @@
 		</TruCivInfo>
 		<TruCivInfo>
 			<Type>TRU_MONGOL</Type>
-			<CivilizationType>CIVILIZATION_MONGOL</CivilizationType>
+			<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 			<iLatitudeTimes10>472</iLatitudeTimes10>
 			<iLongitudeTimes10>1028</iLongitudeTimes10>
 			<!-- Arvaikheer -->
@@ -436,7 +436,7 @@
 		</TruCivInfo>
 		<TruCivInfo>
 			<Type>TRU_NATIVE_AMERICA</Type>
-			<CivilizationType>CIVILIZATION_NATIVE_AMERICA</CivilizationType>
+			<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 			<iLatitudeTimes10>387</iLatitudeTimes10>
 			<iLongitudeTimes10>-900</iLongitudeTimes10>
 			<!-- St. Louis (Cahokia) has 1060, which is pretty typical for
@@ -457,7 +457,7 @@
 		</TruCivInfo>
 		<TruCivInfo>
 			<Type>TRU_NETHERLANDS</Type>
-			<CivilizationType>CIVILIZATION_NETHERLANDS</CivilizationType>
+			<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 			<iLatitudeTimes10>523</iLatitudeTimes10>
 			<iLongitudeTimes10>50</iLongitudeTimes10>
 			<iPrecipitation>838</iPrecipitation>
@@ -471,7 +471,7 @@
 		</TruCivInfo>
 		<TruCivInfo>
 			<Type>TRU_OTTOMAN</Type>
-			<CivilizationType>CIVILIZATION_OTTOMAN</CivilizationType>
+			<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 			<!-- Same data as for Byzantium -->
 			<iLatitudeTimes10>410</iLatitudeTimes10>
 			<iLongitudeTimes10>290</iLongitudeTimes10>
@@ -493,7 +493,7 @@
 		</TruCivInfo>
 		<TruCivInfo>
 			<Type>TRU_PERSIA</Type>
-			<CivilizationType>CIVILIZATION_PERSIA</CivilizationType>
+			<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 			<iLatitudeTimes10>299</iLatitudeTimes10>
 			<iLongitudeTimes10>529</iLongitudeTimes10>
 			<iPrecipitation>306</iPrecipitation>
@@ -514,7 +514,7 @@
 		</TruCivInfo>
 		<TruCivInfo>
 			<Type>TRU_PORTUGAL</Type>
-			<CivilizationType>CIVILIZATION_PORTUGAL</CivilizationType>
+			<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 			<iLatitudeTimes10>387</iLatitudeTimes10>
 			<iLongitudeTimes10>-92</iLongitudeTimes10>
 			<iPrecipitation>774</iPrecipitation>
@@ -528,7 +528,7 @@
 		</TruCivInfo>
 		<TruCivInfo>
 			<Type>TRU_ROME</Type>
-			<CivilizationType>CIVILIZATION_ROME</CivilizationType>
+			<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 			<iLatitudeTimes10>419</iLatitudeTimes10>
 			<iLongitudeTimes10>125</iLongitudeTimes10>
 			<iPrecipitation>799</iPrecipitation>
@@ -543,7 +543,7 @@
 		</TruCivInfo>
 		<TruCivInfo>
 			<Type>TRU_RUSSIA</Type>
-			<CivilizationType>CIVILIZATION_RUSSIA</CivilizationType>
+			<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 			<iLatitudeTimes10>556</iLatitudeTimes10>
 			<iLongitudeTimes10>376</iLongitudeTimes10>
 			<iPrecipitation>713</iPrecipitation>
@@ -566,7 +566,7 @@
 		</TruCivInfo>
 		<TruCivInfo>
 			<Type>TRU_SPAIN</Type>
-			<CivilizationType>CIVILIZATION_SPAIN</CivilizationType>
+			<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 			<iLatitudeTimes10>403</iLatitudeTimes10>
 			<iLongitudeTimes10>-40</iLongitudeTimes10>
 			<!-- 423 in Madrid, but 650 across the country. -->
@@ -581,7 +581,7 @@
 		</TruCivInfo>
 		<TruCivInfo>
 			<Type>TRU_SUMERIA</Type>
-			<CivilizationType>CIVILIZATION_SUMERIA</CivilizationType>
+			<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 			<iLatitudeTimes10>313</iLatitudeTimes10>
 			<iLongitudeTimes10>456</iLongitudeTimes10>
 			<!-- Samawah -->
@@ -598,7 +598,7 @@
 		</TruCivInfo>
 		<TruCivInfo>
 			<Type>TRU_SCANDINAVIA</Type>
-			<CivilizationType>CIVILIZATION_SCANDINAVIA</CivilizationType>
+			<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 			<!-- Moved south by 3 degrees to account for the Gulf stream -->
 			<iLatitudeTimes10>604</iLatitudeTimes10>
 			<iLongitudeTimes10>104</iLongitudeTimes10>
@@ -617,7 +617,7 @@
 		</TruCivInfo>
 		<TruCivInfo>
 			<Type>TRU_ZULU</Type>
-			<CivilizationType>CIVILIZATION_ZULU</CivilizationType>
+			<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 			<iLatitudeTimes10>-283</iLatitudeTimes10>
 			<iLongitudeTimes10>314</iLongitudeTimes10>
 			<iPrecipitation>844</iPrecipitation>
@@ -631,3 +631,4 @@
 		</TruCivInfo>
 	</TruCivInfos>
 </Civ4TruCivInfos>
+

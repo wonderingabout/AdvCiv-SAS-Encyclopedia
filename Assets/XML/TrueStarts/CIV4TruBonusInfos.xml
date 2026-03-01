@@ -26,11 +26,11 @@
 				 in the game.) -->
 			<EncouragedCivs>
 				<EncouragedCiv>
-					<CivilizationType>CIVILIZATION_ENGLAND</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>ERA_FUTURE</UntilEra>
 				</EncouragedCiv>
 				<EncouragedCiv>
-					<CivilizationType>CIVILIZATION_GERMANY</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>ERA_FUTURE</UntilEra>
 				</EncouragedCiv>
 			</EncouragedCivs>
@@ -40,24 +40,24 @@
 			<BonusType>BONUS_COPPER</BonusType>
 			<DiscouragedCivs>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_ETHIOPIA</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_ZULU</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 			</DiscouragedCivs>
 			<EncouragedCivs>
 				<EncouragedCiv>
-					<CivilizationType>CIVILIZATION_INCA</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</EncouragedCiv>
 				<EncouragedCiv>
 					<!-- Would prefer not to boost their UU, but the Celts
 						- even both groups represented in the game - were
 						 early providers of not just copper but also tin. -->
-					<CivilizationType>CIVILIZATION_CELT</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>ERA_INDUSTRIAL</UntilEra>
 				</EncouragedCiv>
 			</EncouragedCivs>
@@ -76,29 +76,29 @@
 			</DiscouragedRegions>
 			<DiscouragedCivs>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_ZULU</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>ERA_MODERN</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_JAPAN</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>ERA_MEDIEVAL</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_KHMER</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 			</DiscouragedCivs>
 			<EncouragedCivs>
 				<EncouragedCiv>
-					<CivilizationType>CIVILIZATION_BYZANTIUM</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>ERA_RENAISSANCE</UntilEra>
 				</EncouragedCiv>
 				<EncouragedCiv>
-					<CivilizationType>CIVILIZATION_CELT</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>ERA_MEDIEVAL</UntilEra>
 				</EncouragedCiv>
 				<EncouragedCiv>
-					<CivilizationType>CIVILIZATION_MONGOL</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</EncouragedCiv>
 			</EncouragedCivs>
@@ -112,41 +112,41 @@
 					 did exist in Nubia and in the mountain ranges around
 					 Mesopotamia. -->
 				<!--DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_EGYPT</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>ERA_RENAISSANCE</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_BABYLON</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_SUMERIA</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_MAYA</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv-->
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_AZTEC</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>ERA_MODERN</UntilEra>
 				</DiscouragedCiv>
 			</DiscouragedCivs>
 			<EncouragedCivs>
 				<EncouragedCiv>
-					<CivilizationType>CIVILIZATION_GERMANY</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>ERA_MODERN</UntilEra>
 				</EncouragedCiv>
 				<EncouragedCiv>
-					<CivilizationType>CIVILIZATION_OTTOMAN</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</EncouragedCiv>
 				<EncouragedCiv>
-					<CivilizationType>CIVILIZATION_SCANDINAVIA</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>ERA_FUTURE</UntilEra>
 				</EncouragedCiv>
 				<EncouragedCiv>
-					<CivilizationType>CIVILIZATION_ZULU</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>ERA_MODERN</UntilEra>
 				</EncouragedCiv>
 			</EncouragedCivs>
@@ -158,54 +158,54 @@
 				 but some civs one really wouldn't associate with marble. -->
 			<DiscouragedCivs>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_ZULU</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_MALI</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 				<!-- (Carthage did have access to marble, at Chemtou.) -->
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_JAPAN</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_KOREA</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_KHMER</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_MONGOL</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_AZTEC</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_MAYA</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_INCA</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 			</DiscouragedCivs>
 			<EncouragedCivs>
 				<EncouragedCiv>
-					<CivilizationType>CIVILIZATION_GREECE</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</EncouragedCiv>
 				<EncouragedCiv>
-					<CivilizationType>CIVILIZATION_BYZANTIUM</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</EncouragedCiv>
 				<EncouragedCiv>
-					<CivilizationType>CIVILIZATION_ROME</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</EncouragedCiv>
 			</EncouragedCivs>
@@ -217,74 +217,74 @@
 			<bLandOnly>1</bLandOnly>
 			<DiscouragedCivs>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_GERMANY</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_JAPAN</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_KOREA</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_MONGOL</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_ETHIOPIA</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_SPAIN</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_PORTUGAL</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_FRANCE</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_HOLY_ROMAN</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_ROME</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_KHMER</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 				<!-- (Turkey has Azerbaijan near enough) -->
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_GREECE</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>ERA_FUTURE</UntilEra>
 				</DiscouragedCiv>
 			</DiscouragedCivs>
 			<EncouragedCivs>
 				<EncouragedCiv>
-					<CivilizationType>CIVILIZATION_ARABIA</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</EncouragedCiv>
 				<EncouragedCiv>
-					<CivilizationType>CIVILIZATION_BABYLON</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</EncouragedCiv>
 				<EncouragedCiv>
-					<CivilizationType>CIVILIZATION_SUMERIA</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</EncouragedCiv>
 				<EncouragedCiv>
-					<CivilizationType>CIVILIZATION_PERSIA</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</EncouragedCiv>
 				<EncouragedCiv>
-					<CivilizationType>CIVILIZATION_RUSSIA</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</EncouragedCiv>
 			</EncouragedCivs>
@@ -294,7 +294,7 @@
 			<BonusType>BONUS_STONE</BonusType>
 			<EncouragedCivs>
 				<EncouragedCiv>
-					<CivilizationType>CIVILIZATION_EGYPT</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>ERA_RENAISSANCE</UntilEra>
 				</EncouragedCiv>
 			</EncouragedCivs>
@@ -326,15 +326,15 @@
 			</DiscouragedRegions>
 			<DiscouragedCivs>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_CARTHAGE</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_JAPAN</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_KOREA</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 			</DiscouragedCivs>
@@ -344,7 +344,7 @@
 			<BonusType>BONUS_MOLLUSCS</BonusType>
 			<EncouragedCivs>
 				<EncouragedCiv>
-					<CivilizationType>CIVILIZATION_KOREA</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</EncouragedCiv>
 			</EncouragedCivs>
@@ -368,11 +368,11 @@
 			</DiscouragedRegions>
 			<DiscouragedCivs>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_MALI</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>ERA_RENAISSANCE</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_CARTHAGE</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>ERA_RENAISSANCE</UntilEra>
 				</DiscouragedCiv>
 			</DiscouragedCivs>
@@ -381,19 +381,19 @@
 				 Euro-American civ. -->
 			<EncouragedCivs>
 				<EncouragedCiv>
-					<CivilizationType>CIVILIZATION_AZTEC</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</EncouragedCiv>
 				<EncouragedCiv>
-					<CivilizationType>CIVILIZATION_MAYA</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</EncouragedCiv>
 				<EncouragedCiv>
-					<CivilizationType>CIVILIZATION_INCA</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</EncouragedCiv>
 				<EncouragedCiv>
-					<CivilizationType>CIVILIZATION_NATIVE_AMERICA</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</EncouragedCiv>
 			</EncouragedCivs>
@@ -409,19 +409,19 @@
 			</DiscouragedRegions>
 			<EncouragedCivs>
 				<EncouragedCiv>
-					<CivilizationType>CIVILIZATION_SPAIN</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</EncouragedCiv>
 				<EncouragedCiv>
-					<CivilizationType>CIVILIZATION_NETHERLANDS</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</EncouragedCiv>
 				<EncouragedCiv>
-					<CivilizationType>CIVILIZATION_ETHIOPIA</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>ERA_MEDIEVAL</UntilEra>
 				</EncouragedCiv>
 				<EncouragedCiv>
-					<CivilizationType>CIVILIZATION_ZULU</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</EncouragedCiv>
 			</EncouragedCivs>
@@ -435,7 +435,7 @@
 					<UntilEra>NONE</UntilEra>
 				</EncouragedCiv>
 				<EncouragedCiv>
-					<CivilizationType>CIVILIZATION_FRANCE</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</EncouragedCiv>
 			</EncouragedCivs>
@@ -451,23 +451,23 @@
 			<BonusType>BONUS_FISH</BonusType>
 			<EncouragedCivs>
 				<EncouragedCiv>
-					<CivilizationType>CIVILIZATION_PORTUGAL</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</EncouragedCiv>
 				<EncouragedCiv>
-					<CivilizationType>CIVILIZATION_NETHERLANDS</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</EncouragedCiv>
 				<EncouragedCiv>
-					<CivilizationType>CIVILIZATION_ENGLAND</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</EncouragedCiv>
 				<EncouragedCiv>
-					<CivilizationType>CIVILIZATION_JAPAN</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</EncouragedCiv>
 				<EncouragedCiv>
-					<CivilizationType>CIVILIZATION_SCANDINAVIA</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</EncouragedCiv>
 				<EncouragedCiv>
@@ -480,7 +480,7 @@
 				<DiscouragedCiv>
 					<!-- If they do end up near a coast, at least don't give
 						 them the juiciest seafood resource. -->
-					<CivilizationType>CIVILIZATION_MONGOL</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 			</DiscouragedCivs>
@@ -501,29 +501,29 @@
 				 that's still covered by Byzantium). -->
 			<DiscouragedCivs>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_ZULU</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_MALI</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_ETHIOPIA</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_ARABIA</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_OTTOMAN</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 			</DiscouragedCivs>
 			<EncouragedCivs>
 				<EncouragedCiv>
-					<CivilizationType>CIVILIZATION_CHINA</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</EncouragedCiv>
 			</EncouragedCivs>
@@ -551,25 +551,25 @@
 				<!-- ... but, then, the Zulu already have so many discouraged
 					 resources. -->
 				<!--DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_ZULU</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>ERA_FUTURE</UntilEra>
 				</DiscouragedCiv-->
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_CARTHAGE</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>ERA_FUTURE</UntilEra>
 				</DiscouragedCiv>
 			</DiscouragedCivs>
 			<EncouragedCivs>
 				<EncouragedCiv>
-					<CivilizationType>CIVILIZATION_JAPAN</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</EncouragedCiv>
 				<EncouragedCiv>
-					<CivilizationType>CIVILIZATION_KOREA</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</EncouragedCiv>
 				<EncouragedCiv>
-					<CivilizationType>CIVILIZATION_MALI</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>ERA_INDUSTRIAL</UntilEra>
 				</EncouragedCiv>
 			</EncouragedCivs>
@@ -584,31 +584,31 @@
 					<UntilEra>ERA_RENAISSANCE</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_AZTEC</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>ERA_RENAISSANCE</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_MAYA</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>ERA_RENAISSANCE</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_NATIVE_AMERICA</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>ERA_RENAISSANCE</UntilEra>
 				</DiscouragedCiv>
 			</DiscouragedCivs>
 			<EncouragedCivs>
 				<EncouragedCiv>
-					<CivilizationType>CIVILIZATION_MONGOL</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</EncouragedCiv>
 				<EncouragedCiv>
-					<CivilizationType>CIVILIZATION_OTTOMAN</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</EncouragedCiv>
 				<EncouragedCiv>
 					<!-- Alt. idea: Copper until ERA_MEDIEVAL. But having
 						 Copper all the time undercuts their UU. -->
-					<CivilizationType>CIVILIZATION_PERSIA</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>ERA_MEDIEVAL</UntilEra>
 				</EncouragedCiv>
 			</EncouragedCivs>
@@ -624,26 +624,26 @@
 			</DiscouragedRegions>
 			<DiscouragedCivs>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_ZULU</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>ERA_INDUSTRIAL</UntilEra>
 				</DiscouragedCiv>
 				<!-- They grew different crops -->
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_MALI</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>ERA_RENAISSANCE</UntilEra>
 				</DiscouragedCiv>
 			</DiscouragedCivs>
 			<EncouragedCivs>
 				<EncouragedCiv>
-					<CivilizationType>CIVILIZATION_BABYLON</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>ERA_MEDIEVAL</UntilEra>
 				</EncouragedCiv>
 				<EncouragedCiv>
-					<CivilizationType>CIVILIZATION_SUMERIA</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>ERA_MEDIEVAL</UntilEra>
 				</EncouragedCiv>
 				<EncouragedCiv>
-					<CivilizationType>CIVILIZATION_HOLY_ROMAN</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>ERA_INDUSTRIAL</UntilEra>
 				</EncouragedCiv>
 			</EncouragedCivs>
@@ -654,7 +654,7 @@
 			<!-- (Can be a lot of things; no need to discourage.) -->
 			<EncouragedCivs>
 				<EncouragedCiv>
-					<CivilizationType>CIVILIZATION_INDIA</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>ERA_INDUSTRIAL</UntilEra>
 				</EncouragedCiv>
 			</EncouragedCivs>
@@ -665,11 +665,11 @@
 			<!-- (Can be a lot of things; no need to discourage.) -->
 			<EncouragedCivs>
 				<EncouragedCiv>
-					<CivilizationType>CIVILIZATION_NATIVE_AMERICA</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>ERA_INDUSTRIAL</UntilEra>
 				</EncouragedCiv>
 				<EncouragedCiv>
-					<CivilizationType>CIVILIZATION_RUSSIA</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>ERA_INDUSTRIAL</UntilEra>
 				</EncouragedCiv>
 			</EncouragedCivs>
@@ -681,40 +681,40 @@
 				 placement reqs for Gems -->
 			<DiscouragedCivs>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_SPAIN</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_PORTUGAL</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 				<!-- They may have mined in the Habachtal (Austria),
 					 which is pretty close to their core. -->
 				<!--DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_ROME</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv-->
 				<!-- Well, Egypt isn't far. -->
 				<!--DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_ARABIA</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv-->
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_NATIVE_AMERICA</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_BABYLON</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_SUMERIA</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 			</DiscouragedCivs>
 			<EncouragedCivs>
 				<EncouragedCiv>
-					<CivilizationType>CIVILIZATION_INDIA</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</EncouragedCiv>
 			</EncouragedCivs>
@@ -724,53 +724,53 @@
 			<BonusType>BONUS_GOLD</BonusType>
 			<DiscouragedCivs>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_BABYLON</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_SUMERIA</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_CARTHAGE</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_ENGLAND</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_FRANCE</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_GERMANY</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_NETHERLANDS</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_SCANDINAVIA</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_KHMER</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_NATIVE_AMERICA</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 			</DiscouragedCivs>
 			<EncouragedCivs>
 				<EncouragedCiv>
-					<CivilizationType>CIVILIZATION_EGYPT</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>ERA_MEDIEVAL</UntilEra>
 				</EncouragedCiv>
 				<EncouragedCiv>
-					<CivilizationType>CIVILIZATION_MALI</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>ERA_MEDIEVAL</UntilEra>
 				</EncouragedCiv>
 			</EncouragedCivs>
@@ -787,27 +787,27 @@
 			<!-- Discourage desert civs that actually imported incense -->
 			<DiscouragedCivs>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_EGYPT</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_BABYLON</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_SUMERIA</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 			</DiscouragedCivs>
 			<EncouragedCivs>
 				<EncouragedCiv>
-					<CivilizationType>CIVILIZATION_ARABIA</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</EncouragedCiv>
 				<!-- Although Somalia is not Ethiopia ...
 					 Horse could be an alternative. -->
 				<EncouragedCiv>
-					<CivilizationType>CIVILIZATION_ETHIOPIA</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</EncouragedCiv>
 			</EncouragedCivs>
@@ -830,35 +830,35 @@
 				 but not for warfare. -->
 			<DiscouragedCivs>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_OTTOMAN</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_BYZANTIUM</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_ARABIA</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 				<!-- These like it wet, so they might occasionally be placed
 					 near Ivory. -->
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_JAPAN</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_KOREA</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 			</DiscouragedCivs>
 			<EncouragedCivs>
 				<EncouragedCiv>
-					<CivilizationType>CIVILIZATION_CARTHAGE</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>ERA_MEDIEVAL</UntilEra>
 				</EncouragedCiv>
 				<EncouragedCiv>
-					<CivilizationType>CIVILIZATION_KHMER</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>ERA_INDUSTRIAL</UntilEra>
 				</EncouragedCiv>
 			</EncouragedCivs>
@@ -883,45 +883,45 @@
 			</DiscouragedRegions>
 			<DiscouragedCivs>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_ZULU</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>ERA_INDUSTRIAL</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_MALI</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>ERA_INDUSTRIAL</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_CARTHAGE</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>ERA_RENAISSANCE</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_ARABIA</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>ERA_MEDIEVAL</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_BABYLON</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>ERA_MEDIEVAL</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_SUMERIA</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>ERA_MEDIEVAL</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_EGYPT</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>ERA_MEDIEVAL</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_ETHIOPIA</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>ERA_MEDIEVAL</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_PERSIA</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>ERA_MEDIEVAL</UntilEra>
 				</DiscouragedCiv>
 			</DiscouragedCivs>
 			<EncouragedCivs>
 				<EncouragedCiv>
-					<CivilizationType>CIVILIZATION_CHINA</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>ERA_INDUSTRIAL</UntilEra>
 				</EncouragedCiv>
 			</EncouragedCivs>
@@ -932,58 +932,58 @@
 			<DiscouragedCivs>
 				<DiscouragedCiv>
 					<!-- Silver was fairly rare, not used for coins. -->
-					<CivilizationType>CIVILIZATION_CHINA</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>ERA_INDUSTRIAL</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_BABYLON</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_SUMERIA</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_ARABIA</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_EGYPT</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 				<!-- They're already not getting many hills, so perhaps no need
 					 to discourage a mineral resource that did occur in
 					 neighboring Germany and France and across the Channel. -->
 				<!--DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_NETHERLANDS</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv-->
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_ETHIOPIA</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_MALI</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_KHMER</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 				<!-- Don't want Russia to have too many precious minerals too
 					 close to its starting location -->
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_RUSSIA</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>ERA_RENAISSANCE</UntilEra>
 				</DiscouragedCiv>
 			</DiscouragedCivs>
 			<EncouragedCivs>
 				<EncouragedCiv>
-					<CivilizationType>CIVILIZATION_GREECE</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>ERA_CLASSICAL</UntilEra>
 				</EncouragedCiv>
 				<EncouragedCiv>
-					<CivilizationType>CIVILIZATION_HOLY_ROMAN</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>ERA_INDUSTRIAL</UntilEra>
 				</EncouragedCiv>
 			</EncouragedCivs>
@@ -1003,15 +1003,15 @@
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_ZULU</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_MALI</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_CARTHAGE</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 				<!-- The Middle East grows e.g. cumin, but not the valuable
@@ -1019,31 +1019,31 @@
 					 Ethiopia (which I'm including in the Middle Eastern
 					 geo region). -->
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_OTTOMAN</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_BYZANTIUM</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_BABYLON</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_SUMERIA</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_ARABIA</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_EGYPT</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_PERSIA</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 				<!-- (Japan has several unique spices, Korea ought to have some
@@ -1052,17 +1052,17 @@
 			<EncouragedCivs>
 				<EncouragedCiv>
 					<!-- Kampot pepper, Cardamom Mts. -->
-					<CivilizationType>CIVILIZATION_KHMER</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</EncouragedCiv>
 				<EncouragedCiv>
 					<!-- Chili peppers -->
-					<CivilizationType>CIVILIZATION_AZTEC</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</EncouragedCiv>
 				<EncouragedCiv>
 					<!-- Chili, cocoa -->
-					<CivilizationType>CIVILIZATION_MAYA</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</EncouragedCiv>
 			</EncouragedCivs>
@@ -1088,11 +1088,11 @@
 			<!-- Latitude should mostly take care of things -->
 			<DiscouragedCivs>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_MALI</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>ERA_RENAISSANCE</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_CARTHAGE</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 			</DiscouragedCivs>
@@ -1104,29 +1104,29 @@
 				 and it's not proven that they weren't fermented. -->
 			<DiscouragedCivs>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_CHINA</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<!-- Somewhat popular in Tang dynasty, but, generally,
 						 the Chinese weren't fond of grape wine. -->
 					<UntilEra>ERA_MEDIEVAL</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_MALI</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>ERA_FUTURE</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_JAPAN</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>ERA_RENAISSANCE</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_KOREA</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>ERA_RENAISSANCE</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_KHMER</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>ERA_RENAISSANCE</UntilEra>
 				</DiscouragedCiv>
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_MONGOL</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>ERA_RENAISSANCE</UntilEra>
 				</DiscouragedCiv>
 				<!-- (The Ottoman Empire placed bans on wine consumption, but
@@ -1134,25 +1134,25 @@
 					 consume or export wine. And Anatolia has much suitable
 					 land for vineyards.) -->
 				<DiscouragedCiv>
-					<CivilizationType>CIVILIZATION_ARABIA</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</DiscouragedCiv>
 			</DiscouragedCivs>
 			<EncouragedCivs>
 				<EncouragedCiv>
-					<CivilizationType>CIVILIZATION_FRANCE</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</EncouragedCiv>
 				<EncouragedCiv>
-					<CivilizationType>CIVILIZATION_ROME</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</EncouragedCiv>
 				<EncouragedCiv>
-					<CivilizationType>CIVILIZATION_SPAIN</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>NONE</UntilEra>
 				</EncouragedCiv>
 				<EncouragedCiv>
-					<CivilizationType>CIVILIZATION_CARTHAGE</CivilizationType>
+					<CivilizationType>CIVILIZATION_AMERICA</CivilizationType>
 					<UntilEra>ERA_MEDIEVAL</UntilEra>
 				</EncouragedCiv>
 			</EncouragedCivs>
@@ -1164,3 +1164,4 @@
 		</TruBonusInfo-->
 	</TruBonusInfos>
 </Civ4TruBonusInfos>
+
