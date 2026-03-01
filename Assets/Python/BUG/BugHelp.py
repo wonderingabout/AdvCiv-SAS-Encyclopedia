@@ -88,11 +88,11 @@ def _SAS_findBugDocFile(name):
 
 		# 3) Common Civ4 layout guesses from cwd
 		try:
-			# <!-- custom: based on testing, the below path fetching (as of now files are in C:\Program Files (x86)\Steam\steamapps\common\Sid Meier's Civilization IV Beyond the Sword\Beyond the Sword\Mods\AdvCiv-SAS-Encyclopedia\BUG Doc\) works successfully ingame. -->
-			# <!-- custom: note 2: our mod AdvCiv-SAS-Encyclopedia's name is as of now hardcoded but it works, if you change the mod's name, you'd need to change it here too unless this name is dynamically fetched instead of as of now being hardcoded. -->
-			#addTry(os.path.join(cwd, "Mods", "AdvCiv-SAS-Encyclopedia", "BUG Doc", name))
-			# <!-- custom: since i want to centralize some docs in our AdvCiv-SAS-Encyclopedia Mod, moving it to another folder where our other folders as of now are. Note: added a "_" for consistency with other non-space separated folder names and file names. Works successfully ingame (as of now after the path now in: C:\Program Files (x86)\Steam\steamapps\common\Sid Meier's Civilization IV Beyond the Sword\Beyond the Sword\Mods\AdvCiv-SAS-Encyclopedia\_0_Common_Docs\BUG_Doc\).  -->
-			addTry(os.path.join(cwd, "Mods", "AdvCiv-SAS-Encyclopedia", "_0_Common_Docs", "BUG_Doc", name))
+			# <!-- custom: based on testing, the below path fetching (as of now files are in C:\Program Files (x86)\Steam\steamapps\common\Sid Meier's Civilization IV Beyond the Sword\Beyond the Sword\Mods\AdvCiv-SAS-NIF-Gallery\BUG Doc\) works successfully ingame. -->
+			# <!-- custom: note 2: our mod AdvCiv-SAS-NIF-Gallery's name is as of now hardcoded but it works, if you change the mod's name, you'd need to change it here too unless this name is dynamically fetched instead of as of now being hardcoded. -->
+			#addTry(os.path.join(cwd, "Mods", "AdvCiv-SAS-NIF-Gallery", "BUG Doc", name))
+			# <!-- custom: since i want to centralize some docs in our AdvCiv-SAS-NIF-Gallery Mod, moving it to another folder where our other folders as of now are. Note: added a "_" for consistency with other non-space separated folder names and file names. Works successfully ingame (as of now after the path now in: C:\Program Files (x86)\Steam\steamapps\common\Sid Meier's Civilization IV Beyond the Sword\Beyond the Sword\Mods\AdvCiv-SAS-NIF-Gallery\_0_Common_Docs\BUG_Doc\).  -->
+			addTry(os.path.join(cwd, "Mods", "AdvCiv-SAS-NIF-Gallery", "_0_Common_Docs", "BUG_Doc", name))
 		except:
 			pass
 

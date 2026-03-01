@@ -331,10 +331,10 @@
 			<KFM></KFM>
 		</MiscArtInfo>
 		<!-- advc.002b: Set modified theme as default -->
-		<!-- custom: rename "AdvCiv" to "AdvCiv-SAS" so our mod AdvCiv-SAS-Encyclopedia (for quick search: "AdvCiv-SAS-Encyclopedia Mod") -->
+		<!-- custom: rename "AdvCiv" to "AdvCiv-SAS" so our mod AdvCiv-SAS-NIF-Gallery (for quick search: "AdvCiv-SAS-NIF-Gallery Mod") -->
 		<MiscArtInfo>
 			<Type>DEFAULT_THEME_NAME</Type>
-			<Path>Mods/AdvCiv-SAS-Encyclopedia/Resource/Civ4.thm</Path>
+			<Path>Mods/AdvCiv-SAS-NIF-Gallery/Resource/Civ4.thm</Path>
 			<fScale>0.0</fScale>
 			<NIF>None</NIF>
 			<KFM>None</KFM>

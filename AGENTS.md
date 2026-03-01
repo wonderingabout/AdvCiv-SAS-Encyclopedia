@@ -3,18 +3,18 @@
 ## Credit
 
 AI, UI, or other modifications
-Created as part of AdvCiv-SAS-Encyclopedia improvements
+Created as part of AdvCiv-SAS-NIF-Gallery improvements
 (c) 2026 wonderingabout & AI helpers (see Authors in root README.md)
 
 ## General information
 
-This is the general guidelines to follow for this repo of our mod AdvCiv-SAS-Encyclopedia that is based on AdvCiv 1.12, for AI helpers. You don't need to look at files mentioned in this sub-section for now, just get aware of their existence if you need them later in our tasks.
+This is the general guidelines to follow for this repo of our mod AdvCiv-SAS-NIF-Gallery that is based on AdvCiv 1.12, for AI helpers. You don't need to look at files mentioned in this sub-section for now, just get aware of their existence if you need them later in our tasks.
 
 You can expand this [AGENTS.md](/AGENTS.md) freely as you see fit.
 
 ## git, GitHub, and git diff info
 
-Our mod is also on github, see [AdvCiv-SAS-Encyclopedia's github repo](https://github.com/wonderingabout/AdvCiv-SAS-Encyclopedia).
+Our mod is also on github, see [AdvCiv-SAS-NIF-Gallery's github repo](https://github.com/wonderingabout/AdvCiv-SAS-NIF-Gallery).
 
 Locally our project is a git repo too, generally with a fresh commit for each new main task, so feel free to git diff while doing your tasks to see your progress and analyze or such.
 
@@ -22,7 +22,7 @@ Important git-diff caution: moving/reordering plus modifying large similar-looki
 
 ## Information Fetching from other known helpful mods
 
-If you don't know how to do something, generally mostly for UI stuff as we like to have and invent our own AI logic, generally (not a strict requirement but generally so), if you find yourself stuck or in doubt to double-check how other mods implement things, consider looking at what these mods do, as they usually have high-tech stuff that has oftentimes proven handy for the AdvCiv-SAS-Encyclopedia mod, in particular and mostly for UI:
+If you don't know how to do something, generally mostly for UI stuff as we like to have and invent our own AI logic, generally (not a strict requirement but generally so), if you find yourself stuck or in doubt to double-check how other mods implement things, consider looking at what these mods do, as they usually have high-tech stuff that has oftentimes proven handy for the AdvCiv-SAS-NIF-Gallery mod, in particular and mostly for UI:
 
 - The Middle-earth mod (in particular but not only their Platypedia) at "C:\Program Files (x86)\Steam\steamapps\common\Sid Meier's Civilization IV Beyond the Sword\Beyond the Sword\Mods\Middle-earth"
 - The C2C (Cavemen2Cosmos) mod (in particular but not only for UI/EXE stuff) at "C:\Program Files (x86)\Steam\steamapps\common\Sid Meier's Civilization IV Beyond the Sword\Beyond the Sword\Mods\Caveman2Cosmos"
@@ -47,34 +47,34 @@ The root Program Files Civ4 folder is here:
 
 Also, legacy documentation (K-Mod, AdvCiv, etc.) may prove helpful, but it is lengthy, grep if needed from there:
 
-- "C:\Program Files (x86)\Steam\steamapps\common\Sid Meier's Civilization IV Beyond the Sword\Beyond the Sword\Mods\AdvCiv-SAS-Encyclopedia\_0_Common_Docs\AdvCiv_Base_Doc\manual.txt"
+- "C:\Program Files (x86)\Steam\steamapps\common\Sid Meier's Civilization IV Beyond the Sword\Beyond the Sword\Mods\AdvCiv-SAS-NIF-Gallery\_0_Common_Docs\AdvCiv_Base_Doc\manual.txt"
 
 Our AdvCiv-SAS documentation is mostly located here:
 
-- root README.md: "C:\Program Files (x86)\Steam\steamapps\common\Sid Meier's Civilization IV Beyond the Sword\Beyond the Sword\Mods\AdvCiv-SAS-Encyclopedia\README.md"
-- Docs folder: "C:\Program Files (x86)\Steam\steamapps\common\Sid Meier's Civilization IV Beyond the Sword\Beyond the Sword\Mods\AdvCiv-SAS-Encyclopedia\_1_AdvCiv-SAS\Docs"
-- Screenshots for a lot of AdvCiv-SAS-Encyclopedia elements ingame including but not only Sevopedia, Advisors, etc. They are fairly updated too if it helps: "C:\Program Files (x86)\Steam\steamapps\common\Sid Meier's Civilization IV Beyond the Sword\Beyond the Sword\Mods\AdvCiv-SAS-Encyclopedia\_1_AdvCiv-SAS\Images"
+- root README.md: "C:\Program Files (x86)\Steam\steamapps\common\Sid Meier's Civilization IV Beyond the Sword\Beyond the Sword\Mods\AdvCiv-SAS-NIF-Gallery\README.md"
+- Docs folder: "C:\Program Files (x86)\Steam\steamapps\common\Sid Meier's Civilization IV Beyond the Sword\Beyond the Sword\Mods\AdvCiv-SAS-NIF-Gallery\_1_AdvCiv-SAS\Docs"
+- Screenshots for a lot of AdvCiv-SAS-NIF-Gallery elements ingame including but not only Sevopedia, Advisors, etc. They are fairly updated too if it helps: "C:\Program Files (x86)\Steam\steamapps\common\Sid Meier's Civilization IV Beyond the Sword\Beyond the Sword\Mods\AdvCiv-SAS-NIF-Gallery\_1_AdvCiv-SAS\Images"
 
 May help to find key documentation, additionally to doing a grep or such, indexes like `# advc.004y: Restored (comment out to remove traits)` refer to and provide key information about a change (grep the tag e.g. `004y` in the manual).
 
 Compile errors (e.g., for a "Release" build) at:
 
-- "C:\Program Files (x86)\Steam\steamapps\common\Sid Meier's Civilization IV Beyond the Sword\Beyond the Sword\Mods\AdvCiv-SAS-Encyclopedia\CvGameCoreDLL\Project\Release\AdvCiv.log"
+- "C:\Program Files (x86)\Steam\steamapps\common\Sid Meier's Civilization IV Beyond the Sword\Beyond the Sword\Mods\AdvCiv-SAS-NIF-Gallery\CvGameCoreDLL\Project\Release\AdvCiv.log"
 
 ## File reading from a non-global link
 
-- If the user provides a link like [Civ4ScreenShot1511.JPG](Assets/Python/Screens/Civ4ScreenShot1511.JPG), or some other relative path, then since you know where our mod is ("C:\Program Files (x86)\Steam\steamapps\common\Sid Meier's Civilization IV Beyond the Sword\Beyond the Sword\Mods\AdvCiv-SAS-Encyclopedia\"), then you can infer and reconstruct the path from it without asking the user unless you are unable to, for example ""C:\Program Files (x86)\Steam\steamapps\common\Sid Meier's Civilization IV Beyond the Sword\Beyond the Sword\Mods\AdvCiv-SAS-Encyclopedia\Assets\Python\Screens\Civ4ScreenShot1511.JPG"
+- If the user provides a link like [Civ4ScreenShot1511.JPG](Assets/Python/Screens/Civ4ScreenShot1511.JPG), or some other relative path, then since you know where our mod is ("C:\Program Files (x86)\Steam\steamapps\common\Sid Meier's Civilization IV Beyond the Sword\Beyond the Sword\Mods\AdvCiv-SAS-NIF-Gallery\"), then you can infer and reconstruct the path from it without asking the user unless you are unable to, for example ""C:\Program Files (x86)\Steam\steamapps\common\Sid Meier's Civilization IV Beyond the Sword\Beyond the Sword\Mods\AdvCiv-SAS-NIF-Gallery\Assets\Python\Screens\Civ4ScreenShot1511.JPG"
 - If you cannot read one of the files or links the user sends (not including web pages or such), specify it to the user instead of blindly proceeding, as the info like a screenshot may help you see and solve the issue.
 
 ## Sevopedia debug dumps (Python API introspection)
 
 When a Python getter seems missing or unclear (e.g., the culture breakdown error where `CvCivicInfo` has no `getCommerceChange`), use Sevopedia debug dumps to verify what Python can actually access without having to guess if a getter is exposed in Python or requires DLL changes; these debug logs are usually our first and preferred source of truth since they are real inspect logs, although they might be slightly outdated if DLL changes were made since then.
 
-- "C:\Program Files (x86)\Steam\steamapps\common\Sid Meier's Civilization IV Beyond the Sword\Beyond the Sword\Mods\AdvCiv-SAS-Encyclopedia\Assets\Python\Contrib\Sevopedia\Debug" (example file: [__SevoPediaCivic-gc-inner-debug-content.txt](/Assets/Python/Contrib/Sevopedia/Debug/__SevoPediaCivic-gc-inner-debug-content.txt)).
+- "C:\Program Files (x86)\Steam\steamapps\common\Sid Meier's Civilization IV Beyond the Sword\Beyond the Sword\Mods\AdvCiv-SAS-NIF-Gallery\Assets\Python\Contrib\Sevopedia\Debug" (example file: [__SevoPediaCivic-gc-inner-debug-content.txt](/Assets/Python/Contrib/Sevopedia/Debug/__SevoPediaCivic-gc-inner-debug-content.txt)).
 
 Alternatively, the Civ4 BUG documentation is also provided as .txt, may be helpful, consider reading it for double check or grep needs if in doubt or such. It helped us find the `Destroy2DSound` python function for example, doc is helpful as reference (but lengthy):
 
-- "C:\Program Files (x86)\Steam\steamapps\common\Sid Meier's Civilization IV Beyond the Sword\Beyond the Sword\Mods\AdvCiv-SAS-Encyclopedia\_0_Common_Docs\CIV4BUG_Sourceforge_net_All_Classes_Doc\civ4bug_sourceforge_net_pythonAPI_AllClasses_html.txt"
+- "C:\Program Files (x86)\Steam\steamapps\common\Sid Meier's Civilization IV Beyond the Sword\Beyond the Sword\Mods\AdvCiv-SAS-NIF-Gallery\_0_Common_Docs\CIV4BUG_Sourceforge_net_All_Classes_Doc\civ4bug_sourceforge_net_pythonAPI_AllClasses_html.txt"
 
 ## Information Fetching online
 
@@ -97,7 +97,7 @@ If you find yourself stuck like for audio stopping issues, feel free to ask the 
 - Preserve rationale clauses about why something is unnecessary (e.g., "we don't need to show beyond BFC").
 - Be more verbose when explaining rationales - it's important to capture the intent behind the change while summarizing. The "why" is critical, so preserve problem descriptions, observed behavior, and intended fixes more fully than other commentary.
 - Preserve contrast/difference phrasing when it carries technical meaning (e.g., "unlike in the foreign advisor").
-- Keep exact marker strings like "AdvCiv Mod" or "AdvCiv-SAS-Encyclopedia Mod" for later searches.
+- Keep exact marker strings like "AdvCiv Mod" or "AdvCiv-SAS-NIF-Gallery Mod" for later searches.
 - When adding new comments, use the format `<!-- custom: ... (GPT-5.3-Codex) -->` (with `//` or `#` prefix as appropriate) instead of other tags like advc.sas.
 - Do not use `/*` or `"""` or `'''` or such docstrings or variants. Prefer `//` or `#` or similar so they are easier to manage/uncomment and less costly computationally. Keep existing ones as they are, as some `"""` docstrings seem functionally used in tests (do not modify these, only the new ones we create).
 - Add a suffix with your model name to your code comments; e.g., `(GPT-5.3-Codex (summarized)) -->`, `(Claude code Sonnet 4.5 (summarized)) -->`.
@@ -180,9 +180,9 @@ These are general guidelines, not irrevocable requirements; adjust based on task
 
 ## XML
 
-- Any new XML text should to our AdvCiv-SAS-Encyclopedia files such as [AdvCiv-SAS_main.xml](/Assets/XML/Text/AdvCiv-SAS_main.xml) (e.g., `TXT_KEY_BUILDING_KOREAN_GYEONGDANG`), and only in `<English>`.
-- Example of exception: long Civilopedia blurbs (e.g., `TXT_KEY_BUILDING_KOREAN_GYEONGDANG_PEDIA`) in [AdvCiv-SAS-Encyclopedia_Sevopedia_Lengthy.xml](/Assets/XML/Text/AdvCiv-SAS-Encyclopedia_Sevopedia_Lengthy.xml), even when it uses a stub (becuase it will be filled later with lengthy content).
-- Move XML texts we modify from other files to our AdvCiv-SAS-Encyclopedia files too and remove other languages while doing so.
+- Any new XML text should to our AdvCiv-SAS-NIF-Gallery files such as [AdvCiv-SAS_main.xml](/Assets/XML/Text/AdvCiv-SAS_main.xml) (e.g., `TXT_KEY_BUILDING_KOREAN_GYEONGDANG`), and only in `<English>`.
+- Example of exception: long Civilopedia blurbs (e.g., `TXT_KEY_BUILDING_KOREAN_GYEONGDANG_PEDIA`) in [AdvCiv-SAS_Sevopedia_Lengthy.xml](/Assets/XML/Text/AdvCiv-SAS_Sevopedia_Lengthy.xml), even when it uses a stub (becuase it will be filled later with lengthy content).
+- Move XML texts we modify from other files to our AdvCiv-SAS-NIF-Gallery files too and remove other languages while doing so.
 - Avoid to comment in deep-nested XML just in case. For example, comment before `<ObsoleteSafeCommerceChanges>`, not before its child `<iCommerce>`.
 - Prefer ISO-8859-1 in XML Text files, because it correctly detects and displays characters like `è` or `î` (unlike UTF-8), and because it seems to be the native supported for these files.
 
@@ -202,4 +202,4 @@ These are general guidelines, not irrevocable requirements; adjust based on task
 ### Docs
 
 - For markdownlint, try to resolve warnings; if a fix is unclear or risky, ask the user.
-- When adding doc entries in dev mode (most of the time), prefix bullet titles with `- (Requires AdvCiv-SAS-Encyclopedia X+)` where `X` is current latest commit + 1, since docs describe post-commit state for readers. Current rule of thumb: last stable is 5500, so 5501+ is beta/dev and should carry the prefix until the next stable release.
+- When adding doc entries in dev mode (most of the time), prefix bullet titles with `- (Requires AdvCiv-SAS-NIF-Gallery X+)` where `X` is current latest commit + 1, since docs describe post-commit state for readers. Current rule of thumb: last stable is 5500, so 5501+ is beta/dev and should carry the prefix until the next stable release.
