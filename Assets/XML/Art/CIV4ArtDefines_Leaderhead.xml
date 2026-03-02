@@ -5,271 +5,272 @@
 <!-- -->
 <!-- Leaderhead art path information -->
 <!-- custom: note: some paths use base civ4 one; e.g. Bilqis uses base Hammurabi KFM but custom Hammurabi nif. -->
+<!-- custom: note 2: respect case for Art/LeaderHeads/ else Art/Leaderheads/ causes an index error as in KI#111 in AdvCiv-SAS' documentation -->
 <Civ4ArtDefines xmlns="x-schema:CIV4ArtDefinesSchema.xml">
 	<LeaderheadArtInfos>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_BARBARIAN</Type>
-			<Button>art/LeaderHeads/Barbarian/TRTeambut_Button.dds</Button>
-			<NIF>art/LeaderHeads/Sid/sid.nif</NIF>
-			<KFM>art/LeaderHeads/Sid/sid.kfm</KFM>
-			<NoShaderNIF>art/LeaderHeads/Sid/sid_noshader.nif</NoShaderNIF>
-			<BackgroundKFM>art/LeaderHeads/Sid/sid_BG.kfm</BackgroundKFM>
+			<Button>Art/LeaderHeads/Barbarian/TRTeambut_Button.dds</Button>
+			<NIF>Art/LeaderHeads/Sid/sid.nif</NIF>
+			<KFM>Art/LeaderHeads/Sid/sid.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Sid/sid_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Sid/sid_BG.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_GRACE_OMALLEY</Type>
-			<Button>art/LeaderHeads/Grace_O_Malley/Grace_OMalley.dds</Button>
-			<NIF>art/LeaderHeads/Grace_O_Malley/John II.nif</NIF>
-			<KFM>art/LeaderHeads/Grace_O_Malley/John II.kfm</KFM>
-			<NoShaderNIF>art/LeaderHeads/Grace_O_Malley/John_II_NONSHADER.nif</NoShaderNIF>
-			<BackgroundKFM>art/LeaderHeads/Grace_O_Malley/mansa_musa_bg.kfm</BackgroundKFM>
+			<Button>Art/LeaderHeads/Grace_O_Malley/Grace_OMalley.dds</Button>
+			<NIF>Art/LeaderHeads/Grace_O_Malley/John II.nif</NIF>
+			<KFM>Art/LeaderHeads/Grace_O_Malley/John II.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Grace_O_Malley/John_II_NONSHADER.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Grace_O_Malley/mansa_musa_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_AMANIRENA</Type>
-			<Button>art/LeaderHeads/Amanirena/Amanirena.dds</Button>
-			<NIF>art/LeaderHeads/Amanirena/hatshepsut.nif</NIF>
-			<KFM>art/LeaderHeads/Amanirena/hatshepsut.kfm</KFM>
-			<NoShaderNIF>art/LeaderHeads/Amanirena/hatshepsut.nif</NoShaderNIF>
-			<BackgroundKFM>art/LeaderHeads/Amanirena/hatshepsut_BG.kfm</BackgroundKFM>
+			<Button>Art/LeaderHeads/Amanirena/Amanirena.dds</Button>
+			<NIF>Art/LeaderHeads/Amanirena/hatshepsut.nif</NIF>
+			<KFM>Art/LeaderHeads/Amanirena/hatshepsut.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Amanirena/hatshepsut.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Amanirena/hatshepsut_BG.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_AMINATU</Type>
-			<Button>art/LeaderHeads/Aminatu/Button_Aminatu.dds</Button>
-			<NIF>art/LeaderHeads/Aminatu/aminah.nif</NIF>
-			<KFM>art/LeaderHeads/Aminatu/catherine.kfm</KFM>
-			<NoShaderNIF>art/LeaderHeads/Aminatu/aminah.nif</NoShaderNIF>
-			<BackgroundKFM>art/LeaderHeads/Aminatu/suleiman_bg.kfm</BackgroundKFM>
+			<Button>Art/LeaderHeads/Aminatu/Button_Aminatu.dds</Button>
+			<NIF>Art/LeaderHeads/Aminatu/aminah.nif</NIF>
+			<KFM>Art/LeaderHeads/Aminatu/catherine.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Aminatu/aminah.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Aminatu/suleiman_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_BILQIS</Type>
-			<Button>art/LeaderHeads/Bilqis/Button_Bilqis.dds</Button>
-			<NIF>art/LeaderHeads/Bilqis/Hammurabi.nif</NIF>
-			<KFM>Art/Leaderheads/Hammurabi/Hammurabi.kfm</KFM>
-			<NoShaderNIF>art/LeaderHeads/Bilqis/Hammurabi.nif</NoShaderNIF>
-			<BackgroundKFM>art/LeaderHeads/Bilqis/Hammurabi_Backgrnd.kfm</BackgroundKFM>
+			<Button>Art/LeaderHeads/Bilqis/Button_Bilqis.dds</Button>
+			<NIF>Art/LeaderHeads/Bilqis/Hammurabi.nif</NIF>
+			<KFM>Art/LeaderHeads/Hammurabi/Hammurabi.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Bilqis/Hammurabi.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Bilqis/Hammurabi_Backgrnd.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_DIDO</Type>
-			<Button>art/LeaderHeads/Dido/Btn_Dido.dds</Button>
-			<NIF>art/LeaderHeads/Dido/catherine.nif</NIF>
-			<KFM>art/LeaderHeads/Dido/catherine.kfm</KFM>
-			<NoShaderNIF>art/LeaderHeads/Dido/catherine.nif</NoShaderNIF>
-			<BackgroundKFM>art/LeaderHeads/Dido/leader_bg.kfm</BackgroundKFM>
+			<Button>Art/LeaderHeads/Dido/Btn_Dido.dds</Button>
+			<NIF>Art/LeaderHeads/Dido/catherine.nif</NIF>
+			<KFM>Art/LeaderHeads/Dido/catherine.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Dido/catherine.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Dido/leader_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_DIHYA</Type>
-			<Button>art/LeaderHeads/Dihya/Button_Tin_Hinan.dds</Button>
-			<NIF>art/LeaderHeads/Dihya/zenobia.nif</NIF>
-			<KFM>art/LeaderHeads/Dihya/zenobia.kfm</KFM>
-			<NoShaderNIF>art/LeaderHeads/Dihya/zenobia.nif</NoShaderNIF>
-			<BackgroundKFM>art/LeaderHeads/Dihya/suleiman_bg.kfm</BackgroundKFM>
+			<Button>Art/LeaderHeads/Dihya/Button_Tin_Hinan.dds</Button>
+			<NIF>Art/LeaderHeads/Dihya/zenobia.nif</NIF>
+			<KFM>Art/LeaderHeads/Dihya/zenobia.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Dihya/zenobia.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Dihya/suleiman_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_ISABELLA</Type>
-			<Button>art/LeaderHeads/Isabella/Button_Isabella.dds</Button>
-			<NIF>art/LeaderHeads/Isabella/Isabella.nif</NIF>
-			<KFM>art/LeaderHeads/Isabella/Isabella.kfm</KFM>
-			<NoShaderNIF>art/LeaderHeads/Isabella/Isabella.nif</NoShaderNIF>
-			<BackgroundKFM>art/LeaderHeads/Isabella/Isabella_BG.kfm</BackgroundKFM>
+			<Button>Art/LeaderHeads/Isabella/Button_Isabella.dds</Button>
+			<NIF>Art/LeaderHeads/Isabella/Isabella.nif</NIF>
+			<KFM>Art/LeaderHeads/Isabella/Isabella.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Isabella/Isabella.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Isabella/Isabella_BG.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_JINGU</Type>
-			<Button>art/LeaderHeads/Jingu/Btn_LH_Jingu.dds</Button>
-			<NIF>art/LeaderHeads/Jingu/Jingu.nif</NIF>
-			<KFM>art/LeaderHeads/Jingu/Jingu.kfm</KFM>
-			<NoShaderNIF>art/LeaderHeads/Jingu/Jingu.nif</NoShaderNIF>
-			<BackgroundKFM>art/LeaderHeads/Jingu/Jingu_bg.kfm</BackgroundKFM>
+			<Button>Art/LeaderHeads/Jingu/Btn_LH_Jingu.dds</Button>
+			<NIF>Art/LeaderHeads/Jingu/Jingu.nif</NIF>
+			<KFM>Art/LeaderHeads/Jingu/Jingu.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Jingu/Jingu.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Jingu/Jingu_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_KOCHININAKO</Type>
-			<Button>art/LeaderHeads/Kochininako/Button_Kochininako.dds</Button>
-			<NIF>art/LeaderHeads/Kochininako/Awiakta.nif</NIF>
-			<KFM>art/LeaderHeads/Kochininako/Awiakta.kfm</KFM>
-			<NoShaderNIF>art/LeaderHeads/Kochininako/Awiakta.nif</NoShaderNIF>
-			<BackgroundKFM>art/LeaderHeads/Kochininako/zenobia_BG.kfm</BackgroundKFM>
+			<Button>Art/LeaderHeads/Kochininako/Button_Kochininako.dds</Button>
+			<NIF>Art/LeaderHeads/Kochininako/Awiakta.nif</NIF>
+			<KFM>Art/LeaderHeads/Kochininako/Awiakta.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Kochininako/Awiakta.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Kochininako/zenobia_BG.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_MANGAMMAL</Type>
-			<Button>art/LeaderHeads/Mangammal/Button_Mangammal.dds</Button>
-			<NIF>art/LeaderHeads/Mangammal/mansa_musa.nif</NIF>
-			<KFM>art/LeaderHeads/Mangammal/mansa_musa.kfm</KFM>
-			<NoShaderNIF>art/LeaderHeads/Mangammal/mansa_musa.nif</NoShaderNIF>
-			<BackgroundKFM>art/LeaderHeads/Mangammal/mansa_musa_bg.kfm</BackgroundKFM>
+			<Button>Art/LeaderHeads/Mangammal/Button_Mangammal.dds</Button>
+			<NIF>Art/LeaderHeads/Mangammal/mansa_musa.nif</NIF>
+			<KFM>Art/LeaderHeads/Mangammal/mansa_musa.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Mangammal/mansa_musa.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Mangammal/mansa_musa_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_ATOTOZTLI_2</Type>
-			<Button>Art/Leaderheads/Atotoztli_2/Button_Nzinga.dds</Button>
-			<NIF>Art/Leaderheads/Atotoztli_2/Atotoztli.nif</NIF>
-			<KFM>Art/Leaderheads/Atotoztli_2/Atotoztli.kfm</KFM>
-			<NoShaderNIF>Art/Leaderheads/Atotoztli_2/Atotoztli.nif</NoShaderNIF>
-			<BackgroundKFM>Art/Leaderheads/Atotoztli_2/Atotoztli_bg.kfm</BackgroundKFM>
+			<Button>Art/LeaderHeads/Atotoztli_2/Button_Nzinga.dds</Button>
+			<NIF>Art/LeaderHeads/Atotoztli_2/Atotoztli.nif</NIF>
+			<KFM>Art/LeaderHeads/Atotoztli_2/Atotoztli.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Atotoztli_2/Atotoztli.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Atotoztli_2/Atotoztli_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_SALAMASINA</Type>
-			<Button>Art/Leaderheads/Salamasina/Btn_Salamasina.dds</Button>
-			<NIF>Art/Leaderheads/Salamasina/SalmasinaFinal.nif</NIF>
-			<KFM>Art/Leaderheads/Salamasina/hatshepsut.kfm</KFM>
-			<NoShaderNIF>Art/Leaderheads/Salamasina/SalmasinaFinal.nif</NoShaderNIF>
-			<BackgroundKFM>Art/Leaderheads/Salamasina/winston_churchill_bg.kfm</BackgroundKFM>
+			<Button>Art/LeaderHeads/Salamasina/Btn_Salamasina.dds</Button>
+			<NIF>Art/LeaderHeads/Salamasina/SalmasinaFinal.nif</NIF>
+			<KFM>Art/LeaderHeads/Salamasina/hatshepsut.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Salamasina/SalmasinaFinal.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Salamasina/winston_churchill_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_WU_ZETIAN</Type>
-			<Button>art/LeaderHeads/Wu_Zetian/Button_Wu_Zetian.dds</Button>
-			<NIF>art/LeaderHeads/Wu_Zetian/Wu.nif</NIF>
-			<KFM>art/LeaderHeads/Wu_Zetian/Wu.kfm</KFM>
-			<NoShaderNIF>art/LeaderHeads/Wu_Zetian/Wu.nif</NoShaderNIF>
-			<BackgroundKFM>art/LeaderHeads/Wu_Zetian/Wu_BG.kfm</BackgroundKFM>
+			<Button>Art/LeaderHeads/Wu_Zetian/Button_Seondeok.dds</Button>
+			<NIF>Art/LeaderHeads/Wu_Zetian/Wu.nif</NIF>
+			<KFM>Art/LeaderHeads/Wu_Zetian/Wu.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Wu_Zetian/Wu.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Wu_Zetian/Wu_BG.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_SHIN_SAWBU</Type>
-			<Button>Art/Leaderheads/Shin_Sawbu/Button_ShinSawbu.dds</Button>
-			<NIF>Art/Leaderheads/Shin_Sawbu/asoka.nif</NIF>
-			<KFM>Art/Leaderheads/Asoka/asoka.kfm</KFM>
-			<NoShaderNIF>Art/Leaderheads/Shin_Sawbu/asoka.nif</NoShaderNIF>
-			<BackgroundKFM>Art/Leaderheads/Shin_Sawbu/catherine_bg.kfm</BackgroundKFM>
+			<Button>Art/LeaderHeads/Shin_Sawbu/Button_ShinSawbu.dds</Button>
+			<NIF>Art/LeaderHeads/Shin_Sawbu/asoka.nif</NIF>
+			<KFM>Art/LeaderHeads/Asoka/asoka.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Shin_Sawbu/asoka.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Shin_Sawbu/catherine_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_TOMYRIS</Type>
-			<Button>Art/Leaderheads/Tomyris/Button_Tomyris.dds</Button>
-			<NIF>Art/Leaderheads/Tomyris/Tomyris.nif</NIF>
-			<KFM>Art/Leaderheads/Boudica/Boudica.kfm</KFM>
-			<NoShaderNIF>Art/Leaderheads/Tomyris/Tomyris.nif</NoShaderNIF>
-			<BackgroundKFM>Art/Leaderheads/Tomyris/Pericles_BG.kfm</BackgroundKFM>
+			<Button>Art/LeaderHeads/Tomyris/Button_Tomyris.dds</Button>
+			<NIF>Art/LeaderHeads/Tomyris/Tomyris.nif</NIF>
+			<KFM>Art/LeaderHeads/Boudica/Boudica.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Tomyris/Tomyris.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Tomyris/Pericles_BG.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_TRUNG_SISTERS</Type>
-			<Button>art/LeaderHeads/Trung_Sisters/Button_Trung.dds</Button>
-			<NIF>art/LeaderHeads/Trung_Sisters/Trung.nif</NIF>
-			<KFM>art/LeaderHeads/Trung_Sisters/Trung.kfm</KFM>
-			<NoShaderNIF>art/LeaderHeads/Trung_Sisters/Trung.nif</NoShaderNIF>
-			<BackgroundKFM>art/LeaderHeads/Trung_Sisters/Trung_BG.kfm</BackgroundKFM>
+			<Button>Art/LeaderHeads/Trung_Sisters/Button_Trung.dds</Button>
+			<NIF>Art/LeaderHeads/Trung_Sisters/Trung.nif</NIF>
+			<KFM>Art/LeaderHeads/Trung_Sisters/Trung.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Trung_Sisters/Trung.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Trung_Sisters/Trung_BG.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_XOC</Type>
-			<Button>art/LeaderHeads/Xoc/Button_Xoc.dds</Button>
-			<NIF>art/LeaderHeads/Xoc/Yohl.nif</NIF>
-			<KFM>art/LeaderHeads/Xoc/Yohl.kfm</KFM>
-			<NoShaderNIF>art/LeaderHeads/Xoc/Yohl.nif</NoShaderNIF>
-			<BackgroundKFM>art/LeaderHeads/Xoc/Yohl_bg.kfm</BackgroundKFM>
+			<Button>Art/LeaderHeads/Xoc/Button_Xoc.dds</Button>
+			<NIF>Art/LeaderHeads/Xoc/Yohl.nif</NIF>
+			<KFM>Art/LeaderHeads/Xoc/Yohl.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Xoc/Yohl.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Xoc/Yohl_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_YEKATERINA</Type>
-			<Button>Art/Leaderheads/Yekaterina/Button_Yekaterina.dds</Button>
-			<NIF>Art/Leaderheads/Yekaterina/catherine.nif</NIF>
-			<KFM>Art/Leaderheads/Yekaterina/catherine.kfm</KFM>
-			<NoShaderNIF>Art/Leaderheads/Yekaterina/catherine.nif</NoShaderNIF>
-			<BackgroundKFM>Art/Leaderheads/Yekaterina/catherine_BG.kfm</BackgroundKFM>
+			<Button>Art/LeaderHeads/Yekaterina/Button_Yekaterina.dds</Button>
+			<NIF>Art/LeaderHeads/Yekaterina/catherine.nif</NIF>
+			<KFM>Art/LeaderHeads/Yekaterina/catherine.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Yekaterina/catherine.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Yekaterina/catherine_BG.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_BENAZIR</Type>
-			<Button>art/LeaderHeads/Benazir/bhutto.dds</Button>
-			<NIF>art/LeaderHeads/Benazir/Bhutto.nif</NIF>
-			<KFM>art/LeaderHeads/Benazir/Bhutto.kfm</KFM>
-			<NoShaderNIF>art/LeaderHeads/Benazir/Bhutto.nif</NoShaderNIF>
-			<BackgroundKFM>art/LeaderHeads/Benazir/Bhutto_BG.kfm</BackgroundKFM>
+			<Button>Art/LeaderHeads/Benazir/bhutto.dds</Button>
+			<NIF>Art/LeaderHeads/Benazir/Bhutto.nif</NIF>
+			<KFM>Art/LeaderHeads/Benazir/Bhutto.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Benazir/Bhutto.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Benazir/Bhutto_BG.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_ISABELLA_2</Type>
-			<Button>Art/Leaderheads/Isabella_2/Button/Btn_LH_Spain_Isabella.dds</Button>
-			<NIF>Art/Leaderheads/Isabella_2/isabella.nif</NIF>
-			<KFM>Art/Leaderheads/Isabella_2/isabella.kfm</KFM>
-			<NoShaderNIF>Art/Leaderheads/Isabella_2/isabella.nif</NoShaderNIF>
-			<BackgroundKFM>Art/Leaderheads/Isabella_2/isabella_bg.kfm</BackgroundKFM>
+			<Button>Art/LeaderHeads/Isabella_2/Button/Btn_LH_Spain_Isabella.dds</Button>
+			<NIF>Art/LeaderHeads/Isabella_2/isabella.nif</NIF>
+			<KFM>Art/LeaderHeads/Isabella_2/isabella.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Isabella_2/isabella.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Isabella_2/isabella_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_MARIA</Type>
-			<Button>Art/leaderheads/Maria/maria_ii.dds</Button>
-			<NIF>Art/leaderheads/Maria/elizabeth.nif</NIF>
-			<KFM>Art/Leaderheads/elizabeth/elizabeth.kfm</KFM>
-			<NoShaderNIF>Art/leaderheads/Maria/elizabeth_noshader.nif</NoShaderNIF>
-			<BackgroundKFM>Art/leaderheads/Maria/elizabeth_bg.kfm</BackgroundKFM>
+			<Button>Art/LeaderHeads/Maria/maria_ii.dds</Button>
+			<NIF>Art/LeaderHeads/Maria/elizabeth.nif</NIF>
+			<KFM>Art/LeaderHeads/elizabeth/elizabeth.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Maria/elizabeth_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Maria/elizabeth_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_MARIA_THERESA</Type>
-			<Button>art/LeaderHeads/Maria_Theresa/MariaTeresa.dds</Button>
-			<NIF>art/LeaderHeads/Maria_Theresa/Maria.nif</NIF>
-			<KFM>art/LeaderHeads/Maria_Theresa/catherine.kfm</KFM>
-			<NoShaderNIF>art/LeaderHeads/Maria_Theresa/Maria.nif</NoShaderNIF>
-			<BackgroundKFM>art/LeaderHeads/Maria_Theresa/catherine_bg.kfm</BackgroundKFM>
+			<Button>Art/LeaderHeads/Maria_Theresa/MariaTeresa.dds</Button>
+			<NIF>Art/LeaderHeads/Maria_Theresa/Maria.nif</NIF>
+			<KFM>Art/LeaderHeads/Maria_Theresa/catherine.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Maria_Theresa/Maria.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Maria_Theresa/catherine_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_MARPESIA</Type>
-			<Button>art/LeaderHeads/Marpesia/marpesia.dds</Button>
-			<NIF>Art/Leaderheads/Marpesia/Pericles.nif</NIF>
-			<KFM>Art/Leaderheads/Pericles/Pericles.kfm</KFM>
-			<NoShaderNIF>Art/Leaderheads/Marpesia/Pericles_NONSHADER.nif</NoShaderNIF>
-			<BackgroundKFM>Art/Leaderheads/Marpesia/Pericles_BG.kfm</BackgroundKFM>
+			<Button>Art/LeaderHeads/Marpesia/marpesia.dds</Button>
+			<NIF>Art/LeaderHeads/Marpesia/Pericles.nif</NIF>
+			<KFM>Art/LeaderHeads/Pericles/Pericles.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Marpesia/Pericles_NONSHADER.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Marpesia/Pericles_BG.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_PENTHESILEA</Type>
-			<Button>art/LeaderHeads/Penthesilea/penthesilea.dds</Button>
-			<NIF>Art/Leaderheads/Penthesilea/Boudica.nif</NIF>
-			<KFM>Art/Leaderheads/Boudica/Boudica.kfm</KFM>
-			<NoShaderNIF>Art/Leaderheads/Penthesilea/Boudica_NONSHADER.nif</NoShaderNIF>
-			<BackgroundKFM>Art/Leaderheads/Penthesilea/cyrus_bg.kfm</BackgroundKFM>
+			<Button>Art/LeaderHeads/Penthesilea/penthesilea.dds</Button>
+			<NIF>Art/LeaderHeads/Penthesilea/Boudica.nif</NIF>
+			<KFM>Art/LeaderHeads/Boudica/Boudica.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Penthesilea/Boudica_NONSHADER.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Penthesilea/cyrus_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_THEODORA</Type>
-			<Button>Art/Leaderheads/Theodora/Theodora_btn.dds</Button>
-			<NIF>Art/Leaderheads/Theodora/Theodora.nif</NIF>
-			<KFM>Art/Leaderheads/Theodora/isabella.kfm</KFM>
-			<NoShaderNIF>Art/Leaderheads/Theodora/isabella_noshader.nif</NoShaderNIF>
-			<BackgroundKFM>Art/Leaderheads/Theodora/isabella_bg.kfm</BackgroundKFM>
+			<Button>Art/LeaderHeads/Theodora/Theodora_btn.dds</Button>
+			<NIF>Art/LeaderHeads/Theodora/Theodora.nif</NIF>
+			<KFM>Art/LeaderHeads/Theodora/isabella.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Theodora/isabella_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Theodora/isabella_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_ANNE_BONNY</Type>
-			<Button>Art/Leaderheads/Anne_Bonny/delahaye.dds</Button>
-			<NIF>Art/Leaderheads/Anne_Bonny/John II.nif</NIF>
-			<KFM>Art/Leaderheads/Anne_Bonny/John II.kfm</KFM>
-			<NoShaderNIF>Art/Leaderheads/Anne_Bonny/John_II_NONSHADER.nif</NoShaderNIF>
-			<BackgroundKFM>Art/Leaderheads/Anne_Bonny/JohnII_BG.kfm</BackgroundKFM>
+			<Button>Art/LeaderHeads/Anne_Bonny/delahaye.dds</Button>
+			<NIF>Art/LeaderHeads/Anne_Bonny/John II.nif</NIF>
+			<KFM>Art/LeaderHeads/Anne_Bonny/John II.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Anne_Bonny/John_II_NONSHADER.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Anne_Bonny/JohnII_BG.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_ATOTOZTLI</Type>
-			<Button>Art/Leaderheads/Atotoztli/Btn_LH_Atotoztli.dds</Button>
-			<NIF>Art/Leaderheads/Atotoztli/Atotoztli.nif</NIF>
-			<KFM>Art/Leaderheads/Atotoztli/Atotoztli.kfm</KFM>
-			<NoShaderNIF>Art/Leaderheads/Atotoztli/Atotoztli.nif</NoShaderNIF>
-			<BackgroundKFM>Art/Leaderheads/Atotoztli/Atotoztli_bg.kfm</BackgroundKFM>
+			<Button>Art/LeaderHeads/Atotoztli/Btn_LH_Atotoztli.dds</Button>
+			<NIF>Art/LeaderHeads/Atotoztli/Atotoztli.nif</NIF>
+			<KFM>Art/LeaderHeads/Atotoztli/Atotoztli.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Atotoztli/Atotoztli.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Atotoztli/Atotoztli_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_BILQIS_2</Type>
 			<Button>Art/LeaderHeads/Bilqis_2/button.dds</Button>
-			<NIF>art/LeaderHeads/Bilqis_2/Hammurabi.nif</NIF>
-			<KFM>art/LeaderHeads/Hammurabi/Hammurabi.kfm</KFM>
-			<NoShaderNIF>art/LeaderHeads/Bilqis_2/Hammurabi_NONSHADER.nif</NoShaderNIF>
-			<BackgroundKFM>art/Leaderheads/Bilqis_2/Hammurabi_Backgrnd.kfm</BackgroundKFM>
+			<NIF>Art/LeaderHeads/Bilqis_2/Hammurabi.nif</NIF>
+			<KFM>Art/LeaderHeads/Hammurabi/Hammurabi.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Bilqis_2/Hammurabi_NONSHADER.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Bilqis_2/Hammurabi_Backgrnd.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_CIXI</Type>
-			<Button>Art/Leaderheads/cixi/Btn_LH_Cixi.dds</Button>
-			<NIF>Art/Leaderheads/Cixi/Cixi.nif</NIF>
-			<KFM>Art/Leaderheads/Cixi/asoka.kfm</KFM>
-			<NoShaderNIF>Art/Leaderheads/Cixi/Cixi.nif</NoShaderNIF>
-			<BackgroundKFM>Art/Leaderheads/Cixi/asoka_bg.kfm</BackgroundKFM>
+			<Button>Art/LeaderHeads/cixi/Btn_LH_Cixi.dds</Button>
+			<NIF>Art/LeaderHeads/Cixi/Cixi.nif</NIF>
+			<KFM>Art/LeaderHeads/Cixi/asoka.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Cixi/Cixi.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Cixi/asoka_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_CLEOPATRA</Type>
-			<Button>Art/Leaderheads/Cleopatra/kleobuttonneu.dds</Button>
-			<NIF>Art/Leaderheads/Cleopatra/isabella.nif</NIF>
-			<KFM>Art/Leaderheads/Cleopatra/isabella.kfm</KFM>
-			<NoShaderNIF>Art/Leaderheads/Cleopatra/isabella_noshader.nif</NoShaderNIF>
-			<BackgroundKFM>Art/Leaderheads/Cleopatra/hatshepsut_bg.kfm</BackgroundKFM>
+			<Button>Art/LeaderHeads/Cleopatra/kleobuttonneu.dds</Button>
+			<NIF>Art/LeaderHeads/Cleopatra/isabella.nif</NIF>
+			<KFM>Art/LeaderHeads/Cleopatra/isabella.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Cleopatra/isabella_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Cleopatra/hatshepsut_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_MARY_STUART</Type>
-			<Button>Art/Leaderheads/Mary_Stuart/stuartbutton.dds</Button>
-			<NIF>Art/Leaderheads/Mary_Stuart/Elizabeth.nif</NIF>
-			<KFM>art/LeaderHeads/Elizabeth/elizabeth.kfm</KFM>
-			<NoShaderNIF>Art/Leaderheads/Mary_Stuart/Elizabeth.nif</NoShaderNIF>
-			<BackgroundKFM>Art/Leaderheads/Mary_Stuart/elizabeth_bg.kfm</BackgroundKFM>
+			<Button>Art/LeaderHeads/Mary_Stuart/stuartbutton.dds</Button>
+			<NIF>Art/LeaderHeads/Mary_Stuart/Elizabeth.nif</NIF>
+			<KFM>Art/LeaderHeads/Elizabeth/elizabeth.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Mary_Stuart/Elizabeth.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Mary_Stuart/elizabeth_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_WILHELMINA</Type>
-			<Button>Art/Leaderheads/Wilhelmina/Wilhelmina.dds</Button>
-			<NIF>Art/Leaderheads/Wilhelmina/elizabeth.nif</NIF>
-			<KFM>Art/Leaderheads/Wilhelmina/elizabeth.kfm</KFM>
-			<NoShaderNIF>Art/Leaderheads/Wilhelmina/elizabeth_noshader.nif</NoShaderNIF>
-			<BackgroundKFM>Art/Leaderheads/Wilhelmina/elizabeth_bg.kfm</BackgroundKFM>
+			<Button>Art/LeaderHeads/Wilhelmina/Wilhelmina.dds</Button>
+			<NIF>Art/LeaderHeads/Wilhelmina/elizabeth.nif</NIF>
+			<KFM>Art/LeaderHeads/Wilhelmina/elizabeth.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Wilhelmina/elizabeth_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Wilhelmina/elizabeth_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 	</LeaderheadArtInfos>
 </Civ4ArtDefines>
