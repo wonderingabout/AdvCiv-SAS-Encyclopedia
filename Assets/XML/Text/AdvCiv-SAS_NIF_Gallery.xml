@@ -5,5 +5,76 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 (c) 2026 wonderingabout & AI helpers (see Authors in root README.md)
 -->
 <Civ4GameText xmlns="http://www.firaxis.com">
-
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_GRACE_OMALLEY</Tag>
+		<English>Grace O'Malley</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_AMANIRENA</Tag>
+		<English>Amanirena</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_AMINATU</Tag>
+		<English>Aminatu</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_BILQIS</Tag>
+		<English>Bilqis</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_DIDO</Tag>
+		<English>Dido</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_DIHYA</Tag>
+		<English>Dihya</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ISABELLA</Tag>
+		<English>Isabella</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_JINGU</Tag>
+		<English>Jingu</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_KOCHININAKO</Tag>
+		<English>Kochininako</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_MANGAMMAL</Tag>
+		<English>Mangammal</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_NZINGA</Tag>
+		<English>Nzinga</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_SALAMASINA</Tag>
+		<English>Salamasina</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_SEONDEOK</Tag>
+		<English>Seondeok</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_SHIN_SAWBU</Tag>
+		<English>Shin Sawbu</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_TOMYRIS</Tag>
+		<English>Tomyris</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_TRUNG_SISTERS</Tag>
+		<English>Trung Sisters</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_XOC</Tag>
+		<English>Xoc</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_YEKATERINA</Tag>
+		<English>Yekaterina</English>
+	</TEXT>
 </Civ4GameText>

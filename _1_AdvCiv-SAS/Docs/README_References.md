@@ -5,6 +5,7 @@
 [Copyright and Disclaimer](/_1_AdvCiv-SAS/Docs/README_References.md#copyright-and-disclaimer)  
 [Note about the audio in main menu](/_1_AdvCiv-SAS/Docs/README_References.md#note-about-the-audio-in-main-menu)  
 [NIF Gallery Sources](/_1_AdvCiv-SAS/Docs/README_References.md#nif-gallery-sources)  
+&emsp;[Female Human](/_1_AdvCiv-SAS/Docs/README_References.md#female-human)  
 [Credits](/_1_AdvCiv-SAS/Docs/README_References.md#credits)  
 [Starting your mod](/_1_AdvCiv-SAS/Docs/README_References.md#starting-your-mod)  
 [Some Useful tools while doing this](/_1_AdvCiv-SAS/Docs/README_References.md#some-useful-tools-while-doing-this)  
@@ -38,7 +39,12 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 
 ## NIF Gallery Sources
 
+Leaders added with heavy assistance of GPT-5.3-Codex thanks a lot.
 
+### Female Human
+
+- AdvCiv-SAS: Grace O'Malley
+- History Rewritten: Amanirena, Aminatu, Bilqis, Dido, Dihya, Isabella, Jingu, Kochininako, Mangammal, Nzinga, Salamasina, Seondeok, Shin Sawbu, Tomyris, Trung Sisters, Xoc, Yekaterina
 
 ## Credits
 

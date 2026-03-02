@@ -5,6 +5,8 @@ This mod is a modified version of [AdvCiv-SAS (Simple Advanced Strategy)](https:
 - use it as a NIF gallery mod (non-playable)
 - aggressively strip almost all assets (so it is lighter and we don't need them), notably using `minOccurs="0"` for almost all leaderHead XML info resulting in very compact XML per leaderhead (suits minimal NIF Gallery need)
 
+Since it is based on AdvCiv-SAS, you can notably use AdvCiv-SAS features like keyboard UP/DOWN navigation and search bar in Sevopedia.
+
 For documentation, see AdvCiv-SAS' github page rather.
 
 Also most importantly AIs like GPT Codex, GPT Thinking, ChatGPT, Claude code, Gemini AI, Deepseek AI, Grok AI, have helped me a lot to do this, and i probably would not have completed (or extremely harder) without them and all i mean so thanks again and thanks a lot!
@@ -28,9 +30,9 @@ For License and Reuse, see [License and reuse](/README.md#license-and-reuse).
 <Civ4LeaderHeadInfos xmlns="x-schema:CIV4CivilizationsSchema.xml">
 	<LeaderHeadInfos>
 		<LeaderHeadInfo>
-			<Type>LEADER_WASHINGTON</Type>
-			<Description>TXT_KEY_LEADER_WASHINGTON</Description>
-			<ArtDefineTag>ART_DEF_LEADER_WASHINGTON</ArtDefineTag>
+			<Type>LEADER_GRACE_OMALLEY</Type>
+			<Description>TXT_KEY_LEADER_GRACE_OMALLEY</Description>
+			<ArtDefineTag>ART_DEF_LEADER_GRACE_OMALLEY</ArtDefineTag>
 		</LeaderHeadInfo>
 	</LeaderHeadInfos>
 </Civ4LeaderHeadInfos>
@@ -44,7 +46,12 @@ For License and Reuse, see [License and reuse](/README.md#license-and-reuse).
 			<Description>TXT_KEY_CIV_AMERICA_DESC</Description>
 			<ArtDefineTag>ART_DEF_CIVILIZATION_AMERICA</ArtDefineTag>
 			<Leaders>
-				<Leader><LeaderName>LEADER_WASHINGTON</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_GRACE_OMALLEY</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_AMANIRENA</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_AMINATU</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_BILQIS</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_DIDO</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_DIHYA</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 			</Leaders>
 		</CivilizationInfo>
 	</CivilizationInfos>
