@@ -163,9 +163,9 @@
 			<ArtDefineTag>ART_DEF_LEADER_MANGAMMAL</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
-			<Type>LEADER_NZINGA</Type>
-			<Description>TXT_KEY_LEADER_NZINGA</Description>
-			<ArtDefineTag>ART_DEF_LEADER_NZINGA</ArtDefineTag>
+			<Type>LEADER_ATOTOZTLI_2</Type>
+			<Description>TXT_KEY_LEADER_ATOTOZTLI_2</Description>
+			<ArtDefineTag>ART_DEF_LEADER_ATOTOZTLI_2</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
 			<Type>LEADER_SALAMASINA</Type>
@@ -236,6 +236,41 @@
 			<Type>LEADER_THEODORA</Type>
 			<Description>TXT_KEY_LEADER_THEODORA</Description>
 			<ArtDefineTag>ART_DEF_LEADER_THEODORA</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_ANNE_BONNY</Type>
+			<Description>TXT_KEY_LEADER_ANNE_BONNY</Description>
+			<ArtDefineTag>ART_DEF_LEADER_ANNE_BONNY</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_ATOTOZTLI</Type>
+			<Description>TXT_KEY_LEADER_ATOTOZTLI</Description>
+			<ArtDefineTag>ART_DEF_LEADER_ATOTOZTLI</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_BILQIS_2</Type>
+			<Description>TXT_KEY_LEADER_BILQIS_2</Description>
+			<ArtDefineTag>ART_DEF_LEADER_BILQIS_2</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_CIXI</Type>
+			<Description>TXT_KEY_LEADER_CIXI</Description>
+			<ArtDefineTag>ART_DEF_LEADER_CIXI</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_CLEOPATRA</Type>
+			<Description>TXT_KEY_LEADER_CLEOPATRA</Description>
+			<ArtDefineTag>ART_DEF_LEADER_CLEOPATRA</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_MARY_STUART</Type>
+			<Description>TXT_KEY_LEADER_MARY_STUART</Description>
+			<ArtDefineTag>ART_DEF_LEADER_MARY_STUART</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_WILHELMINA</Type>
+			<Description>TXT_KEY_LEADER_WILHELMINA</Description>
+			<ArtDefineTag>ART_DEF_LEADER_WILHELMINA</ArtDefineTag>
 		</LeaderHeadInfo>
 	</LeaderHeadInfos>
 </Civ4LeaderHeadInfos>

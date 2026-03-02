@@ -43,7 +43,7 @@
 			<Type>ART_DEF_LEADER_BILQIS</Type>
 			<Button>art/LeaderHeads/Bilqis/Button_Bilqis.dds</Button>
 			<NIF>art/LeaderHeads/Bilqis/Hammurabi.nif</NIF>
-			<KFM>Art/LeaderHeads/Hammurabi/Hammurabi.kfm</KFM>
+			<KFM>Art/Leaderheads/Hammurabi/Hammurabi.kfm</KFM>
 			<NoShaderNIF>art/LeaderHeads/Bilqis/Hammurabi.nif</NoShaderNIF>
 			<BackgroundKFM>art/LeaderHeads/Bilqis/Hammurabi_Backgrnd.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
@@ -96,12 +96,12 @@
 			<BackgroundKFM>art/LeaderHeads/Mangammal/mansa_musa_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
-			<Type>ART_DEF_LEADER_NZINGA</Type>
-			<Button>art/LeaderHeads/Nzinga/Button_Nzinga.dds</Button>
-			<NIF>art/LeaderHeads/Nzinga/Atotoztli.nif</NIF>
-			<KFM>art/LeaderHeads/Nzinga/Atotoztli.kfm</KFM>
-			<NoShaderNIF>art/LeaderHeads/Nzinga/Atotoztli.nif</NoShaderNIF>
-			<BackgroundKFM>art/LeaderHeads/Nzinga/Atotoztli_bg.kfm</BackgroundKFM>
+			<Type>ART_DEF_LEADER_ATOTOZTLI_2</Type>
+			<Button>Art/Leaderheads/Atotoztli_2/Button_Nzinga.dds</Button>
+			<NIF>Art/Leaderheads/Atotoztli_2/Atotoztli.nif</NIF>
+			<KFM>Art/Leaderheads/Atotoztli_2/Atotoztli.kfm</KFM>
+			<NoShaderNIF>Art/Leaderheads/Atotoztli_2/Atotoztli.nif</NoShaderNIF>
+			<BackgroundKFM>Art/Leaderheads/Atotoztli_2/Atotoztli_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_SALAMASINA</Type>
@@ -129,11 +129,11 @@
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_TOMYRIS</Type>
-			<Button>Art/LeaderHeads/Tomyris/Button_Tomyris.dds</Button>
-			<NIF>Art/LeaderHeads/Tomyris/Tomyris.nif</NIF>
-			<KFM>Art/LeaderHeads/Boudica/Boudica.kfm</KFM>
-			<NoShaderNIF>Art/LeaderHeads/Tomyris/Tomyris.nif</NoShaderNIF>
-			<BackgroundKFM>Art/LeaderHeads/Tomyris/Pericles_BG.kfm</BackgroundKFM>
+			<Button>Art/Leaderheads/Tomyris/Button_Tomyris.dds</Button>
+			<NIF>Art/Leaderheads/Tomyris/Tomyris.nif</NIF>
+			<KFM>Art/Leaderheads/Boudica/Boudica.kfm</KFM>
+			<NoShaderNIF>Art/Leaderheads/Tomyris/Tomyris.nif</NoShaderNIF>
+			<BackgroundKFM>Art/Leaderheads/Tomyris/Pericles_BG.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_TRUNG_SISTERS</Type>
@@ -179,7 +179,7 @@
 			<Type>ART_DEF_LEADER_MARIA</Type>
 			<Button>Art/leaderheads/Maria/maria_ii.dds</Button>
 			<NIF>Art/leaderheads/Maria/elizabeth.nif</NIF>
-			<KFM>Art/LeaderHeads/elizabeth/elizabeth.kfm</KFM>
+			<KFM>Art/Leaderheads/elizabeth/elizabeth.kfm</KFM>
 			<NoShaderNIF>Art/leaderheads/Maria/elizabeth_noshader.nif</NoShaderNIF>
 			<BackgroundKFM>Art/leaderheads/Maria/elizabeth_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
@@ -195,7 +195,7 @@
 			<Type>ART_DEF_LEADER_MARPESIA</Type>
 			<Button>art/LeaderHeads/Marpesia/marpesia.dds</Button>
 			<NIF>Art/Leaderheads/Marpesia/Pericles.nif</NIF>
-			<KFM>Art/LeaderHeads/Pericles/Pericles.kfm</KFM>
+			<KFM>Art/Leaderheads/Pericles/Pericles.kfm</KFM>
 			<NoShaderNIF>Art/Leaderheads/Marpesia/Pericles_NONSHADER.nif</NoShaderNIF>
 			<BackgroundKFM>Art/Leaderheads/Marpesia/Pericles_BG.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
@@ -203,7 +203,7 @@
 			<Type>ART_DEF_LEADER_PENTHESILEA</Type>
 			<Button>art/LeaderHeads/Penthesilea/penthesilea.dds</Button>
 			<NIF>Art/Leaderheads/Penthesilea/Boudica.nif</NIF>
-			<KFM>Art/LeaderHeads/Boudica/Boudica.kfm</KFM>
+			<KFM>Art/Leaderheads/Boudica/Boudica.kfm</KFM>
 			<NoShaderNIF>Art/Leaderheads/Penthesilea/Boudica_NONSHADER.nif</NoShaderNIF>
 			<BackgroundKFM>Art/Leaderheads/Penthesilea/cyrus_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
@@ -214,6 +214,62 @@
 			<KFM>Art/Leaderheads/Theodora/isabella.kfm</KFM>
 			<NoShaderNIF>Art/Leaderheads/Theodora/isabella_noshader.nif</NoShaderNIF>
 			<BackgroundKFM>Art/Leaderheads/Theodora/isabella_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_ANNE_BONNY</Type>
+			<Button>Art/Leaderheads/Anne_Bonny/delahaye.dds</Button>
+			<NIF>Art/Leaderheads/Anne_Bonny/John II.nif</NIF>
+			<KFM>Art/Leaderheads/Anne_Bonny/John II.kfm</KFM>
+			<NoShaderNIF>Art/Leaderheads/Anne_Bonny/John_II_NONSHADER.nif</NoShaderNIF>
+			<BackgroundKFM>Art/Leaderheads/Anne_Bonny/JohnII_BG.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_ATOTOZTLI</Type>
+			<Button>Art/Leaderheads/Atotoztli/Btn_LH_Atotoztli.dds</Button>
+			<NIF>Art/Leaderheads/Atotoztli/Atotoztli.nif</NIF>
+			<KFM>Art/Leaderheads/Atotoztli/Atotoztli.kfm</KFM>
+			<NoShaderNIF>Art/Leaderheads/Atotoztli/Atotoztli.nif</NoShaderNIF>
+			<BackgroundKFM>Art/Leaderheads/Atotoztli/Atotoztli_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_BILQIS_2</Type>
+			<Button>Art/LeaderHeads/Bilqis_2/button.dds</Button>
+			<NIF>art/LeaderHeads/Bilqis_2/Hammurabi.nif</NIF>
+			<KFM>art/LeaderHeads/Hammurabi/Hammurabi.kfm</KFM>
+			<NoShaderNIF>art/LeaderHeads/Bilqis_2/Hammurabi_NONSHADER.nif</NoShaderNIF>
+			<BackgroundKFM>art/Leaderheads/Bilqis_2/Hammurabi_Backgrnd.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_CIXI</Type>
+			<Button>Art/Leaderheads/cixi/Btn_LH_Cixi.dds</Button>
+			<NIF>Art/Leaderheads/Cixi/Cixi.nif</NIF>
+			<KFM>Art/Leaderheads/Cixi/asoka.kfm</KFM>
+			<NoShaderNIF>Art/Leaderheads/Cixi/Cixi.nif</NoShaderNIF>
+			<BackgroundKFM>Art/Leaderheads/Cixi/asoka_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_CLEOPATRA</Type>
+			<Button>Art/Leaderheads/Cleopatra/kleobuttonneu.dds</Button>
+			<NIF>Art/Leaderheads/Cleopatra/isabella.nif</NIF>
+			<KFM>Art/Leaderheads/Cleopatra/isabella.kfm</KFM>
+			<NoShaderNIF>Art/Leaderheads/Cleopatra/isabella_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/Leaderheads/Cleopatra/hatshepsut_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_MARY_STUART</Type>
+			<Button>Art/Leaderheads/Mary_Stuart/stuartbutton.dds</Button>
+			<NIF>Art/Leaderheads/Mary_Stuart/Elizabeth.nif</NIF>
+			<KFM>art/LeaderHeads/Elizabeth/elizabeth.kfm</KFM>
+			<NoShaderNIF>Art/Leaderheads/Mary_Stuart/Elizabeth.nif</NoShaderNIF>
+			<BackgroundKFM>Art/Leaderheads/Mary_Stuart/elizabeth_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_WILHELMINA</Type>
+			<Button>Art/Leaderheads/Wilhelmina/Wilhelmina.dds</Button>
+			<NIF>Art/Leaderheads/Wilhelmina/elizabeth.nif</NIF>
+			<KFM>Art/Leaderheads/Wilhelmina/elizabeth.kfm</KFM>
+			<NoShaderNIF>Art/Leaderheads/Wilhelmina/elizabeth_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/Leaderheads/Wilhelmina/elizabeth_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 	</LeaderheadArtInfos>
 </Civ4ArtDefines>

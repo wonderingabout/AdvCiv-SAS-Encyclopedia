@@ -46,8 +46,8 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<English>Mangammal</English>
 	</TEXT>
 	<TEXT>
-		<Tag>TXT_KEY_LEADER_NZINGA</Tag>
-		<English>Nzinga</English>
+		<Tag>TXT_KEY_LEADER_ATOTOZTLI_2</Tag>
+		<English>Atotoztli 2 (Nzinga)</English>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_LEADER_SALAMASINA</Tag>
@@ -104,5 +104,33 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 	<TEXT>
 		<Tag>TXT_KEY_LEADER_THEODORA</Tag>
 		<English>Theodora</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ANNE_BONNY</Tag>
+		<English>Anne Bonny</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ATOTOZTLI</Tag>
+		<English>Atotoztli</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_BILQIS_2</Tag>
+		<English>Bilqis 2</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_CIXI</Tag>
+		<English>Cixi</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_CLEOPATRA</Tag>
+		<English>Cleopatra</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_MARY_STUART</Tag>
+		<English>Mary Stuart</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_WILHELMINA</Tag>
+		<English>Wilhelmina</English>
 	</TEXT>
 </Civ4GameText>
