@@ -173,9 +173,9 @@
 			<ArtDefineTag>ART_DEF_LEADER_SALAMASINA</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
-			<Type>LEADER_SEONDEOK</Type>
-			<Description>TXT_KEY_LEADER_SEONDEOK</Description>
-			<ArtDefineTag>ART_DEF_LEADER_SEONDEOK</ArtDefineTag>
+			<Type>LEADER_WU_ZETIAN</Type>
+			<Description>TXT_KEY_LEADER_WU_ZETIAN</Description>
+			<ArtDefineTag>ART_DEF_LEADER_WU_ZETIAN</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
 			<Type>LEADER_SHIN_SAWBU</Type>

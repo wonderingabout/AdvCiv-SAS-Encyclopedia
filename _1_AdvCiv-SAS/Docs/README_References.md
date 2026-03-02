@@ -42,7 +42,7 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 ### Female Human
 
 - AdvCiv-SAS: Grace O'Malley
-- History Rewritten: Amanirena, Aminatu, Bilqis, Dido, Dihya, Isabella, Jingu, Kochininako, Mangammal, Atotoztli 2 (Nzinga), Salamasina, Seondeok, Shin Sawbu, Tomyris, Trung Sisters, Xoc, Yekaterina
+- History Rewritten: Amanirena, Aminatu, Bilqis, Dido, Dihya, Isabella, Jingu, Kochininako, Mangammal, Atotoztli 2 (Nzinga), Salamasina, Wu Zetian, Shin Sawbu, Tomyris, Trung Sisters, Xoc, Yekaterina
 - RFC Dawn of Civilization: Benazir, Isabella II, Maria
 - Beyond the Game 2.43: Maria Theresa, Marpesia, Penthesilea, Theodora
 - Base 6.4: Anne Bonny, Atotoztli, Bilqis 2, Cixi, Cleopatra, Mary Stuart, Wilhelmina

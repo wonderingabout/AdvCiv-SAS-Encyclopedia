@@ -112,12 +112,12 @@
 			<BackgroundKFM>Art/Leaderheads/Salamasina/winston_churchill_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
-			<Type>ART_DEF_LEADER_SEONDEOK</Type>
-			<Button>art/LeaderHeads/Seondeok/Button_Seondeok.dds</Button>
-			<NIF>art/LeaderHeads/Seondeok/Wu.nif</NIF>
-			<KFM>art/LeaderHeads/Seondeok/Wu.kfm</KFM>
-			<NoShaderNIF>art/LeaderHeads/Seondeok/Wu.nif</NoShaderNIF>
-			<BackgroundKFM>art/LeaderHeads/Seondeok/Wu_BG.kfm</BackgroundKFM>
+			<Type>ART_DEF_LEADER_WU_ZETIAN</Type>
+			<Button>art/LeaderHeads/Wu_Zetian/Button_Wu_Zetian.dds</Button>
+			<NIF>art/LeaderHeads/Wu_Zetian/Wu.nif</NIF>
+			<KFM>art/LeaderHeads/Wu_Zetian/Wu.kfm</KFM>
+			<NoShaderNIF>art/LeaderHeads/Wu_Zetian/Wu.nif</NoShaderNIF>
+			<BackgroundKFM>art/LeaderHeads/Wu_Zetian/Wu_BG.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_SHIN_SAWBU</Type>
