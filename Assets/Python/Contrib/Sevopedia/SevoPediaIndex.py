@@ -53,6 +53,14 @@ class SevoPediaIndex:
 		self.SAS_indexSetLayout(bCategory)
 		self.buildIndex()
 		self.placeIndex()
+
+	# <!-- custom: errlog had UnicodeDecodeError in Sevopedia Index build/sort/filter when mixed byte strings (e.g. 0x88/0x92) were compared/lowered as ASCII in Python 2.4; normalize all index strings to unicode once with latin-1 before sort/filter/render so index pages open reliably without changing gameplay data. (GPT-5.3-Codex) -->
+	def SAS_indexToUnicode(self, value):
+		if value is None:
+			return u""
+		if isinstance(value, unicode):
+			return value
+		return unicode(value, "latin-1")
 	
 	def SAS_indexDeleteSearchWidgets(self):
 		screen = self.top.getScreen()
@@ -205,7 +213,7 @@ class SevoPediaIndex:
 		for item in buildList:
 			list.append([item[0],"Build",item])
 		
-		list.sort()
+		list.sort(key=lambda row: self.SAS_indexToUnicode(row[0]).lower())
 		self.index = list
 		
 	def placeIndex(self):
@@ -247,15 +255,17 @@ class SevoPediaIndex:
 		iX = self.X_LETTER
 		iLetterY = self.Y_INDEX + self.SAS_INDEX_SEARCH_H + 4
 		self.letterTextIDs = {}
-		szFilter = self.SAS_szIndexSearchString.strip().lower()
+		szFilter = self.SAS_indexToUnicode(self.SAS_szIndexSearchString.strip()).lower()
 		bFilter = (len(szFilter) > 0)
 		for name, type, item in self.index:
 			if item[1] < 0:
 				continue
-			if bFilter and name.lower().find(szFilter) == -1:
+			szName = self.SAS_indexToUnicode(name)
+			szItemText = self.SAS_indexToUnicode(item[0])
+			if bFilter and szName.lower().find(szFilter) == -1:
 				continue
-			if (name[:1] != sLetter):
-				sLetter = name[:1]
+			if (szName[:1] != sLetter):
+				sLetter = szName[:1]
 				screen.appendTableRow(self.tableName)
 				iRow += 1
 				screen.setTableText(self.tableName, 1, iRow, u"<font=4>- " + sLetter + u" -</font>", "", WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_CENTER_JUSTIFY)
@@ -279,7 +289,7 @@ class SevoPediaIndex:
 					iColumn = 0
 			
 			# <!-- custom: refactor, since sText was defined in existing code, reuse it instead of hardcoding it again at each call if i may say and am not mistaken, this also fixes ruff warning and according to chatgpt this is unused as well and safe to remove as well so adding it again; similarly removed unused lines `sButton = ""` and `eWidget = None` and as for lines `iData1 = item[1]` and `iData2 = 1` also using them as variables similarly instead of hardcoding them each time -->
-			sText = u"<font=3>" + item[0] + u"</font>"
+			sText = u"<font=3>" + szItemText + u"</font>"
 			iData1 = item[1]
 			iData2 = 1
 			if (type == "Tech"):

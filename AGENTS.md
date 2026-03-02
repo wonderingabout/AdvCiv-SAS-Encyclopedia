@@ -184,6 +184,8 @@ These are general guidelines, not irrevocable requirements; adjust based on task
 - Save XML in UTF-8 not with BOM because BOM introduces bad chars and is needless.
 - Move XML texts we modify from other files to our AdvCiv-SAS-NIF-Gallery files too and remove other languages while doing so.
 - Avoid to comment in deep-nested XML just in case. For example, comment before `<ObsoleteSafeCommerceChanges>`, not before its child `<iCommerce>`.
+- Avoid complicated and formatting-error prone characters (e.g., `“` or `”`), use simple characters (e.g., `"`) instead.
+- Prefer UTF-8 as it's simple and seemingly works well enough; avoid UTF-8 with BOM as it can cause mojibake artifacts like `â€”it` or `â€™` or other issues.
 
 ## C++
 
