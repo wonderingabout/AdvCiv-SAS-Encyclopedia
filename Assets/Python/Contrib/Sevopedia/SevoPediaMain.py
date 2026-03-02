@@ -377,6 +377,8 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 		self.IS_SAS_SEVOPEDIA_MAIN_BUILDS_GROUP_BY_TYPE = (gc.getDefineINT("SAS_SEVOPEDIA_MAIN_BUILDS_GROUP_BY_TYPE") > 0)
 		self.IS_SAS_SEVOPEDIA_MAIN_TERRAINS_GROUP_BY_LAND_WATER = (gc.getDefineINT("SAS_SEVOPEDIA_MAIN_TERRAINS_GROUP_BY_LAND_WATER") > 0)
 		self.IS_SAS_SEVOPEDIA_MAIN_FEATURES_GROUP_BY_LAND_WATER = (gc.getDefineINT("SAS_SEVOPEDIA_MAIN_FEATURES_GROUP_BY_LAND_WATER") > 0)
+		self.IS_SAS_SEVOPEDIA_MAIN_CIVS_GROUP_BY_ARTSTYLE = (gc.getDefineINT("SAS_SEVOPEDIA_MAIN_CIVS_GROUP_BY_ARTSTYLE") > 0)
+		self.IS_SAS_SEVOPEDIA_MAIN_LEADERS_GROUP_BY_CIV = (gc.getDefineINT("SAS_SEVOPEDIA_MAIN_LEADERS_GROUP_BY_CIV") > 0)
 		self.IS_SAS_SEVOPEDIA_LEADER_AI_PERSONALITY_ENABLE = (gc.getDefineINT("SAS_SEVOPEDIA_LEADER_AI_PERSONALITY_ENABLE") > 0)
 		self.IS_SAS_SEVOPEDIA_MUSIC_LEADER_INTRO_PEACE_FIRST_ONLY = (gc.getDefineINT("SAS_SEVOPEDIA_MUSIC_LEADER_INTRO_PEACE_FIRST_ONLY") > 0)
 		self.IS_SAS_SEVOPEDIA_MUSIC_LEADER_PEACE_FIRST_ONLY = (gc.getDefineINT("SAS_SEVOPEDIA_MUSIC_LEADER_PEACE_FIRST_ONLY") > 0)
@@ -1253,6 +1255,10 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 			#	info.isCivilizationFreeBuildingClass(iCapitalBuildingClass)):
 			#		continue
 			r.append((descr,i))
+
+		if self.IS_SAS_SEVOPEDIA_MAIN_CIVS_GROUP_BY_ARTSTYLE:
+			return SAS_MainGroupings.SAS_getCivilizationsGroupedByArtStyle(self.isSortLists())
+
 		return r # </advc.004y>
 
 
@@ -1269,6 +1275,9 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 			print("Sevopedia Leader cache prebuilt from Sevopedia Main. This should appear only once even if we exit sevopedia entirely, as long as we are during the same gaming session (i.e. game was not exited) (for info, in SevopediaMain, self.IS_SEVOPEDIALEADER_CACHE_PREBUILT=%s)." % str(self.IS_SEVOPEDIALEADER_CACHE_PREBUILT))
 	
 	def getLeaderList(self):
+		if self.IS_SAS_SEVOPEDIA_MAIN_LEADERS_GROUP_BY_CIV:
+			return SAS_MainGroupings.SAS_getLeadersGroupedByCivilization(self.isSortLists())
+
 		# <advc.004y>
 		r = self.getSortedList(gc.getNumLeaderHeadInfos(), gc.getLeaderHeadInfo)
 		# Barbs should be in position 0, but use WonderConstructRand to confirm.
@@ -1871,6 +1880,9 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 		i = 0
 		for idx, item in enumerate(self.list):
 			data1 = item[1] # advc.001: Moved up
+			szCustomHeaderButtonPlaceItems = ""
+			if len(item) > 2:
+				szCustomHeaderButtonPlaceItems = item[2]
 
 			# <!-- custom: if filtering, skip rows not selected by our header-aware filter (chatgpt 5.2 + claude opus 4.5) -->
 			if bFiltering:
@@ -1938,7 +1950,13 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 
 			# <advc.001> Widget help for leaders needs the civ ID in data2 (from Taurus)
 			elif (info == gc.getLeaderHeadInfo):
-				data2 = SevoPediaLeader.SevoPediaLeader.getCiv(item[1]) # </advc.001>
+				if data1 == -1:
+					sTitlePlaceItems = CyTranslator().changeTextColor(item[0], self.COLOR_HIGHLIGHT_TEXT)
+					widgetPlaceItems = WidgetTypes.WIDGET_GENERAL
+					szButtonPlaceItems = szCustomHeaderButtonPlaceItems
+					data2 = 1
+				else:
+					data2 = SevoPediaLeader.SevoPediaLeader.getCiv(item[1]) # </advc.001>
 
 			else:
 				# advc (note): 0 tends to mean no tooltip (or an empty one?).
@@ -1954,7 +1972,7 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 				if data1 == -1:
 					sTitlePlaceItems = CyTranslator().changeTextColor(item[0], self.COLOR_HIGHLIGHT_TEXT)
 					widgetPlaceItems = WidgetTypes.WIDGET_GENERAL
-					szButtonPlaceItems = ""
+					szButtonPlaceItems = szCustomHeaderButtonPlaceItems
 
 			# <!-- custom: cache selectable rows for arrow navigation (skip headers/spacers) (chatgpt 5.2 + claude opus 4.5) -->
 			if item[1] != -1:
