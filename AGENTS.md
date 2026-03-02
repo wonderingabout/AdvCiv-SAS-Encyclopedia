@@ -181,6 +181,7 @@ These are general guidelines, not irrevocable requirements; adjust based on task
 ## XML
 
 - Any new XML text should to our AdvCiv-SAS-NIF-Gallery file [AdvCiv-SAS_NIF_Gallery.xml](/Assets/XML/Text/AdvCiv-SAS_NIF_Gallery.xml).
+- Save XML in UTF-8 not with BOM because BOM introduces bad chars and is needless.
 - Move XML texts we modify from other files to our AdvCiv-SAS-NIF-Gallery files too and remove other languages while doing so.
 - Avoid to comment in deep-nested XML just in case. For example, comment before `<ObsoleteSafeCommerceChanges>`, not before its child `<iCommerce>`.
 

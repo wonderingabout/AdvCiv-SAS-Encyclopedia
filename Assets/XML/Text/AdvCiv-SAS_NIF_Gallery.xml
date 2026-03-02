@@ -77,4 +77,16 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<Tag>TXT_KEY_LEADER_YEKATERINA</Tag>
 		<English>Yekaterina</English>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_BENAZIR</Tag>
+		<English>Benazir</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ISABELLA_2</Tag>
+		<English>Isabella 2</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_MARIA</Tag>
+		<English>Maria</English>
+	</TEXT>
 </Civ4GameText>

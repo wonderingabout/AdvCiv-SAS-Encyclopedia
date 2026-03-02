@@ -39,12 +39,11 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 
 ## NIF Gallery Sources
 
-Leaders added with heavy assistance of GPT-5.3-Codex thanks a lot.
-
 ### Female Human
 
 - AdvCiv-SAS: Grace O'Malley
 - History Rewritten: Amanirena, Aminatu, Bilqis, Dido, Dihya, Isabella, Jingu, Kochininako, Mangammal, Nzinga, Salamasina, Seondeok, Shin Sawbu, Tomyris, Trung Sisters, Xoc, Yekaterina
+- RFC Dawn of Civilization: Benazir, Isabella II, Maria
 
 ## Credits
 

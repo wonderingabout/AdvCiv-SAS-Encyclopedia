@@ -202,5 +202,20 @@
 			<Description>TXT_KEY_LEADER_YEKATERINA</Description>
 			<ArtDefineTag>ART_DEF_LEADER_YEKATERINA</ArtDefineTag>
 		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_BENAZIR</Type>
+			<Description>TXT_KEY_LEADER_BENAZIR</Description>
+			<ArtDefineTag>ART_DEF_LEADER_BENAZIR</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_ISABELLA_2</Type>
+			<Description>TXT_KEY_LEADER_ISABELLA_2</Description>
+			<ArtDefineTag>ART_DEF_LEADER_ISABELLA_2</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_MARIA</Type>
+			<Description>TXT_KEY_LEADER_MARIA</Description>
+			<ArtDefineTag>ART_DEF_LEADER_MARIA</ArtDefineTag>
+		</LeaderHeadInfo>
 	</LeaderHeadInfos>
 </Civ4LeaderHeadInfos>

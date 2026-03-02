@@ -5,7 +5,6 @@
 <!-- -->
 <!-- Leaderhead art path information -->
 <!-- custom: note: some paths use base civ4 one; e.g. Bilqis uses base Hammurabi KFM but custom Hammurabi nif. -->
-<!-- custom: Leaders added with heavy assistance of GPT-5.3-Codex thanks a lot. -->
 <Civ4ArtDefines xmlns="x-schema:CIV4ArtDefinesSchema.xml">
 	<LeaderheadArtInfos>
 		<LeaderheadArtInfo>
@@ -122,11 +121,11 @@
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_SHIN_SAWBU</Type>
-			<Button>Art/Leaderheads/Shin Sawbu/Button_ShinSawbu.dds</Button>
-			<NIF>Art/Leaderheads/Shin Sawbu/asoka.nif</NIF>
+			<Button>Art/Leaderheads/Shin_Sawbu/Button_ShinSawbu.dds</Button>
+			<NIF>Art/Leaderheads/Shin_Sawbu/asoka.nif</NIF>
 			<KFM>Art/Leaderheads/Asoka/asoka.kfm</KFM>
-			<NoShaderNIF>Art/Leaderheads/Shin Sawbu/asoka.nif</NoShaderNIF>
-			<BackgroundKFM>Art/Leaderheads/Shin Sawbu/catherine_bg.kfm</BackgroundKFM>
+			<NoShaderNIF>Art/Leaderheads/Shin_Sawbu/asoka.nif</NoShaderNIF>
+			<BackgroundKFM>Art/Leaderheads/Shin_Sawbu/catherine_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_TOMYRIS</Type>
@@ -159,6 +158,30 @@
 			<KFM>Art/Leaderheads/Yekaterina/catherine.kfm</KFM>
 			<NoShaderNIF>Art/Leaderheads/Yekaterina/catherine.nif</NoShaderNIF>
 			<BackgroundKFM>Art/Leaderheads/Yekaterina/catherine_BG.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_BENAZIR</Type>
+			<Button>art/LeaderHeads/Benazir/bhutto.dds</Button>
+			<NIF>art/LeaderHeads/Benazir/Bhutto.nif</NIF>
+			<KFM>art/LeaderHeads/Benazir/Bhutto.kfm</KFM>
+			<NoShaderNIF>art/LeaderHeads/Benazir/Bhutto.nif</NoShaderNIF>
+			<BackgroundKFM>art/LeaderHeads/Benazir/Bhutto_BG.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_ISABELLA_2</Type>
+			<Button>Art/Leaderheads/Isabella_2/Button/Btn_LH_Spain_Isabella.dds</Button>
+			<NIF>Art/Leaderheads/Isabella_2/isabella.nif</NIF>
+			<KFM>Art/Leaderheads/Isabella_2/isabella.kfm</KFM>
+			<NoShaderNIF>Art/Leaderheads/Isabella_2/isabella.nif</NoShaderNIF>
+			<BackgroundKFM>Art/Leaderheads/Isabella_2/isabella_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_MARIA</Type>
+			<Button>Art/leaderheads/Maria/maria_ii.dds</Button>
+			<NIF>Art/leaderheads/Maria/elizabeth.nif</NIF>
+			<KFM>Art/LeaderHeads/elizabeth/elizabeth.kfm</KFM>
+			<NoShaderNIF>Art/leaderheads/Maria/elizabeth_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/leaderheads/Maria/elizabeth_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 	</LeaderheadArtInfos>
 </Civ4ArtDefines>
