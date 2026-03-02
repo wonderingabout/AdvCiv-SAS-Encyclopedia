@@ -44,6 +44,7 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 - AdvCiv-SAS: Grace O'Malley
 - History Rewritten: Amanirena, Aminatu, Bilqis, Dido, Dihya, Isabella, Jingu, Kochininako, Mangammal, Nzinga, Salamasina, Seondeok, Shin Sawbu, Tomyris, Trung Sisters, Xoc, Yekaterina
 - RFC Dawn of Civilization: Benazir, Isabella II, Maria
+- Beyond the Game 2.43: Maria Theresa, Marpesia, Penthesilea, Theodora
 
 ## Credits
 

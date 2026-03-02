@@ -89,4 +89,20 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<Tag>TXT_KEY_LEADER_MARIA</Tag>
 		<English>Maria</English>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_MARIA_THERESA</Tag>
+		<English>Maria Theresa</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_MARPESIA</Tag>
+		<English>Marpesia</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_PENTHESILEA</Tag>
+		<English>Penthesilea</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_THEODORA</Tag>
+		<English>Theodora</English>
+	</TEXT>
 </Civ4GameText>

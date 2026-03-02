@@ -183,6 +183,38 @@
 			<NoShaderNIF>Art/leaderheads/Maria/elizabeth_noshader.nif</NoShaderNIF>
 			<BackgroundKFM>Art/leaderheads/Maria/elizabeth_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_MARIA_THERESA</Type>
+			<Button>art/LeaderHeads/Maria_Theresa/MariaTeresa.dds</Button>
+			<NIF>art/LeaderHeads/Maria_Theresa/Maria.nif</NIF>
+			<KFM>art/LeaderHeads/Maria_Theresa/catherine.kfm</KFM>
+			<NoShaderNIF>art/LeaderHeads/Maria_Theresa/Maria.nif</NoShaderNIF>
+			<BackgroundKFM>art/LeaderHeads/Maria_Theresa/catherine_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_MARPESIA</Type>
+			<Button>art/LeaderHeads/Marpesia/marpesia.dds</Button>
+			<NIF>Art/Leaderheads/Marpesia/Pericles.nif</NIF>
+			<KFM>Art/LeaderHeads/Pericles/Pericles.kfm</KFM>
+			<NoShaderNIF>Art/Leaderheads/Marpesia/Pericles_NONSHADER.nif</NoShaderNIF>
+			<BackgroundKFM>Art/Leaderheads/Marpesia/Pericles_BG.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_PENTHESILEA</Type>
+			<Button>art/LeaderHeads/Penthesilea/penthesilea.dds</Button>
+			<NIF>Art/Leaderheads/Penthesilea/Boudica.nif</NIF>
+			<KFM>Art/LeaderHeads/Boudica/Boudica.kfm</KFM>
+			<NoShaderNIF>Art/Leaderheads/Penthesilea/Boudica_NONSHADER.nif</NoShaderNIF>
+			<BackgroundKFM>Art/Leaderheads/Penthesilea/cyrus_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_THEODORA</Type>
+			<Button>Art/Leaderheads/Theodora/Theodora_btn.dds</Button>
+			<NIF>Art/Leaderheads/Theodora/Theodora.nif</NIF>
+			<KFM>Art/Leaderheads/Theodora/isabella.kfm</KFM>
+			<NoShaderNIF>Art/Leaderheads/Theodora/isabella_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/Leaderheads/Theodora/isabella_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
 	</LeaderheadArtInfos>
 </Civ4ArtDefines>
 

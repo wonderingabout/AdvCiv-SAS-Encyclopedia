@@ -217,5 +217,25 @@
 			<Description>TXT_KEY_LEADER_MARIA</Description>
 			<ArtDefineTag>ART_DEF_LEADER_MARIA</ArtDefineTag>
 		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_MARIA_THERESA</Type>
+			<Description>TXT_KEY_LEADER_MARIA_THERESA</Description>
+			<ArtDefineTag>ART_DEF_LEADER_MARIA_THERESA</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_MARPESIA</Type>
+			<Description>TXT_KEY_LEADER_MARPESIA</Description>
+			<ArtDefineTag>ART_DEF_LEADER_MARPESIA</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_PENTHESILEA</Type>
+			<Description>TXT_KEY_LEADER_PENTHESILEA</Description>
+			<ArtDefineTag>ART_DEF_LEADER_PENTHESILEA</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_THEODORA</Type>
+			<Description>TXT_KEY_LEADER_THEODORA</Description>
+			<ArtDefineTag>ART_DEF_LEADER_THEODORA</ArtDefineTag>
+		</LeaderHeadInfo>
 	</LeaderHeadInfos>
 </Civ4LeaderHeadInfos>
