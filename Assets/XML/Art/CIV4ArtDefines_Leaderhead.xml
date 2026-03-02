@@ -272,6 +272,14 @@
 			<NoShaderNIF>Art/LeaderHeads/Wilhelmina/elizabeth_noshader.nif</NoShaderNIF>
 			<BackgroundKFM>Art/LeaderHeads/Wilhelmina/elizabeth_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_SARAH_FEDLER</Type>
+			<Button>Art/LeaderHeads/Sarah_Fedler/blondbtn.dds</Button>
+			<NIF>Art/LeaderHeads/Sarah_Fedler/Eli_Shaded.nif</NIF>
+			<KFM>Art/LeaderHeads/Elizabeth/elizabeth.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Sarah_Fedler/Eli_NoShader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Sarah_Fedler/fdr_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
 	</LeaderheadArtInfos>
 </Civ4ArtDefines>
 

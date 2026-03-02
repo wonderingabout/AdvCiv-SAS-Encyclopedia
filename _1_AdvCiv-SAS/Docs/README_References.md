@@ -46,6 +46,7 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 - RFC Dawn of Civilization: Benazir, Isabella II, Maria
 - Beyond the Game 2.43: Maria Theresa, Marpesia, Penthesilea, Theodora
 - Base 6.4: Anne Bonny, Atotoztli, Bilqis 2, Cixi, Cleopatra, Mary Stuart, Wilhelmina
+- Future Mod: Sarah Fedler
 
 ## Credits
 

@@ -133,4 +133,8 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<Tag>TXT_KEY_LEADER_WILHELMINA</Tag>
 		<English>Wilhelmina</English>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_SARAH_FEDLER</Tag>
+		<English>Sarah Fedler</English>
+	</TEXT>
 </Civ4GameText>

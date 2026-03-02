@@ -272,5 +272,10 @@
 			<Description>TXT_KEY_LEADER_WILHELMINA</Description>
 			<ArtDefineTag>ART_DEF_LEADER_WILHELMINA</ArtDefineTag>
 		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_SARAH_FEDLER</Type>
+			<Description>TXT_KEY_LEADER_SARAH_FEDLER</Description>
+			<ArtDefineTag>ART_DEF_LEADER_SARAH_FEDLER</ArtDefineTag>
+		</LeaderHeadInfo>
 	</LeaderHeadInfos>
 </Civ4LeaderHeadInfos>
