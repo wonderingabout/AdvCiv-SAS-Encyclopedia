@@ -27,15 +27,15 @@ gc = CyGlobalContext()
 ArtFileMgr = CyArtFileMgr()
 localText = CyTranslator()
 
-IMPROVEMENT_LEADER_CACHE = None
+IMPROVEMENT_FARM = None
 
 
 
 def precomputeImprovementLeaderCache():
-	global IMPROVEMENT_LEADER_CACHE
+	global IMPROVEMENT_FARM
 
-	if IMPROVEMENT_LEADER_CACHE is not None:
-		return IMPROVEMENT_LEADER_CACHE
+	if IMPROVEMENT_FARM is not None:
+		return IMPROVEMENT_FARM
 
 	leaderIds, leaderToCiv, unused_total = get_real_leader_maps_and_count(EXCLUDED_LEADER_TYPES_FROM_SEVOPEDIA)
 	improvementData = {}
@@ -61,14 +61,14 @@ def precomputeImprovementLeaderCache():
 				maxLeaders = len(weightToLeaders[weight])
 		improvementData[iImprovement] = (weightToLeaders, tuple(weightsSorted), maxLeaders)
 
-	IMPROVEMENT_LEADER_CACHE = {
+	IMPROVEMENT_FARM = {
 		"leaderIds": leaderIds,
 		"leaderToCiv": leaderToCiv,
 		"improvements": improvementData,
 	}
 
 	print("Sevopedia Improvement leader cache prebuilt. This should appear only once per gaming session.")
-	return IMPROVEMENT_LEADER_CACHE
+	return IMPROVEMENT_FARM
 
 
 
@@ -181,7 +181,7 @@ class SevoPediaImprovement:
 		self.H_ADJUST_Y_AFTER_ANIMATION_NO_HEADER = 22
 
 		# <!-- custom: Leader icon sizes now use centralized INCHART_* constants from _sevopedia_helpers.
-		# IMPROVEMENT_LEADER_ICON_SIZE, IMPROVEMENT_LEADER_BUTTON_SPACING, IMPROVEMENT_LEADER_ROW_H replaced by
+		# IMPROVEMENT_FARM, IMPROVEMENT_FARM, IMPROVEMENT_FARM replaced by
 		# INCHART_ICON_SIZE, INCHART_ICON_SPACING, INCHART_ROW_HEIGHT -->
 
 
@@ -463,7 +463,7 @@ class SevoPediaImprovement:
 
 		screen.addPanel(self.top.getNextWidgetName(), localText.getText("TXT_KEY_PEDIA_SAS_IMPROVEMENT_FAVORED_BY_LEADERS", ()), "", True, True, xPanel, yPanel, wPanel, hPanel, PanelStyles.PANEL_STYLE_BLUE50)
 
-		cache = IMPROVEMENT_LEADER_CACHE
+		cache = IMPROVEMENT_FARM
 		if cache is None:
 			cache = precomputeImprovementLeaderCache()
 

@@ -323,13 +323,6 @@ Created as part of AdvCiv-SAS improvements
 
 
 	<TEXT>
-		<Tag>TXT_KEY_BONUS_CAMEL</Tag>
-		<English>Camel</English>
-	</TEXT>
-
-
-
-	<TEXT>
 		<Tag>TXT_KEY_PEDIA_SAS_CATEGORY_HANDICAP_CHART</Tag>
 		<English>Handicaps</English>
 	</TEXT>
@@ -580,46 +573,6 @@ Created as part of AdvCiv-SAS improvements
 	<TEXT>
 		<Tag>TXT_KEY_GAMESPEED_NORMAL</Tag>
 		<English>Normal (500 / 100%)</English>
-	</TEXT>
-
-
-
-	<!-- custom: Long_Comments_XML.txt #149 -->
-	<TEXT>
-		<Tag>TXT_KEY_BONUS_ELEPHANTS</Tag>
-		<English>Elephants</English>
-	</TEXT>
-
-
-
-	<!-- custom: GPT-5.2-Codex: Long_Comments_XML.txt #77 -->
-	<TEXT>
-		<Tag>TXT_KEY_BONUS_CATTLE</Tag>
-		<English>Cattle</English>
-	</TEXT>
-
-
-
-	<!-- custom: rename _CLAM to the more general _MOLLUSCS, see docs or such for details -->
-	<TEXT>
-		<Tag>TXT_KEY_BONUS_MOLLUSCS</Tag>
-		<English>Molluscs</English>
-	</TEXT>
-
-
-
-	<TEXT>
-		<Tag>TXT_KEY_BONUS_GEMSTONES</Tag>
-		<English>Gemstones</English>
-	</TEXT>
-	<TEXT>
-		<Tag>TXT_KEY_BONUS_GRAPES</Tag>
-		<English>Grapes</English>
-	</TEXT>
-	<!-- custom: renamed _CORN to _MAIZE see pedia entry's code comment or such for details -->
-	<TEXT>
-		<Tag>TXT_KEY_BONUS_MAIZE</Tag>
-		<English>Maize</English>
 	</TEXT>
 
 

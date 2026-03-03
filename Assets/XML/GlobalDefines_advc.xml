@@ -11,4 +11,21 @@ Created as part of AdvCiv-SAS improvements
 -->
 <!-- custom: comments moved to as of now to (adjust to your mod path) C:\Program Files (x86)\Steam\steamapps\common\Sid Meier's Civilization IV Beyond the Sword\Beyond the Sword\Mods\AdvCiv-SAS\Long_Comments\ for concision and as they were too lengthy. Values not updated there, see this XML file here for updated values -->
 <Civ4Defines xmlns="x-schema:CIV4GlobalDefinesSchema.xml">
+	<!-- custom: after stripping most Improvement XML tags for the NIF-gallery setup, startup showed XML popup
+	"Tag: IMPROVEMENT_LAND_WORKED in Info class was incorrect" because BtS GlobalDefines.xml still points
+	LAND_IMPROVEMENT/WATER_IMPROVEMENT/RUINS_IMPROVEMENT to default tags (IMPROVEMENT_LAND_WORKED,
+	IMPROVEMENT_WATER_WORKED, IMPROVEMENT_CITY_RUINS) that no longer exist in this mod variant; override those
+	defines to IMPROVEMENT_FARM so load-time default lookups resolve and the mod can boot/display leader NIFs. (GPT-5.3-Codex) -->
+	<Define>
+		<DefineName>LAND_IMPROVEMENT</DefineName>
+		<DefineTextVal>IMPROVEMENT_FARM</DefineTextVal>
+	</Define>
+	<Define>
+		<DefineName>WATER_IMPROVEMENT</DefineName>
+		<DefineTextVal>IMPROVEMENT_FARM</DefineTextVal>
+	</Define>
+	<Define>
+		<DefineName>RUINS_IMPROVEMENT</DefineName>
+		<DefineTextVal>IMPROVEMENT_FARM</DefineTextVal>
+	</Define>
 </Civ4Defines>

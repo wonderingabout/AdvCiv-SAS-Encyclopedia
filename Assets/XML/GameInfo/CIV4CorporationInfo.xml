@@ -17,9 +17,7 @@
 			<!-- K-Mod: was 75 -->
 			<iMaintenance>100</iMaintenance>
 			<PrereqBonuses>
-				<BonusType>BONUS_WHEAT</BonusType>
-				<BonusType>BONUS_MAIZE</BonusType>
-				<BonusType>BONUS_RICE</BonusType>
+				<BonusType>BONUS_ALUMINUM</BonusType>
 			</PrereqBonuses>
 			<HeadquarterCommerces>
 				<iHeadquarterCommerce>4</iHeadquarterCommerce>
@@ -49,10 +47,7 @@
 			<iSpreadCost>50</iSpreadCost>
 			<iMaintenance>100</iMaintenance>
 			<PrereqBonuses>
-				<BonusType>BONUS_CRAB</BonusType>
-				<BonusType>BONUS_MOLLUSCS</BonusType>
-				<BonusType>BONUS_FISH</BonusType>
-				<BonusType>BONUS_RICE</BonusType>
+				<BonusType>BONUS_ALUMINUM</BonusType>
 			</PrereqBonuses>
 			<HeadquarterCommerces>
 				<iHeadquarterCommerce>4</iHeadquarterCommerce>
@@ -87,16 +82,14 @@
 			<!-- advc.200: K-Mod had decreased this to 80 -->
 			<iMaintenance>100</iMaintenance>
 			<PrereqBonuses>
-				<BonusType>BONUS_MAIZE</BonusType>
-				<BonusType>BONUS_SUGAR</BonusType>
-				<BonusType>BONUS_RICE</BonusType>
+				<BonusType>BONUS_ALUMINUM</BonusType>
 			</PrereqBonuses>
 			<HeadquarterCommerces>
 				<iHeadquarterCommerce>4</iHeadquarterCommerce>
 				<iHeadquarterCommerce>0</iHeadquarterCommerce>
 				<iHeadquarterCommerce>0</iHeadquarterCommerce>
 			</HeadquarterCommerces>
-			<BonusProduced>BONUS_OIL</BonusProduced>
+			<BonusProduced>BONUS_ALUMINUM</BonusProduced>
 			<CommercesProduced>
 				<iCommerceProduced>0</iCommerceProduced>
 				<iCommerceProduced>200</iCommerceProduced>
@@ -119,10 +112,6 @@
 			<iSpreadCost>50</iSpreadCost>
 			<iMaintenance>100</iMaintenance>
 			<PrereqBonuses>
-				<BonusType>BONUS_IRON</BonusType>
-				<BonusType>BONUS_COPPER</BonusType>
-				<BonusType>BONUS_MARBLE</BonusType>
-				<BonusType>BONUS_STONE</BonusType>
 				<BonusType>BONUS_ALUMINUM</BonusType>
 			</PrereqBonuses>
 			<HeadquarterCommerces>
@@ -159,10 +148,6 @@
 			<iMaintenance>100</iMaintenance>
 			<!-- K-Mod: Gold, Silver replaced with Uranium, Aluminum -->
 			<PrereqBonuses>
-				<BonusType>BONUS_COAL</BonusType>
-				<BonusType>BONUS_IRON</BonusType>
-				<BonusType>BONUS_COPPER</BonusType>
-				<BonusType>BONUS_URANIUM</BonusType>
 				<BonusType>BONUS_ALUMINUM</BonusType>
 			</PrereqBonuses>
 			<HeadquarterCommerces>
@@ -197,7 +182,7 @@
 			<!-- advc.200: K-Mod had decreased this to 80 -->
 			<iMaintenance>100</iMaintenance>
 			<PrereqBonuses>
-				<BonusType>BONUS_COAL</BonusType>
+				<BonusType>BONUS_ALUMINUM</BonusType>
 			</PrereqBonuses>
 			<HeadquarterCommerces>
 				<iHeadquarterCommerce>4</iHeadquarterCommerce>
@@ -231,9 +216,7 @@
 			<!-- advc.200: K-Mod had increased this to 120 -->
 			<iMaintenance>100</iMaintenance>
 			<PrereqBonuses>
-				<BonusType>BONUS_GOLD</BonusType>
-				<BonusType>BONUS_SILVER</BonusType>
-				<BonusType>BONUS_GEMSTONES</BonusType>
+				<BonusType>BONUS_ALUMINUM</BonusType>
 			</PrereqBonuses>
 			<HeadquarterCommerces>
 				<iHeadquarterCommerce>4</iHeadquarterCommerce>

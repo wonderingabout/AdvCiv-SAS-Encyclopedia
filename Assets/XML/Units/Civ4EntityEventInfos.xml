@@ -4,7 +4,7 @@
 <!-- Copyright Firaxis Games 2005 -->
 <!-- -->
 <!-- Animation Infos -->
-<!-- custom: added to solve some dependencies and so the mod minimally loads with minimal events -->
+<!-- custom: added to solve some dependencies and so the mod minimally loads with minimal assets -->
 <Civ4EntityEventInfos xmlns="x-schema:CIV4UnitSchema.xml">
 	<EntityEventInfos>
 		<EntityEventInfo>

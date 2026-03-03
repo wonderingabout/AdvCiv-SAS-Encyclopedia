@@ -281,7 +281,7 @@
 			<!-- NEW: help midgame—Villages contribute to projects too -->
 			<ImprovementYieldChanges>
 				<ImprovementYieldChange>
-					<ImprovementType>IMPROVEMENT_VILLAGE</ImprovementType>
+					<ImprovementType>IMPROVEMENT_FARM</ImprovementType>
 					<ImprovementYields>
 						<iYield>0</iYield>
 						<iYield>1</iYield>
@@ -289,7 +289,7 @@
 					</ImprovementYields>
 				</ImprovementYieldChange>
 				<ImprovementYieldChange>
-					<ImprovementType>IMPROVEMENT_TOWN</ImprovementType>
+					<ImprovementType>IMPROVEMENT_FARM</ImprovementType>
 					<ImprovementYields>
 						<iYield>0</iYield>
 						<iYield>1</iYield>
@@ -647,7 +647,7 @@
 			<FeatureHappinessChanges/>
 			<ImprovementYieldChanges>
 				<ImprovementYieldChange>
-					<ImprovementType>IMPROVEMENT_TOWN</ImprovementType>
+					<ImprovementType>IMPROVEMENT_FARM</ImprovementType>
 					<ImprovementYields>
 						<iYield>0</iYield>
 						<iYield>0</iYield>
@@ -951,7 +951,7 @@
 			<FeatureHappinessChanges/>
 			<ImprovementYieldChanges>
 				<ImprovementYieldChange>
-					<ImprovementType>IMPROVEMENT_WORKSHOP</ImprovementType>
+					<ImprovementType>IMPROVEMENT_FARM</ImprovementType>
 					<ImprovementYields>
 						<iYield>0</iYield>
 						<iYield>1</iYield>
@@ -1029,7 +1029,7 @@
 			<BuildingHappinessChanges/>
 			<BuildingHealthChanges/>
 			<FeatureHappinessChanges/>
-			<!-- custom: removed the IMPROVEMENT_TOWN penalty (civic was too weak, plus city indirectly benefits from harvests i think in an alternate late game serf-based potential economy/civ), and added an extra gold yield on water food improvements to keep agrarian theme as chatgpt 5 approved i mean with the suggestion -->
+			<!-- custom: removed the IMPROVEMENT_FARM penalty (civic was too weak, plus city indirectly benefits from harvests i think in an alternate late game serf-based potential economy/civ), and added an extra gold yield on water food improvements to keep agrarian theme as chatgpt 5 approved i mean with the suggestion -->
 			<!-- K-Mod -->
 			<ImprovementYieldChanges>
 				<ImprovementYieldChange>
@@ -1041,7 +1041,7 @@
 					</ImprovementYields>
 				</ImprovementYieldChange>
 				<ImprovementYieldChange>
-					<ImprovementType>IMPROVEMENT_PLANTATION</ImprovementType>
+					<ImprovementType>IMPROVEMENT_FARM</ImprovementType>
 					<ImprovementYields>
 						<iYield>0</iYield>
 						<iYield>0</iYield>
@@ -1049,7 +1049,7 @@
 					</ImprovementYields>
 				</ImprovementYieldChange>				
 				<ImprovementYieldChange>
-					<ImprovementType>IMPROVEMENT_FISHING_BOATS</ImprovementType>
+					<ImprovementType>IMPROVEMENT_FARM</ImprovementType>
 					<ImprovementYields>
 						<iYield>0</iYield>
 						<iYield>0</iYield>
@@ -1057,7 +1057,7 @@
 					</ImprovementYields>
 				</ImprovementYieldChange>
 				<ImprovementYieldChange>
-					<ImprovementType>IMPROVEMENT_WHALING_BOATS</ImprovementType>
+					<ImprovementType>IMPROVEMENT_FARM</ImprovementType>
 					<ImprovementYields>
 						<iYield>0</iYield>
 						<iYield>0</iYield>
@@ -1525,7 +1525,7 @@
 			<FeatureHappinessChanges/>
 			<ImprovementYieldChanges>
 				<ImprovementYieldChange>
-					<ImprovementType>IMPROVEMENT_WORKSHOP</ImprovementType>
+					<ImprovementType>IMPROVEMENT_FARM</ImprovementType>
 					<ImprovementYields>
 						<iYield>1</iYield>
 						<iYield>0</iYield>
@@ -1533,7 +1533,7 @@
 					</ImprovementYields>
 				</ImprovementYieldChange>
 				<ImprovementYieldChange>
-					<ImprovementType>IMPROVEMENT_WATERMILL</ImprovementType>
+					<ImprovementType>IMPROVEMENT_FARM</ImprovementType>
 					<ImprovementYields>
 						<iYield>1</iYield>
 						<iYield>0</iYield>

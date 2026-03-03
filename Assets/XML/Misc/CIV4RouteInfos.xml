@@ -43,10 +43,7 @@
 			<BonusType>NONE</BonusType>
 			<PrereqOrBonuses>
 				<PrereqOrBonus>
-					<BonusType>BONUS_COAL</BonusType>
-				</PrereqOrBonus>
-				<PrereqOrBonus>
-					<BonusType>BONUS_OIL</BonusType>
+					<BonusType>BONUS_ALUMINUM</BonusType>
 				</PrereqOrBonus>
 			</PrereqOrBonuses>
 			<Yields/>

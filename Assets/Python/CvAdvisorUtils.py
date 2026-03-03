@@ -392,7 +392,7 @@ def endTurnFeats(iPlayer):
 
 		if (not gc.getPlayer(iPlayer).isFeatAccomplished(FeatTypes.FEAT_COPPER_CONNECTED)):
 		
-			iBonus = gc.getInfoTypeForString("BONUS_COPPER")
+			iBonus = gc.getInfoTypeForString("BONUS_ALUMINUM")
 			if (iBonus != BonusTypes.NO_BONUS):
 				if (pCapitalCity.hasBonus(iBonus)):
 					gc.getPlayer(iPlayer).setFeatAccomplished(FeatTypes.FEAT_COPPER_CONNECTED, True)
@@ -411,7 +411,7 @@ def endTurnFeats(iPlayer):
 
 		if (not gc.getPlayer(iPlayer).isFeatAccomplished(FeatTypes.FEAT_HORSE_CONNECTED)):
 		
-			iBonus = gc.getInfoTypeForString("BONUS_HORSE")
+			iBonus = gc.getInfoTypeForString("BONUS_ALUMINUM")
 			if (iBonus != BonusTypes.NO_BONUS):
 				if (pCapitalCity.hasBonus(iBonus)):
 					gc.getPlayer(iPlayer).setFeatAccomplished(FeatTypes.FEAT_HORSE_CONNECTED, True)
@@ -430,7 +430,7 @@ def endTurnFeats(iPlayer):
 
 		if (not gc.getPlayer(iPlayer).isFeatAccomplished(FeatTypes.FEAT_IRON_CONNECTED)):
 		
-			iBonus = gc.getInfoTypeForString("BONUS_IRON")
+			iBonus = gc.getInfoTypeForString("BONUS_ALUMINUM")
 			if (iBonus != BonusTypes.NO_BONUS):
 				if (pCapitalCity.hasBonus(iBonus)):
 					gc.getPlayer(iPlayer).setFeatAccomplished(FeatTypes.FEAT_IRON_CONNECTED, True)

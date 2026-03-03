@@ -32,7 +32,7 @@
 			<iSuccessRate>0</iSuccessRate>
 			<BonusProductionModifiers>
 				<BonusProductionModifier>
-					<BonusType>BONUS_URANIUM</BonusType>
+					<BonusType>BONUS_ALUMINUM</BonusType>
 					<iProductonModifier>100</iProductonModifier>
 				</BonusProductionModifier>
 			</BonusProductionModifiers>
@@ -66,7 +66,7 @@
 			<iSuccessRate>0</iSuccessRate>
 			<BonusProductionModifiers>
 				<BonusProductionModifier>
-					<BonusType>BONUS_COPPER</BonusType>
+					<BonusType>BONUS_ALUMINUM</BonusType>
 					<iProductonModifier>25</iProductonModifier>
 				</BonusProductionModifier>
 			</BonusProductionModifiers>
@@ -176,7 +176,7 @@
 			<iSuccessRate>0</iSuccessRate>
 			<BonusProductionModifiers>
 				<BonusProductionModifier>
-					<BonusType>BONUS_COPPER</BonusType>
+					<BonusType>BONUS_ALUMINUM</BonusType>
 					<iProductonModifier>100</iProductonModifier>
 				</BonusProductionModifier>
 			</BonusProductionModifiers>
@@ -219,7 +219,7 @@
 			<iSuccessRate>0</iSuccessRate>
 			<BonusProductionModifiers>
 				<BonusProductionModifier>
-					<BonusType>BONUS_COPPER</BonusType>
+					<BonusType>BONUS_ALUMINUM</BonusType>
 					<iProductonModifier>100</iProductonModifier>
 				</BonusProductionModifier>
 			</BonusProductionModifiers>
