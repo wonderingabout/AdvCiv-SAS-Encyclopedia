@@ -163,7 +163,7 @@
 			<bAssignCity>0</bAssignCity>
 			<ForceCivics>
 				<ForceCivic>
-					<CivicType>CIVIC_UNIVERSAL_SUFFRAGE</CivicType>
+					<CivicType>CIVIC_DESPOTISM</CivicType>
 					<bForce>1</bForce>
 				</ForceCivic>
 			</ForceCivics>
@@ -195,7 +195,7 @@
 			<bAssignCity>0</bAssignCity>
 			<ForceCivics>
 				<ForceCivic>
-					<CivicType>CIVIC_FREE_SPEECH</CivicType>
+					<CivicType>CIVIC_DESPOTISM</CivicType>
 					<bForce>1</bForce>
 				</ForceCivic>
 			</ForceCivics>
@@ -227,7 +227,7 @@
 			<bAssignCity>0</bAssignCity>
 			<ForceCivics>
 				<ForceCivic>
-					<CivicType>CIVIC_WAGE_LABOR</CivicType>
+					<CivicType>CIVIC_DESPOTISM</CivicType>
 					<bForce>1</bForce>
 				</ForceCivic>
 			</ForceCivics>
@@ -259,7 +259,7 @@
 			<bAssignCity>0</bAssignCity>
 			<ForceCivics>
 				<ForceCivic>
-					<CivicType>CIVIC_TRADE_BLOC</CivicType>
+					<CivicType>CIVIC_DESPOTISM</CivicType>
 					<bForce>1</bForce>
 				</ForceCivic>
 			</ForceCivics>
@@ -291,7 +291,7 @@
 			<bAssignCity>0</bAssignCity>
 			<ForceCivics>
 				<ForceCivic>
-					<CivicType>CIVIC_FREE_RELIGION</CivicType>
+					<CivicType>CIVIC_DESPOTISM</CivicType>
 					<bForce>1</bForce>
 				</ForceCivic>
 			</ForceCivics>

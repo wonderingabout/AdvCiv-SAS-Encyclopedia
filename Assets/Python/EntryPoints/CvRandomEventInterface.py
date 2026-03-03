@@ -1487,7 +1487,7 @@ def canTriggerInterstate(argsList):
 	trigger = gc.getEventTriggerInfo(kTriggeredData.eTrigger)
 	player = gc.getPlayer(kTriggeredData.ePlayer)
 	
-	if not player.isCivic(CvUtil.findInfoTypeNum(gc.getCivicInfo,gc.getNumCivicInfos(),'CIVIC_WAGE_LABOR')):
+	if not player.isCivic(CvUtil.findInfoTypeNum(gc.getCivicInfo,gc.getNumCivicInfos(),'CIVIC_DESPOTISM')):
 		return false
 	
 	return true
@@ -1527,7 +1527,7 @@ def canApplyEarthDay2(argsList):
 	player = gc.getPlayer(kTriggeredData.ePlayer)
 	
 	# <!-- custom: replace the old CIVIC_ENVIRONMENTALISM with CIVIC_TRADE_BLOC. (GPT-5.2-Codex (summarized)) -->
-	iCivic = CvUtil.findInfoTypeNum(gc.getCivicInfo,gc.getNumCivicInfos(),'CIVIC_TRADE_BLOC')
+	iCivic = CvUtil.findInfoTypeNum(gc.getCivicInfo,gc.getNumCivicInfos(),'CIVIC_DESPOTISM')
 	
 	for iPlayer in range(gc.getMAX_CIV_PLAYERS()):			
 		loopPlayer = gc.getPlayer(iPlayer)
@@ -1549,7 +1549,7 @@ def applyEarthDay2(argsList):
 	player = gc.getPlayer(kTriggeredData.ePlayer)
 	
 	# <!-- custom: replace the old CIVIC_ENVIRONMENTALISM with CIVIC_TRADE_BLOC. (GPT-5.2-Codex (summarized)) -->
-	iCivic = CvUtil.findInfoTypeNum(gc.getCivicInfo,gc.getNumCivicInfos(),'CIVIC_TRADE_BLOC')
+	iCivic = CvUtil.findInfoTypeNum(gc.getCivicInfo,gc.getNumCivicInfos(),'CIVIC_DESPOTISM')
 	iCivicOption = CvUtil.findInfoTypeNum(gc.getCivicOptionInfo,gc.getNumCivicOptionInfos(),'CIVICOPTION_ECONOMY')
 	
 	listPlayers = []
@@ -2152,7 +2152,7 @@ def canTriggerTea(argsList):
 	player = gc.getPlayer(kTriggeredData.ePlayer)
 	
 	# <!-- custom: replace the old CIVIC_MERCANTILISM with CIVIC_PROTECTIONISM. (GPT-5.2-Codex (summarized)) -->
-	if player.isCivic(CvUtil.findInfoTypeNum(gc.getCivicInfo,gc.getNumCivicInfos(),'CIVIC_PROTECTIONISM')):
+	if player.isCivic(CvUtil.findInfoTypeNum(gc.getCivicInfo,gc.getNumCivicInfos(),'CIVIC_DESPOTISM')):
 		return false
 
 	bCanTrade = false		
@@ -2828,7 +2828,7 @@ def canTriggerEsteemedPlaywright(argsList):
 	player = gc.getPlayer(kTriggeredData.ePlayer)
 	
 	# If source civ is operating this Civic, disallow the event to trigger.
-	if player.isCivic(CvUtil.findInfoTypeNum(gc.getCivicInfo,gc.getNumCivicInfos(),'CIVIC_SLAVERY')):
+	if player.isCivic(CvUtil.findInfoTypeNum(gc.getCivicInfo,gc.getNumCivicInfos(),'CIVIC_DESPOTISM')):
 		return false
 
 	return true
@@ -2860,7 +2860,7 @@ def canTriggerHighWarlord(argsList):
 	player = gc.getPlayer(kTriggeredData.ePlayer)
 	
 	# If source civ is operating this Civic, disallow the event to trigger.
-	if player.isCivic(CvUtil.findInfoTypeNum(gc.getCivicInfo,gc.getNumCivicInfos(),'CIVIC_WAGE_LABOR')):
+	if player.isCivic(CvUtil.findInfoTypeNum(gc.getCivicInfo,gc.getNumCivicInfos(),'CIVIC_DESPOTISM')):
 		return false
 
 	return true
@@ -3198,7 +3198,7 @@ def canApplyEliteSwordsDone2(argsList):
 	kTriggeredData = argsList[1]
 	player = gc.getPlayer(kTriggeredData.ePlayer)
 		
-	iCivic = CvUtil.findInfoTypeNum(gc.getCivicInfo,gc.getNumCivicInfos(),'CIVIC_HEREDITARY_RULE')
+	iCivic = CvUtil.findInfoTypeNum(gc.getCivicInfo,gc.getNumCivicInfos(),'CIVIC_DESPOTISM')
 	
 	if not player.isCivic(iCivic):
 		return false
@@ -3289,7 +3289,7 @@ def canApplyGunsButterDone2(argsList):
 	kTriggeredData = argsList[1]
 	player = gc.getPlayer(kTriggeredData.ePlayer)
 		
-	iCivic = CvUtil.findInfoTypeNum(gc.getCivicInfo,gc.getNumCivicInfos(),'CIVIC_VASSALAGE')
+	iCivic = CvUtil.findInfoTypeNum(gc.getCivicInfo,gc.getNumCivicInfos(),'CIVIC_DESPOTISM')
 	
 	if not player.isCivic(iCivic):
 		return false
@@ -3367,7 +3367,7 @@ def canApplyNobleKnightsDone2(argsList):
 	kTriggeredData = argsList[1]
 	player = gc.getPlayer(kTriggeredData.ePlayer)
 		
-	iCivic = CvUtil.findInfoTypeNum(gc.getCivicInfo,gc.getNumCivicInfos(),'CIVIC_ORGANIZED_RELIGION')
+	iCivic = CvUtil.findInfoTypeNum(gc.getCivicInfo,gc.getNumCivicInfos(),'CIVIC_DESPOTISM')
 	
 	if not player.isCivic(iCivic):
 		return false
