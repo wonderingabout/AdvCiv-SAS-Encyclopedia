@@ -468,5 +468,10 @@
 			<Description>TXT_KEY_LEADER_MARFA_BORETSKAYA</Description>
 			<ArtDefineTag>ART_DEF_LEADER_MARFA_BORETSKAYA</ArtDefineTag>
 		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_CLEOPATRA_4</Type>
+			<Description>TXT_KEY_LEADER_CLEOPATRA_4</Description>
+			<ArtDefineTag>ART_DEF_LEADER_CLEOPATRA_4</ArtDefineTag>
+		</LeaderHeadInfo>
 	</LeaderHeadInfos>
 </Civ4LeaderHeadInfos>

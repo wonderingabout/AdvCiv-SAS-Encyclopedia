@@ -587,6 +587,14 @@
 			<NoShaderNIF>Art/LeaderHeads/Marfa_Boretskaya/catherine.nif</NoShaderNIF>
 			<BackgroundKFM>Art/LeaderHeads/Marfa_Boretskaya/isabella_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_CLEOPATRA_4</Type>
+			<Button>Art/LeaderHeads/Cleopatra_4/Cleo_button.dds</Button>
+			<NIF>Art/LeaderHeads/Cleopatra_4/hatshepsut.nif</NIF>
+			<KFM>Art/LeaderHeads/Cleopatra_4/hatshepsut.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Cleopatra_4/hatshepsut.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Cleopatra_4/hatshepsut_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
 	</LeaderheadArtInfos>
 </Civ4ArtDefines>
 

@@ -290,4 +290,8 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<Tag>TXT_KEY_LEADER_MARFA_BORETSKAYA</Tag>
 		<English>Marfa Boretskaya</English>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_CLEOPATRA_4</Tag>
+		<English>Cleopatra 4</English>
+	</TEXT>
 </Civ4GameText>
