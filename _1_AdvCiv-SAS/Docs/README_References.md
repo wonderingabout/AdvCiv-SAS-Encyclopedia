@@ -48,6 +48,7 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 - Base 6.4: Anne Bonny, Atotoztli, Bilqis 2, Cixi, Cleopatra, Mary Stuart, Wilhelmina
 - Future Mod: Sarah Fedler
 - Destiny: Cleopatra 2, Jingu 2, Joan of Arc, Mandukhai Khatun, Nefertiti
+- Rise of Mankind 2.91: Cleopatra 3, Dido 2, Joan of Arc 2
 
 ## Credits
 

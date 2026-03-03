@@ -5,7 +5,7 @@
 <!-- -->
 <!-- Leaderhead art path information -->
 <!-- custom: note: some paths use base civ4 one; e.g. Bilqis uses base Hammurabi KFM but custom Hammurabi nif. -->
-<!-- custom: note 2: respect case for Art/LeaderHeads/ else another capitalization of this exact same path causes an index error as in KI#111, or an unidentifiable C++ exception in AdvCiv-SAS' documentation -->
+<!-- custom: note 2: respect case for Art/LeaderHeads/ else another capitalization like art or Leaderheads or such causes an index error as in KI#111 as describe in AdvCiv-SAS' documentation,, or an unidentifiable C++ exception -->
 <Civ4ArtDefines xmlns="x-schema:CIV4ArtDefinesSchema.xml">
 	<LeaderheadArtInfos>
 		<LeaderheadArtInfo>
@@ -319,6 +319,30 @@
 			<KFM>Art/LeaderHeads/Nefertiti/isabella.kfm</KFM>
 			<NoShaderNIF>Art/LeaderHeads/Nefertiti/Nefertiti.nif</NoShaderNIF>
 			<BackgroundKFM>Art/LeaderHeads/Nefertiti/Nefertiti_BG.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_CLEOPATRA_3</Type>
+			<Button>Art/LeaderHeads/Cleopatra_3/Cleopatra.dds</Button>
+			<NIF>Art/LeaderHeads/Cleopatra_3/hatshepsut.nif</NIF>
+			<KFM>Art/LeaderHeads/Cleopatra_3/hatshepsut.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Cleopatra_3/hatshepsut.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Cleopatra_3/hatshepsut_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_DIDO_2</Type>
+			<Button>Art/LeaderHeads/Dido_2/didobutton.dds</Button>
+			<NIF>Art/LeaderHeads/Dido_2/Dido_Toga.nif</NIF>
+			<KFM>Art/LeaderHeads/Dido_2/isabella.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Dido_2/Dido_Toga_Nonshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Dido_2/Isabella_BG.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_JOAN_OF_ARC_2</Type>
+			<Button>Art/LeaderHeads/Joan_of_Arc_2/JoanofArc.dds</Button>
+			<NIF>Art/LeaderHeads/Joan_of_Arc_2/joanofark.nif</NIF>
+			<KFM>Art/LeaderHeads/Joan_of_Arc_2/catherine.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Joan_of_Arc_2/joanofark.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Joan_of_Arc_2/catherine_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 	</LeaderheadArtInfos>
 </Civ4ArtDefines>

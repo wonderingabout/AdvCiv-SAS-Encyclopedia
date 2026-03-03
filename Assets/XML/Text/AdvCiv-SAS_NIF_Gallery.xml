@@ -157,4 +157,16 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<Tag>TXT_KEY_LEADER_NEFERTITI</Tag>
 		<English>Nefertiti</English>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_CLEOPATRA_3</Tag>
+		<English>Cleopatra 3</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_DIDO_2</Tag>
+		<English>Dido 2</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_JOAN_OF_ARC_2</Tag>
+		<English>Joan of Arc 2</English>
+	</TEXT>
 </Civ4GameText>
