@@ -563,6 +563,22 @@
 			<NoShaderNIF>Art/LeaderHeads/Isabella_6/isabella_noshader.nif</NoShaderNIF>
 			<BackgroundKFM>Art/LeaderHeads/Isabella_6/leader_BG.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_BEATRICE</Type>
+			<Button>Art/LeaderHeads/Beatrice/btn_lh_burgundy_beatrice.dds</Button>
+			<NIF>Art/LeaderHeads/Beatrice/theophanu.nif</NIF>
+			<KFM>Art/LeaderHeads/elizabeth/elizabeth.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Beatrice/theophanu.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Beatrice/elizabeth_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_ISABELLA_7</Type>
+			<Button>Art/LeaderHeads/Isabella_7/btn_lh_denmark_margaret.dds</Button>
+			<NIF>Art/LeaderHeads/Isabella_7/isabella.nif</NIF>
+			<KFM>Art/LeaderHeads/Isabella_7/isabella.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Isabella_7/isabella.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Isabella_7/leader_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
 	</LeaderheadArtInfos>
 </Civ4ArtDefines>
 

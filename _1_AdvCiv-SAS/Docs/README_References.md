@@ -61,6 +61,7 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 - PSYX's Modern world 4: Catherine 1 (Mary Stuart), Victoria 4 (Maria Theresa 2)
 - Vincentz Infinite Projects (VIP): Tomyris 2 (Nanye-hi) (nif)
 - The Sword of Islam: Isabella 6 (Tamar)
+- RFC Europe 1.5: Beatrice, Isabella 7 (Margrete 2)
 
 #### Female Non-Human (Modpacks)
 

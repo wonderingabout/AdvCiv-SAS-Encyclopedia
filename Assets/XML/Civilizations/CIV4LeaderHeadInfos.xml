@@ -453,5 +453,15 @@
 			<Description>TXT_KEY_LEADER_ISABELLA_6</Description>
 			<ArtDefineTag>ART_DEF_LEADER_ISABELLA_6</ArtDefineTag>
 		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_BEATRICE</Type>
+			<Description>TXT_KEY_LEADER_BEATRICE</Description>
+			<ArtDefineTag>ART_DEF_LEADER_BEATRICE</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_ISABELLA_7</Type>
+			<Description>TXT_KEY_LEADER_ISABELLA_7</Description>
+			<ArtDefineTag>ART_DEF_LEADER_ISABELLA_7</ArtDefineTag>
+		</LeaderHeadInfo>
 	</LeaderHeadInfos>
 </Civ4LeaderHeadInfos>
