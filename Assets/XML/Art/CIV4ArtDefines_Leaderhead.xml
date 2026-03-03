@@ -531,6 +531,22 @@
 			<NoShaderNIF>Art/LeaderHeads/Victoria_3/victoria.nif</NoShaderNIF>
 			<BackgroundKFM>Art/LeaderHeads/Victoria_3/Victoria_BG.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_CATHERINE_1</Type>
+			<Button>Art/LeaderHeads/Catherine_1/Mary_Stuart.dds</Button>
+			<NIF>Art/LeaderHeads/Catherine_1/catherine.nif</NIF>
+			<KFM>Art/LeaderHeads/Catherine_1/catherine.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Catherine_1/catherine_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Catherine_1/Catherine_BG.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_VICTORIA_4</Type>
+			<Button>Art/LeaderHeads/Victoria_4/Maria.dds</Button>
+			<NIF>Art/LeaderHeads/Victoria_4/victoria.nif</NIF>
+			<KFM>Art/LeaderHeads/Victoria_4/victoria.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Victoria_4/victoria_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Victoria_4/victoria_BG.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
 	</LeaderheadArtInfos>
 </Civ4ArtDefines>
 

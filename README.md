@@ -67,7 +67,7 @@ Used notably Wiztree and GPT-5.3-Codex to strip away most non-sevopedia mandator
 
 ### Wiztree
 
-Among unneeded files, notably: `.psd`, `.obj`, `.mtl`.
+Among unneeded files in art leaderhead mod folders, notably: `.psd`, `.obj`, `.mtl`, `.xml`.
 
 <img src="./_1_AdvCiv-SAS/Images/tools/wiztree_cleanup.PNG" alt="wiztree_cleanup.PNG" width="150"></img>
 <img src="./_1_AdvCiv-SAS/Images/tools/wiztree_cleanup_lh.PNG" alt="wiztree_cleanup_lh.PNG" width="150"></img>
@@ -76,6 +76,8 @@ Among unneeded files, notably: `.psd`, `.obj`, `.mtl`.
 ### LLM Agents
 
 GPT-5.3-Codex and Claude code Sonnet 4.6 were very helpful to solve errors, cleanup and solve old dependencies errors.
+
+Note: they were also helpful in adding most stub of the new leaders.
 
 <img src="./_1_AdvCiv-SAS/Images/llm_agentic_tools/llm_agents_cleanup_and_stub.PNG" alt="llm_agents_cleanup_and_stub.PNG" width="150"></img>
 

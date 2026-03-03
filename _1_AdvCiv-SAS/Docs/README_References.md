@@ -54,6 +54,7 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 - Civ Gold 5.2: Elizabeth 1 (Michaelle Jean), Elizabeth 2 (Makeda), Elizabeth 3 (Teuta), Helen Clark, Isabella 3 (Margrete I), Isabella 4 (Trung Trac), Ranavalona, Salamasina 2, Thanadelthur, Victoria 1 (Benazir Bhutto), Victoria 2 (Hasina), Yulia Tymoshenko, Zenobia
 - Fictionalization beta: Sheherazade, Wu Qinghua
 - AdvCiv Plus: Ana Nzinga, Isabella 5, Tamar, Victoria 3 (Maria Theresa)
+- Source TBD: Catherine 1 (Mary Stuart), Victoria 4 (Maria Theresa 2)
 
 ### Female Non-Human
 

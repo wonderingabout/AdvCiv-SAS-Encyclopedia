@@ -433,5 +433,15 @@
 			<Description>TXT_KEY_LEADER_VICTORIA_3</Description>
 			<ArtDefineTag>ART_DEF_LEADER_VICTORIA_3</ArtDefineTag>
 		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_CATHERINE_1</Type>
+			<Description>TXT_KEY_LEADER_CATHERINE_1</Description>
+			<ArtDefineTag>ART_DEF_LEADER_CATHERINE_1</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_VICTORIA_4</Type>
+			<Description>TXT_KEY_LEADER_VICTORIA_4</Description>
+			<ArtDefineTag>ART_DEF_LEADER_VICTORIA_4</ArtDefineTag>
+		</LeaderHeadInfo>
 	</LeaderHeadInfos>
 </Civ4LeaderHeadInfos>
