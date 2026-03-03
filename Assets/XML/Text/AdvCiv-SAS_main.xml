@@ -2380,46 +2380,6 @@ Created as part of AdvCiv-SAS improvements
 
 
 
-	<!-- custom: rename "Difficulty" to "Handicap"; Long_Comments_XML.txt #233 -->
-	<TEXT>
-		<Tag>TXT_KEY_HANDICAP_SETTLER_HELP</Tag>
-		<English>Significantly harder than base AdvCiv settings. This handicap setting still grants some advantages (such as in AI tech costs, build costs, unit costs, overall economy values, etc.; while the player's costs remain the same at all handicap settings unlike in base AdvCiv, for convenience of math and such), but AI should be expected to be quite merciless otherwise. There are no free techs nor AI free techs anymore in AdvCiv-SAS in any handicap setting. Some exceptions may be the starting point that is worst at lower handicap settings to best in highest handicap settings, for the player, to compensate the overall handicap.</English>
-	</TEXT>
-	<TEXT>
-		<Tag>TXT_KEY_HANDICAP_CHIEFTAIN_HELP</Tag>
-		<English>Significantly harder than base AdvCiv settings and gradually harder than previous one. This handicap setting still grants some advantages but a bit less now, AI attitude should overall be the same or not too much harder otherwise.</English>
-	</TEXT>
-	<TEXT>
-		<Tag>TXT_KEY_HANDICAP_WARLORD_HELP</Tag>
-		<English>Significantly harder than base AdvCiv settings and gradually harder than previous one. This handicap setting still grants some advantages but even less now. Warfare should start to feel even or if not should be close to it, vs barbarians but also other players.</English>
-	</TEXT>
-	<TEXT>
-		<Tag>TXT_KEY_HANDICAP_NOBLE_HELP</Tag>
-		<English>Significantly harder than base AdvCiv settings and gradually harder than previous one. This is mostly an even game setting with other players, even though barbarians are still getting stronger.</English>
-	</TEXT>
-	<TEXT>
-		<Tag>TXT_KEY_HANDICAP_PRINCE_HELP</Tag>
-		<English>Significantly harder than base AdvCiv settings and gradually harder than previous one. This handicap setting has significant penalties. Barbarians are also getting stronger.</English>
-	</TEXT>
-	<TEXT>
-		<Tag>TXT_KEY_HANDICAP_MONARCH_HELP</Tag>
-		<English>Significantly harder than base AdvCiv settings and gradually harder than previous one. The penalties increase in this handicap setting. Economy and overall game plan needs to be really efficient and going forward on higher handicap settings to compensate AI advantages. Barbarians are also getting stronger.</English>
-	</TEXT>
-	<TEXT>
-		<Tag>TXT_KEY_HANDICAP_EMPEROR_HELP</Tag>
-		<English>Significantly harder than base AdvCiv settings and gradually harder than previous one. Efficiency and strategy may need to further be refined to be competitive at this handicap setting that has quite strong penalties. Barbarians are also getting stronger and may start to feel like being on a rampage if not at previous handicap settings, but this affects all players.</English>
-	</TEXT>
-	<TEXT>
-		<Tag>TXT_KEY_HANDICAP_IMMORTAL_HELP</Tag>
-		<English>Should be significantly harder than base AdvCiv settings and gradually harder than previous one, but hopefully less of a grind. Penalties are consistently and gradually as well higher than in previous handicap settings, and same for barbarians settings, even though these affect all players as well. No drastic changes otherwise. Note: unlike in base AdvCiv, INCREASE_START_TURN is disabled, as there are no free techs nor ai free techs, so this means all players start at turn 1 at this handicap setting.</English>
-	</TEXT>
-	<TEXT>
-		<Tag>TXT_KEY_HANDICAP_DEITY_HELP</Tag>
-		<English>Should be significantly harder than base AdvCiv settings and gradually harder than previous one, but hopefully less of a grind. Should be very challenging still but gradually so ideally. If this is still too easy, i may add another or 2 other handicap settings gradually harder than this one based on player feedback even though this is not guaranteed but may be worthwile for deity players wanting a higher challenge. Note: unlike in base AdvCiv, INCREASE_START_TURN is disabled similarly so all players start at turn 1 at this handicap setting as well.</English>
-	</TEXT>
-
-
-
 	<!-- custom: rename "Difficulty" to "Handicap" -->
 	<TEXT>
 		<Tag>TXT_KEY_RF_RISE_BREAKDOWN</Tag>

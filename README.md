@@ -18,6 +18,7 @@ For License and Reuse, see [License and reuse](/README.md#license-and-reuse).
 ## Menu
 
 [Example of minimal compact XML info](/README.md#example-of-minimal-compact-xml-info)  
+[Cleanup](/README.md#cleanup)  
 [Copyright and Disclaimer](/README.md#copyright-and-disclaimer)  
 [Credits](/README.md#credits)  
 [Some Useful tools while doing this](/README.md#some-useful-tools-while-doing-this)  
@@ -59,6 +60,22 @@ For License and Reuse, see [License and reuse](/README.md#license-and-reuse).
 ```
 
 Done with the help of GPT-5.3-Codex thanks.
+
+## Cleanup
+
+Used notably Wiztree and GPT-5.3-Codex to strip away most non-sevopedia mandatory code especially heavier/lengthier code.
+
+### Wiztree
+
+<img src="./_1_AdvCiv-SAS/Images/tools/wiztree_cleanup.PNG" alt="wiztree_cleanup.PNG" width="150">
+<img src="./_1_AdvCiv-SAS/Images/tools/wiztree_cleanup_lh.PNG" alt="wiztree_cleanup_lh.PNG" width="150">
+<img src="./_1_AdvCiv-SAS/Images/tools/wiztree_cleanup_lh_psd.PNG" alt="wiztree_cleanup_lh_psd.PNG" width="150">
+
+### LLM Agents
+
+GPT-5.3-Codex and Claude code Sonnet 4.6 were very helpful to solve errors, cleanup and solve old dependencies errors.
+
+<img src="./_1_AdvCiv-SAS/Images/llm_agentic_tools/llm_agents_cleanup_and_stub.PNG" alt="llm_agents_cleanup_and_stub.PNG" width="150">
 
 ## Copyright and Disclaimer
 
