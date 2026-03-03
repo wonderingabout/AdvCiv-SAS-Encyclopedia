@@ -270,4 +270,8 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<Tag>TXT_KEY_LEADER_VICTORIA_4</Tag>
 		<English>Victoria 4 (Maria Theresa 2)</English>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_TOMYRIS_2</Tag>
+		<English>Tomyris 2 (Nanye-hi)</English>
+	</TEXT>
 </Civ4GameText>

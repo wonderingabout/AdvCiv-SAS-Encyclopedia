@@ -547,6 +547,14 @@
 			<NoShaderNIF>Art/LeaderHeads/Victoria_4/victoria_noshader.nif</NoShaderNIF>
 			<BackgroundKFM>Art/LeaderHeads/Victoria_4/victoria_BG.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_TOMYRIS_2</Type>
+			<Button>Art/Leaderheads/Tomyris_2/nanyehi.dds</Button>
+			<NIF>Art/Leaderheads/Tomyris_2/Boudica.nif</NIF>
+			<KFM>Art/LeaderHeads/Boudica/Boudica.kfm</KFM>
+			<NoShaderNIF>Art/Leaderheads/Tomyris_2/Boudica_NONSHADER.nif</NoShaderNIF>
+			<BackgroundKFM>Art/Leaderheads/Tomyris_2/cyrus_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
 	</LeaderheadArtInfos>
 </Civ4ArtDefines>
 

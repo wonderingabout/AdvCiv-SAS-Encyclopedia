@@ -5,8 +5,10 @@
 [Copyright and Disclaimer](/_1_AdvCiv-SAS/Docs/README_References.md#copyright-and-disclaimer)  
 [Note about the audio in main menu](/_1_AdvCiv-SAS/Docs/README_References.md#note-about-the-audio-in-main-menu)  
 [NIF Gallery Sources](/_1_AdvCiv-SAS/Docs/README_References.md#nif-gallery-sources)  
-&emsp;[Female Human](/_1_AdvCiv-SAS/Docs/README_References.md#female-human)  
-&emsp;[Female Non-Human](/_1_AdvCiv-SAS/Docs/README_References.md#female-non-human)  
+&emsp;[Modpacks](/_1_AdvCiv-SAS/Docs/README_References.md#modpacks)  
+&emsp;&emsp;[Female Human (Modpacks)](/_1_AdvCiv-SAS/Docs/README_References.md#female-human)  
+&emsp;&emsp;[Female Non-Human (Modpacks)](/_1_AdvCiv-SAS/Docs/README_References.md#female-non-human)  
+&emsp;[CFC](/_1_AdvCiv-SAS/Docs/README_References.md#cfc)  
 [Credits](/_1_AdvCiv-SAS/Docs/README_References.md#credits)  
 [Starting your mod](/_1_AdvCiv-SAS/Docs/README_References.md#starting-your-mod)  
 [Some Useful tools while doing this](/_1_AdvCiv-SAS/Docs/README_References.md#some-useful-tools-while-doing-this)  
@@ -40,7 +42,9 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 
 ## NIF Gallery Sources
 
-### Female Human
+### Modpacks
+
+#### Female Human (Modpacks)
 
 - AdvCiv-SAS: Grace O'Malley
 - History Rewritten: Amanirena, Aminatu, Bilqis, Dido, Dihya, Isabella 1, Jingu, Kochininako, Mangammal, Atotoztli 2 (Nzinga), Salamasina, Wu Zetian, Shin Sawbu, Tomyris, Trung Sisters, Xoc, Yekaterina
@@ -54,12 +58,19 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 - Civ Gold 5.2: Elizabeth 1 (Michaelle Jean), Elizabeth 2 (Makeda), Elizabeth 3 (Teuta), Helen Clark, Isabella 3 (Margrete I), Isabella 4 (Trung Trac), Ranavalona, Salamasina 2, Thanadelthur, Victoria 1 (Benazir Bhutto), Victoria 2 (Hasina), Yulia Tymoshenko, Zenobia
 - Fictionalization beta: Sheherazade, Wu Qinghua
 - AdvCiv Plus: Ana Nzinga, Isabella 5, Tamar, Victoria 3 (Maria Theresa)
-- Source TBD: Catherine 1 (Mary Stuart), Victoria 4 (Maria Theresa 2)
+- PSYX's Modern world 4: Catherine 1 (Mary Stuart), Victoria 4 (Maria Theresa 2)
+- Vincentz Infinite Projects (VIP): Tomyris 2 (Nanye-hi) (nif)
 
-### Female Non-Human
+#### Female Non-Human (Modpacks)
 
 - Middle-earth: Arwen
 - Fictionalization beta: Gloriana, Snow Queen
+
+### CFC
+
+#### Female Human (CFC)
+
+- SaibotLieh: Tomyris 2 (Nanye-hi) (button) (https://forums.civfanatics.com/resources/lh-nanye-hi.16341/)
 
 ## Credits
 

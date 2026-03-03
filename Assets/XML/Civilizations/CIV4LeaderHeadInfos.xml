@@ -443,5 +443,10 @@
 			<Description>TXT_KEY_LEADER_VICTORIA_4</Description>
 			<ArtDefineTag>ART_DEF_LEADER_VICTORIA_4</ArtDefineTag>
 		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_TOMYRIS_2</Type>
+			<Description>TXT_KEY_LEADER_TOMYRIS_2</Description>
+			<ArtDefineTag>ART_DEF_LEADER_TOMYRIS_2</ArtDefineTag>
+		</LeaderHeadInfo>
 	</LeaderHeadInfos>
 </Civ4LeaderHeadInfos>
