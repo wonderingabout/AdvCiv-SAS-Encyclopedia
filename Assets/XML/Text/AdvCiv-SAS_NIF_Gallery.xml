@@ -137,4 +137,24 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<Tag>TXT_KEY_LEADER_SARAH_FEDLER</Tag>
 		<English>Sarah Fedler</English>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_CLEOPATRA_2</Tag>
+		<English>Cleopatra 2</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_JINGU_2</Tag>
+		<English>Jingu 2</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_JOAN_OF_ARC</Tag>
+		<English>Joan of Arc</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_MANDUKHAI_KHATUN</Tag>
+		<English>Mandukhai Khatun</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_NEFERTITI</Tag>
+		<English>Nefertiti</English>
+	</TEXT>
 </Civ4GameText>

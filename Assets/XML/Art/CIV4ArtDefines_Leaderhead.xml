@@ -5,7 +5,7 @@
 <!-- -->
 <!-- Leaderhead art path information -->
 <!-- custom: note: some paths use base civ4 one; e.g. Bilqis uses base Hammurabi KFM but custom Hammurabi nif. -->
-<!-- custom: note 2: respect case for Art/LeaderHeads/ else Art/Leaderheads/ causes an index error as in KI#111 in AdvCiv-SAS' documentation -->
+<!-- custom: note 2: respect case for Art/LeaderHeads/ else another capitalization of this exact same path causes an index error as in KI#111, or an unidentifiable C++ exception in AdvCiv-SAS' documentation -->
 <Civ4ArtDefines xmlns="x-schema:CIV4ArtDefinesSchema.xml">
 	<LeaderheadArtInfos>
 		<LeaderheadArtInfo>
@@ -279,6 +279,46 @@
 			<KFM>Art/LeaderHeads/Elizabeth/elizabeth.kfm</KFM>
 			<NoShaderNIF>Art/LeaderHeads/Sarah_Fedler/Eli_NoShader.nif</NoShaderNIF>
 			<BackgroundKFM>Art/LeaderHeads/Sarah_Fedler/fdr_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_CLEOPATRA_2</Type>
+			<Button>Art/LeaderHeads/Cleopatra_2/cleo.dds</Button>
+			<NIF>Art/LeaderHeads/Cleopatra_2/isabella.nif</NIF>
+			<KFM>Art/LeaderHeads/Cleopatra/isabella.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Cleopatra_2/isabella_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Cleopatra_2/isabella_BG.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_JINGU_2</Type>
+			<Button>Art/LeaderHeads/Jingu_2/Female_Asian.dds</Button>
+			<NIF>Art/LeaderHeads/Jingu_2/mansa_musa.nif</NIF>
+			<KFM>Art/LeaderHeads/Jingu_2/mansa_musa.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Jingu_2/mansa_musa_bg.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Jingu_2/mansa_musa_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_JOAN_OF_ARC</Type>
+			<Button>Art/LeaderHeads/Joan_of_Arc/joan.dds</Button>
+			<NIF>Art/LeaderHeads/Joan_of_Arc/elizabeth.nif</NIF>
+			<KFM>Art/LeaderHeads/elizabeth/elizabeth.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Joan_of_Arc/elizabeth_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Joan_of_Arc/elizabeth_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_MANDUKHAI_KHATUN</Type>
+			<Button>Art/LeaderHeads/Mandukhai_Khatun/mandukhai.dds</Button>
+			<NIF>Art/LeaderHeads/Mandukhai_Khatun/cyrus.nif</NIF>
+			<KFM>Art/LeaderHeads/Mandukhai_Khatun/cyrus.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Mandukhai_Khatun/cyrus_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Mandukhai_Khatun/cyrus_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_NEFERTITI</Type>
+			<Button>Art/LeaderHeads/Nefertiti/Cleo.dds</Button>
+			<NIF>Art/LeaderHeads/Nefertiti/Nefertiti.nif</NIF>
+			<KFM>Art/LeaderHeads/Nefertiti/isabella.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Nefertiti/Nefertiti.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Nefertiti/Nefertiti_BG.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 	</LeaderheadArtInfos>
 </Civ4ArtDefines>

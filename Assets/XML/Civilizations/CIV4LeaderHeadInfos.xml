@@ -277,5 +277,30 @@
 			<Description>TXT_KEY_LEADER_SARAH_FEDLER</Description>
 			<ArtDefineTag>ART_DEF_LEADER_SARAH_FEDLER</ArtDefineTag>
 		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_CLEOPATRA_2</Type>
+			<Description>TXT_KEY_LEADER_CLEOPATRA_2</Description>
+			<ArtDefineTag>ART_DEF_LEADER_CLEOPATRA_2</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_JINGU_2</Type>
+			<Description>TXT_KEY_LEADER_JINGU_2</Description>
+			<ArtDefineTag>ART_DEF_LEADER_JINGU_2</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_JOAN_OF_ARC</Type>
+			<Description>TXT_KEY_LEADER_JOAN_OF_ARC</Description>
+			<ArtDefineTag>ART_DEF_LEADER_JOAN_OF_ARC</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_MANDUKHAI_KHATUN</Type>
+			<Description>TXT_KEY_LEADER_MANDUKHAI_KHATUN</Description>
+			<ArtDefineTag>ART_DEF_LEADER_MANDUKHAI_KHATUN</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_NEFERTITI</Type>
+			<Description>TXT_KEY_LEADER_NEFERTITI</Description>
+			<ArtDefineTag>ART_DEF_LEADER_NEFERTITI</ArtDefineTag>
+		</LeaderHeadInfo>
 	</LeaderHeadInfos>
 </Civ4LeaderHeadInfos>

@@ -47,6 +47,7 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 - Beyond the Game 2.43: Maria Theresa, Marpesia, Penthesilea, Theodora
 - Base 6.4: Anne Bonny, Atotoztli, Bilqis 2, Cixi, Cleopatra, Mary Stuart, Wilhelmina
 - Future Mod: Sarah Fedler
+- Destiny: Cleopatra 2, Jingu 2, Joan of Arc, Mandukhai Khatun, Nefertiti
 
 ## Credits
 
