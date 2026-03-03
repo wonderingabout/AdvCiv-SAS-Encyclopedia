@@ -344,6 +344,22 @@
 			<NoShaderNIF>Art/LeaderHeads/Joan_of_Arc_2/joanofark.nif</NoShaderNIF>
 			<BackgroundKFM>Art/LeaderHeads/Joan_of_Arc_2/catherine_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_ARWEN</Type>
+			<Button>Art/LeaderHeads/Arwen/Arwen_BT.dds</Button>
+			<NIF>Art/LeaderHeads/Arwen/elizabeth.nif</NIF>
+			<KFM>art/LeaderHeads/Elizabeth/elizabeth.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Arwen/elizabeth.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Arwen/elizabeth_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_GALADRIEL</Type>
+			<Button>Art/LeaderHeads/Galadriel/Galadriel_BT.dds</Button>
+			<NIF>Art/LeaderHeads/Galadriel/Galadriel.nif</NIF>
+			<KFM>Art/LeaderHeads/Galadriel/Elizabeth.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Galadriel/Galadriel.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Galadriel/Elizabeth_BG.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
 	</LeaderheadArtInfos>
 </Civ4ArtDefines>
 

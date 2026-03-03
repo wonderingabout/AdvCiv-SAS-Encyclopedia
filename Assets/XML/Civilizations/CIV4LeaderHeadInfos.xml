@@ -317,5 +317,15 @@
 			<Description>TXT_KEY_LEADER_JOAN_OF_ARC_2</Description>
 			<ArtDefineTag>ART_DEF_LEADER_JOAN_OF_ARC_2</ArtDefineTag>
 		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_ARWEN</Type>
+			<Description>TXT_KEY_LEADER_ARWEN</Description>
+			<ArtDefineTag>ART_DEF_LEADER_ARWEN</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_GALADRIEL</Type>
+			<Description>TXT_KEY_LEADER_GALADRIEL</Description>
+			<ArtDefineTag>ART_DEF_LEADER_GALADRIEL</ArtDefineTag>
+		</LeaderHeadInfo>
 	</LeaderHeadInfos>
 </Civ4LeaderHeadInfos>

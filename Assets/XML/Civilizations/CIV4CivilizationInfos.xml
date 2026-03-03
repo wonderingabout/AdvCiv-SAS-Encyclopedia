@@ -52,6 +52,15 @@
 				<Leader><LeaderName>LEADER_CLEOPATRA_3</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_DIDO_2</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_JOAN_OF_ARC_2</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_GALADRIEL</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+			</Leaders>
+		</CivilizationInfo>
+		<CivilizationInfo>
+			<Type>CIVILIZATION_ARABIA</Type>
+			<Description>TXT_KEY_CIV_ARABIA_DESC</Description>
+			<ArtDefineTag>ART_DEF_CIVILIZATION_ARABIA</ArtDefineTag>
+			<Leaders>
+				<Leader><LeaderName>LEADER_ARWEN</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 			</Leaders>
 		</CivilizationInfo>
 		<CivilizationInfo>

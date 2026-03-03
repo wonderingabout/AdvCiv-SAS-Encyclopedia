@@ -169,4 +169,12 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<Tag>TXT_KEY_LEADER_JOAN_OF_ARC_2</Tag>
 		<English>Joan of Arc 2</English>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ARWEN</Tag>
+		<English>Arwen</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_GALADRIEL</Tag>
+		<English>Galadriel</English>
+	</TEXT>
 </Civ4GameText>

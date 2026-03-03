@@ -49,6 +49,11 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 - Future Mod: Sarah Fedler
 - Destiny: Cleopatra 2, Jingu 2, Joan of Arc, Mandukhai Khatun, Nefertiti
 - Rise of Mankind 2.91: Cleopatra 3, Dido 2, Joan of Arc 2
+- Middle-earth: Galadriel
+
+### Female Non-Human
+
+- Middle-earth: Arwen
 
 ## Credits
 
