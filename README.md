@@ -67,15 +67,17 @@ Used notably Wiztree and GPT-5.3-Codex to strip away most non-sevopedia mandator
 
 ### Wiztree
 
-<img src="./_1_AdvCiv-SAS/Images/tools/wiztree_cleanup.PNG" alt="wiztree_cleanup.PNG" width="150">
-<img src="./_1_AdvCiv-SAS/Images/tools/wiztree_cleanup_lh.PNG" alt="wiztree_cleanup_lh.PNG" width="150">
-<img src="./_1_AdvCiv-SAS/Images/tools/wiztree_cleanup_lh_psd.PNG" alt="wiztree_cleanup_lh_psd.PNG" width="150">
+Among unneeded files, notably: `.psd`, `.obj`, `.mtl`.
+
+<img src="./_1_AdvCiv-SAS/Images/tools/wiztree_cleanup.PNG" alt="wiztree_cleanup.PNG" width="150"></img>
+<img src="./_1_AdvCiv-SAS/Images/tools/wiztree_cleanup_lh.PNG" alt="wiztree_cleanup_lh.PNG" width="150"></img>
+<img src="./_1_AdvCiv-SAS/Images/tools/wiztree_cleanup_lh_psd.PNG" alt="wiztree_cleanup_lh_psd.PNG" width="150"></img>
 
 ### LLM Agents
 
 GPT-5.3-Codex and Claude code Sonnet 4.6 were very helpful to solve errors, cleanup and solve old dependencies errors.
 
-<img src="./_1_AdvCiv-SAS/Images/llm_agentic_tools/llm_agents_cleanup_and_stub.PNG" alt="llm_agents_cleanup_and_stub.PNG" width="150">
+<img src="./_1_AdvCiv-SAS/Images/llm_agentic_tools/llm_agents_cleanup_and_stub.PNG" alt="llm_agents_cleanup_and_stub.PNG" width="150"></img>
 
 ## Copyright and Disclaimer
 

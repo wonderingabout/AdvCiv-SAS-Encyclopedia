@@ -43,16 +43,17 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 ### Female Human
 
 - AdvCiv-SAS: Grace O'Malley
-- History Rewritten: Amanirena, Aminatu, Bilqis, Dido, Dihya, Isabella, Jingu, Kochininako, Mangammal, Atotoztli 2 (Nzinga), Salamasina, Wu Zetian, Shin Sawbu, Tomyris, Trung Sisters, Xoc, Yekaterina
-- RFC Dawn of Civilization: Benazir, Isabella II, Maria
+- History Rewritten: Amanirena, Aminatu, Bilqis, Dido, Dihya, Isabella 1, Jingu, Kochininako, Mangammal, Atotoztli 2 (Nzinga), Salamasina, Wu Zetian, Shin Sawbu, Tomyris, Trung Sisters, Xoc, Yekaterina
+- RFC Dawn of Civilization: Benazir, Isabella 2, Maria
 - Beyond the Game 2.43: Maria Theresa, Marpesia, Penthesilea, Theodora
 - Base 6.4: Anne Bonny, Atotoztli, Bilqis 2, Cixi, Cleopatra, Mary Stuart, Wilhelmina
 - Future Mod: Sarah Fedler
 - Destiny: Cleopatra 2, Jingu 2, Joan of Arc, Mandukhai Khatun, Nefertiti
 - Rise of Mankind 2.91: Cleopatra 3, Dido 2, Joan of Arc 2
 - Middle-earth: Galadriel
-- Civ Gold 5.2: Elizabeth (Michaelle Jean), Elizabeth 2 (Makeda), Elizabeth 3 (Teuta), Helen Clark, Isabella 3 (Margrete I), Isabella 4 (Trung Trac), Ranavalona, Salamasina 2, Thanadelthur, Victoria (Benazir Bhutto), Victoria 2 (Hasina), Yulia Tymoshenko, Zenobia
+- Civ Gold 5.2: Elizabeth 1 (Michaelle Jean), Elizabeth 2 (Makeda), Elizabeth 3 (Teuta), Helen Clark, Isabella 3 (Margrete I), Isabella 4 (Trung Trac), Ranavalona, Salamasina 2, Thanadelthur, Victoria 1 (Benazir Bhutto), Victoria 2 (Hasina), Yulia Tymoshenko, Zenobia
 - Fictionalization beta: Sheherazade, Wu Qinghua
+- AdvCiv Plus: Ana Nzinga, Isabella 5, Tamar, Victoria 3 (Maria Theresa)
 
 ### Female Non-Human
 

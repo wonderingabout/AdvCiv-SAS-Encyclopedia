@@ -5,6 +5,7 @@
 <!-- -->
 <!-- Leader Infos and AI Settings -->
 <!-- custom: remember or be careful to put leaders in their alphabetical order (per TXT_KEY ingame visible name (for example "Roosevelt" not "FRANKLIN_ROOSEVELT")) so they are correctly alphabetically sorted in custom game leader dropdown  -->
+<!-- custom: use _1 for existing BTS leader names we add to not confuse with base asset and avoid wrong folder error; e.g. LEADER_ISABELLA_1 -->
 <Civ4LeaderHeadInfos xmlns="x-schema:CIV4CivilizationsSchema.xml">
 	<LeaderHeadInfos>
 		<LeaderHeadInfo>
@@ -143,9 +144,9 @@
 			<ArtDefineTag>ART_DEF_LEADER_DIHYA</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
-			<Type>LEADER_ISABELLA</Type>
-			<Description>TXT_KEY_LEADER_ISABELLA</Description>
-			<ArtDefineTag>ART_DEF_LEADER_ISABELLA</ArtDefineTag>
+			<Type>LEADER_ISABELLA_1</Type>
+			<Description>TXT_KEY_LEADER_ISABELLA_1</Description>
+			<ArtDefineTag>ART_DEF_LEADER_ISABELLA_1</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
 			<Type>LEADER_JINGU</Type>
@@ -328,9 +329,9 @@
 			<ArtDefineTag>ART_DEF_LEADER_GALADRIEL</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
-			<Type>LEADER_ELIZABETH</Type>
-			<Description>TXT_KEY_LEADER_ELIZABETH</Description>
-			<ArtDefineTag>ART_DEF_LEADER_ELIZABETH</ArtDefineTag>
+			<Type>LEADER_ELIZABETH_1</Type>
+			<Description>TXT_KEY_LEADER_ELIZABETH_1</Description>
+			<ArtDefineTag>ART_DEF_LEADER_ELIZABETH_1</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
 			<Type>LEADER_ELIZABETH_2</Type>
@@ -373,9 +374,9 @@
 			<ArtDefineTag>ART_DEF_LEADER_THANADELTHUR</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
-			<Type>LEADER_VICTORIA</Type>
-			<Description>TXT_KEY_LEADER_VICTORIA</Description>
-			<ArtDefineTag>ART_DEF_LEADER_VICTORIA</ArtDefineTag>
+			<Type>LEADER_VICTORIA_1</Type>
+			<Description>TXT_KEY_LEADER_VICTORIA_1</Description>
+			<ArtDefineTag>ART_DEF_LEADER_VICTORIA_1</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
 			<Type>LEADER_VICTORIA_2</Type>
@@ -411,6 +412,26 @@
 			<Type>LEADER_WU_QINGHUA</Type>
 			<Description>TXT_KEY_LEADER_WU_QINGHUA</Description>
 			<ArtDefineTag>ART_DEF_LEADER_WU_QINGHUA</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_ANA_NZINGA</Type>
+			<Description>TXT_KEY_LEADER_ANA_NZINGA</Description>
+			<ArtDefineTag>ART_DEF_LEADER_ANA_NZINGA</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_ISABELLA_5</Type>
+			<Description>TXT_KEY_LEADER_ISABELLA_5</Description>
+			<ArtDefineTag>ART_DEF_LEADER_ISABELLA_5</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_TAMAR</Type>
+			<Description>TXT_KEY_LEADER_TAMAR</Description>
+			<ArtDefineTag>ART_DEF_LEADER_TAMAR</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_VICTORIA_3</Type>
+			<Description>TXT_KEY_LEADER_VICTORIA_3</Description>
+			<ArtDefineTag>ART_DEF_LEADER_VICTORIA_3</ArtDefineTag>
 		</LeaderHeadInfo>
 	</LeaderHeadInfos>
 </Civ4LeaderHeadInfos>
