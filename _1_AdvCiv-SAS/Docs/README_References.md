@@ -50,6 +50,7 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 - Destiny: Cleopatra 2, Jingu 2, Joan of Arc, Mandukhai Khatun, Nefertiti
 - Rise of Mankind 2.91: Cleopatra 3, Dido 2, Joan of Arc 2
 - Middle-earth: Galadriel
+- Civ Gold 5.2: Elizabeth (Michaelle Jean), Elizabeth 2 (Makeda), Elizabeth 3 (Teuta), Helen Clark, Isabella 3 (Margrete I), Isabella 4 (Trung Trac), Ranavalona, Salamasina 2, Thanadelthur, Victoria (Benazir Bhutto), Victoria 2 (Hasina), Yulia Tymoshenko, Zenobia
 
 ### Female Non-Human
 
