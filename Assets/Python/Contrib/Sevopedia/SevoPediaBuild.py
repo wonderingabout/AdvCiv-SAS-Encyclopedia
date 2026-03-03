@@ -26,7 +26,7 @@ class SevoPediaBuild:
 		self.iBuild = -1
 		self.top = main
 		self.SAS_iBuildRoad = getInfoTypeOrFail("BUILD_ROAD")
-		self.SAS_iBuildRailroad = getInfoTypeOrFail("BUILD_RAILROAD")
+		self.SAS_iBuildRailroad = getInfoTypeOrFail("BUILD_ROAD")
 
 		self.MEDIUM_MARGIN = 15
 		self.SMALL_MARGIN = self.MEDIUM_MARGIN - 5
@@ -167,7 +167,7 @@ class SevoPediaBuild:
 			iBuild = -1
 			if routeInfo.getType() == "ROUTE_ROAD":
 				iBuild = self.SAS_iBuildRoad
-			elif routeInfo.getType() == "ROUTE_RAILROAD":
+			elif routeInfo.getType() == "ROUTE_ROAD":
 				iBuild = self.SAS_iBuildRailroad
 			if iBuild < 0:
 				raise Exception("SevoPediaBuild: missing Build for route %s" % routeInfo.getType())

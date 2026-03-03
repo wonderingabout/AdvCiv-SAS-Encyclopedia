@@ -548,7 +548,7 @@
 			<TechYieldChanges/>
 			<RouteYieldChanges>
 				<RouteYieldChange>
-					<RouteType>ROUTE_RAILROAD</RouteType>
+					<RouteType>ROUTE_ROAD</RouteType>
 					<RouteYields>
 						<iYield>0</iYield>
 						<iYield>1</iYield>
@@ -707,7 +707,7 @@
 			</TechYieldChanges>
 			<RouteYieldChanges>
 				<RouteYieldChange>
-					<RouteType>ROUTE_RAILROAD</RouteType>
+					<RouteType>ROUTE_ROAD</RouteType>
 					<RouteYields>
 						<iYield>0</iYield>
 						<iYield>1</iYield>
@@ -1027,7 +1027,7 @@
 			<TechYieldChanges/>
 			<RouteYieldChanges>
 				<RouteYieldChange>
-					<RouteType>ROUTE_RAILROAD</RouteType>
+					<RouteType>ROUTE_ROAD</RouteType>
 					<RouteYields>
 						<iYield>0</iYield>
 						<iYield>1</iYield>

@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+<!-- edited with XMLSPY v2004 rel. 2 U (http://www.xmlspy.com) by Alex Mantzaris (Firaxis Games) -->
+<!-- Sid Meier's Civilization 4 -->
+<!-- Copyright Firaxis Games 2005 -->
+<!-- -->
+<!-- Animation Infos -->
+<!-- custom: added to solve some dependencies and so the mod minimally loads with minimal events -->
+<Civ4EntityEventInfos xmlns="x-schema:CIV4UnitSchema.xml">
+	<EntityEventInfos>
+		<EntityEventInfo>
+			<Type>ENTITY_EVENT_IDLE</Type>
+			<AnimationPathTypes>
+				<AnimationPathType>ANIMATIONPATH_IDLE</AnimationPathType>
+			</AnimationPathTypes>
+			<bUpdateFormation>1</bUpdateFormation>
+		</EntityEventInfo>
+	</EntityEventInfos>
+</Civ4EntityEventInfos>
