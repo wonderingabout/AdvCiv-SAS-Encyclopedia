@@ -448,5 +448,10 @@
 			<Description>TXT_KEY_LEADER_TOMYRIS_2</Description>
 			<ArtDefineTag>ART_DEF_LEADER_TOMYRIS_2</ArtDefineTag>
 		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_ISABELLA_6</Type>
+			<Description>TXT_KEY_LEADER_ISABELLA_6</Description>
+			<ArtDefineTag>ART_DEF_LEADER_ISABELLA_6</ArtDefineTag>
+		</LeaderHeadInfo>
 	</LeaderHeadInfos>
 </Civ4LeaderHeadInfos>

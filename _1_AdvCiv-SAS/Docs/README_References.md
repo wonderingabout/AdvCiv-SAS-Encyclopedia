@@ -60,6 +60,7 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 - AdvCiv Plus: Ana Nzinga, Isabella 5, Tamar, Victoria 3 (Maria Theresa)
 - PSYX's Modern world 4: Catherine 1 (Mary Stuart), Victoria 4 (Maria Theresa 2)
 - Vincentz Infinite Projects (VIP): Tomyris 2 (Nanye-hi) (nif)
+- The Sword of Islam: Isabella 6 (Tamar)
 
 #### Female Non-Human (Modpacks)
 
