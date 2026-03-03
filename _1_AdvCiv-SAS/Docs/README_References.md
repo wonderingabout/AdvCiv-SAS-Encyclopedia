@@ -62,6 +62,7 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 - Vincentz Infinite Projects (VIP): Tomyris 2 (Nanye-hi) (nif)
 - The Sword of Islam: Isabella 6 (Tamar)
 - RFC Europe 1.5: Beatrice, Isabella 7 (Margrete 2)
+- RFC Europe 1.5 + CIV IV RFC Europe (Unofficial Leaderhead Patches): Marfa Boretskaya
 
 #### Female Non-Human (Modpacks)
 

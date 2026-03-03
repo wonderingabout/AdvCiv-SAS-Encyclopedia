@@ -463,5 +463,10 @@
 			<Description>TXT_KEY_LEADER_ISABELLA_7</Description>
 			<ArtDefineTag>ART_DEF_LEADER_ISABELLA_7</ArtDefineTag>
 		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_MARFA_BORETSKAYA</Type>
+			<Description>TXT_KEY_LEADER_MARFA_BORETSKAYA</Description>
+			<ArtDefineTag>ART_DEF_LEADER_MARFA_BORETSKAYA</ArtDefineTag>
+		</LeaderHeadInfo>
 	</LeaderHeadInfos>
 </Civ4LeaderHeadInfos>

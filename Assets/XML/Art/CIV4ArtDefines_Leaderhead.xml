@@ -579,6 +579,14 @@
 			<NoShaderNIF>Art/LeaderHeads/Isabella_7/isabella.nif</NoShaderNIF>
 			<BackgroundKFM>Art/LeaderHeads/Isabella_7/leader_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_MARFA_BORETSKAYA</Type>
+			<Button>Art/LeaderHeads/Marfa_Boretskaya/btn_lh_novgorod_marfa.dds</Button>
+			<NIF>Art/LeaderHeads/Marfa_Boretskaya/catherine.nif</NIF>
+			<KFM>Art/LeaderHeads/Marfa_Boretskaya/catherine.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Marfa_Boretskaya/catherine.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Marfa_Boretskaya/isabella_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
 	</LeaderheadArtInfos>
 </Civ4ArtDefines>
 
