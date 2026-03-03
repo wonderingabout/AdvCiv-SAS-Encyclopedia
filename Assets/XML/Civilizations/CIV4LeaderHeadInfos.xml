@@ -392,5 +392,25 @@
 			<Description>TXT_KEY_LEADER_ZENOBIA</Description>
 			<ArtDefineTag>ART_DEF_LEADER_ZENOBIA</ArtDefineTag>
 		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_GLORIANA</Type>
+			<Description>TXT_KEY_LEADER_GLORIANA</Description>
+			<ArtDefineTag>ART_DEF_LEADER_GLORIANA</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_SHEHERAZADE</Type>
+			<Description>TXT_KEY_LEADER_SHEHERAZADE</Description>
+			<ArtDefineTag>ART_DEF_LEADER_SHEHERAZADE</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_SNOW_QUEEN</Type>
+			<Description>TXT_KEY_LEADER_SNOW_QUEEN</Description>
+			<ArtDefineTag>ART_DEF_LEADER_SNOW_QUEEN</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_WU_QINGHUA</Type>
+			<Description>TXT_KEY_LEADER_WU_QINGHUA</Description>
+			<ArtDefineTag>ART_DEF_LEADER_WU_QINGHUA</ArtDefineTag>
+		</LeaderHeadInfo>
 	</LeaderHeadInfos>
 </Civ4LeaderHeadInfos>

@@ -6,6 +6,7 @@
 [Note about the audio in main menu](/_1_AdvCiv-SAS/Docs/README_References.md#note-about-the-audio-in-main-menu)  
 [NIF Gallery Sources](/_1_AdvCiv-SAS/Docs/README_References.md#nif-gallery-sources)  
 &emsp;[Female Human](/_1_AdvCiv-SAS/Docs/README_References.md#female-human)  
+&emsp;[Female Non-Human](/_1_AdvCiv-SAS/Docs/README_References.md#female-non-human)  
 [Credits](/_1_AdvCiv-SAS/Docs/README_References.md#credits)  
 [Starting your mod](/_1_AdvCiv-SAS/Docs/README_References.md#starting-your-mod)  
 [Some Useful tools while doing this](/_1_AdvCiv-SAS/Docs/README_References.md#some-useful-tools-while-doing-this)  
@@ -51,10 +52,12 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 - Rise of Mankind 2.91: Cleopatra 3, Dido 2, Joan of Arc 2
 - Middle-earth: Galadriel
 - Civ Gold 5.2: Elizabeth (Michaelle Jean), Elizabeth 2 (Makeda), Elizabeth 3 (Teuta), Helen Clark, Isabella 3 (Margrete I), Isabella 4 (Trung Trac), Ranavalona, Salamasina 2, Thanadelthur, Victoria (Benazir Bhutto), Victoria 2 (Hasina), Yulia Tymoshenko, Zenobia
+- Fictionalization beta: Sheherazade, Wu Qinghua
 
 ### Female Non-Human
 
 - Middle-earth: Arwen
+- Fictionalization beta: Gloriana, Snow Queen
 
 ## Credits
 

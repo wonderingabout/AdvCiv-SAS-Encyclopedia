@@ -230,4 +230,20 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<Tag>TXT_KEY_LEADER_ZENOBIA</Tag>
 		<English>Zenobia</English>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_GLORIANA</Tag>
+		<English>Gloriana</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_SHEHERAZADE</Tag>
+		<English>Sheherazade</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_SNOW_QUEEN</Tag>
+		<English>Snow Queen</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_WU_QINGHUA</Tag>
+		<English>Wu Qinghua</English>
+	</TEXT>
 </Civ4GameText>
