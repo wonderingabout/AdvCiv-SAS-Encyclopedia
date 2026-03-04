@@ -701,11 +701,35 @@
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_EVITA_PERON</Type>
-			<Button>Art/LeaderHeads/Evita/catherine_bg.dds</Button>
-			<NIF>Art/LeaderHeads/Evita/catherine.nif</NIF>
-			<KFM>Art/LeaderHeads/Evita/catherine.kfm</KFM>
-			<NoShaderNIF>Art/LeaderHeads/Evita/catherine_noshader.nif</NoShaderNIF>
-			<BackgroundKFM>Art/LeaderHeads/Evita/catherine_bg.kfm</BackgroundKFM>
+			<Button>Art/LeaderHeads/Evita_Peron/catherine_bg.dds</Button>
+			<NIF>Art/LeaderHeads/Evita_Peron/catherine.nif</NIF>
+			<KFM>Art/LeaderHeads/Evita_Peron/catherine.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Evita_Peron/catherine_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Evita_Peron/catherine_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_ANA_NZINGA_2</Type>
+			<Button>Art/LeaderHeads/Ana_Nzinga_2/BUTTON_Nzinga.dds</Button>
+			<NIF>Art/LeaderHeads/Ana_Nzinga_2/AnaNzinga2.nif</NIF>
+			<KFM>Art/LeaderHeads/Ana_Nzinga_2/Atotoztli.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Ana_Nzinga_2/AnaNzinga2.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Ana_Nzinga_2/Arawak_BG.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_HELEN_OF_TROY</Type>
+			<Button>Art/LeaderHeads/Helen_of_Troy/helen.dds</Button>
+			<NIF>Art/LeaderHeads/Helen_of_Troy/elizabeth.nif</NIF>
+			<KFM>Art/LeaderHeads/Elizabeth/elizabeth.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Helen_of_Troy/elizabeth.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Helen_of_Troy/peter_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_ULPIA_SEVERINA</Type>
+			<Button>Art/LeaderHeads/Ulpia_Severina/ulpia.dds</Button>
+			<NIF>Art/LeaderHeads/Ulpia_Severina/isabella.nif</NIF>
+			<KFM>Art/LeaderHeads/Isabella/isabella.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Ulpia_Severina/isabella.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Ulpia_Severina/isabella_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 	</LeaderheadArtInfos>
 </Civ4ArtDefines>

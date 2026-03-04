@@ -543,5 +543,20 @@
 			<Description>TXT_KEY_LEADER_EVITA_PERON</Description>
 			<ArtDefineTag>ART_DEF_LEADER_EVITA_PERON</ArtDefineTag>
 		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_ANA_NZINGA_2</Type>
+			<Description>TXT_KEY_LEADER_ANA_NZINGA_2</Description>
+			<ArtDefineTag>ART_DEF_LEADER_ANA_NZINGA_2</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_HELEN_OF_TROY</Type>
+			<Description>TXT_KEY_LEADER_HELEN_OF_TROY</Description>
+			<ArtDefineTag>ART_DEF_LEADER_HELEN_OF_TROY</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_ULPIA_SEVERINA</Type>
+			<Description>TXT_KEY_LEADER_ULPIA_SEVERINA</Description>
+			<ArtDefineTag>ART_DEF_LEADER_ULPIA_SEVERINA</ArtDefineTag>
+		</LeaderHeadInfo>
 	</LeaderHeadInfos>
 </Civ4LeaderHeadInfos>

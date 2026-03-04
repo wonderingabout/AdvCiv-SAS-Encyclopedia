@@ -350,4 +350,16 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<Tag>TXT_KEY_LEADER_EVITA_PERON</Tag>
 		<English>Evita Peron</English>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ANA_NZINGA_2</Tag>
+		<English>Ana Nzinga 2</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_HELEN_OF_TROY</Tag>
+		<English>Helen of Troy</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ULPIA_SEVERINA</Tag>
+		<English>Ulpia Severina</English>
+	</TEXT>
 </Civ4GameText>
