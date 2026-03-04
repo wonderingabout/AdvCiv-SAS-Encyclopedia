@@ -76,6 +76,8 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 #### Female Human (CFC)
 
 - SaibotLieh: Tomyris 2 (Nanye-hi) (button) (https://forums.civfanatics.com/resources/lh-nanye-hi.16341/)
+- ambrox62: Dido 3, Dido 4 (https://forums.civfanatics.com/threads/shaded-lh-dido.247286/page-3)
+- ambrox62: Dido 5 (Red), Dido 6 (Gold), Dido 7 (White) (https://forums.civfanatics.com/threads/lh-dido-v-2.270476/)
 
 ## Credits
 

@@ -488,5 +488,30 @@
 			<Description>TXT_KEY_LEADER_VICTORIA_5</Description>
 			<ArtDefineTag>ART_DEF_LEADER_VICTORIA_5</ArtDefineTag>
 		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_DIDO_3</Type>
+			<Description>TXT_KEY_LEADER_DIDO_3</Description>
+			<ArtDefineTag>ART_DEF_LEADER_DIDO_3</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_DIDO_4</Type>
+			<Description>TXT_KEY_LEADER_DIDO_4</Description>
+			<ArtDefineTag>ART_DEF_LEADER_DIDO_4</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_DIDO_5</Type>
+			<Description>TXT_KEY_LEADER_DIDO_5</Description>
+			<ArtDefineTag>ART_DEF_LEADER_DIDO_5</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_DIDO_6</Type>
+			<Description>TXT_KEY_LEADER_DIDO_6</Description>
+			<ArtDefineTag>ART_DEF_LEADER_DIDO_6</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_DIDO_7</Type>
+			<Description>TXT_KEY_LEADER_DIDO_7</Description>
+			<ArtDefineTag>ART_DEF_LEADER_DIDO_7</ArtDefineTag>
+		</LeaderHeadInfo>
 	</LeaderHeadInfos>
 </Civ4LeaderHeadInfos>

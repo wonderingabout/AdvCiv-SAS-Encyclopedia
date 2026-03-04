@@ -83,6 +83,11 @@
 				<Leader><LeaderName>LEADER_CLEOPATRA_5</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_ISABELLA_8</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_VICTORIA_5</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_DIDO_3</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_DIDO_4</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_DIDO_5</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_DIDO_6</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_DIDO_7</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 			</Leaders>
 		</CivilizationInfo>
 		<CivilizationInfo>

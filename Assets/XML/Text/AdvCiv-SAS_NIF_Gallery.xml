@@ -306,4 +306,24 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<Tag>TXT_KEY_LEADER_VICTORIA_5</Tag>
 		<English>Victoria 5 (Maria Theresa 3)</English>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_DIDO_3</Tag>
+		<English>Dido 3</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_DIDO_4</Tag>
+		<English>Dido 4</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_DIDO_5</Tag>
+		<English>Dido 5 (Red)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_DIDO_6</Tag>
+		<English>Dido 6 (Gold)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_DIDO_7</Tag>
+		<English>Dido 7 (White)</English>
+	</TEXT>
 </Civ4GameText>
