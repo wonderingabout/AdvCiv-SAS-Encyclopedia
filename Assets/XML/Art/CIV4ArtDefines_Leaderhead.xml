@@ -11,7 +11,7 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 <!-- Leaderhead art path information -->
 <!-- custom: note: some paths use base civ4 one; e.g. Bilqis uses base Hammurabi KFM but custom Hammurabi nif. -->
 <!-- custom: note 2: respect case for Art/LeaderHeads/ else another capitalization like art or Leaderheads or such causes an index error as in KI#111 as describe in AdvCiv-SAS' documentation,, or an unidentifiable C++ exception -->
-<!-- custom: note 3: this error also appears when asset folder name is incorrect; e.g. /Elizabeth/ instead of /Elizabeth_1/ in the AdvCiv-SAS NIF Gallery mod -->
+<!-- custom: note 3: this error also appears when asset folder name is incorrect; e.g. /Elizabeth/ instead of /Elizabeth_1/ in the AdvCiv-SAS NIF Gallery mod; also sometimes just restarting the game sometime later weirdly fixes it -->
 <Civ4ArtDefines xmlns="x-schema:CIV4ArtDefinesSchema.xml">
 	<LeaderheadArtInfos>
 		<LeaderheadArtInfo>
@@ -800,14 +800,6 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<BackgroundKFM>Art/LeaderHeads/Tamar_2/isabella_bg2.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
-			<Type>ART_DEF_LEADER_YULIA_TYMOSHENKO_2</Type>
-			<Button>Art/LeaderHeads/Yulia_Tymoshenko_2/Tymoshenko.dds</Button>
-			<NIF>Art/LeaderHeads/Yulia_Tymoshenko_2/tymoshenko.nif</NIF>
-			<KFM>Art/LeaderHeads/Yulia_Tymoshenko_2/catherine.kfm</KFM>
-			<NoShaderNIF>Art/LeaderHeads/Yulia_Tymoshenko_2/tymoshenko_noshader.nif</NoShaderNIF>
-			<BackgroundKFM>Art/LeaderHeads/Yulia_Tymoshenko_2/tymoshenko_bg.kfm</BackgroundKFM>
-		</LeaderheadArtInfo>
-		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_ZELDA</Type>
 			<Button>Art/LeaderHeads/Zelda/zeldab.dds</Button>
 			<NIF>Art/LeaderHeads/Zelda/elizabeth.nif</NIF>
@@ -823,6 +815,37 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<NoShaderNIF>Art/LeaderHeads/Zelda_2/elizabeth.nif</NoShaderNIF>
 			<BackgroundKFM>Art/LeaderHeads/Zelda_2/elizabeth_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_MARIA_ELEONORA</Type>
+			<Button>Art/LeaderHeads/Maria_Elenora/Btn_LH_dutch.dds</Button>
+			<NIF>Art/LeaderHeads/Maria_Elenora/maria_elenora.nif</NIF>
+			<KFM>Art/LeaderHeads/Maria_Elenora/maria_elenora.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Maria_Elenora/maria_elenora.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Maria_Elenora/maria_elenora_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_MIRANDA_LAWSON</Type>
+			<Button>Art/LeaderHeads/Miranda_Lawson/Button_Miranda.dds</Button>
+			<NIF>Art/LeaderHeads/Miranda_Lawson/peter.nif</NIF>
+			<KFM>Art/LeaderHeads/Miranda_Lawson/peter.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Miranda_Lawson/peter_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Miranda_Lawson/peter_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_SHAJAR_AL_DURR</Type>
+			<Button>Art/LeaderHeads/Shajar_al_Durr/Shajar.dds</Button>
+			<NIF>Art/LeaderHeads/Shajar_al_Durr/cyrus.nif</NIF>
+			<KFM>Art/LeaderHeads/Shajar_al_Durr/cyrus2.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Shajar_al_Durr/cyrus_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Shajar_al_Durr/cyrus_bg2.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_SHIN_SAWBU_2</Type>
+			<Button>Art/LeaderHeads/Shin_Sawbu_2/Shinsawbubutton.dds</Button>
+			<NIF>Art/LeaderHeads/Shin_Sawbu_2/SalmasinaFinal.nif</NIF>
+			<KFM>Art/LeaderHeads/Shin_Sawbu_2/hatshepsut.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Shin_Sawbu_2/hatshepsut_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Shin_Sawbu_2/winston_churchill_bg4.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
 	</LeaderheadArtInfos>
 </Civ4ArtDefines>
-

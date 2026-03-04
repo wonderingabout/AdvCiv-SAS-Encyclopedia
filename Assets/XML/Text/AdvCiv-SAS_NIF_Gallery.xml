@@ -391,15 +391,27 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<English>Tamar 2</English>
 	</TEXT>
 	<TEXT>
-		<Tag>TXT_KEY_LEADER_YULIA_TYMOSHENKO_2</Tag>
-		<English>Yulia Tymoshenko 2</English>
-	</TEXT>
-	<TEXT>
 		<Tag>TXT_KEY_LEADER_ZELDA</Tag>
 		<English>Zelda</English>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_LEADER_ZELDA_2</Tag>
 		<English>Zelda 2 (Arwen)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_MARIA_ELEONORA</Tag>
+		<English>Maria Eleonora</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_MIRANDA_LAWSON</Tag>
+		<English>Miranda Lawson</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_SHAJAR_AL_DURR</Tag>
+		<English>Shajar al-Durr</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_SHIN_SAWBU_2</Tag>
+		<English>Shin Sawbu 2</English>
 	</TEXT>
 </Civ4GameText>

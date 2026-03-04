@@ -97,7 +97,10 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 - Civciv5: Pope Joan (https://forums.civfanatics.com/resources/pope-joan.19625/)
 - Civciv5: Salamasina 3 (Ana Nzinga) (https://forums.civfanatics.com/resources/ana-nzinga.19636/)
 - Civciv5: Tamar 2 (https://forums.civfanatics.com/resources/tamar.19638/)
-- uploaded by The_J (real author unknown): Yulia Tymoshenko 2 (https://forums.civfanatics.com/resources/yulia-tymoshenko.19170/)
+- melcher kürzer: Maria Eleonora (https://forums.civfanatics.com/resources/lh-mary-queen-of-hungary.17884/)
+- SaibotLieh: Miranda Lawson (https://forums.civfanatics.com/resources/lh-miranda-lawson.17911/)
+- Civciv5: Shajar al-Durr (https://forums.civfanatics.com/resources/shajar-al-durr.19086/)
+- Civciv5: Shin Sawbu 2 (https://forums.civfanatics.com/resources/shin-sawbu.18142/)
 
 #### Female Non-Human (CFC)
 
