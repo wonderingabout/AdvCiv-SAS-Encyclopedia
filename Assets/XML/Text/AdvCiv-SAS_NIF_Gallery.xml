@@ -342,4 +342,12 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<Tag>TXT_KEY_LEADER_PUREA</Tag>
 		<English>Purea</English>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_BRUNHILD</Tag>
+		<English>Brunhild</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_EVITA_PERON</Tag>
+		<English>Evita Peron</English>
+	</TEXT>
 </Civ4GameText>

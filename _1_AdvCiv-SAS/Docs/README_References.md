@@ -82,6 +82,8 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 - SaibotLieh: Himiko (https://forums.civfanatics.com/resources/lh-himiko.29449/)
 - Mr-Goriyaki: Lady of Cao (https://forums.civfanatics.com/resources/lady-of-cao-lh.28470/)
 - Sword_Of_Geddon: Purea (https://forums.civfanatics.com/resources/purea-of-tahiti.28684/)
+- SaibotLieh: Brunhild (https://forums.civfanatics.com/resources/lh-brunhild.22615/)
+- Kathy: Evita Peron (https://forums.civfanatics.com/resources/evita-peron.22900/)
 
 ## Credits
 

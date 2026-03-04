@@ -533,5 +533,15 @@
 			<Description>TXT_KEY_LEADER_PUREA</Description>
 			<ArtDefineTag>ART_DEF_LEADER_PUREA</ArtDefineTag>
 		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_BRUNHILD</Type>
+			<Description>TXT_KEY_LEADER_BRUNHILD</Description>
+			<ArtDefineTag>ART_DEF_LEADER_BRUNHILD</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_EVITA_PERON</Type>
+			<Description>TXT_KEY_LEADER_EVITA_PERON</Description>
+			<ArtDefineTag>ART_DEF_LEADER_EVITA_PERON</ArtDefineTag>
+		</LeaderHeadInfo>
 	</LeaderHeadInfos>
 </Civ4LeaderHeadInfos>

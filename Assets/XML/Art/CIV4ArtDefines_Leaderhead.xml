@@ -677,19 +677,35 @@
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_LADY_OF_CAO</Type>
-			<Button>Art/Leaderheads/Lady_Of_Cao/Xoc.dds</Button>
-			<NIF>Art/Leaderheads/Lady_Of_Cao/hatshepsut.nif</NIF>
-			<KFM>Art/Leaderheads/Lady_Of_Cao/hatshepsut.kfm</KFM>
-			<NoShaderNIF>Art/Leaderheads/Lady_Of_Cao/hatshepsut.nif</NoShaderNIF>
-			<BackgroundKFM>Art/Leaderheads/Lady_Of_Cao/mao_tse_tung_bg.kfm</BackgroundKFM>
+			<Button>Art/LeaderHeads/Lady_Of_Cao/Xoc.dds</Button>
+			<NIF>Art/LeaderHeads/Lady_Of_Cao/hatshepsut.nif</NIF>
+			<KFM>Art/LeaderHeads/Lady_Of_Cao/hatshepsut.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Lady_Of_Cao/hatshepsut.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Lady_Of_Cao/mao_tse_tung_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_PUREA</Type>
-			<Button>Art/Leaderheads/Purea/PureaButton.dds</Button>
-			<NIF>Art/Leaderheads/Purea/cyrus.nif</NIF>
-			<KFM>Art/Leaderheads/Purea/cyrus.kfm</KFM>
-			<NoShaderNIF>Art/Leaderheads/Purea/cyrus_noshader.nif</NoShaderNIF>
-			<BackgroundKFM>Art/Leaderheads/Purea/cyrus_bg.kfm</BackgroundKFM>
+			<Button>Art/LeaderHeads/Purea/PureaButton.dds</Button>
+			<NIF>Art/LeaderHeads/Purea/cyrus.nif</NIF>
+			<KFM>Art/LeaderHeads/Purea/cyrus.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Purea/cyrus_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Purea/cyrus_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_BRUNHILD</Type>
+			<Button>Art/LeaderHeads/Brunhild/brunhild.dds</Button>
+			<NIF>Art/LeaderHeads/Brunhild/Brunhild.nif</NIF>
+			<KFM>Art/LeaderHeads/Brunhild/ragnar_lodbrok.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Brunhild/Brunhild.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Brunhild/Pericles_BG.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_EVITA_PERON</Type>
+			<Button>Art/LeaderHeads/Evita/catherine_bg.dds</Button>
+			<NIF>Art/LeaderHeads/Evita/catherine.nif</NIF>
+			<KFM>Art/LeaderHeads/Evita/catherine.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Evita/catherine_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Evita/catherine_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 	</LeaderheadArtInfos>
 </Civ4ArtDefines>
