@@ -6,9 +6,11 @@
 [Note about the audio in main menu](/_1_AdvCiv-SAS/Docs/README_References.md#note-about-the-audio-in-main-menu)  
 [NIF Gallery Sources](/_1_AdvCiv-SAS/Docs/README_References.md#nif-gallery-sources)  
 &emsp;[Modpacks](/_1_AdvCiv-SAS/Docs/README_References.md#modpacks)  
-&emsp;&emsp;[Female Human (Modpacks)](/_1_AdvCiv-SAS/Docs/README_References.md#female-human)  
-&emsp;&emsp;[Female Non-Human (Modpacks)](/_1_AdvCiv-SAS/Docs/README_References.md#female-non-human)  
+&emsp;&emsp;[Female Human (Modpacks)](/_1_AdvCiv-SAS/Docs/README_References.md#female-human-modpacks)  
+&emsp;&emsp;[Female Non-Human (Modpacks)](/_1_AdvCiv-SAS/Docs/README_References.md#female-non-human-modpacks)  
 &emsp;[CFC](/_1_AdvCiv-SAS/Docs/README_References.md#cfc)  
+&emsp;&emsp;[Female Human (CFC)](/_1_AdvCiv-SAS/Docs/README_References.md#female-human-cfc)  
+&emsp;&emsp;[Female Non-Human (CFC)](/_1_AdvCiv-SAS/Docs/README_References.md#female-non-human-cfc)  
 [Credits](/_1_AdvCiv-SAS/Docs/README_References.md#credits)  
 [Starting your mod](/_1_AdvCiv-SAS/Docs/README_References.md#starting-your-mod)  
 [Some Useful tools while doing this](/_1_AdvCiv-SAS/Docs/README_References.md#some-useful-tools-while-doing-this)  
@@ -68,8 +70,8 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 
 #### Female Non-Human (Modpacks)
 
-- Middle-earth: Arwen
 - Fictionalization beta: Gloriana, Snow Queen
+- Middle-earth: Zelda 2 (Arwen)
 
 ### CFC
 
@@ -87,6 +89,19 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 - il marchese: Ana Nzinga 2 (https://forums.civfanatics.com/resources/lh-nzinga-of-ndongo-and-matamba.21128/)
 - SaibotLieh: Helen of Troy (https://forums.civfanatics.com/resources/lh-helen-of-troy.20392/)
 - SaibotLieh: Ulpia Severina (https://forums.civfanatics.com/resources/lh-ulpia-severina.20393/)
+- SaibotLieh: Cockacoeske (https://forums.civfanatics.com/resources/lh-cockacoeske.20004/)
+- Civciv5: Generic Asian Empress (https://forums.civfanatics.com/resources/wu-zetian-or-generic-chinese-empress.19642/)
+- Civciv5: Khri ma lod (https://forums.civfanatics.com/resources/khri-ma-lod.19088/)
+- Civciv5: Ly Chieu Hoang (https://forums.civfanatics.com/resources/ly-chieu-hoang.19641/)
+- Civciv5: Nur Jahan (https://forums.civfanatics.com/resources/nur-jahan.19637/)
+- Civciv5: Pope Joan (https://forums.civfanatics.com/resources/pope-joan.19625/)
+- Civciv5: Salamasina 3 (Ana Nzinga) (https://forums.civfanatics.com/resources/ana-nzinga.19636/)
+- Civciv5: Tamar 2 (https://forums.civfanatics.com/resources/tamar.19638/)
+- uploaded by The_J (real author unknown): Yulia Tymoshenko 2 (https://forums.civfanatics.com/resources/yulia-tymoshenko.19170/)
+
+#### Female Non-Human (CFC)
+
+- SaibotLieh: Zelda (https://forums.civfanatics.com/resources/lh-zelda.19697/)
 
 ## Credits
 

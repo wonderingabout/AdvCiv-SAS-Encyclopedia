@@ -3,6 +3,11 @@
 <!-- Sid Meier's Civilization 4 -->
 <!-- Copyright Firaxis Games 2005 -->
 <!-- -->
+<!-- 
+AI, UI, or other modifications
+Created as part of the AdvCiv-SAS-NIF-Gallery mod
+(c) 2026 wonderingabout & AI helpers (see Authors in root README.md)
+-->
 <!-- Leaderhead art path information -->
 <!-- custom: note: some paths use base civ4 one; e.g. Bilqis uses base Hammurabi KFM but custom Hammurabi nif. -->
 <!-- custom: note 2: respect case for Art/LeaderHeads/ else another capitalization like art or Leaderheads or such causes an index error as in KI#111 as describe in AdvCiv-SAS' documentation,, or an unidentifiable C++ exception -->
@@ -344,14 +349,6 @@
 			<KFM>Art/LeaderHeads/Joan_of_Arc_2/catherine.kfm</KFM>
 			<NoShaderNIF>Art/LeaderHeads/Joan_of_Arc_2/joanofark.nif</NoShaderNIF>
 			<BackgroundKFM>Art/LeaderHeads/Joan_of_Arc_2/catherine_bg.kfm</BackgroundKFM>
-		</LeaderheadArtInfo>
-		<LeaderheadArtInfo>
-			<Type>ART_DEF_LEADER_ARWEN</Type>
-			<Button>Art/LeaderHeads/Arwen/Arwen_BT.dds</Button>
-			<NIF>Art/LeaderHeads/Arwen/elizabeth.nif</NIF>
-			<KFM>Art/LeaderHeads/Elizabeth/elizabeth.kfm</KFM>
-			<NoShaderNIF>Art/LeaderHeads/Arwen/elizabeth.nif</NoShaderNIF>
-			<BackgroundKFM>Art/LeaderHeads/Arwen/elizabeth_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_GALADRIEL</Type>
@@ -730,6 +727,94 @@
 			<KFM>Art/LeaderHeads/Isabella/isabella.kfm</KFM>
 			<NoShaderNIF>Art/LeaderHeads/Ulpia_Severina/isabella.nif</NoShaderNIF>
 			<BackgroundKFM>Art/LeaderHeads/Ulpia_Severina/isabella_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_COCKACOESKE</Type>
+			<Button>Art/LeaderHeads/Cockacoeske/cockacoeske.dds</Button>
+			<NIF>Art/LeaderHeads/Cockacoeske/hatshepsut.nif</NIF>
+			<KFM>Art/LeaderHeads/Cockacoeske/hatshepsut.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Cockacoeske/hatshepsut.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Cockacoeske/hatshepsut_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_GENERIC_ASIAN_EMPRESS</Type>
+			<Button>Art/LeaderHeads/Generic_Asian_Empress/The Empress.dds</Button>
+			<NIF>Art/LeaderHeads/Generic_Asian_Empress/Trung.nif</NIF>
+			<KFM>Art/LeaderHeads/Generic_Asian_Empress/Trung2.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Generic_Asian_Empress/Trung.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Generic_Asian_Empress/Boudica_BG2.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_KHRI_MA_LOD</Type>
+			<Button>Art/LeaderHeads/Khri_ma_lod/Khri_ma_lod.dds</Button>
+			<NIF>Art/LeaderHeads/Khri_ma_lod/Wu.nif</NIF>
+			<KFM>Art/LeaderHeads/Khri_ma_lod/hatshepsut.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Khri_ma_lod/Wu.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Khri_ma_lod/hatshepsut_bg2.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_LY_CHIEU_HOANG</Type>
+			<Button>Art/LeaderHeads/Ly_Chieu_Hoang/Ly_Chieu_Hoang.dds</Button>
+			<NIF>Art/LeaderHeads/Ly_Chieu_Hoang/Trung.nif</NIF>
+			<KFM>Art/LeaderHeads/Ly_Chieu_Hoang/Trung2.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Ly_Chieu_Hoang/Trung.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Ly_Chieu_Hoang/Boudica_BG2.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_NUR_JAHAN</Type>
+			<Button>Art/LeaderHeads/Nur_Jahan/isabella_bg.dds</Button>
+			<NIF>Art/LeaderHeads/Nur_Jahan/catherine.nif</NIF>
+			<KFM>Art/LeaderHeads/Nur_Jahan/catherine2.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Nur_Jahan/catherine_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Nur_Jahan/leader_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_POPE_JOAN</Type>
+			<Button>Art/LeaderHeads/Pope_Joan/johnii_backgrnd.dds</Button>
+			<NIF>Art/LeaderHeads/Pope_Joan/elizabeth.nif</NIF>
+			<KFM>Art/LeaderHeads/Pope_Joan/elizabeth2.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Pope_Joan/elizabeth.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Pope_Joan/elizabeth_bg2.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_SALAMASINA_3</Type>
+			<Button>Art/LeaderHeads/Salamasina_3/Btn_Salamasina.dds</Button>
+			<NIF>Art/LeaderHeads/Salamasina_3/SalmasinaFinal.nif</NIF>
+			<KFM>Art/LeaderHeads/Salamasina_3/hatshepsut.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Salamasina_3/hatshepsut_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Salamasina_3/winston_churchill_bg4.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_TAMAR_2</Type>
+			<Button>Art/LeaderHeads/Tamar_2/theodora_btn.dds</Button>
+			<NIF>Art/LeaderHeads/Tamar_2/Theodora.nif</NIF>
+			<KFM>Art/LeaderHeads/Tamar_2/isabella.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Tamar_2/Theodora.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Tamar_2/isabella_bg2.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_YULIA_TYMOSHENKO_2</Type>
+			<Button>Art/LeaderHeads/Yulia_Tymoshenko_2/Tymoshenko.dds</Button>
+			<NIF>Art/LeaderHeads/Yulia_Tymoshenko_2/tymoshenko.nif</NIF>
+			<KFM>Art/LeaderHeads/Yulia_Tymoshenko_2/catherine.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Yulia_Tymoshenko_2/tymoshenko_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Yulia_Tymoshenko_2/tymoshenko_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_ZELDA</Type>
+			<Button>Art/LeaderHeads/Zelda/zeldab.dds</Button>
+			<NIF>Art/LeaderHeads/Zelda/elizabeth.nif</NIF>
+			<KFM>Art/LeaderHeads/Elizabeth/elizabeth.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Zelda/elizabeth_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Zelda/elizabeth_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_ZELDA_2</Type>
+			<Button>Art/LeaderHeads/Zelda_2/Arwen_BT.dds</Button>
+			<NIF>Art/LeaderHeads/Zelda_2/elizabeth.nif</NIF>
+			<KFM>Art/LeaderHeads/Elizabeth/elizabeth.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Zelda_2/elizabeth.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Zelda_2/elizabeth_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 	</LeaderheadArtInfos>
 </Civ4ArtDefines>

@@ -3,6 +3,11 @@
 <!-- Sid Meier's Civilization 4 -->
 <!-- Copyright Firaxis Games 2005 -->
 <!-- -->
+<!-- 
+AI, UI, or other modifications
+Created as part of the AdvCiv-SAS-NIF-Gallery mod
+(c) 2026 wonderingabout & AI helpers (see Authors in root README.md)
+-->
 <!-- Leader Infos and AI Settings -->
 <!-- custom: remember or be careful to put leaders in their alphabetical order (per TXT_KEY ingame visible name (for example "Roosevelt" not "FRANKLIN_ROOSEVELT")) so they are correctly alphabetically sorted in custom game leader dropdown  -->
 <!-- custom: use _1 for existing BTS leader names we add to not confuse with base asset and avoid wrong folder error; e.g. LEADER_ISABELLA_1 -->
@@ -319,11 +324,6 @@
 			<ArtDefineTag>ART_DEF_LEADER_JOAN_OF_ARC_2</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
-			<Type>LEADER_ARWEN</Type>
-			<Description>TXT_KEY_LEADER_ARWEN</Description>
-			<ArtDefineTag>ART_DEF_LEADER_ARWEN</ArtDefineTag>
-		</LeaderHeadInfo>
-		<LeaderHeadInfo>
 			<Type>LEADER_GALADRIEL</Type>
 			<Description>TXT_KEY_LEADER_GALADRIEL</Description>
 			<ArtDefineTag>ART_DEF_LEADER_GALADRIEL</ArtDefineTag>
@@ -557,6 +557,61 @@
 			<Type>LEADER_ULPIA_SEVERINA</Type>
 			<Description>TXT_KEY_LEADER_ULPIA_SEVERINA</Description>
 			<ArtDefineTag>ART_DEF_LEADER_ULPIA_SEVERINA</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_COCKACOESKE</Type>
+			<Description>TXT_KEY_LEADER_COCKACOESKE</Description>
+			<ArtDefineTag>ART_DEF_LEADER_COCKACOESKE</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_GENERIC_ASIAN_EMPRESS</Type>
+			<Description>TXT_KEY_LEADER_GENERIC_ASIAN_EMPRESS</Description>
+			<ArtDefineTag>ART_DEF_LEADER_GENERIC_ASIAN_EMPRESS</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_KHRI_MA_LOD</Type>
+			<Description>TXT_KEY_LEADER_KHRI_MA_LOD</Description>
+			<ArtDefineTag>ART_DEF_LEADER_KHRI_MA_LOD</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_LY_CHIEU_HOANG</Type>
+			<Description>TXT_KEY_LEADER_LY_CHIEU_HOANG</Description>
+			<ArtDefineTag>ART_DEF_LEADER_LY_CHIEU_HOANG</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_NUR_JAHAN</Type>
+			<Description>TXT_KEY_LEADER_NUR_JAHAN</Description>
+			<ArtDefineTag>ART_DEF_LEADER_NUR_JAHAN</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_POPE_JOAN</Type>
+			<Description>TXT_KEY_LEADER_POPE_JOAN</Description>
+			<ArtDefineTag>ART_DEF_LEADER_POPE_JOAN</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_SALAMASINA_3</Type>
+			<Description>TXT_KEY_LEADER_SALAMASINA_3</Description>
+			<ArtDefineTag>ART_DEF_LEADER_SALAMASINA_3</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_TAMAR_2</Type>
+			<Description>TXT_KEY_LEADER_TAMAR_2</Description>
+			<ArtDefineTag>ART_DEF_LEADER_TAMAR_2</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_YULIA_TYMOSHENKO_2</Type>
+			<Description>TXT_KEY_LEADER_YULIA_TYMOSHENKO_2</Description>
+			<ArtDefineTag>ART_DEF_LEADER_YULIA_TYMOSHENKO_2</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_ZELDA</Type>
+			<Description>TXT_KEY_LEADER_ZELDA</Description>
+			<ArtDefineTag>ART_DEF_LEADER_ZELDA</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_ZELDA_2</Type>
+			<Description>TXT_KEY_LEADER_ZELDA_2</Description>
+			<ArtDefineTag>ART_DEF_LEADER_ZELDA_2</ArtDefineTag>
 		</LeaderHeadInfo>
 	</LeaderHeadInfos>
 </Civ4LeaderHeadInfos>
