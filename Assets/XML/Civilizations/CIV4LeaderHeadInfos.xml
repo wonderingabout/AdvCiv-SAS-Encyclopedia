@@ -513,5 +513,25 @@
 			<Description>TXT_KEY_LEADER_DIDO_7</Description>
 			<ArtDefineTag>ART_DEF_LEADER_DIDO_7</ArtDefineTag>
 		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_ARIADNE</Type>
+			<Description>TXT_KEY_LEADER_ARIADNE</Description>
+			<ArtDefineTag>ART_DEF_LEADER_ARIADNE</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_HIMIKO</Type>
+			<Description>TXT_KEY_LEADER_HIMIKO</Description>
+			<ArtDefineTag>ART_DEF_LEADER_HIMIKO</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_LADY_OF_CAO</Type>
+			<Description>TXT_KEY_LEADER_LADY_OF_CAO</Description>
+			<ArtDefineTag>ART_DEF_LEADER_LADY_OF_CAO</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_PUREA</Type>
+			<Description>TXT_KEY_LEADER_PUREA</Description>
+			<ArtDefineTag>ART_DEF_LEADER_PUREA</ArtDefineTag>
+		</LeaderHeadInfo>
 	</LeaderHeadInfos>
 </Civ4LeaderHeadInfos>

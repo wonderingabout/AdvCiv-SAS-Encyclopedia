@@ -326,4 +326,20 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<Tag>TXT_KEY_LEADER_DIDO_7</Tag>
 		<English>Dido 7</English>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ARIADNE</Tag>
+		<English>Ariadne</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_HIMIKO</Tag>
+		<English>Himiko</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_LADY_OF_CAO</Tag>
+		<English>Lady of Cao</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_PUREA</Tag>
+		<English>Purea</English>
+	</TEXT>
 </Civ4GameText>

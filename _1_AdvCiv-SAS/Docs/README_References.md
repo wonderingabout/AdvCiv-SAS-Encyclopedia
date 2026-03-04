@@ -78,6 +78,10 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 - SaibotLieh: Tomyris 2 (Nanye-hi) (button) (https://forums.civfanatics.com/resources/lh-nanye-hi.16341/)
 - ambrox62: Dido 6, Dido 7 (https://forums.civfanatics.com/threads/shaded-lh-dido.247286/page-3)
 - ambrox62: Dido 3 (Red), Dido 4 (Gold), Dido 5 (White) (https://forums.civfanatics.com/threads/lh-dido-v-2.270476/)
+- SaibotLieh: Ariadne (https://forums.civfanatics.com/resources/lh-ariadne.30092/)
+- SaibotLieh: Himiko (https://forums.civfanatics.com/resources/lh-himiko.29449/)
+- Mr-Goriyaki: Lady of Cao (https://forums.civfanatics.com/resources/lady-of-cao-lh.28470/)
+- Sword_Of_Geddon: Purea (https://forums.civfanatics.com/resources/purea-of-tahiti.28684/)
 
 ## Credits
 
