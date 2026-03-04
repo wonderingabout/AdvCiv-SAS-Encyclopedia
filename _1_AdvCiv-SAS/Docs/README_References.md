@@ -64,6 +64,7 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 - RFC Europe 1.5: Beatrice, Isabella 7 (Margrete 2)
 - RFC Europe 1.5 + CIV IV RFC Europe (Unofficial Leaderhead Patches): Marfa Boretskaya
 - Historia Vincit: Cleopatra 4
+- Total War 1.3: Cleopatra 5, Isabella 8 (Puduhepa), Victoria 5 (Maria Theresa 3)
 
 #### Female Non-Human (Modpacks)
 

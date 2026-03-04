@@ -473,5 +473,20 @@
 			<Description>TXT_KEY_LEADER_CLEOPATRA_4</Description>
 			<ArtDefineTag>ART_DEF_LEADER_CLEOPATRA_4</ArtDefineTag>
 		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_CLEOPATRA_5</Type>
+			<Description>TXT_KEY_LEADER_CLEOPATRA_5</Description>
+			<ArtDefineTag>ART_DEF_LEADER_CLEOPATRA_5</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_ISABELLA_8</Type>
+			<Description>TXT_KEY_LEADER_ISABELLA_8</Description>
+			<ArtDefineTag>ART_DEF_LEADER_ISABELLA_8</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_VICTORIA_5</Type>
+			<Description>TXT_KEY_LEADER_VICTORIA_5</Description>
+			<ArtDefineTag>ART_DEF_LEADER_VICTORIA_5</ArtDefineTag>
+		</LeaderHeadInfo>
 	</LeaderHeadInfos>
 </Civ4LeaderHeadInfos>
