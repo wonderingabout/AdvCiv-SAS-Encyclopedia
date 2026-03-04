@@ -19,6 +19,12 @@ For License and Reuse, see [License and reuse](/README.md#license-and-reuse).
 
 [Example of minimal compact XML info](/README.md#example-of-minimal-compact-xml-info)  
 [Cleanup](/README.md#cleanup)  
+&emsp;[Wiztree (Cleanup)](/README.md#wiztree-cleanup)  
+&emsp;[LLM Agents (Cleanup)](/README.md#llm-agents-cleanup)  
+[LLM Agents (Adding/Modifying Leaderheads)](/README.md#llm-agents-addingmodifying-leaderheads)  
+[LLM Agents (Debugging/Fixing Leaderheads)](/README.md#llm-agents-debuggingfixing-leaderheads)  
+&emsp;&emsp;[Example of Leaderhead fix 1](/README.md#example-of-leaderhead-fix-1)  
+&emsp;&emsp;[Example of Leaderhead fix 2](/README.md#example-of-leaderhead-fix-2)  
 [Copyright and Disclaimer](/README.md#copyright-and-disclaimer)  
 [Credits](/README.md#credits)  
 [Some Useful tools while doing this](/README.md#some-useful-tools-while-doing-this)  
@@ -65,7 +71,7 @@ Done with the help of GPT-5.3-Codex thanks.
 
 Used notably Wiztree and GPT-5.3-Codex to strip away most non-sevopedia mandatory code especially heavier/lengthier code.
 
-### Wiztree
+### Wiztree (Cleanup)
 
 Among unneeded files in art leaderhead mod folders, notably: `.psd`, `.obj`, `.mtl`, `.xml`.
 
@@ -73,13 +79,36 @@ Among unneeded files in art leaderhead mod folders, notably: `.psd`, `.obj`, `.m
 <img src="./_1_AdvCiv-SAS/Images/tools/wiztree_cleanup_lh.PNG" alt="wiztree_cleanup_lh.PNG" width="150"></img>
 <img src="./_1_AdvCiv-SAS/Images/tools/wiztree_cleanup_lh_psd.PNG" alt="wiztree_cleanup_lh_psd.PNG" width="150"></img>
 
-### LLM Agents
+### LLM Agents (Cleanup)
 
 GPT-5.3-Codex and Claude code Sonnet 4.6 were very helpful to solve errors, cleanup and solve old dependencies errors.
 
 Note: they were also helpful in adding most stub of the new leaders.
 
+## LLM Agents (Adding/Modifying Leaderheads)
+
 <img src="./_1_AdvCiv-SAS/Images/llm_agentic_tools/llm_agents_cleanup_and_stub.PNG" alt="llm_agents_cleanup_and_stub.PNG" width="150"></img>
+
+## LLM Agents (Debugging/Fixing Leaderheads)
+
+### Example of Leaderhead fix 1
+
+<img src="./_1_AdvCiv-SAS/Images/llm_agentic_tools/gpt_5.3-codex_leaderhead_fix.PNG" alt="gpt_5.3-codex_leaderhead_fix.PNG" width="150"></img>
+
+Fixed:
+
+<img src="./_1_AdvCiv-SAS/Images/leaderheads/salamasina_working.JPG" alt="salamasina_working.JPG" width="150"></img>
+<img src="./_1_AdvCiv-SAS/Images/leaderheads/salamasina_3_issue.JPG" alt="salamasina_3_issue.JPG" width="150"></img>
+<img src="./_1_AdvCiv-SAS/Images/leaderheads/salamasina_3_fixed.JPG" alt="salamasina_3_fixed.JPG" width="150"></img>
+
+### Example of Leaderhead fix 2
+
+<img src="./_1_AdvCiv-SAS/Images/llm_agentic_tools/gpt_5.3-codex_leaderhead_fix_2.PNG" alt="gpt_5.3-codex_leaderhead_fix_2.PNG" width="150"></img>
+
+Fixed:
+
+<img src="./_1_AdvCiv-SAS/Images/leaderheads/nur_jahan_issue.JPG" alt="nur_jahan_issue.JPG" width="150"></img>
+<img src="./_1_AdvCiv-SAS/Images/leaderheads/nur_jahan_fixed.JPG" alt="nur_jahan_fixed.JPG" width="150"></img>
 
 ## Copyright and Disclaimer
 
