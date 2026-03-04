@@ -308,22 +308,22 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_LEADER_DIDO_3</Tag>
-		<English>Dido 3</English>
+		<English>Dido 3 (Red)</English>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_LEADER_DIDO_4</Tag>
-		<English>Dido 4</English>
+		<English>Dido 4 (Gold)</English>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_LEADER_DIDO_5</Tag>
-		<English>Dido 5 (Red)</English>
+		<English>Dido 5 (White)</English>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_LEADER_DIDO_6</Tag>
-		<English>Dido 6 (Gold)</English>
+		<English>Dido 6</English>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_LEADER_DIDO_7</Tag>
-		<English>Dido 7 (White)</English>
+		<English>Dido 7</English>
 	</TEXT>
 </Civ4GameText>
