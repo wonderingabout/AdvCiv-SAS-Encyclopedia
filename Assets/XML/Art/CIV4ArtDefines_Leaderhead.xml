@@ -279,11 +279,12 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<NoShaderNIF>Art/LeaderHeads/Sarah_Fedler/Eli_NoShader.nif</NoShaderNIF>
 			<BackgroundKFM>Art/LeaderHeads/Sarah_Fedler/fdr_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
+		<!-- custom: during implementation we removed a mod-local cross-folder dependency for animation KFM to keep this leader modular; use base Civ4 Isabella KFM instead of another custom leader folder. Rationale: referencing another custom leader folder couples assets and breaks portability when folders are moved/removed. (GPT-5.3-Codex) -->
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_CLEOPATRA_2</Type>
 			<Button>Art/LeaderHeads/Cleopatra_2/cleo.dds</Button>
 			<NIF>Art/LeaderHeads/Cleopatra_2/isabella.nif</NIF>
-			<KFM>Art/LeaderHeads/Cleopatra/isabella.kfm</KFM>
+			<KFM>Art/LeaderHeads/Isabella/isabella.kfm</KFM>
 			<NoShaderNIF>Art/LeaderHeads/Cleopatra_2/isabella_noshader.nif</NoShaderNIF>
 			<BackgroundKFM>Art/LeaderHeads/Cleopatra_2/isabella_BG.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
@@ -859,11 +860,12 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<NoShaderNIF>Art/LeaderHeads/Seondeok/mansa_musa_noshader.nif</NoShaderNIF>
 			<BackgroundKFM>Art/LeaderHeads/Seondeok/mansa_musa_bg2.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
+		<!-- custom: during implementation we removed a mod-local cross-folder dependency for animation KFM to keep this leader modular; use base Civ4 Asoka KFM instead of another custom leader folder. Rationale: referencing another custom leader folder couples assets and breaks portability when folders are moved/removed. (GPT-5.3-Codex) -->
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_SHIN_SAWBU_2</Type>
 			<Button>Art/LeaderHeads/Shin_Sawbu_2/LieuYe.dds</Button>
 			<NIF>Art/LeaderHeads/Shin_Sawbu_2/asoka.nif</NIF>
-			<KFM>Art/LeaderHeads/Cixi/asoka.kfm</KFM>
+			<KFM>Art/LeaderHeads/Asoka/asoka.kfm</KFM>
 			<NoShaderNIF>Art/LeaderHeads/Shin_Sawbu_2/asoka_noshader.nif</NoShaderNIF>
 			<BackgroundKFM>Art/LeaderHeads/Shin_Sawbu_2/catherine_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
@@ -892,12 +894,12 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<BackgroundKFM>Art/LeaderHeads/Aelia_Pulcheria/Aelia_Pulcheria_BG.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
-			<Type>ART_DEF_LEADER_INANNA</Type>
-			<Button>Art/LeaderHeads/Inanna/Ishtar.dds</Button>
-			<NIF>Art/LeaderHeads/Inanna/Ishtar.nif</NIF>
-			<KFM>Art/LeaderHeads/Inanna/isabella.kfm</KFM>
-			<NoShaderNIF>Art/LeaderHeads/Inanna/Ishtar.nif</NoShaderNIF>
-			<BackgroundKFM>Art/LeaderHeads/Inanna/nefertiti_bg.kfm</BackgroundKFM>
+			<Type>ART_DEF_LEADER_ISHTAR</Type>
+			<Button>Art/LeaderHeads/Ishtar/Ishtar.dds</Button>
+			<NIF>Art/LeaderHeads/Ishtar/Ishtar.nif</NIF>
+			<KFM>Art/LeaderHeads/Ishtar/isabella.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Ishtar/Ishtar.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Ishtar/nefertiti_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_MARY_STUART</Type>
@@ -980,6 +982,23 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<KFM>Art/LeaderHeads/Miss_Santa/Charlemagne.kfm</KFM>
 			<NoShaderNIF>Art/LeaderHeads/Miss_Santa/Charlemagne_NONSHADER.nif</NoShaderNIF>
 			<BackgroundKFM>Art/LeaderHeads/Miss_Santa/isabella_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<!-- custom: during implementation we removed a mod-local cross-folder dependency for animation KFM to keep this leader modular; use base Civ4 Elizabeth KFM instead of another custom leader folder. Rationale: referencing another custom leader folder couples assets and breaks portability when folders are moved/removed. (GPT-5.3-Codex) -->
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_GUNNHILD</Type>
+			<Button>Art/LeaderHeads/Gunnhild/Gunnhild.dds</Button>
+			<NIF>Art/LeaderHeads/Gunnhild/Gunnhild.nif</NIF>
+			<KFM>Art/LeaderHeads/Elizabeth/elizabeth.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Gunnhild/elizabeth_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Gunnhild/alexander_BG.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_DIDO_8</Type>
+			<Button>Art/LeaderHeads/Dido_8/hippo.dds</Button>
+			<NIF>Art/LeaderHeads/Dido_8/Hippo.nif</NIF>
+			<KFM>Art/LeaderHeads/Dido_8/isabella.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Dido_8/Hippo.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Dido_8/isabella_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 	</LeaderheadArtInfos>
 </Civ4ArtDefines>

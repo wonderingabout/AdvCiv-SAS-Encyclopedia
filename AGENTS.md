@@ -187,6 +187,8 @@ These are general guidelines, not irrevocable requirements; adjust based on task
 - Avoid complicated and formatting-error prone characters (e.g., `“` or `”`), use simple characters (e.g., `"`) instead.
 - Prefer UTF-8 as it's simple and seemingly works well enough; avoid UTF-8 with BOM as it can cause mojibake artifacts like `â€”it` or `â€™` or other issues.
 
+- For leaderhead art defs, avoid cross-folder dependencies to another mod-local folder (`Art/LeaderHeads/<OtherLocalFolder>/...`) when wiring a leader: either use files from that leader's own folder or use a vanilla/base-Civ4 path if local KFM/animations are missing. This is a modularity rule (reduce coupling between custom folders). Examples solved: `ART_DEF_LEADER_GUNNHILD` moved from custom-folder KFM to base `Art/LeaderHeads/Elizabeth/elizabeth.kfm`; `ART_DEF_LEADER_CLEOPATRA_2` moved from `Art/LeaderHeads/Cleopatra/isabella.kfm` to base `Art/LeaderHeads/Isabella/isabella.kfm`; `ART_DEF_LEADER_SHIN_SAWBU_2` moved from `Art/LeaderHeads/Cixi/asoka.kfm` to base `Art/LeaderHeads/Asoka/asoka.kfm`.
+
 ## C++
 
 - Prefer SAS defines for new AI toggles; use `SAS_<func_name>_<effect>` naming and a boolean-style enable/disable flag (int in XML, bool in C++). Rationale: toggles allow quick testing without recompiles; avoid overusing defines when the feature is tiny or unlikely to need tuning.

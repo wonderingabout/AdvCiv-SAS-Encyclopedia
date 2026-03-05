@@ -458,8 +458,8 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<English>Aelia Pulcheria</English>
 	</TEXT>
 	<TEXT>
-		<Tag>TXT_KEY_LEADER_INANNA</Tag>
-		<English>Inanna</English>
+		<Tag>TXT_KEY_LEADER_ISHTAR</Tag>
+		<English>Ishtar</English>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_LEADER_MARY_STUART</Tag>
@@ -500,5 +500,13 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 	<TEXT>
 		<Tag>TXT_KEY_LEADER_MISS_SANTA</Tag>
 		<English>Miss Santa</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_GUNNHILD</Tag>
+		<English>Gunnhild</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_DIDO_8</Tag>
+		<English>Dido 8 (Hippolyta)</English>
 	</TEXT>
 </Civ4GameText>

@@ -68,7 +68,7 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 - Historia Vincit: Cleopatra 4
 - Total War 1.3: Cleopatra 5, Isabella 8 (Puduhepa), Victoria 4 (Maria Theresa 3)
 - thecowwarrior's Pirates Mod: Anne Bonny, Jacquotte Delahaye 2 (no eyepatch)
-- thecowwarrior's Variety Mod v1.99r3: Aelia Pulcheria, Inanna
+- thecowwarrior's Variety Mod v1.99r3: Aelia Pulcheria, Ishtar
 - Thomas' War v3.5a: Mary Stuart, Nefertiti 2, Victoria 6 (Maria Theresa 4)
 - Fallout-TTW: Salamasina 4 (Tandi Williams (Old)), Tandi Williams
 - Diversica 1.95: Aminatu 2 (Prisbit), Theodora 2
@@ -112,6 +112,8 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 - SaibotLieh: Evita Peron 2 (Bunny Girl) (https://forums.civfanatics.com/resources/lh-bunny-girl.16973/)
 - melcher kürzer: Maria Eleonora 2 (https://forums.civfanatics.com/resources/lh-maria-elenora.16487/)
 - SaibotLieh: Miss Santa (https://forums.civfanatics.com/resources/lh-miss-santa.16228/)
+- smeagolheart: Gunnhild (https://forums.civfanatics.com/resources/lh-gunnhild.16057/)
+- smeagolheart: Dido 8 (Hippolyta) (https://forums.civfanatics.com/resources/lh-hippolyta.16046/)
 
 #### Female Non-Human (CFC)
 

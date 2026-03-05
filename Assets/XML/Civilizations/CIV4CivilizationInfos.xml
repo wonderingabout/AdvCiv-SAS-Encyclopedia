@@ -120,7 +120,7 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 				<Leader><LeaderName>LEADER_ANNE_BONNY</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_JACQUOTTE_DELAHAYE_2</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_AELIA_PULCHERIA</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_INANNA</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_ISHTAR</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_MARY_STUART</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_NEFERTITI_2</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_VICTORIA_6</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
@@ -131,6 +131,8 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 				<Leader><LeaderName>LEADER_EVITA_PERON_2</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_MARIA_ELEONORA_2</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_MISS_SANTA</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_GUNNHILD</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_DIDO_8</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 			</Leaders>
 		</CivilizationInfo>
 		<CivilizationInfo>
