@@ -52,21 +52,26 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 - History Rewritten: Amanirena, Aminatu, Bilqis, Dido, Dihya, Isabella 1, Jingu, Kochininako, Mangammal, Atotoztli 2 (Nzinga), Salamasina, Wu Zetian, Shin Sawbu, Tomyris, Trung Sisters, Xoc, Yekaterina
 - RFC Dawn of Civilization: Benazir, Isabella 2, Maria
 - Beyond the Game 2.43: Maria Theresa, Marpesia, Penthesilea, Theodora
-- Base 6.4: Anne Bonny, Atotoztli, Bilqis 2, Cixi, Cleopatra, Mary Stuart, Wilhelmina
+- Base 6.4: Jacquotte Delahaye, Atotoztli, Bilqis 2, Cixi, Cleopatra, Wilhelmina
 - Future Mod: Sarah Fedler
-- Destiny: Cleopatra 2, Jingu 2, Joan of Arc, Mandukhai Khatun, Nefertiti
+- Destiny: Cleopatra 2, Joan of Arc, Mandukhai Khatun, Nefertiti, Seondeok 2
 - Rise of Mankind 2.91: Cleopatra 3, Dido 2, Joan of Arc 2
 - Middle-earth: Galadriel
 - Civ Gold 5.2: Elizabeth 1 (Michaelle Jean), Elizabeth 2 (Makeda), Elizabeth 3 (Teuta), Helen Clark, Isabella 3 (Margrete I), Isabella 4 (Trung Trac), Ranavalona, Salamasina 2, Thanadelthur, Victoria 1 (Benazir Bhutto), Victoria 2 (Hasina), Yulia Tymoshenko, Zenobia
 - Fictionalization beta: Sheherazade, Wu Qinghua
 - AdvCiv Plus: Ana Nzinga, Isabella 5, Tamar, Victoria 3 (Maria Theresa)
-- PSYX's Modern world 4: Catherine 1 (Mary Stuart), Victoria 4 (Maria Theresa 2)
+- PSYX's Modern world 4: Catherine 1 (Mary Stuart), Victoria 5 (Maria Theresa 2)
 - Vincentz Infinite Projects (VIP): Tomyris 2 (Nanye-hi) (nif)
 - The Sword of Islam: Isabella 6 (Tamar)
-- RFC Europe 1.5: Beatrice, Isabella 7 (Margrete 2)
+- RFC Europe 1.5: Isabella 7 (Margrete 2), Theophanu
 - RFC Europe 1.5 + CIV IV RFC Europe (Unofficial Leaderhead Patches): Marfa Boretskaya
 - Historia Vincit: Cleopatra 4
-- Total War 1.3: Cleopatra 5, Isabella 8 (Puduhepa), Victoria 5 (Maria Theresa 3)
+- Total War 1.3: Cleopatra 5, Isabella 8 (Puduhepa), Victoria 4 (Maria Theresa 3)
+- thecowwarrior's Pirates Mod: Anne Bonny, Jacquotte Delahaye 2 (no eyepatch)
+- thecowwarrior's Variety Mod v1.99r3: Aelia Pulcheria, Inanna
+- Thomas' War v3.5a: Mary Stuart, Nefertiti 2, Victoria 6 (Maria Theresa 4)
+- Fallout-TTW: Salamasina 4 (Tandi Williams (Old)), Tandi Williams
+- Diversica 1.95: Aminatu 2 (Prisbit), Theodora 2
 
 #### Female Non-Human (Modpacks)
 
@@ -101,6 +106,9 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 - SaibotLieh: Miranda Lawson (https://forums.civfanatics.com/resources/lh-miranda-lawson.17911/)
 - Civciv5: Shajar al-Durr (https://forums.civfanatics.com/resources/shajar-al-durr.19086/)
 - Civciv5: Shin Sawbu 2 (https://forums.civfanatics.com/resources/shin-sawbu.18142/)
+- SaibotLieh: Quilago (https://forums.civfanatics.com/resources/lh-quilago.17685/)
+- Civciv5: Seondeok (https://forums.civfanatics.com/resources/queen-seondeok-of-silla.17724/)
+- SaibotLieh: Shin Sawbu 3 (Lieu-Ye) (https://forums.civfanatics.com/resources/lh-lieu-ye.17799/)
 
 #### Female Non-Human (CFC)
 

@@ -1,0 +1,9 @@
+<!-- edited with XMLSPY v2004 rel. 2 U (http://www.xmlspy.com) by Og (Firaxis Games) -->
+<!-- Sid Meier's Civilization 4 -->
+<!-- Copyright Firaxis Games 2005 -->
+<!-- -->
+<!-- CityLSystem -->
+<!-- custom: not sure it helps having an empty copy rather than no file to avoid loading BTS or unneeded assets and i don't know how effective it is depending on which files we removed and their type and such but done just in case it helps too -->
+<!-- custom: after emptying this file or possibly other LSystem or such ones it seems unit animations in sevopedia no longer work but this nif is as of now about leaderhead nif only so fine, consider restoring old file or deleting them if you need so -->
+<LSystemInfos xmlns="x-schema:CIV4LSystemSchema.xml">
+</LSystemInfos>

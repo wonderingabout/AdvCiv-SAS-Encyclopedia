@@ -522,10 +522,6 @@ Created as part of AdvCiv-SAS improvements
 
 
 
-	<TEXT>
-		<Tag>TXT_KEY_PEDIA_CATEGORY_SHORTCUTS</Tag>
-		<English>Shortcuts</English>
-	</TEXT>
 	<!-- custom: Long_Comments_XML.txt #148 -->
 	<TEXT>
 		<Tag>TXT_KEY_PEDIA_CATEGORY_CONCEPT</Tag>

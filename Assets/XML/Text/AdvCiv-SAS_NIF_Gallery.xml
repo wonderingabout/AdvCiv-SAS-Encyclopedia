@@ -5,6 +5,28 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 (c) 2026 wonderingabout & AI helpers (see Authors in root README.md)
 -->
 <Civ4GameText xmlns="http://www.firaxis.com">
+	<!-- custom: missing txt keys after aggressive trim, minimally added again -->
+	<TEXT>
+		<Tag>TXT_KEY_PEDIA_CATEGORY_SHORTCUTS</Tag>
+		<English>Shortcuts</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PEDIA_TRAITS</Tag>
+		<English>Traits</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PEDIA_SCREEN_BACK</Tag>
+		<English>Back</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PEDIA_SCREEN_FORWARD</Tag>
+		<English>Next</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PEDIA_SCREEN_EXIT</Tag>
+		<English>Exit</English>
+	</TEXT>
+	<!-- custom: leaders -->
 	<TEXT>
 		<Tag>TXT_KEY_LEADER_GRACE_OMALLEY</Tag>
 		<English>Grace O'Malley</English>
@@ -106,8 +128,8 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<English>Theodora</English>
 	</TEXT>
 	<TEXT>
-		<Tag>TXT_KEY_LEADER_ANNE_BONNY</Tag>
-		<English>Anne Bonny</English>
+		<Tag>TXT_KEY_LEADER_JACQUOTTE_DELAHAYE</Tag>
+		<English>Jacquotte Delahaye</English>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_LEADER_ATOTOZTLI</Tag>
@@ -115,7 +137,7 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_LEADER_BILQIS_2</Tag>
-		<English>Bilqis 2</English>
+		<English>Bilqis 2 (Mavia)</English>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_LEADER_CIXI</Tag>
@@ -125,10 +147,7 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<Tag>TXT_KEY_LEADER_CLEOPATRA</Tag>
 		<English>Cleopatra</English>
 	</TEXT>
-	<TEXT>
-		<Tag>TXT_KEY_LEADER_MARY_STUART</Tag>
-		<English>Mary Stuart</English>
-	</TEXT>
+
 	<TEXT>
 		<Tag>TXT_KEY_LEADER_WILHELMINA</Tag>
 		<English>Wilhelmina</English>
@@ -142,8 +161,8 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<English>Cleopatra 2</English>
 	</TEXT>
 	<TEXT>
-		<Tag>TXT_KEY_LEADER_JINGU_2</Tag>
-		<English>Jingu 2</English>
+		<Tag>TXT_KEY_LEADER_SEONDEOK_2</Tag>
+		<English>Seondeok 2 (Jingu)</English>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_LEADER_JOAN_OF_ARC</Tag>
@@ -263,8 +282,8 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<English>Catherine 1 (Mary Stuart)</English>
 	</TEXT>
 	<TEXT>
-		<Tag>TXT_KEY_LEADER_VICTORIA_4</Tag>
-		<English>Victoria 4 (Maria Theresa 2)</English>
+		<Tag>TXT_KEY_LEADER_VICTORIA_5</Tag>
+		<English>Victoria 5 (Maria Theresa 2)</English>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_LEADER_TOMYRIS_2</Tag>
@@ -275,12 +294,12 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<English>Isabella 6 (Tamar)</English>
 	</TEXT>
 	<TEXT>
-		<Tag>TXT_KEY_LEADER_BEATRICE</Tag>
-		<English>Beatrice</English>
-	</TEXT>
-	<TEXT>
 		<Tag>TXT_KEY_LEADER_ISABELLA_7</Tag>
 		<English>Isabella 7 (Margrete 2)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_THEOPHANU</Tag>
+		<English>Theophanu</English>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_LEADER_MARFA_BORETSKAYA</Tag>
@@ -299,8 +318,8 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<English>Isabella 8 (Puduhepa)</English>
 	</TEXT>
 	<TEXT>
-		<Tag>TXT_KEY_LEADER_VICTORIA_5</Tag>
-		<English>Victoria 5 (Maria Theresa 3)</English>
+		<Tag>TXT_KEY_LEADER_VICTORIA_4</Tag>
+		<English>Victoria 4 (Maria Theresa 3)</English>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_LEADER_DIDO_3</Tag>
@@ -413,5 +432,61 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 	<TEXT>
 		<Tag>TXT_KEY_LEADER_SHIN_SAWBU_2</Tag>
 		<English>Shin Sawbu 2</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_QUILAGO</Tag>
+		<English>Quilago</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_SEONDEOK</Tag>
+		<English>Seondeok</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_SHIN_SAWBU_3</Tag>
+		<English>Shin Sawbu 3 (Lieu-Ye)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ANNE_BONNY</Tag>
+		<English>Anne Bonny</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_JACQUOTTE_DELAHAYE_2</Tag>
+		<English>Jacquotte Delahaye 2 (no eyepatch)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_AELIA_PULCHERIA</Tag>
+		<English>Aelia Pulcheria</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_INANNA</Tag>
+		<English>Inanna</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_MARY_STUART</Tag>
+		<English>Mary Stuart</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_NEFERTITI_2</Tag>
+		<English>Nefertiti 2</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_VICTORIA_6</Tag>
+		<English>Victoria 6 (Maria Theresa 4)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_SALAMASINA_4</Tag>
+		<English>Salamasina 4 (Tandi Williams (Old))</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_TANDI_WILLIAMS</Tag>
+		<English>Tandi Williams</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_AMINATU_2</Tag>
+		<English>Aminatu 2 (Prisbit)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_THEODORA_2</Tag>
+		<English>Theodora 2</English>
 	</TEXT>
 </Civ4GameText>

@@ -41,19 +41,19 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 				<Leader><LeaderName>LEADER_MARPESIA</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_PENTHESILEA</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_THEODORA</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_ANNE_BONNY</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_JACQUOTTE_DELAHAYE</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_ATOTOZTLI</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_BILQIS_2</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_CIXI</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_CLEOPATRA</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_MARY_STUART</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+
 				<Leader><LeaderName>LEADER_WILHELMINA</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_SARAH_FEDLER</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_CLEOPATRA_2</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_JINGU_2</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_JOAN_OF_ARC</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_MANDUKHAI_KHATUN</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_NEFERTITI</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_SEONDEOK_2</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_CLEOPATRA_3</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_DIDO_2</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_JOAN_OF_ARC_2</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
@@ -78,16 +78,16 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 				<Leader><LeaderName>LEADER_TAMAR</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_VICTORIA_3</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_CATHERINE_1</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_VICTORIA_4</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_VICTORIA_5</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_TOMYRIS_2</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_ISABELLA_6</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_BEATRICE</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_ISABELLA_7</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_THEOPHANU</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_MARFA_BORETSKAYA</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_CLEOPATRA_4</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_CLEOPATRA_5</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_ISABELLA_8</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_VICTORIA_5</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_VICTORIA_4</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_DIDO_3</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_DIDO_4</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_DIDO_5</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
@@ -114,6 +114,20 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 				<Leader><LeaderName>LEADER_MIRANDA_LAWSON</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_SHAJAR_AL_DURR</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_SHIN_SAWBU_2</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_QUILAGO</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_SEONDEOK</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_SHIN_SAWBU_3</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_ANNE_BONNY</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_JACQUOTTE_DELAHAYE_2</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_AELIA_PULCHERIA</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_INANNA</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_MARY_STUART</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_NEFERTITI_2</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_VICTORIA_6</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_SALAMASINA_4</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_TANDI_WILLIAMS</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_AMINATU_2</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_THEODORA_2</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 			</Leaders>
 		</CivilizationInfo>
 		<CivilizationInfo>
