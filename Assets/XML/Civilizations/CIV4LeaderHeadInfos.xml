@@ -134,6 +134,11 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<ArtDefineTag>ART_DEF_LEADER_AMINATU</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
+			<Type>LEADER_AWIAKTA</Type>
+			<Description>TXT_KEY_LEADER_AWIAKTA</Description>
+			<ArtDefineTag>ART_DEF_LEADER_AWIAKTA</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
 			<Type>LEADER_BILQIS</Type>
 			<Description>TXT_KEY_LEADER_BILQIS</Description>
 			<ArtDefineTag>ART_DEF_LEADER_BILQIS</ArtDefineTag>
@@ -157,11 +162,6 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<Type>LEADER_JINGU</Type>
 			<Description>TXT_KEY_LEADER_JINGU</Description>
 			<ArtDefineTag>ART_DEF_LEADER_JINGU</ArtDefineTag>
-		</LeaderHeadInfo>
-		<LeaderHeadInfo>
-			<Type>LEADER_KOCHININAKO</Type>
-			<Description>TXT_KEY_LEADER_KOCHININAKO</Description>
-			<ArtDefineTag>ART_DEF_LEADER_KOCHININAKO</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
 			<Type>LEADER_MANGAMMAL</Type>
@@ -620,9 +620,9 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<ArtDefineTag>ART_DEF_LEADER_SHAJAR_AL_DURR</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
-			<Type>LEADER_SHIN_SAWBU_2</Type>
-			<Description>TXT_KEY_LEADER_SHIN_SAWBU_2</Description>
-			<ArtDefineTag>ART_DEF_LEADER_SHIN_SAWBU_2</ArtDefineTag>
+			<Type>LEADER_SHIN_SAWBU_3</Type>
+			<Description>TXT_KEY_LEADER_SHIN_SAWBU_3</Description>
+			<ArtDefineTag>ART_DEF_LEADER_SHIN_SAWBU_3</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
 			<Type>LEADER_QUILAGO</Type>
@@ -635,9 +635,9 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<ArtDefineTag>ART_DEF_LEADER_SEONDEOK</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
-			<Type>LEADER_SHIN_SAWBU_3</Type>
-			<Description>TXT_KEY_LEADER_SHIN_SAWBU_3</Description>
-			<ArtDefineTag>ART_DEF_LEADER_SHIN_SAWBU_3</ArtDefineTag>
+			<Type>LEADER_SHIN_SAWBU_2</Type>
+			<Description>TXT_KEY_LEADER_SHIN_SAWBU_2</Description>
+			<ArtDefineTag>ART_DEF_LEADER_SHIN_SAWBU_2</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
 			<Type>LEADER_ANNE_BONNY</Type>
@@ -693,6 +693,21 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<Type>LEADER_THEODORA_2</Type>
 			<Description>TXT_KEY_LEADER_THEODORA_2</Description>
 			<ArtDefineTag>ART_DEF_LEADER_THEODORA_2</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_EVITA_PERON_2</Type>
+			<Description>TXT_KEY_LEADER_EVITA_PERON_2</Description>
+			<ArtDefineTag>ART_DEF_LEADER_EVITA_PERON_2</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_MARIA_ELEONORA_2</Type>
+			<Description>TXT_KEY_LEADER_MARIA_ELEONORA_2</Description>
+			<ArtDefineTag>ART_DEF_LEADER_MARIA_ELEONORA_2</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_MISS_SANTA</Type>
+			<Description>TXT_KEY_LEADER_MISS_SANTA</Description>
+			<ArtDefineTag>ART_DEF_LEADER_MISS_SANTA</ArtDefineTag>
 		</LeaderHeadInfo>
 	</LeaderHeadInfos>
 </Civ4LeaderHeadInfos>

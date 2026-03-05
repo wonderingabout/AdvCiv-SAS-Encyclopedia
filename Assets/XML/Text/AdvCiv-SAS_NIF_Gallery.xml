@@ -60,8 +60,8 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<English>Jingu</English>
 	</TEXT>
 	<TEXT>
-		<Tag>TXT_KEY_LEADER_KOCHININAKO</Tag>
-		<English>Kochininako</English>
+		<Tag>TXT_KEY_LEADER_AWIAKTA</Tag>
+		<English>Awiakta</English>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_LEADER_MANGAMMAL</Tag>
@@ -430,8 +430,8 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<English>Shajar al-Durr</English>
 	</TEXT>
 	<TEXT>
-		<Tag>TXT_KEY_LEADER_SHIN_SAWBU_2</Tag>
-		<English>Shin Sawbu 2</English>
+		<Tag>TXT_KEY_LEADER_SHIN_SAWBU_3</Tag>
+		<English>Shin Sawbu 3</English>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_LEADER_QUILAGO</Tag>
@@ -442,8 +442,8 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<English>Seondeok</English>
 	</TEXT>
 	<TEXT>
-		<Tag>TXT_KEY_LEADER_SHIN_SAWBU_3</Tag>
-		<English>Shin Sawbu 3 (Lieu-Ye)</English>
+		<Tag>TXT_KEY_LEADER_SHIN_SAWBU_2</Tag>
+		<English>Shin Sawbu 2 (Lieu-Ye)</English>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_LEADER_ANNE_BONNY</Tag>
@@ -488,5 +488,17 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 	<TEXT>
 		<Tag>TXT_KEY_LEADER_THEODORA_2</Tag>
 		<English>Theodora 2</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_EVITA_PERON_2</Tag>
+		<English>Evita Peron 2 (Bunny Girl)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_MARIA_ELEONORA_2</Tag>
+		<English>Maria Eleonora 2</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_MISS_SANTA</Tag>
+		<English>Miss Santa</English>
 	</TEXT>
 </Civ4GameText>

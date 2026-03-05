@@ -49,7 +49,7 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 #### Female Human (Modpacks)
 
 - AdvCiv-SAS: Grace O'Malley
-- History Rewritten: Amanirena, Aminatu, Bilqis, Dido, Dihya, Isabella 1, Jingu, Kochininako, Mangammal, Atotoztli 2 (Nzinga), Salamasina, Wu Zetian, Shin Sawbu, Tomyris, Trung Sisters, Xoc, Yekaterina
+- History Rewritten: Amanirena, Aminatu, Awiakta, Bilqis, Dido, Dihya, Isabella 1, Jingu, Mangammal, Atotoztli 2 (Nzinga), Salamasina, Wu Zetian, Shin Sawbu, Tomyris, Trung Sisters, Xoc, Yekaterina
 - RFC Dawn of Civilization: Benazir, Isabella 2, Maria
 - Beyond the Game 2.43: Maria Theresa, Marpesia, Penthesilea, Theodora
 - Base 6.4: Jacquotte Delahaye, Atotoztli, Bilqis 2, Cixi, Cleopatra, Wilhelmina
@@ -105,10 +105,13 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 - melcher kürzer: Maria Eleonora (https://forums.civfanatics.com/resources/lh-mary-queen-of-hungary.17884/)
 - SaibotLieh: Miranda Lawson (https://forums.civfanatics.com/resources/lh-miranda-lawson.17911/)
 - Civciv5: Shajar al-Durr (https://forums.civfanatics.com/resources/shajar-al-durr.19086/)
-- Civciv5: Shin Sawbu 2 (https://forums.civfanatics.com/resources/shin-sawbu.18142/)
+- SaibotLieh: Shin Sawbu 2 (Lieu-Ye) (https://forums.civfanatics.com/resources/lh-lieu-ye.17799/)
 - SaibotLieh: Quilago (https://forums.civfanatics.com/resources/lh-quilago.17685/)
 - Civciv5: Seondeok (https://forums.civfanatics.com/resources/queen-seondeok-of-silla.17724/)
-- SaibotLieh: Shin Sawbu 3 (Lieu-Ye) (https://forums.civfanatics.com/resources/lh-lieu-ye.17799/)
+- Civciv5: Shin Sawbu 3 (https://forums.civfanatics.com/resources/shin-sawbu.18142/)
+- SaibotLieh: Evita Peron 2 (Bunny Girl) (https://forums.civfanatics.com/resources/lh-bunny-girl.16973/)
+- melcher kürzer: Maria Eleonora 2 (https://forums.civfanatics.com/resources/lh-maria-elenora.16487/)
+- SaibotLieh: Miss Santa (https://forums.civfanatics.com/resources/lh-miss-santa.16228/)
 
 #### Female Non-Human (CFC)
 

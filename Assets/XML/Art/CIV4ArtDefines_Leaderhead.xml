@@ -47,6 +47,14 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<BackgroundKFM>Art/LeaderHeads/Aminatu/suleiman_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_AWIAKTA</Type>
+			<Button>Art/LeaderHeads/Awiakta/Button_Kochininako.dds</Button>
+			<NIF>Art/LeaderHeads/Awiakta/Awiakta.nif</NIF>
+			<KFM>Art/LeaderHeads/Awiakta/Awiakta.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Awiakta/Awiakta.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Awiakta/zenobia_BG.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_BILQIS</Type>
 			<Button>Art/LeaderHeads/Bilqis/Button_Bilqis.dds</Button>
 			<NIF>Art/LeaderHeads/Bilqis/Hammurabi.nif</NIF>
@@ -85,14 +93,6 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<KFM>Art/LeaderHeads/Jingu/Jingu.kfm</KFM>
 			<NoShaderNIF>Art/LeaderHeads/Jingu/Jingu.nif</NoShaderNIF>
 			<BackgroundKFM>Art/LeaderHeads/Jingu/Jingu_bg.kfm</BackgroundKFM>
-		</LeaderheadArtInfo>
-		<LeaderheadArtInfo>
-			<Type>ART_DEF_LEADER_KOCHININAKO</Type>
-			<Button>Art/LeaderHeads/Kochininako/Button_Kochininako.dds</Button>
-			<NIF>Art/LeaderHeads/Kochininako/Awiakta.nif</NIF>
-			<KFM>Art/LeaderHeads/Kochininako/Awiakta.kfm</KFM>
-			<NoShaderNIF>Art/LeaderHeads/Kochininako/Awiakta.nif</NoShaderNIF>
-			<BackgroundKFM>Art/LeaderHeads/Kochininako/zenobia_BG.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_MANGAMMAL</Type>
@@ -497,7 +497,7 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<NoShaderNIF>Art/LeaderHeads/Ana_Nzinga/AnaNzinga2.nif</NoShaderNIF>
 			<BackgroundKFM>Art/LeaderHeads/Ana_Nzinga/Arawak_BG.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
-		<!-- custom: unlike in advciv plus mod, we took all isabella assets from base civ4 (Art0.FPK) to this leader's leaderhead mod folder else we are forced to name the folder Isabella which is not flexible and bad design -->
+		<!-- custom: unlike in advciv plus mod, we took all isabella assets from base civ4 (Art0.FPK) to this leader's leaderhead mod folder so leaderhead is modular, else we are forced to name the folder Isabella which is not flexible and bad design -->
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_ISABELLA_5</Type>
 			<Button>Art/LeaderHeads/Isabella_5/Isabella.dds</Button>
@@ -835,12 +835,12 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<BackgroundKFM>Art/LeaderHeads/Shajar_al_Durr/cyrus_bg2.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
-			<Type>ART_DEF_LEADER_SHIN_SAWBU_2</Type>
-			<Button>Art/LeaderHeads/Shin_Sawbu_2/Shinsawbubutton.dds</Button>
-			<NIF>Art/LeaderHeads/Shin_Sawbu_2/SalmasinaFinal.nif</NIF>
-			<KFM>Art/LeaderHeads/Shin_Sawbu_2/hatshepsut.kfm</KFM>
-			<NoShaderNIF>Art/LeaderHeads/Shin_Sawbu_2/hatshepsut_noshader.nif</NoShaderNIF>
-			<BackgroundKFM>Art/LeaderHeads/Shin_Sawbu_2/winston_churchill_bg4.kfm</BackgroundKFM>
+			<Type>ART_DEF_LEADER_SHIN_SAWBU_3</Type>
+			<Button>Art/LeaderHeads/Shin_Sawbu_3/Shinsawbubutton.dds</Button>
+			<NIF>Art/LeaderHeads/Shin_Sawbu_3/SalmasinaFinal.nif</NIF>
+			<KFM>Art/LeaderHeads/Shin_Sawbu_3/hatshepsut.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Shin_Sawbu_3/hatshepsut_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Shin_Sawbu_3/winston_churchill_bg4.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_QUILAGO</Type>
@@ -860,12 +860,12 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<BackgroundKFM>Art/LeaderHeads/Seondeok/mansa_musa_bg2.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
-			<Type>ART_DEF_LEADER_SHIN_SAWBU_3</Type>
-			<Button>Art/LeaderHeads/Shin_Sawbu_3/LieuYe.dds</Button>
-			<NIF>Art/LeaderHeads/Shin_Sawbu_3/asoka.nif</NIF>
+			<Type>ART_DEF_LEADER_SHIN_SAWBU_2</Type>
+			<Button>Art/LeaderHeads/Shin_Sawbu_2/LieuYe.dds</Button>
+			<NIF>Art/LeaderHeads/Shin_Sawbu_2/asoka.nif</NIF>
 			<KFM>Art/LeaderHeads/Cixi/asoka.kfm</KFM>
-			<NoShaderNIF>Art/LeaderHeads/Shin_Sawbu_3/asoka_noshader.nif</NoShaderNIF>
-			<BackgroundKFM>Art/LeaderHeads/Shin_Sawbu_3/catherine_bg.kfm</BackgroundKFM>
+			<NoShaderNIF>Art/LeaderHeads/Shin_Sawbu_2/asoka_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Shin_Sawbu_2/catherine_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_ANNE_BONNY</Type>
@@ -956,6 +956,30 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<KFM>Art/LeaderHeads/Theodora_2/isabella.kfm</KFM>
 			<NoShaderNIF>Art/LeaderHeads/Theodora_2/isabella_noshader.nif</NoShaderNIF>
 			<BackgroundKFM>Art/LeaderHeads/Theodora_2/isabella_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_EVITA_PERON_2</Type>
+			<Button>Art/LeaderHeads/Evita_Peron_2/bunnygirl.dds</Button>
+			<NIF>Art/LeaderHeads/Evita_Peron_2/catherine.nif</NIF>
+			<KFM>Art/LeaderHeads/Evita_Peron_2/catherine.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Evita_Peron_2/catherine_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Evita_Peron_2/catherine_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_MARIA_ELEONORA_2</Type>
+			<Button>Art/LeaderHeads/Maria_Eleonora/btn_lh_maria_elenora.dds</Button>
+			<NIF>Art/LeaderHeads/Maria_Eleonora/maria_eleonora.nif</NIF>
+			<KFM>Art/LeaderHeads/Maria_Eleonora/maria_eleonora.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Maria_Eleonora/maria_eleonora.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Maria_Eleonora/isabella_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_MISS_SANTA</Type>
+			<Button>Art/LeaderHeads/Miss_Santa/miss_santa.dds</Button>
+			<NIF>Art/LeaderHeads/Miss_Santa/Charlemagne.nif</NIF>
+			<KFM>Art/LeaderHeads/Miss_Santa/Charlemagne.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Miss_Santa/Charlemagne_NONSHADER.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Miss_Santa/isabella_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 	</LeaderheadArtInfos>
 </Civ4ArtDefines>
