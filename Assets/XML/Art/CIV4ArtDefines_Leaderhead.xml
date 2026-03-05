@@ -1000,5 +1000,14 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<NoShaderNIF>Art/LeaderHeads/Dido_8/Hippo.nif</NoShaderNIF>
 			<BackgroundKFM>Art/LeaderHeads/Dido_8/isabella_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
+		<!-- custom: Dido 9 is intentionally the modular variant of Dido 8 using the silver-hair texture provided in the source package (DidoHairSilver.dds, from the included rar). We keep a separate Dido_9 folder/art def so this variant does not depend on another custom leader folder. (GPT-5.3-Codex) -->
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_DIDO_9</Type>
+			<Button>Art/LeaderHeads/Dido_9/hippo.dds</Button>
+			<NIF>Art/LeaderHeads/Dido_9/Hippo.nif</NIF>
+			<KFM>Art/LeaderHeads/Dido_9/isabella.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Dido_9/Hippo.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Dido_9/isabella_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
 	</LeaderheadArtInfos>
 </Civ4ArtDefines>

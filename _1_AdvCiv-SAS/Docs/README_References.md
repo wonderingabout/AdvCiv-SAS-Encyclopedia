@@ -113,7 +113,7 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 - melcher kürzer: Maria Eleonora 2 (https://forums.civfanatics.com/resources/lh-maria-elenora.16487/)
 - SaibotLieh: Miss Santa (https://forums.civfanatics.com/resources/lh-miss-santa.16228/)
 - smeagolheart: Gunnhild (https://forums.civfanatics.com/resources/lh-gunnhild.16057/)
-- smeagolheart: Dido 8 (Hippolyta) (https://forums.civfanatics.com/resources/lh-hippolyta.16046/)
+- smeagolheart: Dido 8 (Hippolyta), Dido 9 (Hippolyta - Silver Hair variant from included DidoHairSilver.dds) (https://forums.civfanatics.com/resources/lh-hippolyta.16046/)
 
 #### Female Non-Human (CFC)
 
