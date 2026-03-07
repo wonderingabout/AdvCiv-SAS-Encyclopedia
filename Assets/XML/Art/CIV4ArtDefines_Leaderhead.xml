@@ -1227,5 +1227,21 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<NoShaderNIF>Art/LeaderHeads/Miriam_Godwinson/isabella.nif</NoShaderNIF>
 			<BackgroundKFM>Art/LeaderHeads/Miriam_Godwinson/isabella_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_SHEHERAZADE_2</Type>
+			<Button>Art/LeaderHeads/Sheherazade_2/sheherazade_2_64px_no_border.dds</Button>
+			<NIF>Art/LeaderHeads/Sheherazade_2/isabella.nif</NIF>
+			<KFM>Art/LeaderHeads/Sheherazade_2/isabella.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Sheherazade_2/isabella.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Cyrus/Cyrus_BG.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_SALAMASINA_5</Type>
+			<Button>Art/LeaderHeads/Xoc_2/Xoc.dds</Button>
+			<NIF>Art/LeaderHeads/Xoc_2/hatshepsut.nif</NIF>
+			<KFM>Art/LeaderHeads/Xoc_2/hatshepsut.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Xoc_2/hatshepsut.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Xoc_2/mao_tse_tung_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
 	</LeaderheadArtInfos>
 </Civ4ArtDefines>

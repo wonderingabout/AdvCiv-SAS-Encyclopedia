@@ -617,4 +617,12 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<Tag>TXT_KEY_LEADER_MIRIAM_GODWINSON</Tag>
 		<English>Miriam Godwinson</English>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_SHEHERAZADE_2</Tag>
+		<English>Sheherazade 2 (Valeria)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_SALAMASINA_5</Tag>
+		<English>Salamasina 5 (Xoc)</English>
+	</TEXT>
 </Civ4GameText>

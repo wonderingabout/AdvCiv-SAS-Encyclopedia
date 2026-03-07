@@ -135,6 +135,8 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 - cfkane: Deirdre Skye (https://forums.civfanatics.com/resources/lh-deirdre-skye.14819/)
 - cfkane: Corazon Santiago (https://forums.civfanatics.com/resources/lh-corazon-santiago.14816/)
 - cfkane: Miriam Godwinson (https://forums.civfanatics.com/resources/lh-miriam-godwinson.14815/)
+- kid anubis: Sheherazade 2 (Valeria) (https://forums.civfanatics.com/resources/valeria.14205/)
+- IgorS: Salamasina 5 (Xoc) (https://forums.civfanatics.com/resources/lh-lady-xoc.14181/)
 
 #### Female Non-Human (CFC)
 
@@ -148,6 +150,8 @@ Among those we skipped, notably there is:
 - SaibotLieh: Mundakhai.zip, Helen.zip, Ulipa.zip — skipped, likely duplicate (https://forums.civfanatics.com/threads/saibotliehs-leaderhead-collection.378346/page-16)
 - SaibotLieh: Cleo.zip — skipped, likely doesn't work (https://forums.civfanatics.com/threads/saibotliehs-leaderhead-collection.378346/page-16)
 - SaibotLieh: LieuYe_blackhair.zip — likely duplicate, plus can't make it work easily enough (https://forums.civfanatics.com/threads/saibotliehs-leaderhead-collection.378346/page-10)
+- Ekmek: Wu v2 — likely duplicate (https://forums.civfanatics.com/resources/lh-wu-v2-civ4bts.14803/)
+- Ekmek: Atototzli v2 — likely duplicate (https://forums.civfanatics.com/resources/lh-atototzli-v2-civ4.14384/)
 
 ## Credits
 
