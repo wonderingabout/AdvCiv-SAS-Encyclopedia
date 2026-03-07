@@ -864,5 +864,10 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<Description>TXT_KEY_LEADER_SALAMASINA_5</Description>
 			<ArtDefineTag>ART_DEF_LEADER_SALAMASINA_5</ArtDefineTag>
 		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_TEUTA</Type>
+			<Description>TXT_KEY_LEADER_TEUTA</Description>
+			<ArtDefineTag>ART_DEF_LEADER_TEUTA</ArtDefineTag>
+		</LeaderHeadInfo>
 	</LeaderHeadInfos>
 </Civ4LeaderHeadInfos>

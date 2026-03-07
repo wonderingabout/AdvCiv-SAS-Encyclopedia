@@ -625,4 +625,8 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<Tag>TXT_KEY_LEADER_SALAMASINA_5</Tag>
 		<English>Salamasina 5 (Xoc)</English>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_TEUTA</Tag>
+		<English>Teuta</English>
+	</TEXT>
 </Civ4GameText>

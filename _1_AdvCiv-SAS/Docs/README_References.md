@@ -55,7 +55,7 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 - RFC Dawn of Civilization: Benazir Bhutto, Isabella 2, Maria
 - Beyond the Game 2.43: Maria Theresa, Marpesia, Penthesilea, Theodora
 - Base 6.4: Jacquotte Delahaye, Atotoztli, Bilqis 2, Cixi, Cleopatra, Wilhelmina
-- Future Mod: Sarah Fedler
+- Future Mod: Sarah Fedler (Blond Girl)
 - Destiny: Cleopatra 2 (Darker 01), Joan of Arc, Mandukhai Khatun, Nefertiti, Seondeok 2
 - Rise of Mankind 2.91: Cleopatra 6, Dido 2, Joan of Arc 2
 - Middle-earth: Galadriel
@@ -137,6 +137,7 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 - cfkane: Miriam Godwinson (https://forums.civfanatics.com/resources/lh-miriam-godwinson.14815/)
 - kid anubis: Sheherazade 2 (Valeria) (https://forums.civfanatics.com/resources/valeria.14205/)
 - IgorS: Salamasina 5 (Xoc) (https://forums.civfanatics.com/resources/lh-lady-xoc.14181/)
+- ambrox62: Teuta (https://forums.civfanatics.com/resources/lh-teuta-illyrian-queen-from-231-to-228-bc.14033/)
 
 #### Female Non-Human (CFC)
 
@@ -152,6 +153,10 @@ Among those we skipped, notably there is:
 - SaibotLieh: LieuYe_blackhair.zip — likely duplicate, plus can't make it work easily enough (https://forums.civfanatics.com/threads/saibotliehs-leaderhead-collection.378346/page-10)
 - Ekmek: Wu v2 — likely duplicate (https://forums.civfanatics.com/resources/lh-wu-v2-civ4bts.14803/)
 - Ekmek: Atototzli v2 — likely duplicate (https://forums.civfanatics.com/resources/lh-atototzli-v2-civ4.14384/)
+- The Capo: Salamasina (v1) — likely duplicate (https://forums.civfanatics.com/resources/lh-salamasina-v1.14048/)
+- cfkane: Gloriana v.2 — likely duplicate (https://forums.civfanatics.com/resources/lh-gloriana-v-2.13774/)
+- Ekmek: Jingu of Japan v3 — likely duplicate (https://forums.civfanatics.com/resources/lh-jingu-of-japan-v3.13004/)
+- C.Roland: Blond Girl — likely duplicate (https://forums.civfanatics.com/resources/blond-girl.11265/)
 
 ## Credits
 

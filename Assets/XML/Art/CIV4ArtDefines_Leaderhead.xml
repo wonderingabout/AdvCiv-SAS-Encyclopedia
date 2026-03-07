@@ -1243,5 +1243,13 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<NoShaderNIF>Art/LeaderHeads/Xoc_2/hatshepsut.nif</NoShaderNIF>
 			<BackgroundKFM>Art/LeaderHeads/Xoc_2/mao_tse_tung_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_TEUTA</Type>
+			<Button>Art/LeaderHeads/Teuta/teuta_64px_no_border.dds</Button>
+			<NIF>Art/LeaderHeads/Teuta/teuta.nif</NIF>
+			<KFM>Art/LeaderHeads/Teuta/teuta.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Teuta/teuta_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Teuta/leader_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
 	</LeaderheadArtInfos>
 </Civ4ArtDefines>
