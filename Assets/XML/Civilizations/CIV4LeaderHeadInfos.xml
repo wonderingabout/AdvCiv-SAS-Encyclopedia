@@ -210,8 +210,8 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
 			<Type>LEADER_BENAZIR</Type>
-			<Description>TXT_KEY_LEADER_BENAZIR</Description>
-			<ArtDefineTag>ART_DEF_LEADER_BENAZIR</ArtDefineTag>
+			<Description>TXT_KEY_LEADER_BENAZIR_BHUTTO</Description>
+			<ArtDefineTag>ART_DEF_LEADER_BENAZIR_BHUTTO</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
 			<Type>LEADER_ISABELLA_2</Type>
@@ -266,7 +266,7 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<LeaderHeadInfo>
 			<Type>LEADER_CLEOPATRA</Type>
 			<Description>TXT_KEY_LEADER_CLEOPATRA</Description>
-			<ArtDefineTag>ART_DEF_LEADER_CLEOPATRA</ArtDefineTag>
+			<ArtDefineTag>ART_DEF_LEADER_CLEOPATRA_2</ArtDefineTag>
 		</LeaderHeadInfo>
 
 		<LeaderHeadInfo>
@@ -282,7 +282,7 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<LeaderHeadInfo>
 			<Type>LEADER_CLEOPATRA_2</Type>
 			<Description>TXT_KEY_LEADER_CLEOPATRA_2</Description>
-			<ArtDefineTag>ART_DEF_LEADER_CLEOPATRA_2</ArtDefineTag>
+			<ArtDefineTag>ART_DEF_LEADER_CLEOPATRA</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
 			<Type>LEADER_JOAN_OF_ARC</Type>
@@ -305,9 +305,9 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<ArtDefineTag>ART_DEF_LEADER_SEONDEOK_2</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
-			<Type>LEADER_CLEOPATRA_3</Type>
-			<Description>TXT_KEY_LEADER_CLEOPATRA_3</Description>
-			<ArtDefineTag>ART_DEF_LEADER_CLEOPATRA_3</ArtDefineTag>
+			<Type>LEADER_CLEOPATRA_6</Type>
+			<Description>TXT_KEY_LEADER_CLEOPATRA_6</Description>
+			<ArtDefineTag>ART_DEF_LEADER_CLEOPATRA_6</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
 			<Type>LEADER_DIDO_2</Type>
@@ -415,6 +415,11 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<ArtDefineTag>ART_DEF_LEADER_ANA_NZINGA</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
+			<Type>LEADER_BOUDICA_1</Type>
+			<Description>TXT_KEY_LEADER_BOUDICA_1</Description>
+			<ArtDefineTag>ART_DEF_LEADER_BOUDICA_1</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
 			<Type>LEADER_ISABELLA_5</Type>
 			<Description>TXT_KEY_LEADER_ISABELLA_5</Description>
 			<ArtDefineTag>ART_DEF_LEADER_ISABELLA_5</ArtDefineTag>
@@ -465,14 +470,14 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<ArtDefineTag>ART_DEF_LEADER_MARFA_BORETSKAYA</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
-			<Type>LEADER_CLEOPATRA_4</Type>
-			<Description>TXT_KEY_LEADER_CLEOPATRA_4</Description>
-			<ArtDefineTag>ART_DEF_LEADER_CLEOPATRA_4</ArtDefineTag>
+			<Type>LEADER_CLEOPATRA_7</Type>
+			<Description>TXT_KEY_LEADER_CLEOPATRA_7</Description>
+			<ArtDefineTag>ART_DEF_LEADER_CLEOPATRA_7</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
-			<Type>LEADER_CLEOPATRA_5</Type>
-			<Description>TXT_KEY_LEADER_CLEOPATRA_5</Description>
-			<ArtDefineTag>ART_DEF_LEADER_CLEOPATRA_5</ArtDefineTag>
+			<Type>LEADER_CLEOPATRA_8</Type>
+			<Description>TXT_KEY_LEADER_CLEOPATRA_8</Description>
+			<ArtDefineTag>ART_DEF_LEADER_CLEOPATRA_8</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
 			<Type>LEADER_ISABELLA_8</Type>
@@ -568,6 +573,11 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<Type>LEADER_KHRI_MA_LOD</Type>
 			<Description>TXT_KEY_LEADER_KHRI_MA_LOD</Description>
 			<ArtDefineTag>ART_DEF_LEADER_KHRI_MA_LOD</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_KHRI_MA_LOD_2</Type>
+			<Description>TXT_KEY_LEADER_KHRI_MA_LOD_2</Description>
+			<ArtDefineTag>ART_DEF_LEADER_KHRI_MA_LOD_2</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
 			<Type>LEADER_LY_CHIEU_HOANG</Type>
@@ -723,6 +733,111 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<Type>LEADER_DIDO_9</Type>
 			<Description>TXT_KEY_LEADER_DIDO_9</Description>
 			<ArtDefineTag>ART_DEF_LEADER_DIDO_9</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_TALI_ZORAH</Type>
+			<Description>TXT_KEY_LEADER_TALI_ZORAH</Description>
+			<ArtDefineTag>ART_DEF_LEADER_TALI_ZORAH</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_MACHA_MONG_RUAD</Type>
+			<Description>TXT_KEY_LEADER_MACHA_MONG_RUAD</Description>
+			<ArtDefineTag>ART_DEF_LEADER_MACHA_MONG_RUAD</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_ZENOBIA_2</Type>
+			<Description>TXT_KEY_LEADER_ZENOBIA_2</Description>
+			<ArtDefineTag>ART_DEF_LEADER_ZENOBIA_2</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_FEMALE_RANGER</Type>
+			<Description>TXT_KEY_LEADER_FEMALE_RANGER</Description>
+			<ArtDefineTag>ART_DEF_LEADER_FEMALE_RANGER</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_FEMALE_RANGER_2</Type>
+			<Description>TXT_KEY_LEADER_FEMALE_RANGER_2</Description>
+			<ArtDefineTag>ART_DEF_LEADER_FEMALE_RANGER_2</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_FEMALE_RANGER_3</Type>
+			<Description>TXT_KEY_LEADER_FEMALE_RANGER_3</Description>
+			<ArtDefineTag>ART_DEF_LEADER_FEMALE_RANGER_3</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_GREEK_QUEEN</Type>
+			<Description>TXT_KEY_LEADER_GREEK_QUEEN</Description>
+			<ArtDefineTag>ART_DEF_LEADER_GREEK_QUEEN</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_FREYDIS_EIRIKSDOTTIR</Type>
+			<Description>TXT_KEY_LEADER_FREYDIS_EIRIKSDOTTIR</Description>
+			<ArtDefineTag>ART_DEF_LEADER_FREYDIS_EIRIKSDOTTIR</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_BOUDICA_2</Type>
+			<Description>TXT_KEY_LEADER_BOUDICA_2</Description>
+			<ArtDefineTag>ART_DEF_LEADER_BOUDICA_2</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_VELETA</Type>
+			<Description>TXT_KEY_LEADER_VELETA</Description>
+			<ArtDefineTag>ART_DEF_LEADER_VELETA</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_ULPIA_SEVERINA_2</Type>
+			<Description>TXT_KEY_LEADER_ULPIA_SEVERINA_2</Description>
+			<ArtDefineTag>ART_DEF_LEADER_ULPIA_SEVERINA_2</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_ISABELLA_9</Type>
+			<Description>TXT_KEY_LEADER_ISABELLA_9</Description>
+			<ArtDefineTag>ART_DEF_LEADER_ISABELLA_9</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_CLEOPATRA_3</Type>
+			<Description>TXT_KEY_LEADER_CLEOPATRA_3</Description>
+			<ArtDefineTag>ART_DEF_LEADER_CLEOPATRA_3</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_CLEOPATRA_4</Type>
+			<Description>TXT_KEY_LEADER_CLEOPATRA_4</Description>
+			<ArtDefineTag>ART_DEF_LEADER_CLEOPATRA_4</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_CLEOPATRA_5</Type>
+			<Description>TXT_KEY_LEADER_CLEOPATRA_5</Description>
+			<ArtDefineTag>ART_DEF_LEADER_CLEOPATRA_5</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_COCKACOESKE_2</Type>
+			<Description>TXT_KEY_LEADER_COCKACOESKE_2</Description>
+			<ArtDefineTag>ART_DEF_LEADER_COCKACOESKE_2</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_GRACE_OMALLEY_2</Type>
+			<Description>TXT_KEY_LEADER_GRACE_OMALLEY_2</Description>
+			<ArtDefineTag>ART_DEF_LEADER_GRACE_OMALLEY_2</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_ZELDA_3</Type>
+			<Description>TXT_KEY_LEADER_ZELDA_3</Description>
+			<ArtDefineTag>ART_DEF_LEADER_ZELDA_3</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_EVITA_PERON_3</Type>
+			<Description>TXT_KEY_LEADER_EVITA_PERON_3</Description>
+			<ArtDefineTag>ART_DEF_LEADER_EVITA_PERON_3</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_TOMYRIS_3</Type>
+			<Description>TXT_KEY_LEADER_TOMYRIS_3</Description>
+			<ArtDefineTag>ART_DEF_LEADER_TOMYRIS_3</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_BENAZIR_2</Type>
+			<Description>TXT_KEY_LEADER_BENAZIR_2</Description>
+			<ArtDefineTag>ART_DEF_LEADER_BENAZIR_2</ArtDefineTag>
 		</LeaderHeadInfo>
 	</LeaderHeadInfos>
 </Civ4LeaderHeadInfos>

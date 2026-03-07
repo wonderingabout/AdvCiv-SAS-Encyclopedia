@@ -167,12 +167,12 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<BackgroundKFM>Art/LeaderHeads/Yekaterina/catherine_BG.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
-			<Type>ART_DEF_LEADER_BENAZIR</Type>
-			<Button>Art/LeaderHeads/Benazir/bhutto.dds</Button>
-			<NIF>Art/LeaderHeads/Benazir/Bhutto.nif</NIF>
-			<KFM>Art/LeaderHeads/Benazir/Bhutto.kfm</KFM>
-			<NoShaderNIF>Art/LeaderHeads/Benazir/Bhutto.nif</NoShaderNIF>
-			<BackgroundKFM>Art/LeaderHeads/Benazir/Bhutto_BG.kfm</BackgroundKFM>
+			<Type>ART_DEF_LEADER_BENAZIR_BHUTTO</Type>
+			<Button>Art/LeaderHeads/Benazir_Bhutto/bhutto.dds</Button>
+			<NIF>Art/LeaderHeads/Benazir_Bhutto/Bhutto.nif</NIF>
+			<KFM>Art/LeaderHeads/Benazir_Bhutto/Bhutto.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Benazir_Bhutto/Bhutto.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Benazir_Bhutto/Bhutto_BG.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_ISABELLA_2</Type>
@@ -286,7 +286,7 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<NIF>Art/LeaderHeads/Cleopatra_2/isabella.nif</NIF>
 			<KFM>Art/LeaderHeads/Isabella/isabella.kfm</KFM>
 			<NoShaderNIF>Art/LeaderHeads/Cleopatra_2/isabella_noshader.nif</NoShaderNIF>
-			<BackgroundKFM>Art/LeaderHeads/Cleopatra_2/isabella_BG.kfm</BackgroundKFM>
+			<BackgroundKFM>Art/LeaderHeads/Cleopatra_2/isabella_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_JOAN_OF_ARC</Type>
@@ -321,12 +321,12 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<BackgroundKFM>Art/LeaderHeads/Seondeok_2/mansa_musa_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
-			<Type>ART_DEF_LEADER_CLEOPATRA_3</Type>
-			<Button>Art/LeaderHeads/Cleopatra_3/Cleopatra.dds</Button>
-			<NIF>Art/LeaderHeads/Cleopatra_3/hatshepsut.nif</NIF>
-			<KFM>Art/LeaderHeads/Cleopatra_3/hatshepsut.kfm</KFM>
-			<NoShaderNIF>Art/LeaderHeads/Cleopatra_3/hatshepsut.nif</NoShaderNIF>
-			<BackgroundKFM>Art/LeaderHeads/Cleopatra_3/hatshepsut_bg.kfm</BackgroundKFM>
+			<Type>ART_DEF_LEADER_CLEOPATRA_6</Type>
+			<Button>Art/LeaderHeads/Cleopatra_6/Cleopatra.dds</Button>
+			<NIF>Art/LeaderHeads/Cleopatra_6/hatshepsut.nif</NIF>
+			<KFM>Art/LeaderHeads/Cleopatra_6/hatshepsut.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Cleopatra_6/hatshepsut.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Cleopatra_6/hatshepsut_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_DIDO_2</Type>
@@ -498,6 +498,15 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<NoShaderNIF>Art/LeaderHeads/Ana_Nzinga/AnaNzinga2.nif</NoShaderNIF>
 			<BackgroundKFM>Art/LeaderHeads/Ana_Nzinga/Arawak_BG.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
+		<!-- custom: ART_DEF_LEADER_BOUDICA_1 had purple animation errors in AdvCiv Plus; fixed by copying Boudica animation files from the local Civ4 installation (not from Art0.fpk) into the Boudica_1/ folder. Paths use Boudica_1/ because the files are copied there, not because cross-folder references are bad — referencing base Civ4 assets cross-folder is fine and all mods do it; it is only problematic when using vanilla folder names that could conflict with base game paths. (Claude code Sonnet 4.6) -->
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_BOUDICA_1</Type>
+			<Button>,Art/interface/LeaderHeads/Btn_LH_England_ElizabethI.dds,Art/Interface/Buttons/Beyond_the_Sword_Atlas.dds,6,2</Button>
+			<NIF>Art/LeaderHeads/Boudica_1/boudica.nif</NIF>
+			<KFM>Art/LeaderHeads/Boudica_1/Boudica.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Boudica_1/Boudica_NONSHADER.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Boudica_1/Boudica_BG.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
 		<!-- custom: unlike in advciv plus mod, we took all isabella assets from base civ4 (Art0.FPK) to this leader's leaderhead mod folder so leaderhead is modular, else we are forced to name the folder Isabella which is not flexible and bad design -->
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_ISABELLA_5</Type>
@@ -580,20 +589,20 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<BackgroundKFM>Art/LeaderHeads/Marfa_Boretskaya/isabella_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
-			<Type>ART_DEF_LEADER_CLEOPATRA_4</Type>
-			<Button>Art/LeaderHeads/Cleopatra_4/Cleo_button.dds</Button>
-			<NIF>Art/LeaderHeads/Cleopatra_4/hatshepsut.nif</NIF>
-			<KFM>Art/LeaderHeads/Cleopatra_4/hatshepsut.kfm</KFM>
-			<NoShaderNIF>Art/LeaderHeads/Cleopatra_4/hatshepsut.nif</NoShaderNIF>
-			<BackgroundKFM>Art/LeaderHeads/Cleopatra_4/hatshepsut_bg.kfm</BackgroundKFM>
+			<Type>ART_DEF_LEADER_CLEOPATRA_7</Type>
+			<Button>Art/LeaderHeads/Cleopatra_7/Cleo_button.dds</Button>
+			<NIF>Art/LeaderHeads/Cleopatra_7/hatshepsut.nif</NIF>
+			<KFM>Art/LeaderHeads/Cleopatra_7/hatshepsut.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Cleopatra_7/hatshepsut.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Cleopatra_7/hatshepsut_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
-			<Type>ART_DEF_LEADER_CLEOPATRA_5</Type>
-			<Button>Art/LeaderHeads/Cleopatra_5/Cleo_button.dds</Button>
-			<NIF>Art/LeaderHeads/Cleopatra_5/hatshepsut.nif</NIF>
-			<KFM>Art/LeaderHeads/Cleopatra_5/hatshepsut.kfm</KFM>
-			<NoShaderNIF>Art/LeaderHeads/Cleopatra_5/hatshepsut.nif</NoShaderNIF>
-			<BackgroundKFM>Art/LeaderHeads/Cleopatra_5/hatshepsut_bg.kfm</BackgroundKFM>
+			<Type>ART_DEF_LEADER_CLEOPATRA_8</Type>
+			<Button>Art/LeaderHeads/Cleopatra_8/Cleo_button.dds</Button>
+			<NIF>Art/LeaderHeads/Cleopatra_8/hatshepsut.nif</NIF>
+			<KFM>Art/LeaderHeads/Cleopatra_8/hatshepsut.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Cleopatra_8/hatshepsut.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Cleopatra_8/hatshepsut_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_ISABELLA_8</Type>
@@ -742,11 +751,19 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<NoShaderNIF>Art/LeaderHeads/Generic_Asian_Empress/Trung.nif</NoShaderNIF>
 			<BackgroundKFM>Art/LeaderHeads/Generic_Asian_Empress/Boudica_BG2.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
-		<!-- custom: switched NIF from Wu.nif to Wu2.nif because Wu.nif referenced missing textures and caused purple parts. (GPT-5.3-Codex) -->
+		<!-- custom: switched NIF from Wu.nif to Wu2.nif because Wu.nif referenced missing textures and caused purple parts. (GPT-5.3-Codex). Update: fixed by using Wu.nif for NIF and Wu2.nif for NoShaderNIF so now added as a variant instead since these are 2 different animations with this change -->
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_KHRI_MA_LOD</Type>
 			<Button>Art/LeaderHeads/Khri_ma_lod/Khri_ma_lod.dds</Button>
 			<NIF>Art/LeaderHeads/Khri_ma_lod/Wu2.nif</NIF>
+			<KFM>Art/LeaderHeads/Khri_ma_lod/hatshepsut.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Khri_ma_lod/Wu2.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Khri_ma_lod/hatshepsut_bg2.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_KHRI_MA_LOD_2</Type>
+			<Button>Art/LeaderHeads/Khri_ma_lod/Khri_ma_lod.dds</Button>
+			<NIF>Art/LeaderHeads/Khri_ma_lod/Wu.nif</NIF>
 			<KFM>Art/LeaderHeads/Khri_ma_lod/hatshepsut.kfm</KFM>
 			<NoShaderNIF>Art/LeaderHeads/Khri_ma_lod/Wu2.nif</NoShaderNIF>
 			<BackgroundKFM>Art/LeaderHeads/Khri_ma_lod/hatshepsut_bg2.kfm</BackgroundKFM>
@@ -1008,6 +1025,183 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<KFM>Art/LeaderHeads/Dido_9/isabella.kfm</KFM>
 			<NoShaderNIF>Art/LeaderHeads/Dido_9/Hippo.nif</NoShaderNIF>
 			<BackgroundKFM>Art/LeaderHeads/Dido_9/isabella_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_TALI_ZORAH</Type>
+			<Button>Art/LeaderHeads/Tali_Zorah/Btn_LH_Spain_Isabella.dds</Button>
+			<NIF>Art/LeaderHeads/Tali_Zorah/isabella.nif</NIF>
+			<KFM>Art/LeaderHeads/Isabella/isabella.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Tali_Zorah/isabella_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Tali_Zorah/isabella_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_MACHA_MONG_RUAD</Type>
+			<Button>Art/LeaderHeads/Macha_Mong_Ruad/BTN_LH_Celt_Macha Mong Ruad.dds</Button>
+			<NIF>Art/LeaderHeads/Macha_Mong_Ruad/Macha Mong Ruad.nif</NIF>
+			<KFM>Art/LeaderHeads/Macha_Mong_Ruad/Macha Mong Ruad.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Macha_Mong_Ruad/Macha Mong Ruad_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Macha_Mong_Ruad/Macha Mong Ruad_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_ZENOBIA_2</Type>
+			<Button>Art/LeaderHeads/Zenobia_2/BTN_LH_Kalem_Kug-Bau.dds</Button>
+			<NIF>Art/LeaderHeads/Zenobia_2/zenobia.nif</NIF>
+			<KFM>Art/LeaderHeads/Zenobia_2/zenobia.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Zenobia_2/zenobia.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Zenobia_2/zenobia_BG.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_FEMALE_RANGER</Type>
+			<Button>Art/LeaderHeads/Female_Ranger/Female_Ranger.dds</Button>
+			<NIF>Art/LeaderHeads/Female_Ranger/Boudica.nif</NIF>
+			<KFM>Art/LeaderHeads/Boudica/Boudica.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Female_Ranger/Boudica_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Female_Ranger/Boudica_BG.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_FEMALE_RANGER_2</Type>
+			<Button>Art/LeaderHeads/Female_Ranger_2/Female_Ranger.dds</Button>
+			<NIF>Art/LeaderHeads/Female_Ranger_2/Boudica.nif</NIF>
+			<KFM>Art/LeaderHeads/Boudica/Boudica.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Female_Ranger_2/Boudica_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Female_Ranger_2/Boudica_BG.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<!-- custom: Female Ranger 3 uses Boudica_noshader.nif; this NIF references Archer_ENV.dds for eye/environment mapping.
+		Archer_ENV.dds is a local copy of Boudica_ENV.dds in the same folder to satisfy that filename lookup and prevent purple eyes. (GPT-5.3-Codex); also last variant is non-shaded unlike in download page where last is shaded because i find shaded prettier so only used in last variant here -->
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_FEMALE_RANGER_3</Type>
+			<Button>Art/LeaderHeads/Female_Ranger_3/Female_Ranger.dds</Button>
+			<NIF>Art/LeaderHeads/Female_Ranger_3/Boudica_noshader.nif</NIF>
+			<KFM>Art/LeaderHeads/Boudica/Boudica.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Female_Ranger_3/Boudica_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Female_Ranger_3/Boudica_BG.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_GREEK_QUEEN</Type>
+			<Button>Art/LeaderHeads/Greek_Queen/greek_queen_64px_no_border.dds</Button>
+			<NIF>Art/LeaderHeads/Greek_Queen/isabella.nif</NIF>
+			<KFM>Art/LeaderHeads/Greek_Queen/isabella.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Greek_Queen/isabella_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Greek_Queen/isabella_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<!-- custom: replaced the button since it was larger than 64px which caused display issues in sevopedia Civs' Leaders panel, plus i didn't like this one and wanted to change it too -->
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_FREYDIS_EIRIKSDOTTIR</Type>
+			<Button>Art/LeaderHeads/Freydis_Eiriksdottir/freyis_64px_no_border.dds</Button>
+			<NIF>Art/LeaderHeads/Freydis_Eiriksdottir/f_Viking04a.nif</NIF>
+			<KFM>Art/LeaderHeads/Freydis_Eiriksdottir/victoria.kfm</KFM>
+			<NoShaderNIF></NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/RagnarLodbrok/Ragnar_BG.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<!-- custom: ART_DEF_LEADER_BOUDICA_2 had the same purple animation errors as BOUDICA_1; fixed by importing base Civ4 Boudica animation files into the Boudica_2/ folder (no overwrite of existing files). Same fix as BOUDICA_1 — see that entry's comment for rationale on why local copies are used vs cross-folder references. (Claude code Sonnet 4.6) -->
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_BOUDICA_2</Type>
+			<Button>,Art/interface/LeaderHeads/Btn_LH_England_ElizabethI.dds,Art/Interface/Buttons/Beyond_the_Sword_Atlas.dds,6,2</Button>
+			<NIF>Art/LeaderHeads/Boudica_2/Boudica.nif</NIF>
+			<KFM>Art/LeaderHeads/Boudica_2/Boudica.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Boudica_2/Boudica_NONSHADER.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Boudica_2/Boudica_BG.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<!-- custom: replaced the button as i didn't like this one and wanted to change it too -->
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_VELETA</Type>
+			<Button>Art/LeaderHeads/Veleta/veleta_64px_no_border.dds</Button>
+			<NIF>Art/LeaderHeads/Veleta/isabella.nif</NIF>
+			<KFM>Art/LeaderHeads/Veleta/isabella.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Veleta/isabella_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Veleta/isabella_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_ULPIA_SEVERINA_2</Type>
+			<Button>Art/LeaderHeads/Ulpia_Severina_2/ulpia.dds</Button>
+			<NIF>Art/LeaderHeads/Ulpia_Severina_2/isabella.nif</NIF>
+			<KFM>Art/LeaderHeads/Isabella/isabella.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Ulpia_Severina_2/isabella.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Ulpia_Severina_2/isabella_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<!-- custom: note: the fix described in https://forums.civfanatics.com/threads/saibotliehs-leaderhead-collection.378346/page-22 by SaibotLieh is not applied here; i tried but didn't work so provided the base files in the thread that remain to be fixed (jewel not colored) and that otherwise seems functional; also added a button -->
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_ISABELLA_9</Type>
+			<Button>Art/LeaderHeads/Indian_Empress/indian_empress_64px_no_border.dds</Button>
+			<NIF>Art/LeaderHeads/Indian_Empress/nocrwnizzy2.nif</NIF>
+			<KFM>Art/LeaderHeads/Indian_Empress/isabella.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Indian_Empress/nocrwnizzy2.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Indian_Empress/isabella_bg2.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<!-- custom: Cleopatra 3/4/5 are modular recolor variants built from Cleopatra_2 as base setup (same NIF/KFM/background wiring), then per-folder texture swap on the two diffuse maps used by indoor_isabella.nif: Cleo00_DIFF + Cleo01_DIFF. Mapping applied: Cleopatra_3 -> *_02, Cleopatra_4 -> *_03, Cleopatra_5 -> *_04. (GPT-5.3-Codex) -->
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_CLEOPATRA_3</Type>
+			<Button>Art/LeaderHeads/Cleopatra_3/cleo.dds</Button>
+			<NIF>Art/LeaderHeads/Cleopatra_3/isabella.nif</NIF>
+			<KFM>Art/LeaderHeads/Isabella/isabella.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Cleopatra_3/isabella_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Cleopatra_3/isabella_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_CLEOPATRA_4</Type>
+			<Button>Art/LeaderHeads/Cleopatra_4/cleo.dds</Button>
+			<NIF>Art/LeaderHeads/Cleopatra_4/isabella.nif</NIF>
+			<KFM>Art/LeaderHeads/Isabella/isabella.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Cleopatra_4/isabella_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Cleopatra_4/isabella_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_CLEOPATRA_5</Type>
+			<Button>Art/LeaderHeads/Cleopatra_5/cleo.dds</Button>
+			<NIF>Art/LeaderHeads/Cleopatra_5/isabella.nif</NIF>
+			<KFM>Art/LeaderHeads/Isabella/isabella.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Cleopatra_5/isabella_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Cleopatra_5/isabella_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<!-- custom: COCKACOESKE_2 is a no-warpaint variant from the same pack. The warpaint difference is visible in the NIF mesh/texture rather than the button, so it likely only appears during certain leader attitudes/animations rather than the base idle pose (which may not show the paint in the base variant either) — speculative, based on how Civ4 leaderhead NIFs work. (Claude code Sonnet 4.6) -->
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_COCKACOESKE_2</Type>
+			<Button>Art/LeaderHeads/Cockacoeske_2/cockacoeske.dds</Button>
+			<NIF>Art/LeaderHeads/Cockacoeske_2/hatshepsut.nif</NIF>
+			<KFM>Art/LeaderHeads/Cockacoeske_2/hatshepsut.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Cockacoeske_2/hatshepsut.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Cockacoeske_2/hatshepsut_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<!-- custom: GRACE_OMALLEY_2 is a variant with reduced lip movement. Per the author: Joao's animation (John II.kfm) has excessive head and mouth movement not well-suited to custom models; the author froze the lip movement to improve this, and attempted to address eye movement but could not do much without larger modifications to the animation files. (Claude code Sonnet 4.6) -->
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_GRACE_OMALLEY_2</Type>
+			<Button>Art/LeaderHeads/Grace_O_Malley_2/Grace_OMalley.dds</Button>
+			<NIF>Art/LeaderHeads/Grace_O_Malley_2/John II.nif</NIF>
+			<KFM>Art/LeaderHeads/Grace_O_Malley_2/John II.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Grace_O_Malley_2/John_II_NONSHADER.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Grace_O_Malley_2/mansa_musa_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_ZELDA_3</Type>
+			<Button>Art/LeaderHeads/Zelda_3/zeldab.dds</Button>
+			<NIF>Art/LeaderHeads/Zelda_3/elizabeth.nif</NIF>
+			<KFM>Art/LeaderHeads/Elizabeth/elizabeth.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Zelda_3/elizabeth_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Zelda_3/elizabeth_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_EVITA_PERON_3</Type>
+			<Button>Art/LeaderHeads/Evita_Peron_3/bunnygirl.dds</Button>
+			<NIF>Art/LeaderHeads/Evita_Peron_3/catherine.nif</NIF>
+			<KFM>Art/LeaderHeads/Evita_Peron_3/catherine.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Evita_Peron_3/catherine_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Evita_Peron_3/catherine_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_TOMYRIS_3</Type>
+			<Button>Art/LeaderHeads/Tomyris_3/nanyehi.dds</Button>
+			<NIF>Art/LeaderHeads/Tomyris_3/Boudica.nif</NIF>
+			<KFM>Art/LeaderHeads/Tomyris_3/Boudica.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Tomyris_3/Boudica.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Tomyris_3/hatshepsut_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_BENAZIR_2</Type>
+			<Button>Art/LeaderHeads/Benazir_Bhutto_2/bhutto.dds</Button>
+			<NIF>Art/LeaderHeads/Benazir_Bhutto_2/Bhutto.nif</NIF>
+			<KFM>Art/LeaderHeads/Benazir_Bhutto_2/Bhutto.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Benazir_Bhutto_2/Bhutto.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Benazir_Bhutto_2/Bhutto_BG.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 	</LeaderheadArtInfos>
 </Civ4ArtDefines>

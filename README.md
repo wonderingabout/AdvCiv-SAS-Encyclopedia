@@ -6,6 +6,7 @@ This mod is a modified version of [AdvCiv-SAS (Simple Advanced Strategy)](https:
 - aggressively strip almost all assets (so it is lighter and since we don't need them), notably using `minOccurs="0"` for almost all leaderHead XML info, or by adding or modifying to functionally  empty base Civ4 XML like [CIV4PlotLSystem.xml](/Assets/XML/Buildings/CIV4PlotLSystem.xml) or [CIV4GameText_Events_BTS.xml](/Assets/XML/Text/CIV4GameText_Events_BTS.xml) (with a focus on heaviest ones using Wiztree to find them), resulting in very compact and lightweight XML mod (suits minimal leaderhead NIF Gallery need).
 - fix animations that had errors (e.g., Salasamina_3, Tandi Williams, etc.) or risky file structure design (e.g., Isabella_5 hard requiring folder name to be Isabella which risks conflicting with base BTS one: fixed by reimporting o, our NIF-Gallery mod all civ4 files from base civ4 (`Art0.FPK`) so leaderhead is modular)
 - add buttons for leaderheads that had none (e.g. Pope Joan), as of now a no border button to help identify the leader
+- leaderhead XML naming rule: reusing base Civ4 leader IDs as-is is forbidden (e.g., do not use `LEADER_BOUDICA` / `ART_DEF_LEADER_BOUDICA` for custom entries). Suffix from the first custom variant (e.g., `LEADER_BOUDICA_1`, `ART_DEF_LEADER_BOUDICA_1`) to avoid conflicts and hidden dependencies. `ZENOBIA` naming is fine only when it is not a base-Civ4 leader ID. If not enforced, while some leaders may run, it is likely to cause issues in the long run one way or another, so we do not use base civ4 names for leaders (`_1` suffix is added to said name instead).
 
 Since it is based on AdvCiv-SAS, you can notably use AdvCiv-SAS features like keyboard UP/DOWN navigation and search bar in Sevopedia.
 
@@ -27,6 +28,8 @@ For License and Reuse, see [License and reuse](/README.md#license-and-reuse).
 [LLM Agents (Debugging/Fixing Leaderheads)](/README.md#llm-agents-debuggingfixing-leaderheads)  
 &emsp;&emsp;[Example of Leaderhead fix 1](/README.md#example-of-leaderhead-fix-1)  
 &emsp;&emsp;[Example of Leaderhead fix 2](/README.md#example-of-leaderhead-fix-2)  
+&emsp;[Temporary Errors](/README.md#temporary-errors)  
+[UnicodeDecodeError: 'ascii' codec can't decode byte 0xff in position 0: ordinal not in range](/README.md#unicodedecodeerror-ascii-codec-cant-decode-byte-0xff-in-position-0-ordinal-not-in-range) 
 [Copyright and Disclaimer](/README.md#copyright-and-disclaimer)  
 [Credits](/README.md#credits)  
 [Some Useful tools while doing this](/README.md#some-useful-tools-while-doing-this)  
@@ -112,6 +115,33 @@ Fixed:
 
 <img src="./_1_AdvCiv-SAS/Images/leaderheads/nur_jahan_issue.JPG" alt="nur_jahan_issue.JPG" width="150"></img>
 <img src="./_1_AdvCiv-SAS/Images/leaderheads/nur_jahan_fixed.JPG" alt="nur_jahan_fixed.JPG" width="150"></img>
+
+## Temporary Errors
+
+### UnicodeDecodeError: 'ascii' codec can't decode byte 0xff in position 0: ordinal not in range
+
+Note: sometimes there is a weird error when adding a new Leaderhead and opening Sevopedia Index, Civs, or Leaders category. This error seems to weirdly disappear after exiting and restarting the game.
+
+```py
+UnicodeDecodeError: 'ascii' codec can't decode byte 0xff in position 0: ordinal not in range(128)
+ERR: Python function pediaMain failed, module CvScreensInterface
+Traceback (most recent call last):
+
+  File "CvScreensInterface", line 429, in pediaMain
+
+  File "SevoPediaMain", line 615, in pediaJump
+
+  File "SevoPediaMain", line 706, in showContents
+
+  File "SevoPediaMain", line 1239, in placeCivs
+
+  File "SevoPediaMain", line 1973, in placeItems
+
+UnicodeDecodeError: 'ascii' codec can't decode byte 0xff in position 0: ordinal not in range(128)
+ERR: Python function pediaMain failed, module CvScreensInterface
+```
+
+If you added or modified a Leaderhead and have this error, try exiting and restarting the game again if it helps.
 
 ## Copyright and Disclaimer
 

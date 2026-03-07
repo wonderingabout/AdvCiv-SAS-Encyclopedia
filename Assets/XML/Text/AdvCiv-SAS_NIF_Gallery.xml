@@ -100,8 +100,8 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<English>Yekaterina</English>
 	</TEXT>
 	<TEXT>
-		<Tag>TXT_KEY_LEADER_BENAZIR</Tag>
-		<English>Benazir</English>
+		<Tag>TXT_KEY_LEADER_BENAZIR_BHUTTO</Tag>
+		<English>Benazir Bhutto</English>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_LEADER_ISABELLA_2</Tag>
@@ -158,7 +158,7 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_LEADER_CLEOPATRA_2</Tag>
-		<English>Cleopatra 2</English>
+		<English>Cleopatra 2 (Darker 01)</English>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_LEADER_SEONDEOK_2</Tag>
@@ -177,8 +177,8 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<English>Nefertiti</English>
 	</TEXT>
 	<TEXT>
-		<Tag>TXT_KEY_LEADER_CLEOPATRA_3</Tag>
-		<English>Cleopatra 3</English>
+		<Tag>TXT_KEY_LEADER_CLEOPATRA_6</Tag>
+		<English>Cleopatra 6</English>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_LEADER_DIDO_2</Tag>
@@ -266,6 +266,10 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<English>Ana Nzinga</English>
 	</TEXT>
 	<TEXT>
+		<Tag>TXT_KEY_LEADER_BOUDICA_1</Tag>
+		<English>Boudica 1</English>
+	</TEXT>
+	<TEXT>
 		<Tag>TXT_KEY_LEADER_ISABELLA_5</Tag>
 		<English>Isabella 5</English>
 	</TEXT>
@@ -283,7 +287,7 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_LEADER_VICTORIA_5</Tag>
-		<English>Victoria 5 (Maria Theresa 2)</English>
+		<English>Victoria 5 (Maria Theresa 3)</English>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_LEADER_TOMYRIS_2</Tag>
@@ -306,12 +310,12 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<English>Marfa Boretskaya</English>
 	</TEXT>
 	<TEXT>
-		<Tag>TXT_KEY_LEADER_CLEOPATRA_4</Tag>
-		<English>Cleopatra 4</English>
+		<Tag>TXT_KEY_LEADER_CLEOPATRA_7</Tag>
+		<English>Cleopatra 7</English>
 	</TEXT>
 	<TEXT>
-		<Tag>TXT_KEY_LEADER_CLEOPATRA_5</Tag>
-		<English>Cleopatra 5</English>
+		<Tag>TXT_KEY_LEADER_CLEOPATRA_8</Tag>
+		<English>Cleopatra 8</English>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_LEADER_ISABELLA_8</Tag>
@@ -319,7 +323,7 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_LEADER_VICTORIA_4</Tag>
-		<English>Victoria 4 (Maria Theresa 3)</English>
+		<English>Victoria 4 (Maria Theresa 2)</English>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_LEADER_DIDO_3</Tag>
@@ -378,6 +382,10 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<English>Ulpia Severina</English>
 	</TEXT>
 	<TEXT>
+		<Tag>TXT_KEY_LEADER_ULPIA_SEVERINA_2</Tag>
+		<English>Ulpia Severina 2 (No Laurel)</English>
+	</TEXT>
+	<TEXT>
 		<Tag>TXT_KEY_LEADER_COCKACOESKE</Tag>
 		<English>Cockacoeske</English>
 	</TEXT>
@@ -388,6 +396,10 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 	<TEXT>
 		<Tag>TXT_KEY_LEADER_KHRI_MA_LOD</Tag>
 		<English>Khri ma lod</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_KHRI_MA_LOD_2</Tag>
+		<English>Khri ma lod 2</English>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_LEADER_LY_CHIEU_HOANG</Tag>
@@ -512,5 +524,85 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 	<TEXT>
 		<Tag>TXT_KEY_LEADER_DIDO_9</Tag>
 		<English>Dido 9 (Hippolyta - Silver Hair)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_TALI_ZORAH</Tag>
+		<English>Tali'Zorah</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_MACHA_MONG_RUAD</Tag>
+		<English>Macha Mong Ruad</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ZENOBIA_2</Tag>
+		<English>Zenobia 2 (Kug-Bau)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_FEMALE_RANGER</Tag>
+		<English>Female Ranger</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_FEMALE_RANGER_2</Tag>
+		<English>Female Ranger 2 (Revealing)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_FEMALE_RANGER_3</Tag>
+		<English>Female Ranger 3 (Non-Shaded)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_GREEK_QUEEN</Tag>
+		<English>Greek Queen</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_FREYDIS_EIRIKSDOTTIR</Tag>
+		<English>Freydis Eiriksdottir</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_BOUDICA_2</Tag>
+		<English>Boudica 2</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_VELETA</Tag>
+		<English>Veleta</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ISABELLA_9</Tag>
+		<English>Isabella 9 (Indian Empress)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_CLEOPATRA_3</Tag>
+		<English>Cleopatra 3 (Darker 02)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_CLEOPATRA_4</Tag>
+		<English>Cleopatra 4 (Darker 03)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_CLEOPATRA_5</Tag>
+		<English>Cleopatra 5 (Darker 04)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_COCKACOESKE_2</Tag>
+		<English>Cockacoeske 2 (No Warpaint)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_GRACE_OMALLEY_2</Tag>
+		<English>Grace O'Malley 2 (Slower Lips and Eyes)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ZELDA_3</Tag>
+		<English>Zelda 3 (Human Ears)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_EVITA_PERON_3</Tag>
+		<English>Evita Peron 3 (Bunny Girl Brunette)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_TOMYRIS_3</Tag>
+		<English>Tomyris 3 (Running Eagle)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_BENAZIR_2</Tag>
+		<English>Benazir Bhutto 2 (Glasses)</English>
 	</TEXT>
 </Civ4GameText>
