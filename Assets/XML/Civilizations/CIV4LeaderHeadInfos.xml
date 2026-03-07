@@ -839,5 +839,20 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<Description>TXT_KEY_LEADER_BENAZIR_2</Description>
 			<ArtDefineTag>ART_DEF_LEADER_BENAZIR_2</ArtDefineTag>
 		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_DEIRDRE_SKYE</Type>
+			<Description>TXT_KEY_LEADER_DEIRDRE_SKYE</Description>
+			<ArtDefineTag>ART_DEF_LEADER_DEIRDRE_SKYE</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_CORAZON_SANTIAGO</Type>
+			<Description>TXT_KEY_LEADER_CORAZON_SANTIAGO</Description>
+			<ArtDefineTag>ART_DEF_LEADER_CORAZON_SANTIAGO</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_MIRIAM_GODWINSON</Type>
+			<Description>TXT_KEY_LEADER_MIRIAM_GODWINSON</Description>
+			<ArtDefineTag>ART_DEF_LEADER_MIRIAM_GODWINSON</ArtDefineTag>
+		</LeaderHeadInfo>
 	</LeaderHeadInfos>
 </Civ4LeaderHeadInfos>

@@ -132,6 +132,9 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 - SaibotLieh (sun78945612's question): Cockacoeske 2 (No Warpaint) (https://forums.civfanatics.com/threads/saibotliehs-leaderhead-collection.378346/page-18)
 - SaibotLieh (Lemon Merchant's question): Grace O'Malley 2 (https://forums.civfanatics.com/threads/saibotliehs-leaderhead-collection.378346/page-17)
 - Ekmek: Benazir Bhutto 2 (Glasses) (https://forums.civfanatics.com/threads/ekmeks-civ4-leaderhead-gallery.277514/page-84)
+- cfkane: Deirdre Skye (https://forums.civfanatics.com/resources/lh-deirdre-skye.14819/)
+- cfkane: Corazon Santiago (https://forums.civfanatics.com/resources/lh-corazon-santiago.14816/)
+- cfkane: Miriam Godwinson (https://forums.civfanatics.com/resources/lh-miriam-godwinson.14815/)
 
 #### Female Non-Human (CFC)
 

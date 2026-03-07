@@ -605,4 +605,16 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<Tag>TXT_KEY_LEADER_BENAZIR_2</Tag>
 		<English>Benazir Bhutto 2 (Glasses)</English>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_DEIRDRE_SKYE</Tag>
+		<English>Deirdre Skye</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_CORAZON_SANTIAGO</Tag>
+		<English>Corazon Santiago</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_MIRIAM_GODWINSON</Tag>
+		<English>Miriam Godwinson</English>
+	</TEXT>
 </Civ4GameText>

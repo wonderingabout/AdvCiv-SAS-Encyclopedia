@@ -1203,5 +1203,29 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<NoShaderNIF>Art/LeaderHeads/Benazir_Bhutto_2/Bhutto.nif</NoShaderNIF>
 			<BackgroundKFM>Art/LeaderHeads/Benazir_Bhutto_2/Bhutto_BG.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_DEIRDRE_SKYE</Type>
+			<Button>Art/LeaderHeads/Deidre_Skye/deidre_skye_64px_no_border.dds</Button>
+			<NIF>Art/LeaderHeads/Deidre_Skye/elizabeth.nif</NIF>
+			<KFM>Art/LeaderHeads/Deidre_Skye/elizabeth.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Deidre_Skye/elizabeth.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Deidre_Skye/elizabeth_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_CORAZON_SANTIAGO</Type>
+			<Button>Art/LeaderHeads/Corazon_Santiago/corazon_santiago_64px_no_border.dds</Button>
+			<NIF>Art/LeaderHeads/Corazon_Santiago/Boudica.nif</NIF>
+			<KFM>Art/LeaderHeads/Corazon_Santiago/Boudica.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Corazon_Santiago/Boudica.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Corazon_Santiago/Boudica_BG.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_MIRIAM_GODWINSON</Type>
+			<Button>Art/LeaderHeads/Miriam_Godwinson/miriam_godwinson_64px_no_border.dds</Button>
+			<NIF>Art/LeaderHeads/Miriam_Godwinson/isabella.nif</NIF>
+			<KFM>Art/LeaderHeads/Miriam_Godwinson/isabella.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Miriam_Godwinson/isabella.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Miriam_Godwinson/isabella_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
 	</LeaderheadArtInfos>
 </Civ4ArtDefines>
