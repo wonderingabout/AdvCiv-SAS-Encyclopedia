@@ -129,9 +129,9 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<ArtDefineTag>ART_DEF_LEADER_AMANIRENA</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
-			<Type>LEADER_AMINATU</Type>
-			<Description>TXT_KEY_LEADER_AMINATU</Description>
-			<ArtDefineTag>ART_DEF_LEADER_AMINATU</ArtDefineTag>
+			<Type>LEADER_AMINAH</Type>
+			<Description>TXT_KEY_LEADER_AMINAH</Description>
+			<ArtDefineTag>ART_DEF_LEADER_AMINAH</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
 			<Type>LEADER_AWIAKTA</Type>
@@ -268,7 +268,6 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<Description>TXT_KEY_LEADER_CLEOPATRA</Description>
 			<ArtDefineTag>ART_DEF_LEADER_CLEOPATRA_2</ArtDefineTag>
 		</LeaderHeadInfo>
-
 		<LeaderHeadInfo>
 			<Type>LEADER_WILHELMINA</Type>
 			<Description>TXT_KEY_LEADER_WILHELMINA</Description>
@@ -695,9 +694,9 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<ArtDefineTag>ART_DEF_LEADER_TANDI_WILLIAMS</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
-			<Type>LEADER_AMINATU_2</Type>
-			<Description>TXT_KEY_LEADER_AMINATU_2</Description>
-			<ArtDefineTag>ART_DEF_LEADER_AMINATU_2</ArtDefineTag>
+			<Type>LEADER_AMINAH_3</Type>
+			<Description>TXT_KEY_LEADER_AMINAH_3</Description>
+			<ArtDefineTag>ART_DEF_LEADER_AMINAH_3</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
 			<Type>LEADER_THEODORA_2</Type>
@@ -868,6 +867,16 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<Type>LEADER_TEUTA</Type>
 			<Description>TXT_KEY_LEADER_TEUTA</Description>
 			<ArtDefineTag>ART_DEF_LEADER_TEUTA</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_AMINAH_2</Type>
+			<Description>TXT_KEY_LEADER_AMINAH_2</Description>
+			<ArtDefineTag>ART_DEF_LEADER_AMINAH_2</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_GLORIANA_2</Type>
+			<Description>TXT_KEY_LEADER_GLORIANA_2</Description>
+			<ArtDefineTag>ART_DEF_LEADER_GLORIANA_2</ArtDefineTag>
 		</LeaderHeadInfo>
 	</LeaderHeadInfos>
 </Civ4LeaderHeadInfos>

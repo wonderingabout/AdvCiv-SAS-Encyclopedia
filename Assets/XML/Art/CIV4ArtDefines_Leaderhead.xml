@@ -39,12 +39,12 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<BackgroundKFM>Art/LeaderHeads/Amanirena/hatshepsut_BG.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
-			<Type>ART_DEF_LEADER_AMINATU</Type>
-			<Button>Art/LeaderHeads/Aminatu/Button_Aminatu.dds</Button>
-			<NIF>Art/LeaderHeads/Aminatu/aminah.nif</NIF>
-			<KFM>Art/LeaderHeads/Aminatu/catherine.kfm</KFM>
-			<NoShaderNIF>Art/LeaderHeads/Aminatu/aminah.nif</NoShaderNIF>
-			<BackgroundKFM>Art/LeaderHeads/Aminatu/suleiman_bg.kfm</BackgroundKFM>
+			<Type>ART_DEF_LEADER_AMINAH</Type>
+			<Button>Art/LeaderHeads/Aminah/Button_Aminatu.dds</Button>
+			<NIF>Art/LeaderHeads/Aminah/aminah.nif</NIF>
+			<KFM>Art/LeaderHeads/Aminah/catherine.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Aminah/aminah.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Aminah/suleiman_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_AWIAKTA</Type>
@@ -961,12 +961,12 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<BackgroundKFM>Art/LeaderHeads/Tandi_Williams/elizabeth_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
-			<Type>ART_DEF_LEADER_AMINATU_2</Type>
-			<Button>Art/LeaderHeads/Aminatu_2/btn_khazar_prisbit.dds</Button>
-			<NIF>Art/LeaderHeads/Aminatu_2/aminah.nif</NIF>
-			<KFM>Art/LeaderHeads/Aminatu_2/catherine.kfm</KFM>
-			<NoShaderNIF>Art/LeaderHeads/Aminatu_2/aminah.nif</NoShaderNIF>
-			<BackgroundKFM>Art/LeaderHeads/Aminatu_2/catherine_bg.kfm</BackgroundKFM>
+			<Type>ART_DEF_LEADER_AMINAH_3</Type>
+			<Button>Art/LeaderHeads/Aminah_3/btn_khazar_prisbit.dds</Button>
+			<NIF>Art/LeaderHeads/Aminah_3/aminah.nif</NIF>
+			<KFM>Art/LeaderHeads/Aminah_3/catherine.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Aminah_3/aminah.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Aminah_3/catherine_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_THEODORA_2</Type>
@@ -1250,6 +1250,22 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<KFM>Art/LeaderHeads/Teuta/teuta.kfm</KFM>
 			<NoShaderNIF>Art/LeaderHeads/Teuta/teuta_noshader.nif</NoShaderNIF>
 			<BackgroundKFM>Art/LeaderHeads/Teuta/leader_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_AMINAH_2</Type>
+			<Button>Art/LeaderHeads/Aminah_2/Btn_LH_aminah.dds</Button>
+			<NIF>Art/LeaderHeads/Aminah_2/amina_africa.nif</NIF>
+			<KFM>Art/LeaderHeads/Aminah_2/catherine.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Aminah_2/amina_africa.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Aminah_2/catherine_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_GLORIANA_2</Type>
+			<Button>Art/LeaderHeads/Gloriana_2/Gloriana.dds</Button>
+			<NIF>Art/LeaderHeads/Gloriana_2/elizabeth.nif</NIF>
+			<KFM>Art/LeaderHeads/Gloriana_2/elizabeth.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Gloriana_2/elizabeth_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Gloriana_2/elizabeth_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 	</LeaderheadArtInfos>
 </Civ4ArtDefines>

@@ -36,8 +36,8 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<English>Amanirena</English>
 	</TEXT>
 	<TEXT>
-		<Tag>TXT_KEY_LEADER_AMINATU</Tag>
-		<English>Aminatu</English>
+		<Tag>TXT_KEY_LEADER_AMINAH</Tag>
+		<English>Aminah</English>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_LEADER_BILQIS</Tag>
@@ -494,8 +494,8 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<English>Tandi Williams</English>
 	</TEXT>
 	<TEXT>
-		<Tag>TXT_KEY_LEADER_AMINATU_2</Tag>
-		<English>Aminatu 2 (Prisbit)</English>
+		<Tag>TXT_KEY_LEADER_AMINAH_3</Tag>
+		<English>Aminah 3 (Prisbit)</English>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_LEADER_THEODORA_2</Tag>
@@ -628,5 +628,13 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 	<TEXT>
 		<Tag>TXT_KEY_LEADER_TEUTA</Tag>
 		<English>Teuta</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_AMINAH_2</Tag>
+		<English>Aminah 2 (Amina of Zazzua)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_GLORIANA_2</Tag>
+		<English>Gloriana 2</English>
 	</TEXT>
 </Civ4GameText>

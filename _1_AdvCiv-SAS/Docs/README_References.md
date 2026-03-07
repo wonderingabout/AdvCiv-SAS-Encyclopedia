@@ -51,11 +51,11 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 #### Female Human (Modpacks)
 
 - AdvCiv-SAS: Grace O'Malley
-- History Rewritten: Amanirena, Aminatu, Awiakta, Bilqis, Dido, Dihya, Isabella 1, Jingu, Mangammal, Atotoztli 2 (Nzinga), Salamasina, Wu Zetian, Shin Sawbu, Tomyris, Trung Sisters, Xoc, Yekaterina
+- History Rewritten: Amanirena, Aminah, Awiakta, Bilqis, Dido, Dihya, Isabella 1, Jingu, Mangammal, Atotoztli 2 (Nzinga), Salamasina, Wu Zetian, Shin Sawbu, Tomyris, Trung Sisters, Xoc, Yekaterina
 - RFC Dawn of Civilization: Benazir Bhutto, Isabella 2, Maria
 - Beyond the Game 2.43: Maria Theresa, Marpesia, Penthesilea, Theodora
 - Base 6.4: Jacquotte Delahaye, Atotoztli, Bilqis 2, Cixi, Cleopatra, Wilhelmina
-- Future Mod: Sarah Fedler (Blond Girl)
+- Future Mod: Sarah Fedler
 - Destiny: Cleopatra 2 (Darker 01), Joan of Arc, Mandukhai Khatun, Nefertiti, Seondeok 2
 - Rise of Mankind 2.91: Cleopatra 6, Dido 2, Joan of Arc 2
 - Middle-earth: Galadriel
@@ -73,7 +73,7 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 - thecowwarrior's Variety Mod v1.99r3: Aelia Pulcheria, Ishtar
 - Thomas' War v3.5a: Mary Stuart, Nefertiti 2, Victoria 6 (Maria Theresa 4)
 - Fallout-TTW: Salamasina 4 (Tandi Williams (Old)), Tandi Williams
-- Diversica 1.95: Aminatu 2 (Prisbit), Theodora 2
+- Diversica 1.95: Aminah 3 (Prisbit), Theodora 2
 - Dawn of a New Era 6.00: Tomyris 3 (Running Eagle)
 
 #### Female Non-Human (Modpacks)
@@ -138,6 +138,8 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 - kid anubis: Sheherazade 2 (Valeria) (https://forums.civfanatics.com/resources/valeria.14205/)
 - IgorS: Salamasina 5 (Xoc) (https://forums.civfanatics.com/resources/lh-lady-xoc.14181/)
 - ambrox62: Teuta (https://forums.civfanatics.com/resources/lh-teuta-illyrian-queen-from-231-to-228-bc.14033/)
+- Ekmek: Aminah 2 (Amina of Zazzua) (https://forums.civfanatics.com/resources/lh-amina-of-zazzua.11043/)
+- cfkane: Gloriana 2 (https://forums.civfanatics.com/resources/lh-gloriana-the-faerie-queene.11024/)
 
 #### Female Non-Human (CFC)
 
@@ -157,6 +159,7 @@ Among those we skipped, notably there is:
 - cfkane: Gloriana v.2 — likely duplicate (https://forums.civfanatics.com/resources/lh-gloriana-v-2.13774/)
 - Ekmek: Jingu of Japan v3 — likely duplicate (https://forums.civfanatics.com/resources/lh-jingu-of-japan-v3.13004/)
 - C.Roland: Blond Girl — likely duplicate (https://forums.civfanatics.com/resources/blond-girl.11265/)
+- Ekmek: Aminah — likely duplicate (https://forums.civfanatics.com/resources/lh-aminah.10726/)
 
 ## Credits
 
