@@ -868,7 +868,7 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<NoShaderNIF>Art/LeaderHeads/Quilago/isabella_noshader.nif</NoShaderNIF>
 			<BackgroundKFM>Art/LeaderHeads/Quilago/isabella_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
-		<!-- custom: added a button -->
+		<!-- custom: added a button; note: mansa_musa2.nif has a different hat but it is not working properly (floating hat when leaderhead's head moves), so this variant is not used) -->
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_SEONDEOK</Type>
 			<Button>Art/LeaderHeads/Seondeok/seondeok_64px_no_border.dds</Button>
@@ -877,7 +877,7 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<NoShaderNIF>Art/LeaderHeads/Seondeok/mansa_musa_noshader.nif</NoShaderNIF>
 			<BackgroundKFM>Art/LeaderHeads/Seondeok/mansa_musa_bg2.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
-		<!-- custom: during implementation we removed a mod-local cross-folder dependency for animation KFM to keep this leader modular; use base Civ4 Asoka KFM instead of another custom leader folder. Rationale: referencing another custom leader folder couples assets and breaks portability when folders are moved/removed. (GPT-5.3-Codex) -->
+<!-- custom: during implementation we removed a mod-local cross-folder dependency for animation KFM to keep this leader modular; use base Civ4 Asoka KFM instead of another custom leader folder. Rationale: referencing another custom leader folder couples assets and breaks portability when folders are moved/removed. (GPT-5.3-Codex) -->
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_SHIN_SAWBU_2</Type>
 			<Button>Art/LeaderHeads/Shin_Sawbu_2/LieuYe.dds</Button>
@@ -1399,6 +1399,23 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<KFM>Art/Leaderheads/Isabella_9/isabella.kfm</KFM>
 			<NoShaderNIF>Art/Leaderheads/Isabella_9/isabella_noshader.nif</NoShaderNIF>
 			<BackgroundKFM>Art/Leaderheads/Isabella_9/Isabella_BG.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_THEODORA_3</Type>
+			<Button>Art/LeaderHeads/Theodora_3/theodora_btn.dds</Button>
+			<NIF>Art/LeaderHeads/Theodora_3/isabella.nif</NIF>
+			<KFM>Art/LeaderHeads/Theodora_3/isabella.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Theodora_3/isabella_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Theodora_3/isabella_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<!-- custom: based on Isabella_0 (base Civ4) except we use the provided nocrwnizzy2.nif. The nif alone like in downloaded file causes her to have purple animation, so adding the base civ4 files manually in this leaderhead's folder as well -->
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_ISABELLA_12</Type>
+			<Button>,Art/Interface/LeaderHeads/Btn_LH_Spain_Isabella.dds,Art/Interface/Buttons/Actions_Builds_LeaderHeads_Specialists_Atlas.dds,1,12</Button>
+			<NIF>Art/LeaderHeads/Isabella_12/nocrwnizzy2.nif</NIF>
+			<KFM>Art/LeaderHeads/Isabella_12/isabella.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Isabella_12/nocrwnizzy2.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Isabella_12/Isabella_BG.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 	</LeaderheadArtInfos>
 </Civ4ArtDefines>
