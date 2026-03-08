@@ -50,6 +50,7 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 
 #### Female Human (Modpacks)
 
+- Base Civ4 (Advciv-SAS): Boudica 0, Catherine 0, Elizabeth 0, Hatshepsut 0, Isabella 0, Victoria 0
 - AdvCiv-SAS: Grace O'Malley
 - History Rewritten: Amanirena, Aminah, Awiakta, Bilqis, Dido, Dihya, Isabella 1, Jingu, Mangammal, Atotoztli 2 (Nzinga), Salamasina, Wu Zetian, Shin Sawbu, Tomyris, Trung Sisters, Xoc, Yekaterina
 - RFC Dawn of Civilization: Benazir Bhutto, Isabella 2, Maria

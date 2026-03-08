@@ -184,6 +184,19 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			</Leaders>
 		</CivilizationInfo>
 		<CivilizationInfo>
+			<Type>CIVILIZATION_AZTEC</Type>
+			<Description>TXT_KEY_CIV_AZTEC_DESC</Description>
+			<ArtDefineTag>ART_DEF_CIVILIZATION_AZTEC</ArtDefineTag>
+			<Leaders>
+				<Leader><LeaderName>LEADER_BOUDICA_0</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_CATHERINE_0</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_ELIZABETH_0</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_HATSHEPSUT_0</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_ISABELLA_0</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_VICTORIA_0</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+			</Leaders>
+		</CivilizationInfo>
+		<CivilizationInfo>
 			<Type>CIVILIZATION_MINOR</Type>
 			<Description>TXT_KEY_CIV_MINOR_DESC</Description>
 			<ArtDefineTag>ART_DEF_CIVILIZATION_MINOR</ArtDefineTag>
