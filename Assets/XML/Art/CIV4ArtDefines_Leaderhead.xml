@@ -272,12 +272,12 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<BackgroundKFM>Art/LeaderHeads/Wilhelmina/elizabeth_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
-			<Type>ART_DEF_LEADER_SARAH_FEDLER</Type>
-			<Button>Art/LeaderHeads/Sarah_Fedler/blondbtn.dds</Button>
-			<NIF>Art/LeaderHeads/Sarah_Fedler/Eli_Shaded.nif</NIF>
+			<Type>ART_DEF_LEADER_BLONDE_GIRL</Type>
+			<Button>Art/LeaderHeads/Blonde_Girl/blondbtn.dds</Button>
+			<NIF>Art/LeaderHeads/Blonde_Girl/Eli_Shaded.nif</NIF>
 			<KFM>Art/LeaderHeads/Elizabeth/elizabeth.kfm</KFM>
-			<NoShaderNIF>Art/LeaderHeads/Sarah_Fedler/Eli_NoShader.nif</NoShaderNIF>
-			<BackgroundKFM>Art/LeaderHeads/Sarah_Fedler/fdr_bg.kfm</BackgroundKFM>
+			<NoShaderNIF>Art/LeaderHeads/Blonde_Girl/Eli_NoShader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Blonde_Girl/fdr_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<!-- custom: during implementation we removed a mod-local cross-folder dependency for animation KFM to keep this leader modular; use base Civ4 Isabella KFM instead of another custom leader folder. Rationale: referencing another custom leader folder couples assets and breaks portability when folders are moved/removed. (GPT-5.3-Codex) -->
 		<LeaderheadArtInfo>
@@ -402,12 +402,12 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		</LeaderheadArtInfo>
 		<!-- custom: fixed purple teeth by adding missing texture file Art/LeaderHeads/Ranavalona/hatshepsut_diff.dds required by Wu.nif. (GPT-5.3-Codex) -->
 		<LeaderheadArtInfo>
-			<Type>ART_DEF_LEADER_RANAVALONA</Type>
-			<Button>Art/LeaderHeads/Ranavalona/BtnWu.dds</Button>
-			<NIF>Art/LeaderHeads/Ranavalona/Wu.nif</NIF>
-			<KFM>Art/LeaderHeads/Ranavalona/hatshepsut.kfm</KFM>
-			<NoShaderNIF>Art/LeaderHeads/Ranavalona/Wu.nif</NoShaderNIF>
-			<BackgroundKFM>Art/LeaderHeads/Ranavalona/hatshepsut_BG.kfm</BackgroundKFM>
+			<Type>ART_DEF_LEADER_SALAMASINA_4</Type>
+			<Button>Art/LeaderHeads/Salamasina_4/BtnWu.dds</Button>
+			<NIF>Art/LeaderHeads/Salamasina_4/Wu.nif</NIF>
+			<KFM>Art/LeaderHeads/Salamasina_4/hatshepsut.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Salamasina_4/Wu.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Salamasina_4/hatshepsut_BG.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_SALAMASINA_2</Type>
@@ -942,14 +942,14 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<NoShaderNIF>Art/LeaderHeads/Victoria_6/victoria_noshader2.nif</NoShaderNIF>
 			<BackgroundKFM>Art/LeaderHeads/Victoria_6/victoria_BG.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
-		<!-- custom: added a button -->
+		<!-- custom: noticed while replacing it with brandi that the noshadernif is a new usable leader so using it instead, also added a button; as for the nif version found it in as of now the Fury Road mod so using their version of it (looks more reliable or easier to set up and already exists there unlike in the mod this came from where it was hidden under an old folder and unused) -->
 		<LeaderheadArtInfo>
-			<Type>ART_DEF_LEADER_SALAMASINA_4</Type>
-			<Button>Art/LeaderHeads/Salamasina_4/salamasina_4_64px_no_border.dds</Button>
-			<NIF>Art/LeaderHeads/Salamasina_4/hatshepsut.nif</NIF>
-			<KFM>Art/LeaderHeads/Salamasina_4/hatshepsut.kfm</KFM>
-			<NoShaderNIF>Art/LeaderHeads/Salamasina_4/hatshepsut_noshader.nif</NoShaderNIF>
-			<BackgroundKFM>Art/LeaderHeads/Salamasina_4/shaka_bg.kfm</BackgroundKFM>
+			<Type>ART_DEF_LEADER_HATSHEPSUT_1</Type>
+			<Button>Art/LeaderHeads/Hatshepsut_1/hatshepsut_1_64px_no_border.dds</Button>
+			<NIF>Art/LeaderHeads/Hatshepsut_1/hatshepsut_noshader.nif</NIF>
+			<KFM>Art/LeaderHeads/Hatshepsut_1/hatshepsut.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Hatshepsut_1/hatshepsut_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Hatshepsut_1/shaka_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<!-- custom: purple teeth issue reproduced from Fallout-TTW source as well (not introduced by this mod). Root causes found: (1) NoShaderNIF pointed to missing hatshepsut_noshader.nif, and (2) Tandi.nif references Boudica_DIFF/ENV/NORM/SPEC/EMSK textures that were absent in the Tandi folder. Fix: set NoShaderNIF to local Tandi.nif and add the 5 missing Boudica_* textures into Art/LeaderHeads/Tandi_Williams. (GPT-5.3-Codex) -->
 		<LeaderheadArtInfo>
@@ -1237,11 +1237,11 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_SALAMASINA_5</Type>
-			<Button>Art/LeaderHeads/Xoc_2/Xoc.dds</Button>
-			<NIF>Art/LeaderHeads/Xoc_2/hatshepsut.nif</NIF>
-			<KFM>Art/LeaderHeads/Xoc_2/hatshepsut.kfm</KFM>
-			<NoShaderNIF>Art/LeaderHeads/Xoc_2/hatshepsut.nif</NoShaderNIF>
-			<BackgroundKFM>Art/LeaderHeads/Xoc_2/mao_tse_tung_bg.kfm</BackgroundKFM>
+			<Button>Art/LeaderHeads/Salamasina_5/Xoc.dds</Button>
+			<NIF>Art/LeaderHeads/Salamasina_5/hatshepsut.nif</NIF>
+			<KFM>Art/LeaderHeads/Salamasina_5/hatshepsut.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Salamasina_5/hatshepsut.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Salamasina_5/mao_tse_tung_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_TEUTA</Type>
@@ -1266,6 +1266,57 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<KFM>Art/LeaderHeads/Gloriana_2/elizabeth.kfm</KFM>
 			<NoShaderNIF>Art/LeaderHeads/Gloriana_2/elizabeth_noshader.nif</NoShaderNIF>
 			<BackgroundKFM>Art/LeaderHeads/Gloriana_2/elizabeth_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<!-- custom: this leader showed a purple background in Sevopedia (not in Fury Road mod); same issue reproduced with the
+		downloaded CFC leaderhead. boudica_bg.nif references Boudica_FOG.dds and Boudica_SKY.dds that were not present in this folder. As per Readme.txt (from the downloaded CFC since Fury Road Martha didn't have it it seems), Martha is based on
+		Anne Bonny, which was based on Boudica. Minimal fix: import only Boudica_FOG.dds and Boudica_SKY.dds from the Anne Bonny in this mod which fixes the purple background. (GPT-5.2-Codex) -->
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_ANNE_BONNY_2</Type>
+			<Button>Art/LeaderHeads/Anne_Bonny_2/Aelwyn_Button.dds</Button>
+			<NIF>Art/LeaderHeads/Anne_Bonny_2/Boudica.nif</NIF>
+			<KFM>Art/LeaderHeads/Anne_Bonny_2/boudica.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Anne_Bonny_2/Boudica_Nonshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Anne_Bonny_2/boudica_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_SALAMASINA_6</Type>
+			<Button>Art/LeaderHeads/Salamasina_6/salamasina_6_64px_no_border.dds</Button>
+			<NIF>Art/LeaderHeads/Salamasina_6/hatshepsut.nif</NIF>
+			<KFM>Art/LeaderHeads/Salamasina_6/hatshepsut.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Salamasina_6/hatshepsut_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Salamasina_6/saladin_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_BLONDE_GIRL_2</Type>
+			<Button>Art/LeaderHeads/Blonde_Girl_2/blonde_girl_2_64px_no_border.dds</Button>
+			<NIF>Art/LeaderHeads/Blonde_Girl_2/eli_shaded.nif</NIF>
+			<KFM>Art/LeaderHeads/Blonde_Girl_2/elizabeth.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Blonde_Girl_2/eli_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Blonde_Girl_2/elizabeth_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_JOAN_OF_ARC_3</Type>
+			<Button>Art/LeaderHeads/Joan_Of_Arc_3/joan_of_arc_3_64px_no_border.dds</Button>
+			<NIF>Art/LeaderHeads/Joan_Of_Arc_3/joanofarc.nif</NIF>
+			<KFM>Art/LeaderHeads/Joan_Of_Arc_3/catherine.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Joan_Of_Arc_3/joanofarc_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Joan_Of_Arc_3/catherine_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_CLEOPATRA_9</Type>
+			<Button>Art/LeaderHeads/Cleopatra_9/Cleo_button.dds</Button>
+			<NIF>Art/LeaderHeads/Cleopatra_9/hatshepsut.nif</NIF>
+			<KFM>Art/LeaderHeads/Cleopatra_9/hatshepsut.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Cleopatra_9/hatshepsut.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Cleopatra_9/hatshepsut_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_TEUTA_2</Type>
+			<Button>Art/LeaderHeads/Teuta_2/teuta_2_64px_no_border.dds</Button>
+			<NIF>Art/LeaderHeads/Teuta_2/teuta.nif</NIF>
+			<KFM>Art/LeaderHeads/Teuta_2/isabella.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Teuta_2/teuta.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Teuta_2/isabella_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 	</LeaderheadArtInfos>
 </Civ4ArtDefines>

@@ -153,8 +153,8 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<English>Wilhelmina</English>
 	</TEXT>
 	<TEXT>
-		<Tag>TXT_KEY_LEADER_SARAH_FEDLER</Tag>
-		<English>Sarah Fedler</English>
+		<Tag>TXT_KEY_LEADER_BLONDE_GIRL</Tag>
+		<English>Blonde Girl (Sarah Fedler)</English>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_LEADER_CLEOPATRA_2</Tag>
@@ -218,8 +218,8 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 	</TEXT>
 	<!-- custom: replaced with a name that better fits with the help of Claude code Sonnet 4.6 thanks. Not perfect but better. -->
 	<TEXT>
-		<Tag>TXT_KEY_LEADER_RANAVALONA</Tag>
-		<English>Ranavalona</English>
+		<Tag>TXT_KEY_LEADER_SALAMASINA_4</Tag>
+		<English>Salamasina 4 (Ranavalona)</English>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_LEADER_SALAMASINA_2</Tag>
@@ -486,8 +486,8 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<English>Victoria 6 (Maria Theresa 4)</English>
 	</TEXT>
 	<TEXT>
-		<Tag>TXT_KEY_LEADER_SALAMASINA_4</Tag>
-		<English>Salamasina 4 (Tandi Williams (Old))</English>
+		<Tag>TXT_KEY_LEADER_HATSHEPSUT_1</Tag>
+		<English>Hatshepsut 1 (Tandi Williams (Old) (NoShaderNIF))</English>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_LEADER_TANDI_WILLIAMS</Tag>
@@ -636,5 +636,29 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 	<TEXT>
 		<Tag>TXT_KEY_LEADER_GLORIANA_2</Tag>
 		<English>Gloriana 2</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ANNE_BONNY_2</Tag>
+		<English>Anne Bonny 2 (Martha (Aelwyn))</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_SALAMASINA_6</Tag>
+		<English>Salamasina 6 (Brandi)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_BLONDE_GIRL_2</Tag>
+		<English>Blonde Girl 2 (Debbie)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_JOAN_OF_ARC_3</Tag>
+		<English>Joan of Arc 3 (Debbie (Old))</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_CLEOPATRA_9</Tag>
+		<English>Cleopatra 9 (Ekmek)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_TEUTA_2</Tag>
+		<English>Teuta 2 (GarretSidzaka)</English>
 	</TEXT>
 </Civ4GameText>

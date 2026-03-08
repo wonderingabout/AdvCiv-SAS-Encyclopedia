@@ -55,11 +55,11 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 - RFC Dawn of Civilization: Benazir Bhutto, Isabella 2, Maria
 - Beyond the Game 2.43: Maria Theresa, Marpesia, Penthesilea, Theodora
 - Base 6.4: Jacquotte Delahaye, Atotoztli, Bilqis 2, Cixi, Cleopatra, Wilhelmina
-- Future Mod: Sarah Fedler
+- Future Mod: Blonde Girl (Sarah Fedler)
 - Destiny: Cleopatra 2 (Darker 01), Joan of Arc, Mandukhai Khatun, Nefertiti, Seondeok 2
 - Rise of Mankind 2.91: Cleopatra 6, Dido 2, Joan of Arc 2
 - Middle-earth: Galadriel
-- Civ Gold 5.2: Elizabeth 1 (Michaelle Jean), Elizabeth 2 (Makeda), Elizabeth 3 (Teuta), Helen Clark, Isabella 3 (Margrete I), Isabella 4 (Trung Trac), Ranavalona, Salamasina 2, Thanadelthur, Victoria 1 (Benazir Bhutto), Victoria 2 (Hasina), Yulia Tymoshenko, Zenobia
+- Civ Gold 5.2: Elizabeth 1 (Michaelle Jean), Elizabeth 2 (Makeda), Elizabeth 3 (Teuta), Helen Clark, Isabella 3 (Margrete I), Isabella 4 (Trung Trac), Salamasina 2, Salamasina 4 (Ranavalona), Thanadelthur, Victoria 1 (Benazir Bhutto), Victoria 2 (Hasina), Yulia Tymoshenko, Zenobia
 - Fictionalization beta: Sheherazade, Wu Qinghua
 - AdvCiv Plus: Ana Nzinga, Boudica 1, Isabella 5, Tamar, Victoria 3 (Maria Theresa)
 - PSYX's Modern world 4: Catherine 1 (Mary Stuart), Victoria 5 (Maria Theresa 3)
@@ -72,9 +72,10 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 - thecowwarrior's Pirates Mod: Anne Bonny, Jacquotte Delahaye 2 (no eyepatch)
 - thecowwarrior's Variety Mod v1.99r3: Aelia Pulcheria, Ishtar
 - Thomas' War v3.5a: Mary Stuart, Nefertiti 2, Victoria 6 (Maria Theresa 4)
-- Fallout-TTW: Salamasina 4 (Tandi Williams (Old)), Tandi Williams
+- Fallout-TTW: Hatshepsut 1 (Tandi Williams (Old) (NoShaderNIF)), Tandi Williams
 - Diversica 1.95: Aminah 3 (Prisbit), Theodora 2
 - Dawn of a New Era 6.00: Tomyris 3 (Running Eagle)
+- Fury Road v11: Anne Bonny 2 (Martha (Aelwyn)), Blonde Girl 2 (Debbie), Joan of Arc 3 (Debbie (Old)), Salamasina 6 (Brandi)
 
 #### Female Non-Human (Modpacks)
 
@@ -140,6 +141,9 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 - ambrox62: Teuta (https://forums.civfanatics.com/resources/lh-teuta-illyrian-queen-from-231-to-228-bc.14033/)
 - Ekmek: Aminah 2 (Amina of Zazzua) (https://forums.civfanatics.com/resources/lh-amina-of-zazzua.11043/)
 - cfkane: Gloriana 2 (https://forums.civfanatics.com/resources/lh-gloriana-the-faerie-queene.11024/)
+- Ekmek: Cleopatra 9 (https://forums.civfanatics.com/resources/lh-cleopatra.8664/)
+- GarretSidzaka: Teuta 2 (https://forums.civfanatics.com/resources/queen-teuta-of-illyria.7776/)
+- Refar: Fury Road Aelwyn — Anne Bonny 2 (Martha (Aelwyn))'s Aelwyn_Button.dds, Readme.txt (and Aelwyn_Picture.jpg) (https://forums.civfanatics.com/resources/fury-road-aelwyn.10100/)
 
 #### Female Non-Human (CFC)
 
@@ -160,6 +164,9 @@ Among those we skipped, notably there is:
 - Ekmek: Jingu of Japan v3 — likely duplicate (https://forums.civfanatics.com/resources/lh-jingu-of-japan-v3.13004/)
 - C.Roland: Blond Girl — likely duplicate (https://forums.civfanatics.com/resources/blond-girl.11265/)
 - Ekmek: Aminah — likely duplicate (https://forums.civfanatics.com/resources/lh-aminah.10726/)
+- Ekmek: Zenobia v2 — likely duplicate (https://forums.civfanatics.com/resources/lh-zenobia-v2.9979/)
+- mourndraken: Theodora of Byzantium — likely duplicate (https://forums.civfanatics.com/resources/theodora-of-byzantium.9055/)
+- Zerver: Shaherezade Final — likely duplicate (https://forums.civfanatics.com/resources/shaherezade-final.8696/)
 
 ## Credits
 
