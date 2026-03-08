@@ -1121,12 +1121,12 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		</LeaderheadArtInfo>
 		<!-- custom: note: the fix described in https://forums.civfanatics.com/threads/saibotliehs-leaderhead-collection.378346/page-22 by SaibotLieh is not applied here; i tried but didn't work so provided the base files in the thread that remain to be fixed (jewel not colored) and that otherwise seems functional; also added a button -->
 		<LeaderheadArtInfo>
-			<Type>ART_DEF_LEADER_ISABELLA_9</Type>
-			<Button>Art/LeaderHeads/Indian_Empress/indian_empress_64px_no_border.dds</Button>
-			<NIF>Art/LeaderHeads/Indian_Empress/nocrwnizzy2.nif</NIF>
-			<KFM>Art/LeaderHeads/Indian_Empress/isabella.kfm</KFM>
-			<NoShaderNIF>Art/LeaderHeads/Indian_Empress/nocrwnizzy2.nif</NoShaderNIF>
-			<BackgroundKFM>Art/LeaderHeads/Indian_Empress/isabella_bg2.kfm</BackgroundKFM>
+			<Type>ART_DEF_LEADER_ISABELLA_11</Type>
+			<Button>Art/LeaderHeads/Isabella_11/indian_empress_64px_no_border.dds</Button>
+			<NIF>Art/LeaderHeads/Isabella_11/nocrwnizzy2.nif</NIF>
+			<KFM>Art/LeaderHeads/Isabella_11/isabella.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Isabella_11/nocrwnizzy2.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Isabella_11/isabella_bg2.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<!-- custom: Cleopatra 3/4/5 are modular recolor variants built from Cleopatra_2 as base setup (same NIF/KFM/background wiring), then per-folder texture swap on the two diffuse maps used by indoor_isabella.nif: Cleo00_DIFF + Cleo01_DIFF. Mapping applied: Cleopatra_3 -> *_02, Cleopatra_4 -> *_03, Cleopatra_5 -> *_04. (GPT-5.3-Codex) -->
 		<LeaderheadArtInfo>
@@ -1294,6 +1294,7 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<NoShaderNIF>Art/LeaderHeads/Blonde_Girl_2/eli_noshader.nif</NoShaderNIF>
 			<BackgroundKFM>Art/LeaderHeads/Blonde_Girl_2/elizabeth_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
+		<!-- custom: btn_lh_france_joanofarc.dds from MarnzMod 1.8c is included in this leaderhead's folder for exhaustiveness — it has a different background than the current button but is not currently used. See README_References.md. (Claude code Sonnet 4.6) -->
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_JOAN_OF_ARC_3</Type>
 			<Button>Art/LeaderHeads/Joan_Of_Arc_3/joan_of_arc_3_64px_no_border.dds</Button>
@@ -1365,6 +1366,39 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<KFM>Art/LeaderHeads/Victoria/victoria.kfm</KFM>
 			<NoShaderNIF>Art/LeaderHeads/Victoria/victoria_noshader.nif</NoShaderNIF>
 			<BackgroundKFM>Art/LeaderHeads/Victoria/Victoria_BG.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_ISABELLA_10</Type>
+			<Button>Art/LeaderHeads/Isabella_10/Dido.dds</Button>
+			<NIF>Art/LeaderHeads/Isabella_10/nocrwnizzy2.nif</NIF>
+			<KFM>Art/LeaderHeads/Isabella_10/isabella.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Isabella_10/isabella_nonshader.dds</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Isabella_10/isabella_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<!-- custom: using the noshader nif version because it looks like it has a different art -->
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_CATHERINE_2</Type>
+			<Button>Art/LeaderHeads/Catherine_2/mary_stuart.dds</Button>
+			<NIF>Art/LeaderHeads/Catherine_2/catherine_noshader.nif</NIF>
+			<KFM>Art/LeaderHeads/Catherine_2/catherine.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Catherine_2/catherine_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Catherine_2/catherine_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_HATSHEPSUT_2</Type>
+			<Button>Art/LeaderHeads/Hatshepsut_2/salamasina.dds</Button>
+			<NIF>Art/LeaderHeads/Hatshepsut_2/hatshepsut.nif</NIF>
+			<KFM>Art/LeaderHeads/Hatshepsut_2/hatshepsut.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Hatshepsut_2/hatshepsut_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Hatshepsut_2/hatshepsut_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_ISABELLA_9</Type>
+			<Button>Art/Leaderheads/Isabella_9/Theodora.dds</Button>
+			<NIF>Art/Leaderheads/Isabella_9/isabella.nif</NIF>
+			<KFM>Art/Leaderheads/Isabella_9/isabella.kfm</KFM>
+			<NoShaderNIF>Art/Leaderheads/Isabella_9/isabella_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/Leaderheads/Isabella_9/Isabella_BG.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 	</LeaderheadArtInfos>
 </Civ4ArtDefines>

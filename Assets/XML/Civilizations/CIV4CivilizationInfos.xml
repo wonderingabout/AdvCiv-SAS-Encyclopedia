@@ -146,7 +146,7 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 				<Leader><LeaderName>LEADER_FREYDIS_EIRIKSDOTTIR</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_BOUDICA_2</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_VELETA</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_ISABELLA_9</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_ISABELLA_11</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_CLEOPATRA_3</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_CLEOPATRA_4</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_CLEOPATRA_5</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
@@ -168,6 +168,10 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 				<Leader><LeaderName>LEADER_JOAN_OF_ARC_3</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_CLEOPATRA_9</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_TEUTA_2</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_ISABELLA_10</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_CATHERINE_2</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_HATSHEPSUT_2</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_ISABELLA_9</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 			</Leaders>
 		</CivilizationInfo>
 		<CivilizationInfo>

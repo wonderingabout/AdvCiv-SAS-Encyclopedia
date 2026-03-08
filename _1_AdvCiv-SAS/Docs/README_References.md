@@ -77,6 +77,7 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 - Diversica 1.95: Aminah 3 (Prisbit), Theodora 2
 - Dawn of a New Era 6.00: Tomyris 3 (Running Eagle)
 - Fury Road v11: Anne Bonny 2 (Martha (Aelwyn)), Blonde Girl 2 (Debbie), Joan of Arc 3 (Debbie (Old)), Salamasina 6 (Brandi)
+- MarnzMod 1.8c: Catherine 2 (Mary Stuart 2 (NoShaderNIF)), Hatshepsut 2 (Salamasina), Isabella 9 (Theodora), Isabella 10 (Dido), Joan of Arc 3 (btn_lh_france_joanofarc.dds, different background, not currently used)
 
 #### Female Non-Human (Modpacks)
 
@@ -129,7 +130,7 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 - kid anubis: Freydís Eiríksdóttir (https://forums.civfanatics.com/resources/lh-freyd%C3%ADs-eir%C3%ADksd%C3%B3ttir-female-viking.14925/)
 - Krieger66: Boudica 2 (https://forums.civfanatics.com/resources/better-boudica-maybe.14849/)
 - Spillsandstains: Veleta (https://forums.civfanatics.com/resources/veleta.14841/)
-- Civciv5 (SaibotLieh fix not applied): Isabella 9 (Indian Empress) (https://forums.civfanatics.com/threads/saibotliehs-leaderhead-collection.378346/page-22)
+- Civciv5 (SaibotLieh fix not applied): Isabella 11 (Indian Empress) (https://forums.civfanatics.com/threads/saibotliehs-leaderhead-collection.378346/page-22)
 - SaibotLieh (request by Civciv5): Cleopatra 3 (Darker 02), Cleopatra 4 (Darker 03), Cleopatra 5 (Darker 04) (https://forums.civfanatics.com/threads/saibotliehs-leaderhead-collection.378346/page-19)
 - SaibotLieh (sun78945612's question): Cockacoeske 2 (No Warpaint) (https://forums.civfanatics.com/threads/saibotliehs-leaderhead-collection.378346/page-18)
 - SaibotLieh (Lemon Merchant's question): Grace O'Malley 2 (https://forums.civfanatics.com/threads/saibotliehs-leaderhead-collection.378346/page-17)
