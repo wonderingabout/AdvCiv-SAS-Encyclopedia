@@ -7,7 +7,8 @@
 [NIF Gallery Sources](/_1_AdvCiv-SAS/Docs/README_References.md#nif-gallery-sources)  
 &emsp;[Modpacks](/_1_AdvCiv-SAS/Docs/README_References.md#modpacks)  
 &emsp;&emsp;[Female Human (Modpacks)](/_1_AdvCiv-SAS/Docs/README_References.md#female-human-modpacks)  
-&emsp;&emsp;[Female Non-Human (Modpacks)](/_1_AdvCiv-SAS/Docs/README_References.md#female-non-human-modpacks)  
+&emsp;&emsp;[Female Non-Human (Modpacks)](/_1_AdvCiv-SAS/Docs/README_References.md#female-non-human-modpacks)
+&emsp;&emsp;[Skipped (Modpacks)](/_1_AdvCiv-SAS/Docs/README_References.md#skipped-modpacks)
 &emsp;[CFC](/_1_AdvCiv-SAS/Docs/README_References.md#cfc)  
 &emsp;&emsp;[Female Human (CFC)](/_1_AdvCiv-SAS/Docs/README_References.md#female-human-cfc)  
 &emsp;&emsp;[Female Non-Human (CFC)](/_1_AdvCiv-SAS/Docs/README_References.md#female-non-human-cfc)  
@@ -53,7 +54,7 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 - Base Civ4 (Advciv-SAS): Boudica 0, Catherine 0, Elizabeth 0, Hatshepsut 0, Isabella 0, Victoria 0
 - AdvCiv-SAS: Grace O'Malley
 - History Rewritten: Amanirena, Aminah, Awiakta, Bilqis, Dido, Dihya, Isabella 1, Jingu, Mangammal, Atotoztli 2 (Nzinga), Salamasina, Wu Zetian, Shin Sawbu, Tomyris, Trung Sisters, Xoc, Yekaterina
-- RFC Dawn of Civilization: Benazir Bhutto, Isabella 2, Maria
+- RFC Dawn of Civilization: Benazir Bhutto, Isabella 2, Maria, Maria 2 (no ribbon) (further modified in AdvCiv-SAS-NIF-Gallery)
 - Beyond the Game 2.43: Maria Theresa, Marpesia, Penthesilea, Theodora
 - Base 6.4: Jacquotte Delahaye, Atotoztli, Bilqis 2, Cixi, Cleopatra, Wilhelmina
 - Future Mod: Blonde Girl (Sarah Fedler)
@@ -79,6 +80,10 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 - Fury Road v11: Anne Bonny 2 (Martha (Aelwyn)), Blonde Girl 2 (Debbie), Joan of Arc 4 (Debbie (Old)), Salamasina 6 (Brandi)
 - MarnzMod 1.8c: Catherine 2 (Mary Stuart 2 (NoShaderNIF)), Hatshepsut 2 (Salamasina), Isabella 9 (Theodora), Isabella 10 (Dido), Joan of Arc 4 (btn_lh_france_joanofarc.dds, different background, not currently used)
 - Quot Capita Majesty: Atotoztli 3 (atotoztli.nif), Dido 12 (almost naked), Nefertiti (Nefertiti.dds btn), Nefertiti 3 (Nefertiti.dds btn)
+
+#### Skipped (Modpacks)
+
+- Quot Capita v8.1: Nefertiti — similar to existing Nefertiti variants, skipped (not 100% sure i actually did it, to recheck ideally)
 
 #### Female Non-Human (Modpacks)
 
@@ -117,11 +122,11 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 - SaibotLieh: Quilago, Quilago 2 (isabella_noshader.nif, background from Shin Sawbu 3) (https://forums.civfanatics.com/resources/lh-quilago.17685/)
 - Civciv5: Seondeok (https://forums.civfanatics.com/resources/queen-seondeok-of-silla.17724/)
 - Civciv5: Shin Sawbu 3 (https://forums.civfanatics.com/resources/shin-sawbu.18142/)
-- SaibotLieh: Evita Peron 2 (Bunny Girl, lounge background by <a href="https://pixabay.com/users/stokpic-692575/?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=601303">stokpic</a> from <a href="https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=601303">Pixabay</a> (https://pixabay.com/photos/bar-interior-luxury-design-601303/)) (https://forums.civfanatics.com/resources/lh-bunny-girl.16973/)
-- SaibotLieh (Lemon Merchant's post): Evita Peron 3 (Bunny Girl 2 (Brunette), same lounge background as Evita Peron 2), Evita Peron 4 (Bunny Girl 3 (catherine_noshader.nif), casino background by <a href="https://pixabay.com/users/theandrasbarta-2004841/?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=1264078">TheAndrasBarta</a> from <a href="https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=1264078">Pixabay</a> (https://pixabay.com/photos/roulette-casino-black-red-dealer-1264078/)) (https://forums.civfanatics.com/threads/saibotliehs-leaderhead-collection.378346/page-13)
+- SaibotLieh: Evita Peron 2 (Bunny Girl) (https://forums.civfanatics.com/resources/lh-bunny-girl.16973/)
+- SaibotLieh (Lemon Merchant's post): Evita Peron 3 (Bunny Girl 2 (Brunette), lounge background by <a href="https://pixabay.com/users/stokpic-692575/?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=601303">stokpic</a> from <a href="https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=601303">Pixabay</a> (https://pixabay.com/photos/bar-interior-luxury-design-601303/)), Evita Peron 4 (Bunny Girl 3 (catherine_noshader.nif), casino background by <a href="https://pixabay.com/users/theandrasbarta-2004841/?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=1264078">TheAndrasBarta</a> from <a href="https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=1264078">Pixabay</a> (https://pixabay.com/photos/roulette-casino-black-red-dealer-1264078/)) (https://forums.civfanatics.com/threads/saibotliehs-leaderhead-collection.378346/page-13)
 - melcher kürzer: Maria Eleonora 2 (https://forums.civfanatics.com/resources/lh-maria-elenora.16487/)
 - SaibotLieh: Miss Santa (https://forums.civfanatics.com/resources/lh-miss-santa.16228/)
-- smeagolheart: Gunnhild, Maria 2 (Gunnhild (elizabeth_noshader.nif), background from Blond Girl 2 (Debbie)) (https://forums.civfanatics.com/resources/lh-gunnhild.16057/)
+- smeagolheart: Gunnhild, Maria 3 (Gunnhild (elizabeth_noshader.nif), background from Blond Girl 2 (Debbie)) (https://forums.civfanatics.com/resources/lh-gunnhild.16057/)
 - smeagolheart: Dido 10 (Hippolyta), Dido 11 (Hippolyta - Silver Hair variant from included DidoHairSilver.dds) (https://forums.civfanatics.com/resources/lh-hippolyta.16046/)
 - SaibotLieh: Tali'Zorah (https://forums.civfanatics.com/resources/lh-talizorah.15125/)
 - Axel: Macha Mong Ruad (https://forums.civfanatics.com/resources/lh-bgs-macha-mong-ruad-queen-of-gaelach.15106/)

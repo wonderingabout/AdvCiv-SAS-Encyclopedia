@@ -190,6 +190,15 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<NoShaderNIF>Art/LeaderHeads/Maria/elizabeth_noshader.nif</NoShaderNIF>
 			<BackgroundKFM>Art/LeaderHeads/Maria/elizabeth_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
+		<!-- custom: modified in AdvCiv-SAS-NIF-Gallery: removed the ruban -->
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_MARIA_2</Type>
+			<Button>Art/LeaderHeads/Maria_2/maria_ii.dds</Button>
+			<NIF>Art/LeaderHeads/Maria_2/elizabeth.nif</NIF>
+			<KFM>Art/LeaderHeads/elizabeth/elizabeth.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Maria_2/elizabeth_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Maria_2/elizabeth_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_MARIA_THERESA</Type>
 			<Button>Art/LeaderHeads/Maria_Theresa/MariaTeresa.dds</Button>
@@ -1056,7 +1065,6 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<NoShaderNIF>Art/LeaderHeads/Theodora_2/isabella_noshader.nif</NoShaderNIF>
 			<BackgroundKFM>Art/LeaderHeads/Theodora_2/isabella_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
-		<!-- custom: background replaced with a lounge image for thematic cohesion with the bunny girl aesthetic (Claude code Sonnet 4.6) -->
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_EVITA_PERON_3</Type>
 			<Button>Art/LeaderHeads/Evita_Peron_3/bunnygirl.dds</Button>
@@ -1090,14 +1098,14 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<NoShaderNIF>Art/LeaderHeads/Gunnhild/elizabeth_noshader.nif</NoShaderNIF>
 			<BackgroundKFM>Art/LeaderHeads/Gunnhild/alexander_BG.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
-		<!-- custom: Maria 2 reuses Gunnhild assets with elizabeth_noshader.nif, kept in a separate folder for modularity; background (alexander_BG.kfm and related files) taken from Blonde Girl 2 (Claude code Sonnet 4.6); also added a button -->
+		<!-- custom: Maria 2 reuses Gunnhild assets with elizabeth_noshader.nif, kept in a separate folder for modularity; background (alexander_BG.kfm and related files) taken from Blonde Girl 2 (Claude code Sonnet 4.6); also replaced the green ribbon with a darker more fitting with the vibe sword harness (AI-generated with the help of GPT-5.4-Thinking thanks); also added a button -->
 		<LeaderheadArtInfo>
-			<Type>ART_DEF_LEADER_MARIA_2</Type>
-			<Button>Art/LeaderHeads/Maria_2/maria_2_64px_no_border.dds</Button>
-			<NIF>Art/LeaderHeads/Maria_2/elizabeth_noshader.nif</NIF>
+			<Type>ART_DEF_LEADER_MARIA_3</Type>
+			<Button>Art/LeaderHeads/Maria_3/maria_2_64px_no_border.dds</Button>
+			<NIF>Art/LeaderHeads/Maria_3/elizabeth_noshader.nif</NIF>
 			<KFM>Art/LeaderHeads/Elizabeth/elizabeth.kfm</KFM>
-			<NoShaderNIF>Art/LeaderHeads/Maria_2/elizabeth_noshader.nif</NoShaderNIF>
-			<BackgroundKFM>Art/LeaderHeads/Maria_2/alexander_BG.kfm</BackgroundKFM>
+			<NoShaderNIF>Art/LeaderHeads/Maria_3/elizabeth_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Maria_3/alexander_BG.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_DIDO_10</Type>
@@ -1278,7 +1286,7 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<NoShaderNIF>Art/LeaderHeads/Zelda_3/elizabeth_noshader.nif</NoShaderNIF>
 			<BackgroundKFM>Art/LeaderHeads/Zelda_3/elizabeth_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
-		<!-- custom: background replaced with a lounge image for thematic cohesion with the bunny girl aesthetic (Claude code Sonnet 4.6) -->
+		<!-- custom: background replaced with a lounge image for thematic cohesion with the bunny girl brunette aesthetic (Claude code Sonnet 4.6) -->
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_EVITA_PERON_4</Type>
 			<Button>Art/LeaderHeads/Evita_Peron_4/bunnygirl.dds</Button>

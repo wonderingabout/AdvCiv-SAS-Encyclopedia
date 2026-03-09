@@ -112,6 +112,10 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<English>Maria</English>
 	</TEXT>
 	<TEXT>
+		<Tag>TXT_KEY_LEADER_MARIA_2</Tag>
+		<English>Maria 2 (no ribbon)</English>
+	</TEXT>
+	<TEXT>
 		<Tag>TXT_KEY_LEADER_MARIA_THERESA</Tag>
 		<English>Maria Theresa</English>
 	</TEXT>
@@ -566,8 +570,8 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<English>Gunnhild</English>
 	</TEXT>
 	<TEXT>
-		<Tag>TXT_KEY_LEADER_MARIA_2</Tag>
-		<English>Maria 2 (Gunnhild (elizabeth_noshader.nif))</English>
+		<Tag>TXT_KEY_LEADER_MARIA_3</Tag>
+		<English>Maria 3 (Gunnhild (elizabeth_noshader.nif))</English>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_LEADER_DIDO_10</Tag>

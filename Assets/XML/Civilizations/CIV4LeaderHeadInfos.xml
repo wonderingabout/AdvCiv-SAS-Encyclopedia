@@ -224,6 +224,11 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<ArtDefineTag>ART_DEF_LEADER_MARIA</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
+			<Type>LEADER_MARIA_2</Type>
+			<Description>TXT_KEY_LEADER_MARIA_2</Description>
+			<ArtDefineTag>ART_DEF_LEADER_MARIA_2</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
 			<Type>LEADER_MARIA_THERESA</Type>
 			<Description>TXT_KEY_LEADER_MARIA_THERESA</Description>
 			<ArtDefineTag>ART_DEF_LEADER_MARIA_THERESA</ArtDefineTag>
@@ -777,9 +782,9 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<ArtDefineTag>ART_DEF_LEADER_GUNNHILD</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
-			<Type>LEADER_MARIA_2</Type>
-			<Description>TXT_KEY_LEADER_MARIA_2</Description>
-			<ArtDefineTag>ART_DEF_LEADER_MARIA_2</ArtDefineTag>
+			<Type>LEADER_MARIA_3</Type>
+			<Description>TXT_KEY_LEADER_MARIA_3</Description>
+			<ArtDefineTag>ART_DEF_LEADER_MARIA_3</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
 			<Type>LEADER_DIDO_10</Type>

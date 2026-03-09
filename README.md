@@ -23,7 +23,7 @@ For License and Reuse, see [License and reuse](/README.md#license-and-reuse).
 ## Menu
 
 [New Leaderheads (AdvCiv-SAS-NIF-Gallery original) (e.g., Atossa, Roshanak)](/README.md#new-leaderheads-advciv-sas-nif-gallery-original-eg-atossa-roshanak)  
-[Hidden NIF variants (e.g., Maria 2, Quilago 2, Bunny Girl)](/README.md#hidden-nif-variants-eg-maria-2-quilago-2-bunny-girl)  
+[Hidden NIF variants (e.g., Maria 3, Quilago 2, Bunny Girl)](/README.md#hidden-nif-variants-eg-maria-3-quilago-2-bunny-girl)  
 [Example of minimal compact XML info](/README.md#example-of-minimal-compact-xml-info)  
 [Cleanup](/README.md#cleanup)  
 &emsp;[Wiztree (Cleanup)](/README.md#wiztree-cleanup)  
@@ -62,19 +62,22 @@ AdvCiv-SAS-NIF-Gallery original Leaderhead by wonderingabout and GPT-5.4-Thinkin
 <img src="./_1_AdvCiv-SAS/Images/sevopedia/0.101_sevopedia_leader_roshanak.JPG" alt="0.101_sevopedia_leader_roshanak.JPG" width="150"></img>
 <img src="./_1_AdvCiv-SAS/Images/sevopedia/roshanak_192px_cropped.png" alt="roshanak_192px_cropped.png" width="150"></img>
 
-## Hidden NIF variants (e.g., Maria 2, Quilago 2, Bunny Girl)
+## Hidden NIF variants (e.g., Maria 3, Quilago 2, Bunny Girl)
 
 As part of skimming through NIF files, we notably found unknown NIF variants that we customized a bit (e.g. background, button) if needed.
 
-### Maria 2
+### Maria 3
 
-For example, Maria 2 was hidden in Gunnhild's files as `elizabeth_noshader.nif`.
+For example, Maria 3 was hidden in Gunnhild's files as `elizabeth_noshader.nif`.
 
 Using it as a separate leader with a new background (from Blond Girl 2 (Debbie) in this example) that better fits this new animation allows to unlock a new leaderhead not shown in CFC.
 
-<img src="./_1_AdvCiv-SAS/Images/sevopedia/0.200_sevopedia_leader_maria_2 (1).JPG" alt="0.200_sevopedia_leader_maria_2 (1).JPG" width="150"></img>
-<img src="./_1_AdvCiv-SAS/Images/sevopedia/0.200_sevopedia_leader_maria_2 (2).JPG" alt="0.200_sevopedia_leader_maria_2 (2).JPG" width="150"></img>
-<img src="./_1_AdvCiv-SAS/Images/sevopedia/maria_2_192px_cropped.png" alt="maria_2_192px_cropped.png" width="150"></img>
+We also modified her: replaced the green ribbon with a darker more fitting with the vibe sword harness (AI-generated with the help of GPT-5.4-Thinking thanks).
+
+<img src="./_1_AdvCiv-SAS/Images/sevopedia/0.200_sevopedia_leader_maria_3 (1).JPG" alt="0.200_sevopedia_leader_maria_3 (1).JPG" width="150"></img>
+<img src="./_1_AdvCiv-SAS/Images/sevopedia/0.200_sevopedia_leader_maria_3 (2).JPG" alt="0.200_sevopedia_leader_maria_3 (2).JPG" width="150"></img>
+<img src="./_1_AdvCiv-SAS/Images/sevopedia/0.200_sevopedia_leader_maria_3 (3).JPG" alt="0.200_sevopedia_leader_maria_3 (3).JPG" width="150"></img>
+<img src="./_1_AdvCiv-SAS/Images/sevopedia/maria_3_192px_cropped.png" alt="maria_3_192px_cropped.png" width="150"></img>
 
 ### Quilago 2
 
@@ -90,7 +93,7 @@ We changed the background to move away from her Mesoamerican background that doe
 
 Another example is Bunny Girl. To extend on the original blonde Bunny Girl and the rare Brunette variant not available in CFC downloads but instead found on a CFC thread as an attachment, we used `catherine_noshader.nif` instead, and as a result we get a new green clothed bunny girl design, with hair that goes closer to original blonde of the base Bunny Girl, plus the eyes are darker too.
 
-Also, as part of this rework, updated the Bunny Girl backgrounds for better fitting ones (Bunny Girl 3 (Green) needing a different background to match its color and more eccentric theme and darker, more intense lips, so Casino theme seems to fit well, while Bunny Girl 1 and 2 have a more classy feel that looks like it fits better with a Lounge).
+Also, as part of this rework, updated some of the Bunny Girl backgrounds for better fitting ones (Bunny Girl 3 (Green) needing a different background to match its color and more eccentric theme and darker, more intense lips, so Casino theme seems to fit well, while Bunny Girl 2 (Brunette) has a more classy feel and darker contrast that looks like it fits better with a Lounge).
 
 So all in all a new variant worth adding.
 
