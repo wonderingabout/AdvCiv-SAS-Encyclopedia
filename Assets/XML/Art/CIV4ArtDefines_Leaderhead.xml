@@ -296,6 +296,15 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<NoShaderNIF>Art/LeaderHeads/Joan_of_Arc/elizabeth_noshader.nif</NoShaderNIF>
 			<BackgroundKFM>Art/LeaderHeads/Joan_of_Arc/elizabeth_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
+		<!-- custom: Joan of Arc 2 reuses Joan of Arc assets with elizabeth_noshader.nif instead of elizabeth.nif, kept in a separate folder for modularity (Claude code Sonnet 4.6); also using alternate background that was included in download in elizabeth_background.rar of Joan_Of_Arc (deleted archive in Joan_Of_Arc_2 since we extracted it and it is not needed) -->
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_JOAN_OF_ARC_2</Type>
+			<Button>Art/LeaderHeads/Joan_of_Arc_2/joan.dds</Button>
+			<NIF>Art/LeaderHeads/Joan_of_Arc_2/elizabeth_noshader.nif</NIF>
+			<KFM>Art/LeaderHeads/elizabeth/elizabeth.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Joan_of_Arc_2/elizabeth_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Joan_of_Arc_2/elizabeth_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_MANDUKHAI_KHATUN</Type>
 			<Button>Art/LeaderHeads/Mandukhai_Khatun/mandukhai.dds</Button>
@@ -306,7 +315,7 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_NEFERTITI</Type>
-			<Button>Art/LeaderHeads/Nefertiti/Cleo.dds</Button>
+			<Button>Art/LeaderHeads/Nefertiti/Nefertiti.dds</Button>
 			<NIF>Art/LeaderHeads/Nefertiti/Nefertiti.nif</NIF>
 			<KFM>Art/LeaderHeads/Nefertiti/isabella.kfm</KFM>
 			<NoShaderNIF>Art/LeaderHeads/Nefertiti/Nefertiti.nif</NoShaderNIF>
@@ -328,6 +337,15 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<NoShaderNIF>Art/LeaderHeads/Cleopatra_6/hatshepsut.nif</NoShaderNIF>
 			<BackgroundKFM>Art/LeaderHeads/Cleopatra_6/hatshepsut_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
+		<!-- custom: Hatshepsut 3 reuses Cleopatra 6 assets with hatshepsut_noshader.nif, kept in a separate folder for modularity (Claude code Sonnet 4.6) -->
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_HATSHEPSUT_3</Type>
+			<Button>Art/LeaderHeads/Hatshepsut_3/Cleopatra.dds</Button>
+			<NIF>Art/LeaderHeads/Hatshepsut_3/hatshepsut_noshader.nif</NIF>
+			<KFM>Art/LeaderHeads/Hatshepsut_3/hatshepsut.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Hatshepsut_3/hatshepsut.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Hatshepsut_3/hatshepsut_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_DIDO_2</Type>
 			<Button>Art/LeaderHeads/Dido_2/didobutton.dds</Button>
@@ -337,12 +355,12 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<BackgroundKFM>Art/LeaderHeads/Dido_2/Isabella_BG.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
-			<Type>ART_DEF_LEADER_JOAN_OF_ARC_2</Type>
-			<Button>Art/LeaderHeads/Joan_of_Arc_2/JoanofArc.dds</Button>
-			<NIF>Art/LeaderHeads/Joan_of_Arc_2/joanofark.nif</NIF>
-			<KFM>Art/LeaderHeads/Joan_of_Arc_2/catherine.kfm</KFM>
-			<NoShaderNIF>Art/LeaderHeads/Joan_of_Arc_2/joanofark.nif</NoShaderNIF>
-			<BackgroundKFM>Art/LeaderHeads/Joan_of_Arc_2/catherine_bg.kfm</BackgroundKFM>
+			<Type>ART_DEF_LEADER_JOAN_OF_ARC_3</Type>
+			<Button>Art/LeaderHeads/Joan_Of_Arc_3/JoanofArc.dds</Button>
+			<NIF>Art/LeaderHeads/Joan_Of_Arc_3/joanofark.nif</NIF>
+			<KFM>Art/LeaderHeads/Joan_Of_Arc_3/catherine.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Joan_Of_Arc_3/joanofark.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Joan_Of_Arc_3/catherine_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_GALADRIEL</Type>
@@ -351,6 +369,15 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<KFM>Art/LeaderHeads/Galadriel/Elizabeth.kfm</KFM>
 			<NoShaderNIF>Art/LeaderHeads/Galadriel/Galadriel.nif</NoShaderNIF>
 			<BackgroundKFM>Art/LeaderHeads/Galadriel/Elizabeth_BG.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<!-- custom: Elizabeth 4 reuses Galadriel assets with elizabeth.nif, kept in a separate folder for modularity (Claude code Sonnet 4.6) -->
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_ELIZABETH_4</Type>
+			<Button>,Art/Interface/LeaderHeads/Btn_LH_England_ElizabethI.dds,Art/Interface/Buttons/Actions_Builds_LeaderHeads_Specialists_Atlas.dds,8,10</Button>
+			<NIF>Art/LeaderHeads/Elizabeth_4/elizabeth.nif</NIF>
+			<KFM>Art/LeaderHeads/Elizabeth_4/Elizabeth.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Elizabeth_4/Galadriel.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Elizabeth_4/Elizabeth_BG.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_ELIZABETH_1</Type>
@@ -660,6 +687,23 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<NoShaderNIF>Art/LeaderHeads/Dido_7/Dido_Toga_Nonshader.nif</NoShaderNIF>
 			<BackgroundKFM>Art/LeaderHeads/Dido_7/Isabella_BG.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
+		<!-- custom: Dido 8 and 9 are variants of Dido 7 using alternative NIFs from the same source package (dido_izzy.nif and dido_eliz.nif respectively). Kept as separate folders/art defs for modularity rather than depending on the Dido_7 folder. -->
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_DIDO_8</Type>
+			<Button>Art/LeaderHeads/Dido_8/didobutton.dds</Button>
+			<NIF>Art/LeaderHeads/Dido_8/dido_izzy.nif</NIF>
+			<KFM>Art/LeaderHeads/Dido_8/isabella.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Dido_8/Dido_Toga_Nonshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Dido_8/Isabella_BG.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_DIDO_9</Type>
+			<Button>Art/LeaderHeads/Dido_9/didobutton.dds</Button>
+			<NIF>Art/LeaderHeads/Dido_9/dido_eliz.nif</NIF>
+			<KFM>Art/LeaderHeads/Dido_9/isabella.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Dido_9/Dido_Toga_Nonshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Dido_9/Isabella_BG.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_ARIADNE</Type>
 			<Button>Art/LeaderHeads/Ariadne/Ariadne.dds</Button>
@@ -708,6 +752,15 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<KFM>Art/LeaderHeads/Evita_Peron/catherine.kfm</KFM>
 			<NoShaderNIF>Art/LeaderHeads/Evita_Peron/catherine_noshader.nif</NoShaderNIF>
 			<BackgroundKFM>Art/LeaderHeads/Evita_Peron/catherine_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<!-- custom: Evita Peron 2 is a variant of base Evita Peron using catherine_noshader.nif (Claude code Sonnet 4.6) -->
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_EVITA_PERON_2</Type>
+			<Button>Art/LeaderHeads/Evita_Peron_2/evita_peron_64px_no_border.dds</Button>
+			<NIF>Art/LeaderHeads/Evita_Peron_2/catherine_noshader.nif</NIF>
+			<KFM>Art/LeaderHeads/Evita_Peron_2/catherine.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Evita_Peron_2/catherine_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Evita_Peron_2/catherine_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<!-- custom: fixed purple details by adding missing texture file Art/LeaderHeads/Ana_Nzinga_2/hc_copac_nrml.dds required by AnaNzinga2.nif. (GPT-5.3-Codex) -->
 		<LeaderheadArtInfo>
@@ -777,7 +830,7 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<NoShaderNIF>Art/LeaderHeads/Ly_Chieu_Hoang/Trung.nif</NoShaderNIF>
 			<BackgroundKFM>Art/LeaderHeads/Ly_Chieu_Hoang/Boudica_BG2.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
-		<!-- custom: fixed purple eyes/face by adding missing catherine_env/env_mask/nrml/spec and shaka_nrml textures required by catherine.nif. (GPT-5.3-Codex); added a button -->
+		<!-- custom: fixed purple eyes/face by adding missing catherine_env/env_mask/nrml/spec and shaka_nrml textures required by catherine.nif. (GPT-5.3-Codex); added a button; also catherine_noshader.nif looks like an interesting variant but seemingly not working properly so not added -->
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_NUR_JAHAN</Type>
 			<Button>Art/LeaderHeads/Nur_Jahan/nur_jahan_64px_no_border.dds</Button>
@@ -811,6 +864,24 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<KFM>Art/LeaderHeads/Tamar_2/isabella.kfm</KFM>
 			<NoShaderNIF>Art/LeaderHeads/Tamar_2/Theodora.nif</NoShaderNIF>
 			<BackgroundKFM>Art/LeaderHeads/Tamar_2/isabella_bg2.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<!-- custom: AdvCiv-SAS-NIF-Gallery original leaderhead. See docs. -->
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_TAMAR_3</Type>
+			<Button>Art/LeaderHeads/Tamar_3/atossa_64px_no_border.dds</Button>
+			<NIF>Art/LeaderHeads/Tamar_3/isabella_noshader.nif</NIF>
+			<KFM>Art/LeaderHeads/Tamar_3/Isabella.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Tamar_3/Theodora2.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Tamar_3/isabella_bg2.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<!-- custom: AdvCiv-SAS-NIF-Gallery original leaderhead. See docs. -->
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_TAMAR_4</Type>
+			<Button>Art/LeaderHeads/Tamar_4/roshanak_64px_no_border.dds</Button>
+			<NIF>Art/LeaderHeads/Tamar_4/nocrwnizzy2.nif</NIF>
+			<KFM>Art/LeaderHeads/Tamar_4/Isabella.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Tamar_4/Theodora2.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Tamar_4/isabella_bg2.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_ZELDA</Type>
@@ -868,7 +939,16 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<NoShaderNIF>Art/LeaderHeads/Quilago/isabella_noshader.nif</NoShaderNIF>
 			<BackgroundKFM>Art/LeaderHeads/Quilago/isabella_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
-		<!-- custom: added a button; note: mansa_musa2.nif has a different hat but it is not working properly (floating hat when leaderhead's head moves), so this variant is not used) -->
+		<!-- custom: Quilago 2 reuses Quilago assets with isabella_noshader.nif instead of isabella.nif, kept in a separate folder for modularity; background taken from Shin Sawbu 3 to reflect the different style after the NIF change (Claude code Sonnet 4.6) -->
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_QUILAGO_2</Type>
+			<Button>Art/LeaderHeads/Quilago_2/Quilago.dds</Button>
+			<NIF>Art/LeaderHeads/Quilago_2/isabella_noshader.nif</NIF>
+			<KFM>Art/LeaderHeads/Quilago_2/isabella.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Quilago_2/isabella_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Quilago_2/isabella_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<!-- custom: added a button; note: mansa_musa2.nif and mansa_musa3.nif a different hat but they don't seem to work properly (floating hat when leaderhead's head moves), so these variants are not used) -->
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_SEONDEOK</Type>
 			<Button>Art/LeaderHeads/Seondeok/seondeok_64px_no_border.dds</Button>
@@ -976,13 +1056,14 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<NoShaderNIF>Art/LeaderHeads/Theodora_2/isabella_noshader.nif</NoShaderNIF>
 			<BackgroundKFM>Art/LeaderHeads/Theodora_2/isabella_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
+		<!-- custom: background replaced with a lounge image for thematic cohesion with the bunny girl aesthetic (Claude code Sonnet 4.6) -->
 		<LeaderheadArtInfo>
-			<Type>ART_DEF_LEADER_EVITA_PERON_2</Type>
-			<Button>Art/LeaderHeads/Evita_Peron_2/bunnygirl.dds</Button>
-			<NIF>Art/LeaderHeads/Evita_Peron_2/catherine.nif</NIF>
-			<KFM>Art/LeaderHeads/Evita_Peron_2/catherine.kfm</KFM>
-			<NoShaderNIF>Art/LeaderHeads/Evita_Peron_2/catherine_noshader.nif</NoShaderNIF>
-			<BackgroundKFM>Art/LeaderHeads/Evita_Peron_2/catherine_bg.kfm</BackgroundKFM>
+			<Type>ART_DEF_LEADER_EVITA_PERON_3</Type>
+			<Button>Art/LeaderHeads/Evita_Peron_3/bunnygirl.dds</Button>
+			<NIF>Art/LeaderHeads/Evita_Peron_3/catherine.nif</NIF>
+			<KFM>Art/LeaderHeads/Evita_Peron_3/catherine.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Evita_Peron_3/catherine_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Evita_Peron_3/catherine_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_MARIA_ELEONORA_2</Type>
@@ -1009,22 +1090,31 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<NoShaderNIF>Art/LeaderHeads/Gunnhild/elizabeth_noshader.nif</NoShaderNIF>
 			<BackgroundKFM>Art/LeaderHeads/Gunnhild/alexander_BG.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
+		<!-- custom: Maria 2 reuses Gunnhild assets with elizabeth_noshader.nif, kept in a separate folder for modularity; background (alexander_BG.kfm and related files) taken from Blonde Girl 2 (Claude code Sonnet 4.6); also added a button -->
 		<LeaderheadArtInfo>
-			<Type>ART_DEF_LEADER_DIDO_8</Type>
-			<Button>Art/LeaderHeads/Dido_8/hippo.dds</Button>
-			<NIF>Art/LeaderHeads/Dido_8/Hippo.nif</NIF>
-			<KFM>Art/LeaderHeads/Dido_8/isabella.kfm</KFM>
-			<NoShaderNIF>Art/LeaderHeads/Dido_8/Hippo.nif</NoShaderNIF>
-			<BackgroundKFM>Art/LeaderHeads/Dido_8/isabella_bg.kfm</BackgroundKFM>
+			<Type>ART_DEF_LEADER_MARIA_2</Type>
+			<Button>Art/LeaderHeads/Maria_2/maria_2_64px_no_border.dds</Button>
+			<NIF>Art/LeaderHeads/Maria_2/elizabeth_noshader.nif</NIF>
+			<KFM>Art/LeaderHeads/Elizabeth/elizabeth.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Maria_2/elizabeth_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Maria_2/alexander_BG.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
-		<!-- custom: Dido 9 is intentionally the modular variant of Dido 8 using the silver-hair texture provided in the source package (DidoHairSilver.dds, from the included rar). We keep a separate Dido_9 folder/art def so this variant does not depend on another custom leader folder. (GPT-5.3-Codex) -->
 		<LeaderheadArtInfo>
-			<Type>ART_DEF_LEADER_DIDO_9</Type>
-			<Button>Art/LeaderHeads/Dido_9/hippo.dds</Button>
-			<NIF>Art/LeaderHeads/Dido_9/Hippo.nif</NIF>
-			<KFM>Art/LeaderHeads/Dido_9/isabella.kfm</KFM>
-			<NoShaderNIF>Art/LeaderHeads/Dido_9/Hippo.nif</NoShaderNIF>
-			<BackgroundKFM>Art/LeaderHeads/Dido_9/isabella_bg.kfm</BackgroundKFM>
+			<Type>ART_DEF_LEADER_DIDO_10</Type>
+			<Button>Art/LeaderHeads/Dido_10/hippo.dds</Button>
+			<NIF>Art/LeaderHeads/Dido_10/Hippo.nif</NIF>
+			<KFM>Art/LeaderHeads/Dido_10/isabella.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Dido_10/Hippo.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Dido_10/isabella_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<!-- custom: Dido 11 is intentionally the modular variant of Dido 10 using the silver-hair texture provided in the source package (DidoHairSilver.dds, from the included rar). We keep a separate Dido_11 folder/art def so this variant does not depend on another custom leader folder. (GPT-5.3-Codex) -->
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_DIDO_11</Type>
+			<Button>Art/LeaderHeads/Dido_11/hippo.dds</Button>
+			<NIF>Art/LeaderHeads/Dido_11/Hippo.nif</NIF>
+			<KFM>Art/LeaderHeads/Dido_11/isabella.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Dido_11/Hippo.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Dido_11/isabella_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_TALI_ZORAH</Type>
@@ -1090,6 +1180,15 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<Button>Art/LeaderHeads/Freydis_Eiriksdottir/freyis_64px_no_border.dds</Button>
 			<NIF>Art/LeaderHeads/Freydis_Eiriksdottir/f_Viking04a.nif</NIF>
 			<KFM>Art/LeaderHeads/Freydis_Eiriksdottir/victoria.kfm</KFM>
+			<NoShaderNIF></NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/RagnarLodbrok/Ragnar_BG.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<!-- custom: Victoria 7 reuses Freydis_Eiriksdottir assets with victoria.nif instead of f_Viking04a.nif (Claude code Sonnet 4.6) -->
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_VICTORIA_7</Type>
+			<Button>,Art/Interface/LeaderHeads/Btn_LH_England_Victoria.dds,Art/Interface/Buttons/Actions_Builds_LeaderHeads_Specialists_Atlas.dds,6,13</Button>
+			<NIF>Art/LeaderHeads/Victoria_7/victoria.nif</NIF>
+			<KFM>Art/LeaderHeads/Victoria_7/victoria.kfm</KFM>
 			<NoShaderNIF></NoShaderNIF>
 			<BackgroundKFM>Art/LeaderHeads/RagnarLodbrok/Ragnar_BG.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
@@ -1179,13 +1278,23 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<NoShaderNIF>Art/LeaderHeads/Zelda_3/elizabeth_noshader.nif</NoShaderNIF>
 			<BackgroundKFM>Art/LeaderHeads/Zelda_3/elizabeth_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
+		<!-- custom: background replaced with a lounge image for thematic cohesion with the bunny girl aesthetic (Claude code Sonnet 4.6) -->
 		<LeaderheadArtInfo>
-			<Type>ART_DEF_LEADER_EVITA_PERON_3</Type>
-			<Button>Art/LeaderHeads/Evita_Peron_3/bunnygirl.dds</Button>
-			<NIF>Art/LeaderHeads/Evita_Peron_3/catherine.nif</NIF>
-			<KFM>Art/LeaderHeads/Evita_Peron_3/catherine.kfm</KFM>
-			<NoShaderNIF>Art/LeaderHeads/Evita_Peron_3/catherine_noshader.nif</NoShaderNIF>
-			<BackgroundKFM>Art/LeaderHeads/Evita_Peron_3/catherine_bg.kfm</BackgroundKFM>
+			<Type>ART_DEF_LEADER_EVITA_PERON_4</Type>
+			<Button>Art/LeaderHeads/Evita_Peron_4/bunnygirl.dds</Button>
+			<NIF>Art/LeaderHeads/Evita_Peron_4/catherine.nif</NIF>
+			<KFM>Art/LeaderHeads/Evita_Peron_4/catherine.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Evita_Peron_4/catherine_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Evita_Peron_4/catherine_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<!-- custom: Evita Peron 4 reuses Evita Peron 3 assets with catherine_noshader.nif instead of catherine.nif; background replaced with a casino/roulette image for thematic cohesion with the bunny girl aesthetic (Claude code Sonnet 4.6) -->
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_EVITA_PERON_5</Type>
+			<Button>Art/LeaderHeads/Evita_Peron_5/bunnygirl.dds</Button>
+			<NIF>Art/LeaderHeads/Evita_Peron_5/catherine_noshader.nif</NIF>
+			<KFM>Art/LeaderHeads/Evita_Peron_5/catherine.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Evita_Peron_5/catherine_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Evita_Peron_5/catherine_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_TOMYRIS_3</Type>
@@ -1296,12 +1405,12 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		</LeaderheadArtInfo>
 		<!-- custom: btn_lh_france_joanofarc.dds from MarnzMod 1.8c is included in this leaderhead's folder for exhaustiveness — it has a different background than the current button but is not currently used. See README_References.md. (Claude code Sonnet 4.6) -->
 		<LeaderheadArtInfo>
-			<Type>ART_DEF_LEADER_JOAN_OF_ARC_3</Type>
-			<Button>Art/LeaderHeads/Joan_Of_Arc_3/joan_of_arc_3_64px_no_border.dds</Button>
-			<NIF>Art/LeaderHeads/Joan_Of_Arc_3/joanofarc.nif</NIF>
-			<KFM>Art/LeaderHeads/Joan_Of_Arc_3/catherine.kfm</KFM>
-			<NoShaderNIF>Art/LeaderHeads/Joan_Of_Arc_3/joanofarc_noshader.nif</NoShaderNIF>
-			<BackgroundKFM>Art/LeaderHeads/Joan_Of_Arc_3/catherine_bg.kfm</BackgroundKFM>
+			<Type>ART_DEF_LEADER_JOAN_OF_ARC_4</Type>
+			<Button>Art/LeaderHeads/Joan_Of_Arc_4/joan_of_arc_3_64px_no_border.dds</Button>
+			<NIF>Art/LeaderHeads/Joan_Of_Arc_4/joanofarc.nif</NIF>
+			<KFM>Art/LeaderHeads/Joan_Of_Arc_4/catherine.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Joan_Of_Arc_4/joanofarc_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Joan_Of_Arc_4/catherine_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_CLEOPATRA_9</Type>
@@ -1416,6 +1525,31 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<KFM>Art/LeaderHeads/Isabella_12/isabella.kfm</KFM>
 			<NoShaderNIF>Art/LeaderHeads/Isabella_12/nocrwnizzy2.nif</NoShaderNIF>
 			<BackgroundKFM>Art/LeaderHeads/Isabella_12/Isabella_BG.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+	<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_ATOTOZTLI_3</Type>
+			<Button>Art/LeaderHeads/Atotoztli_3/Btn_LH_Atotoztli.dds</Button>
+			<NIF>Art/LeaderHeads/Atotoztli_3/atotoztli.nif</NIF>
+			<KFM>Art/LeaderHeads/Atotoztli_3/Atotoztli.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Atotoztli_3/atotoztli.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Atotoztli_3/Atotoztli_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_DIDO_12</Type>
+			<Button>Art/LeaderHeads/Dido_12/Dido_Button.dds</Button>
+			<NIF>Art/LeaderHeads/Dido_12/dido.nif</NIF>
+			<KFM>Art/LeaderHeads/Dido_12/isabella.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Dido_12/dido_nonshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Dido_12/isabella_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<!-- custom: Nefertiti 3 is a Nefertiti 1 variant using isabella.nif instead of nefertiti.nif (Claude code Sonnet 4.6) -->
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_NEFERTITI_3</Type>
+			<Button>Art/LeaderHeads/Nefertiti_3/nefertiti_3_64px_cropped.dds</Button>
+			<NIF>Art/LeaderHeads/Nefertiti_3/isabella.nif</NIF>
+			<KFM>Art/LeaderHeads/Nefertiti_3/isabella.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Nefertiti_3/Nefertiti.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Nefertiti_3/Nefertiti_BG.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 	</LeaderheadArtInfos>
 </Civ4ArtDefines>

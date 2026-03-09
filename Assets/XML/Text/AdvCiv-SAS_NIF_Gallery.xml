@@ -169,6 +169,10 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<English>Joan of Arc</English>
 	</TEXT>
 	<TEXT>
+		<Tag>TXT_KEY_LEADER_JOAN_OF_ARC_2</Tag>
+		<English>Joan of Arc 2 (elizabeth_noshader.nif)</English>
+	</TEXT>
+	<TEXT>
 		<Tag>TXT_KEY_LEADER_MANDUKHAI_KHATUN</Tag>
 		<English>Mandukhai Khatun</English>
 	</TEXT>
@@ -181,16 +185,24 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<English>Cleopatra 6</English>
 	</TEXT>
 	<TEXT>
+		<Tag>TXT_KEY_LEADER_HATSHEPSUT_3</Tag>
+		<English>Hatshepsut 3 (Cleopatra 6 (hatshepsut_noshader.nif))</English>
+	</TEXT>
+	<TEXT>
 		<Tag>TXT_KEY_LEADER_DIDO_2</Tag>
 		<English>Dido 2</English>
 	</TEXT>
 	<TEXT>
-		<Tag>TXT_KEY_LEADER_JOAN_OF_ARC_2</Tag>
-		<English>Joan of Arc 2</English>
+		<Tag>TXT_KEY_LEADER_JOAN_OF_ARC_3</Tag>
+		<English>Joan of Arc 3</English>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_LEADER_GALADRIEL</Tag>
 		<English>Galadriel</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ELIZABETH_4</Tag>
+		<English>Elizabeth 4 (Galadriel (elizabeth.nif))</English>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_LEADER_ELIZABETH_1</Tag>
@@ -346,6 +358,14 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<English>Dido 7</English>
 	</TEXT>
 	<TEXT>
+		<Tag>TXT_KEY_LEADER_DIDO_8</Tag>
+		<English>Dido 8 (dido_izzy.nif)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_DIDO_9</Tag>
+		<English>Dido 9 (dido_eliz.nif)</English>
+	</TEXT>
+	<TEXT>
 		<Tag>TXT_KEY_LEADER_ARIADNE</Tag>
 		<English>Ariadne</English>
 	</TEXT>
@@ -368,6 +388,10 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 	<TEXT>
 		<Tag>TXT_KEY_LEADER_EVITA_PERON</Tag>
 		<English>Evita Peron</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_EVITA_PERON_2</Tag>
+		<English>Evita Peron 2 (catherine_noshader.nif)</English>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_LEADER_ANA_NZINGA_2</Tag>
@@ -422,6 +446,22 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<English>Tamar 2</English>
 	</TEXT>
 	<TEXT>
+		<Tag>TXT_KEY_LEADER_TAMAR_3</Tag>
+		<English>Tamar 3 (Atossa)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_TAMAR_3_PEDIA</Tag>
+		<English>Atossa (c. 550-475 BC, Persia) - An Achaemenid queen, daughter of Cyrus the Great, wife of Darius I, mother of Xerxes I, and politically influential at court, especially in helping legitimize Darius' rule through her Cyrus-lineage and in supporting Xerxes' succession.</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_TAMAR_4</Tag>
+		<English>Tamar 4 (Roshanak)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_TAMAR_4_PEDIA</Tag>
+		<English>Roshanak (c. 340-310 BC, Bactria) - A Bactrian princess from the eastern Iranian world, daughter of Oxyartes, later known as the wife of Alexander the Great, and remembered as one of the most notable noblewomen linked to Alexander's conquest of Central Asia.</English>
+	</TEXT>
+	<TEXT>
 		<Tag>TXT_KEY_LEADER_ZELDA</Tag>
 		<English>Zelda</English>
 	</TEXT>
@@ -448,6 +488,10 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 	<TEXT>
 		<Tag>TXT_KEY_LEADER_QUILAGO</Tag>
 		<English>Quilago</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_QUILAGO_2</Tag>
+		<English>Quilago 2 (isabella_noshader.nif)</English>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_LEADER_SEONDEOK</Tag>
@@ -486,6 +530,10 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<English>Victoria 6 (Maria Theresa 4)</English>
 	</TEXT>
 	<TEXT>
+		<Tag>TXT_KEY_LEADER_VICTORIA_7</Tag>
+		<English>Victoria 7 (Freydis Eiriksdottir (victoria.nif))</English>
+	</TEXT>
+	<TEXT>
 		<Tag>TXT_KEY_LEADER_HATSHEPSUT_1</Tag>
 		<English>Hatshepsut 1 (Tandi Williams (Old) (NoShaderNIF))</English>
 	</TEXT>
@@ -502,8 +550,8 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<English>Theodora 2</English>
 	</TEXT>
 	<TEXT>
-		<Tag>TXT_KEY_LEADER_EVITA_PERON_2</Tag>
-		<English>Evita Peron 2 (Bunny Girl)</English>
+		<Tag>TXT_KEY_LEADER_EVITA_PERON_3</Tag>
+		<English>Evita Peron 3 (Bunny Girl)</English>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_LEADER_MARIA_ELEONORA_2</Tag>
@@ -518,12 +566,16 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<English>Gunnhild</English>
 	</TEXT>
 	<TEXT>
-		<Tag>TXT_KEY_LEADER_DIDO_8</Tag>
-		<English>Dido 8 (Hippolyta)</English>
+		<Tag>TXT_KEY_LEADER_MARIA_2</Tag>
+		<English>Maria 2 (Gunnhild (elizabeth_noshader.nif))</English>
 	</TEXT>
 	<TEXT>
-		<Tag>TXT_KEY_LEADER_DIDO_9</Tag>
-		<English>Dido 9 (Hippolyta - Silver Hair)</English>
+		<Tag>TXT_KEY_LEADER_DIDO_10</Tag>
+		<English>Dido 10 (Hippolyta)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_DIDO_11</Tag>
+		<English>Dido 11 (Hippolyta - Silver Hair)</English>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_LEADER_TALI_ZORAH</Tag>
@@ -594,8 +646,12 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<English>Zelda 3 (Human Ears)</English>
 	</TEXT>
 	<TEXT>
-		<Tag>TXT_KEY_LEADER_EVITA_PERON_3</Tag>
-		<English>Evita Peron 3 (Bunny Girl Brunette)</English>
+		<Tag>TXT_KEY_LEADER_EVITA_PERON_4</Tag>
+		<English>Evita Peron 4 (Bunny Girl Brunette)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_EVITA_PERON_5</Tag>
+		<English>Evita Peron 5 (Bunny Girl 3 (catherine_noshader.nif))</English>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_LEADER_TOMYRIS_3</Tag>
@@ -650,8 +706,8 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<English>Blonde Girl 2 (Debbie)</English>
 	</TEXT>
 	<TEXT>
-		<Tag>TXT_KEY_LEADER_JOAN_OF_ARC_3</Tag>
-		<English>Joan of Arc 3 (Debbie (Old))</English>
+		<Tag>TXT_KEY_LEADER_JOAN_OF_ARC_4</Tag>
+		<English>Joan of Arc 4 (Debbie (Old))</English>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_LEADER_CLEOPATRA_9</Tag>
@@ -708,5 +764,17 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 	<TEXT>
 		<Tag>TXT_KEY_LEADER_ISABELLA_12</Tag>
 		<English>Isabella 12 (No Crown)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ATOTOZTLI_3</Tag>
+		<English>Atotoztli 3 (atotoztli.nif)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_DIDO_12</Tag>
+		<English>Dido 12 (almost naked)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_NEFERTITI_3</Tag>
+		<English>Nefertiti 3 (isabella.nif)</English>
 	</TEXT>
 </Civ4GameText>
