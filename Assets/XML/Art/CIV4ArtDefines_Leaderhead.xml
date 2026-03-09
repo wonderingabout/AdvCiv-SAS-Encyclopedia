@@ -1200,6 +1200,38 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<NoShaderNIF></NoShaderNIF>
 			<BackgroundKFM>Art/LeaderHeads/RagnarLodbrok/Ragnar_BG.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_VICTORIA_8</Type>
+			<Button>Art/LeaderHeads/Victoria_8/Hasina.dds</Button>
+			<NIF>Art/LeaderHeads/Victoria_8/victoria_noshader.nif</NIF>
+			<KFM>Art/LeaderHeads/Victoria_8/victoria2.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Victoria_8/victoria_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Victoria_8/saladin_bg2.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_VICTORIA_9</Type>
+			<Button>Art/LeaderHeads/Victoria_9/Hasina.dds</Button>
+			<NIF>Art/LeaderHeads/Victoria_9/victoria (2).nif</NIF>
+			<KFM>Art/LeaderHeads/Victoria_9/victoria2.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Victoria_9/victoria_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Victoria_9/saladin_bg2.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_VICTORIA_10</Type>
+			<Button>Art/LeaderHeads/Victoria_10/Hasina.dds</Button>
+			<NIF>Art/LeaderHeads/Victoria_10/victoria2.nif</NIF>
+			<KFM>Art/LeaderHeads/Victoria_10/victoria2.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Victoria_10/victoria_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Victoria_10/saladin_bg2.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_VICTORIA_11</Type>
+			<Button>Art/LeaderHeads/Victoria_11/Hasina.dds</Button>
+			<NIF>Art/LeaderHeads/Victoria_11/victoria.nif</NIF>
+			<KFM>Art/LeaderHeads/Victoria_11/victoria2.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Victoria_11/victoria_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Victoria_11/saladin_bg2.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
 		<!-- custom: ART_DEF_LEADER_BOUDICA_2 had the same purple animation errors as BOUDICA_1; fixed by importing base Civ4 Boudica animation files into the Boudica_2/ folder (no overwrite of existing files). Same fix as BOUDICA_1 — see that entry's comment for rationale on why local copies are used vs cross-folder references. (Claude code Sonnet 4.6) -->
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_BOUDICA_2</Type>

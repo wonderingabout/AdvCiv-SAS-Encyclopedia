@@ -80,10 +80,12 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 - Fury Road v11: Anne Bonny 2 (Martha (Aelwyn)), Blonde Girl 2 (Debbie), Joan of Arc 4 (Debbie (Old)), Salamasina 6 (Brandi)
 - MarnzMod 1.8c: Catherine 2 (Mary Stuart 2 (NoShaderNIF)), Hatshepsut 2 (Salamasina), Isabella 9 (Theodora), Isabella 10 (Dido), Joan of Arc 4 (btn_lh_france_joanofarc.dds, different background, not currently used)
 - Quot Capita Majesty: Atotoztli 3 (atotoztli.nif), Dido 12 (almost naked), Nefertiti (Nefertiti.dds btn), Nefertiti 3 (Nefertiti.dds btn)
+- 2100 mod: Victoria 8 (The Great Leader (victoria_noshader.nif)), Victoria 9 (The Great Leader (victoria (2).nif)), Victoria 10 (The Great Leader (victoria2.nif)), Victoria 11 (The Great Leader (victoria.nif))
 
 #### Skipped (Modpacks)
 
 - Quot Capita v8.1: Nefertiti — similar to existing Nefertiti variants, skipped (not 100% sure i actually did it, to recheck ideally)
+- 2100 mod: victoria4.nif — similar to existing variants, doesn't render well; huayna1_capac24.nif — error
 
 #### Female Non-Human (Modpacks)
 

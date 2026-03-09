@@ -23,7 +23,7 @@ For License and Reuse, see [License and reuse](/README.md#license-and-reuse).
 ## Menu
 
 [New Leaderheads (AdvCiv-SAS-NIF-Gallery original) (e.g., Atossa, Roshanak)](/README.md#new-leaderheads-advciv-sas-nif-gallery-original-eg-atossa-roshanak)  
-[Hidden NIF variants (e.g., Maria 3, Quilago 2, Bunny Girl)](/README.md#hidden-nif-variants-eg-maria-3-quilago-2-bunny-girl)  
+[Hidden NIF variants (e.g., Maria 3, Quilago 2, Bunny Girl 3)](/README.md#hidden-nif-variants-eg-maria-3-quilago-2-bunny-girl-3)  
 [Example of minimal compact XML info](/README.md#example-of-minimal-compact-xml-info)  
 [Cleanup](/README.md#cleanup)  
 &emsp;[Wiztree (Cleanup)](/README.md#wiztree-cleanup)  
@@ -62,7 +62,7 @@ AdvCiv-SAS-NIF-Gallery original Leaderhead by wonderingabout and GPT-5.4-Thinkin
 <img src="./_1_AdvCiv-SAS/Images/sevopedia/0.101_sevopedia_leader_roshanak.JPG" alt="0.101_sevopedia_leader_roshanak.JPG" width="150"></img>
 <img src="./_1_AdvCiv-SAS/Images/sevopedia/roshanak_192px_cropped.png" alt="roshanak_192px_cropped.png" width="150"></img>
 
-## Hidden NIF variants (e.g., Maria 3, Quilago 2, Bunny Girl)
+## Hidden NIF variants (e.g., Maria 3, Quilago 2, Bunny Girl 3)
 
 As part of skimming through NIF files, we notably found unknown NIF variants that we customized a bit (e.g. background, button) if needed.
 
@@ -77,7 +77,6 @@ We also modified her: replaced the green ribbon with a darker more fitting with 
 <img src="./_1_AdvCiv-SAS/Images/sevopedia/0.200_sevopedia_leader_maria_3 (1).JPG" alt="0.200_sevopedia_leader_maria_3 (1).JPG" width="150"></img>
 <img src="./_1_AdvCiv-SAS/Images/sevopedia/0.200_sevopedia_leader_maria_3 (2).JPG" alt="0.200_sevopedia_leader_maria_3 (2).JPG" width="150"></img>
 <img src="./_1_AdvCiv-SAS/Images/sevopedia/0.200_sevopedia_leader_maria_3 (3).JPG" alt="0.200_sevopedia_leader_maria_3 (3).JPG" width="150"></img>
-<img src="./_1_AdvCiv-SAS/Images/sevopedia/maria_3_192px_cropped.png" alt="maria_3_192px_cropped.png" width="150"></img>
 
 ### Quilago 2
 
@@ -89,7 +88,7 @@ We changed the background to move away from her Mesoamerican background that doe
 <img src="./_1_AdvCiv-SAS/Images/sevopedia/0.201_sevopedia_leader_quilago_2 (2).JPG" alt="0.201_sevopedia_leader_quilago_2 (2).JPG" width="150"></img>
 <img src="./_1_AdvCiv-SAS/Images/sevopedia/0.201_sevopedia_leader_quilago_2 (3).JPG" alt="0.201_sevopedia_leader_quilago_2 (3).JPG" width="150"></img>
 
-### Bunny Girl
+### Bunny Girl 3
 
 Another example is Bunny Girl. To extend on the original blonde Bunny Girl and the rare Brunette variant not available in CFC downloads but instead found on a CFC thread as an attachment, we used `catherine_noshader.nif` instead, and as a result we get a new green clothed bunny girl design, with hair that goes closer to original blonde of the base Bunny Girl, plus the eyes are darker too.
 
@@ -100,6 +99,13 @@ So all in all a new variant worth adding.
 <img src="./_1_AdvCiv-SAS/Images/sevopedia/0.201_sevopedia_leader_bunny_girl (1).JPG" alt="0.201_sevopedia_leader_bunny_girl (1).JPG" width="150"></img>
 <img src="./_1_AdvCiv-SAS/Images/sevopedia/0.201_sevopedia_leader_bunny_girl (2).JPG" alt="0.201_sevopedia_leader_bunny_girl (2).JPG" width="150"></img>
 <img src="./_1_AdvCiv-SAS/Images/sevopedia/0.201_sevopedia_leader_bunny_girl (3).JPG" alt="0.201_sevopedia_leader_bunny_girl (3).JPG" width="150"></img>
+
+### Victoria 11 (The Great Leader)
+
+Another example is a very rare nif variant that was stored in a mod's folder and not shown in the game. It features a very rare African/Ethiopian flavored version of victoria with matching clothes, a worthy addition for the mod too.
+
+<img src="./_1_AdvCiv-SAS/Images/sevopedia/0.202_sevopedia_leader_victoria_11 (1).JPG" alt="0.202_sevopedia_leader_victoria_11 (1).JPG" width="150"></img>
+<img src="./_1_AdvCiv-SAS/Images/sevopedia/0.202_sevopedia_leader_victoria_11 (2).JPG" alt="0.202_sevopedia_leader_victoria_11 (2).JPG" width="150"></img>
 
 ## Example of minimal compact XML info
 

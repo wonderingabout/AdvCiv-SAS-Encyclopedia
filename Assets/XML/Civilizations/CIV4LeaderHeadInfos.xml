@@ -742,6 +742,26 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<ArtDefineTag>ART_DEF_LEADER_VICTORIA_7</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
+			<Type>LEADER_VICTORIA_8</Type>
+			<Description>TXT_KEY_LEADER_VICTORIA_8</Description>
+			<ArtDefineTag>ART_DEF_LEADER_VICTORIA_8</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_VICTORIA_9</Type>
+			<Description>TXT_KEY_LEADER_VICTORIA_9</Description>
+			<ArtDefineTag>ART_DEF_LEADER_VICTORIA_9</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_VICTORIA_10</Type>
+			<Description>TXT_KEY_LEADER_VICTORIA_10</Description>
+			<ArtDefineTag>ART_DEF_LEADER_VICTORIA_10</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_VICTORIA_11</Type>
+			<Description>TXT_KEY_LEADER_VICTORIA_11</Description>
+			<ArtDefineTag>ART_DEF_LEADER_VICTORIA_11</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
 			<Type>LEADER_HATSHEPSUT_1</Type>
 			<Description>TXT_KEY_LEADER_HATSHEPSUT_1</Description>
 			<ArtDefineTag>ART_DEF_LEADER_HATSHEPSUT_1</ArtDefineTag>
