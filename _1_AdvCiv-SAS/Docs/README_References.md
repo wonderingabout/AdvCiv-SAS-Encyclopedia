@@ -83,7 +83,7 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 - 2100 mod: Victoria 8 (The Great Leader (victoria_noshader.nif)), Victoria 9 (The Great Leader (victoria (2).nif)), Victoria 10 (The Great Leader (victoria2.nif)), Victoria 11 (The Great Leader (victoria.nif))
 - Facing Terrorism: Miriam Godwinson 2 (Gillard), Miriam Godwinson 3 (Merkel)
 - TAM BTS Animated LeaderHeads Addon: Isabella 13 (Semiramis)
-- Powers That Be: Dido 13 (Salamasina)
+- Powers That Be: Dido 13 (Salamasina) (note: .psd was removed in our mod so Leaderhead remains lightweight, available in the original source)
 
 #### Skipped (Modpacks)
 
