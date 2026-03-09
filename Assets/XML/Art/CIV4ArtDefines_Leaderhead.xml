@@ -1582,6 +1582,14 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<NoShaderNIF>Art/LeaderHeads/Isabella_12/nocrwnizzy2.nif</NoShaderNIF>
 			<BackgroundKFM>Art/LeaderHeads/Isabella_12/Isabella_BG.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_ISABELLA_13</Type>
+			<Button>Art/LeaderHeads/Isabella_13/Semiramis.dds</Button>
+			<NIF>Art/LeaderHeads/Isabella_13/isabella.nif</NIF>
+			<KFM>Art/LeaderHeads/Isabella_13/isabella.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Isabella_13/isabella_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Isabella_13/leader_BG.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
 	<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_ATOTOZTLI_3</Type>
 			<Button>Art/LeaderHeads/Atotoztli_3/Btn_LH_Atotoztli.dds</Button>
