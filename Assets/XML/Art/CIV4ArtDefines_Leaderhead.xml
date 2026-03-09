@@ -1606,6 +1606,14 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<NoShaderNIF>Art/LeaderHeads/Dido_12/dido_nonshader.nif</NoShaderNIF>
 			<BackgroundKFM>Art/LeaderHeads/Dido_12/isabella_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_DIDO_13</Type>
+			<Button>Art/LeaderHeads/Dido_13/dido_13_64px_no_border.dds</Button>
+			<NIF>Art/LeaderHeads/Dido_13/Dido_Toga.nif</NIF>
+			<KFM>Art/LeaderHeads/Dido_13/isabella.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Dido_13/Dido_Toga.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Dido_13/Isabella_BG.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
 		<!-- custom: Nefertiti 3 is a Nefertiti 1 variant using isabella.nif instead of nefertiti.nif (Claude code Sonnet 4.6) -->
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_NEFERTITI_3</Type>

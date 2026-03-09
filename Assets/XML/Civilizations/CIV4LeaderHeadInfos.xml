@@ -1082,6 +1082,11 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<ArtDefineTag>ART_DEF_LEADER_DIDO_12</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
+			<Type>LEADER_DIDO_13</Type>
+			<Description>TXT_KEY_LEADER_DIDO_13</Description>
+			<ArtDefineTag>ART_DEF_LEADER_DIDO_13</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
 			<Type>LEADER_NEFERTITI_3</Type>
 			<Description>TXT_KEY_LEADER_NEFERTITI_3</Description>
 			<ArtDefineTag>ART_DEF_LEADER_NEFERTITI_3</ArtDefineTag>

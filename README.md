@@ -23,7 +23,7 @@ For License and Reuse, see [License and reuse](/README.md#license-and-reuse).
 ## Menu
 
 [New Leaderheads (AdvCiv-SAS-NIF-Gallery original) (e.g., Atossa, Roshanak)](/README.md#new-leaderheads-advciv-sas-nif-gallery-original-eg-atossa-roshanak)  
-[Hidden NIF variants (e.g., Maria 3, Quilago 2, Bunny Girl 3)](/README.md#hidden-nif-variants-eg-maria-3-quilago-2-bunny-girl-3)  
+[Hidden NIF variants (e.g., Maria 3, Quilago 2, Bunny Girl 3, Victoria 11 (The Great Leader), Dido 13 (Salamasina))](/README.md#hidden-nif-variants-eg-maria-3-quilago-2-bunny-girl-3-victoria-11-the-great-leader-dido-13-salamasina)  
 [Example of minimal compact XML info](/README.md#example-of-minimal-compact-xml-info)  
 [Cleanup](/README.md#cleanup)  
 &emsp;[Wiztree (Cleanup)](/README.md#wiztree-cleanup)  
@@ -62,7 +62,7 @@ AdvCiv-SAS-NIF-Gallery original Leaderhead by wonderingabout and GPT-5.4-Thinkin
 <img src="./_1_AdvCiv-SAS/Images/sevopedia/0.101_sevopedia_leader_roshanak.JPG" alt="0.101_sevopedia_leader_roshanak.JPG" width="150"></img>
 <img src="./_1_AdvCiv-SAS/Images/sevopedia/roshanak_192px_cropped.png" alt="roshanak_192px_cropped.png" width="150"></img>
 
-## Hidden NIF variants (e.g., Maria 3, Quilago 2, Bunny Girl 3)
+## Hidden NIF variants (e.g., Maria 3, Quilago 2, Bunny Girl 3, Victoria 11 (The Great Leader), Dido 13 (Salamasina))
 
 As part of skimming through NIF files, we notably found unknown NIF variants that we customized a bit (e.g. background, button) if needed.
 
@@ -106,6 +106,15 @@ Another example is a very rare nif variant that was stored in a mod's folder and
 
 <img src="./_1_AdvCiv-SAS/Images/sevopedia/0.202_sevopedia_leader_victoria_11 (1).JPG" alt="0.202_sevopedia_leader_victoria_11 (1).JPG" width="150"></img>
 <img src="./_1_AdvCiv-SAS/Images/sevopedia/0.202_sevopedia_leader_victoria_11 (2).JPG" alt="0.202_sevopedia_leader_victoria_11 (2).JPG" width="150"></img>
+
+### Dido 13 (Salamasina)
+
+Another example is another very rare nif, not strictly a variant since there is no other main nif for Dido 13, but it seems clearly derived from Dido 2so fits as a variant.
+
+It features a rare tropical black/polynesian vibe that is attractive. Definitely worth adding.
+
+<img src="./_1_AdvCiv-SAS/Images/sevopedia/0.203_sevopedia_leader_dido_13 (1).JPG" alt="0.203_sevopedia_leader_dido_13 (1).JPG" width="150"></img>
+<img src="./_1_AdvCiv-SAS/Images/sevopedia/0.203_sevopedia_leader_dido_13 (2).JPG" alt="0.203_sevopedia_leader_dido_13 (2).JPG" width="150"></img>
 
 ## Example of minimal compact XML info
 
