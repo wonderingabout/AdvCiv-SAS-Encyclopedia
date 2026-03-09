@@ -1377,6 +1377,22 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<BackgroundKFM>Art/LeaderHeads/Miriam_Godwinson/isabella_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_MIRIAM_GODWINSON_2</Type>
+			<Button>Art/LeaderHeads/Miriam_Godwinson_2/miriam_godwinson_64px_no_border.dds</Button>
+			<NIF>Art/LeaderHeads/Miriam_Godwinson_2/isabella.nif</NIF>
+			<KFM>Art/LeaderHeads/Miriam_Godwinson_2/isabella.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Miriam_Godwinson_2/isabella.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/WinstonChurchill/winston_churchill_BG.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_MIRIAM_GODWINSON_3</Type>
+			<Button>Art/LeaderHeads/Miriam_Godwinson_3/miriam_godwinson_3_64px_no_border.dds</Button>
+			<NIF>Art/LeaderHeads/Miriam_Godwinson_3/isabella.nif</NIF>
+			<KFM>Art/LeaderHeads/Miriam_Godwinson_3/isabella.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Miriam_Godwinson_3/isabella.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Frederick_the_Great/frederick_the_great_BG.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_SHEHERAZADE_2</Type>
 			<Button>Art/LeaderHeads/Sheherazade_2/sheherazade_2_64px_no_border.dds</Button>
 			<NIF>Art/LeaderHeads/Sheherazade_2/isabella.nif</NIF>

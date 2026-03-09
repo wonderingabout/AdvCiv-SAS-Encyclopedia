@@ -942,6 +942,16 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<ArtDefineTag>ART_DEF_LEADER_MIRIAM_GODWINSON</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
+			<Type>LEADER_MIRIAM_GODWINSON_2</Type>
+			<Description>TXT_KEY_LEADER_MIRIAM_GODWINSON_2</Description>
+			<ArtDefineTag>ART_DEF_LEADER_MIRIAM_GODWINSON_2</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_MIRIAM_GODWINSON_3</Type>
+			<Description>TXT_KEY_LEADER_MIRIAM_GODWINSON_3</Description>
+			<ArtDefineTag>ART_DEF_LEADER_MIRIAM_GODWINSON_3</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
 			<Type>LEADER_SHEHERAZADE_2</Type>
 			<Description>TXT_KEY_LEADER_SHEHERAZADE_2</Description>
 			<ArtDefineTag>ART_DEF_LEADER_SHEHERAZADE_2</ArtDefineTag>
