@@ -462,12 +462,12 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<BackgroundKFM>Art/LeaderHeads/Salamasina_2/hatshepsut_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
-			<Type>ART_DEF_LEADER_THANADELTHUR</Type>
-			<Button>Art/LeaderHeads/Thanadelthur/Thanadelthur.dds</Button>
-			<NIF>Art/LeaderHeads/Thanadelthur/tymoshenko.nif</NIF>
-			<KFM>Art/LeaderHeads/Thanadelthur/catherine.kfm</KFM>
-			<NoShaderNIF>Art/LeaderHeads/Thanadelthur/tymoshenko_noshader.nif</NoShaderNIF>
-			<BackgroundKFM>Art/LeaderHeads/Thanadelthur/tymoshenko_bg.kfm</BackgroundKFM>
+			<Type>ART_DEF_LEADER_CATHERINE_4</Type>
+			<Button>Art/LeaderHeads/Catherine_4/Thanadelthur.dds</Button>
+			<NIF>Art/LeaderHeads/Catherine_4/tymoshenko.nif</NIF>
+			<KFM>Art/LeaderHeads/Catherine_4/catherine.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Catherine_4/tymoshenko_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Catherine_4/tymoshenko_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_VICTORIA_1</Type>
@@ -486,12 +486,12 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<BackgroundKFM>Art/LeaderHeads/Victoria_2/montezuma_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
-			<Type>ART_DEF_LEADER_YULIA_TYMOSHENKO</Type>
-			<Button>Art/LeaderHeads/Yulia_Tymoshenko/Tymoshenko.dds</Button>
-			<NIF>Art/LeaderHeads/Yulia_Tymoshenko/tymoshenko.nif</NIF>
-			<KFM>Art/LeaderHeads/Yulia_Tymoshenko/catherine.kfm</KFM>
-			<NoShaderNIF>Art/LeaderHeads/Yulia_Tymoshenko/tymoshenko_noshader.nif</NoShaderNIF>
-			<BackgroundKFM>Art/LeaderHeads/Yulia_Tymoshenko/tymoshenko_bg.kfm</BackgroundKFM>
+			<Type>ART_DEF_LEADER_CATHERINE_5</Type>
+			<Button>Art/LeaderHeads/Catherine_5/Tymoshenko.dds</Button>
+			<NIF>Art/LeaderHeads/Catherine_5/tymoshenko.nif</NIF>
+			<KFM>Art/LeaderHeads/Catherine_5/catherine.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Catherine_5/tymoshenko_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Catherine_5/tymoshenko_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_ZENOBIA</Type>

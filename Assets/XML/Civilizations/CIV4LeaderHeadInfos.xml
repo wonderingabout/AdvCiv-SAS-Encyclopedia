@@ -389,9 +389,9 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<ArtDefineTag>ART_DEF_LEADER_SALAMASINA_2</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
-			<Type>LEADER_THANADELTHUR</Type>
-			<Description>TXT_KEY_LEADER_THANADELTHUR</Description>
-			<ArtDefineTag>ART_DEF_LEADER_THANADELTHUR</ArtDefineTag>
+			<Type>LEADER_CATHERINE_4</Type>
+			<Description>TXT_KEY_LEADER_CATHERINE_4</Description>
+			<ArtDefineTag>ART_DEF_LEADER_CATHERINE_4</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
 			<Type>LEADER_VICTORIA_1</Type>
@@ -404,9 +404,9 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<ArtDefineTag>ART_DEF_LEADER_VICTORIA_2</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
-			<Type>LEADER_YULIA_TYMOSHENKO</Type>
-			<Description>TXT_KEY_LEADER_YULIA_TYMOSHENKO</Description>
-			<ArtDefineTag>ART_DEF_LEADER_YULIA_TYMOSHENKO</ArtDefineTag>
+			<Type>LEADER_CATHERINE_5</Type>
+			<Description>TXT_KEY_LEADER_CATHERINE_5</Description>
+			<ArtDefineTag>ART_DEF_LEADER_CATHERINE_5</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
 			<Type>LEADER_ZENOBIA</Type>
