@@ -127,12 +127,12 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<BackgroundKFM>Art/LeaderHeads/Wu_Zetian/Wu_BG.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
-			<Type>ART_DEF_LEADER_SHIN_SAWBU</Type>
-			<Button>Art/LeaderHeads/Shin_Sawbu/Button_ShinSawbu.dds</Button>
-			<NIF>Art/LeaderHeads/Shin_Sawbu/asoka.nif</NIF>
+			<Type>ART_DEF_LEADER_LIEU_YE</Type>
+			<Button>Art/LeaderHeads/Lieu_Ye/Button_ShinSawbu.dds</Button>
+			<NIF>Art/LeaderHeads/Lieu_Ye/asoka.nif</NIF>
 			<KFM>Art/LeaderHeads/Asoka/asoka.kfm</KFM>
-			<NoShaderNIF>Art/LeaderHeads/Shin_Sawbu/asoka.nif</NoShaderNIF>
-			<BackgroundKFM>Art/LeaderHeads/Shin_Sawbu/catherine_bg.kfm</BackgroundKFM>
+			<NoShaderNIF>Art/LeaderHeads/Lieu_Ye/asoka.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Lieu_Ye/catherine_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_NANYE_HI</Type>
@@ -941,12 +941,12 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<BackgroundKFM>Art/LeaderHeads/Shajar_al_Durr/cyrus_bg2.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
-			<Type>ART_DEF_LEADER_SHIN_SAWBU_3</Type>
-			<Button>Art/LeaderHeads/Shin_Sawbu_3/Shinsawbubutton.dds</Button>
-			<NIF>Art/LeaderHeads/Shin_Sawbu_3/SalmasinaFinal.nif</NIF>
-			<KFM>Art/LeaderHeads/Shin_Sawbu_3/hatshepsut.kfm</KFM>
-			<NoShaderNIF>Art/LeaderHeads/Shin_Sawbu_3/hatshepsut_noshader.nif</NoShaderNIF>
-			<BackgroundKFM>Art/LeaderHeads/Shin_Sawbu_3/winston_churchill_bg4.kfm</BackgroundKFM>
+			<Type>ART_DEF_LEADER_HATSHEPSUT_4</Type>
+			<Button>Art/LeaderHeads/Hatshepsut_4/Shinsawbubutton.dds</Button>
+			<NIF>Art/LeaderHeads/Hatshepsut_4/SalmasinaFinal.nif</NIF>
+			<KFM>Art/LeaderHeads/Hatshepsut_4/hatshepsut.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Hatshepsut_4/hatshepsut_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Hatshepsut_4/winston_churchill_bg4.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_QUILAGO</Type>
@@ -956,7 +956,7 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<NoShaderNIF>Art/LeaderHeads/Quilago/isabella_noshader.nif</NoShaderNIF>
 			<BackgroundKFM>Art/LeaderHeads/Quilago/isabella_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
-		<!-- custom: Quilago 2 reuses Quilago assets with isabella_noshader.nif instead of isabella.nif, kept in a separate folder for modularity; background taken from Shin Sawbu 3 to reflect the different style after the NIF change (Claude code Sonnet 4.6) -->
+		<!-- custom: Quilago 2 reuses Quilago assets with isabella_noshader.nif instead of isabella.nif, kept in a separate folder for modularity; background taken from Hatshepsut 4 (formerly Shin Sawbu 3) to reflect the different style after the NIF change (Claude code Sonnet 4.6) -->
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_QUILAGO_2</Type>
 			<Button>Art/LeaderHeads/Quilago_2/Quilago.dds</Button>
@@ -976,12 +976,12 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		</LeaderheadArtInfo>
 <!-- custom: during implementation we removed a mod-local cross-folder dependency for animation KFM to keep this leader modular; use base Civ4 Asoka KFM instead of another custom leader folder. Rationale: referencing another custom leader folder couples assets and breaks portability when folders are moved/removed. (GPT-5.3-Codex) -->
 		<LeaderheadArtInfo>
-			<Type>ART_DEF_LEADER_SHIN_SAWBU_2</Type>
-			<Button>Art/LeaderHeads/Shin_Sawbu_2/LieuYe.dds</Button>
-			<NIF>Art/LeaderHeads/Shin_Sawbu_2/asoka.nif</NIF>
+			<Type>ART_DEF_LEADER_LIEU_YE_2</Type>
+			<Button>Art/LeaderHeads/Lieu_Ye_2/LieuYe.dds</Button>
+			<NIF>Art/LeaderHeads/Lieu_Ye_2/asoka.nif</NIF>
 			<KFM>Art/LeaderHeads/Asoka/asoka.kfm</KFM>
-			<NoShaderNIF>Art/LeaderHeads/Shin_Sawbu_2/asoka_noshader.nif</NoShaderNIF>
-			<BackgroundKFM>Art/LeaderHeads/Shin_Sawbu_2/catherine_bg.kfm</BackgroundKFM>
+			<NoShaderNIF>Art/LeaderHeads/Lieu_Ye_2/asoka_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Lieu_Ye_2/catherine_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_ANNE_BONNY</Type>

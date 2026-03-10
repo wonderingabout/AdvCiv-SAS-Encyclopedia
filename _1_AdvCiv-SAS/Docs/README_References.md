@@ -53,7 +53,7 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 
 - Base Civ4 (Advciv-SAS): Boudica 0, Catherine 0, Elizabeth 0, Hatshepsut 0, Isabella 0, Victoria 0
 - AdvCiv-SAS: Grace O'Malley
-- History Rewritten: Amanirena, Aminah, Awiakta, Mavia (Bilqis), Dido, Dihya, Isabella 1, Jingu, Mangammal, Atotoztli 2 (Nzinga), Salamasina, Wu Zetian, Shin Sawbu, Nanye-hi (Tomyris), Trung Sisters, Xoc, Yekaterina
+- History Rewritten: Amanirena, Aminah, Awiakta, Mavia (Bilqis), Dido, Dihya, Isabella 1, Jingu, Mangammal, Atotoztli 2 (Nzinga), Salamasina, Wu Zetian, Lieu-Ye (Black Hair), Nanye-hi (Tomyris), Trung Sisters, Xoc, Yekaterina
 - RFC Dawn of Civilization: Benazir Bhutto, Isabella 2, Maria, Maria 2 (no ribbon) (further modified in AdvCiv-SAS-NIF-Gallery)
 - Beyond the Game 2.43: Maria Theresa, Marpesia, Penthesilea, Theodora
 - Base 6.4: Jacquotte Delahaye, Atotoztli, Mavia 2, Cixi, Cleopatra, Wilhelmina
@@ -126,10 +126,10 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 - melcher kürzer: Maria Eleonora (https://forums.civfanatics.com/resources/lh-mary-queen-of-hungary.17884/)
 - SaibotLieh: Miranda Lawson (https://forums.civfanatics.com/resources/lh-miranda-lawson.17911/)
 - Civciv5: Shajar al-Durr (https://forums.civfanatics.com/resources/shajar-al-durr.19086/)
-- SaibotLieh: Shin Sawbu 2 (Lieu-Ye) (https://forums.civfanatics.com/resources/lh-lieu-ye.17799/)
-- SaibotLieh: Quilago, Quilago 2 (isabella_noshader.nif, background from Shin Sawbu 3) (https://forums.civfanatics.com/resources/lh-quilago.17685/)
+- SaibotLieh: Lieu-Ye 2 (Brown Hair) (https://forums.civfanatics.com/resources/lh-lieu-ye.17799/)
+- SaibotLieh: Quilago, Quilago 2 (isabella_noshader.nif, background from Hatshepsut 4) (https://forums.civfanatics.com/resources/lh-quilago.17685/)
 - Civciv5: Seondeok (https://forums.civfanatics.com/resources/queen-seondeok-of-silla.17724/)
-- Civciv5: Shin Sawbu 3 (https://forums.civfanatics.com/resources/shin-sawbu.18142/)
+- Civciv5: Hatshepsut 4 (Shin Sawbu) (https://forums.civfanatics.com/resources/shin-sawbu.18142/)
 - SaibotLieh: Evita Peron 2 (Bunny Girl) (https://forums.civfanatics.com/resources/lh-bunny-girl.16973/)
 - SaibotLieh (Lemon Merchant's post): Evita Peron 3 (Bunny Girl 2 (Brunette), lounge background by <a href="https://pixabay.com/users/stokpic-692575/?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=601303">stokpic</a> from <a href="https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=601303">Pixabay</a> (https://pixabay.com/photos/bar-interior-luxury-design-601303/)), Evita Peron 4 (Bunny Girl 3 (catherine_noshader.nif), casino background by <a href="https://pixabay.com/users/theandrasbarta-2004841/?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=1264078">TheAndrasBarta</a> from <a href="https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=1264078">Pixabay</a> (https://pixabay.com/photos/roulette-casino-black-red-dealer-1264078/)) (https://forums.civfanatics.com/threads/saibotliehs-leaderhead-collection.378346/page-13)
 - melcher kürzer: Maria Eleonora 2 (https://forums.civfanatics.com/resources/lh-maria-elenora.16487/)

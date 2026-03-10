@@ -184,9 +184,9 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<ArtDefineTag>ART_DEF_LEADER_WU_ZETIAN</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
-			<Type>LEADER_SHIN_SAWBU</Type>
-			<Description>TXT_KEY_LEADER_SHIN_SAWBU</Description>
-			<ArtDefineTag>ART_DEF_LEADER_SHIN_SAWBU</ArtDefineTag>
+			<Type>LEADER_LIEU_YE</Type>
+			<Description>TXT_KEY_LEADER_LIEU_YE</Description>
+			<ArtDefineTag>ART_DEF_LEADER_LIEU_YE</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
 			<Type>LEADER_NANYE_HI</Type>
@@ -682,9 +682,9 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<ArtDefineTag>ART_DEF_LEADER_SHAJAR_AL_DURR</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
-			<Type>LEADER_SHIN_SAWBU_3</Type>
-			<Description>TXT_KEY_LEADER_SHIN_SAWBU_3</Description>
-			<ArtDefineTag>ART_DEF_LEADER_SHIN_SAWBU_3</ArtDefineTag>
+			<Type>LEADER_HATSHEPSUT_4</Type>
+			<Description>TXT_KEY_LEADER_HATSHEPSUT_4</Description>
+			<ArtDefineTag>ART_DEF_LEADER_HATSHEPSUT_4</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
 			<Type>LEADER_QUILAGO</Type>
@@ -702,9 +702,9 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<ArtDefineTag>ART_DEF_LEADER_SEONDEOK</ArtDefineTag>
 		</LeaderHeadInfo>
 <LeaderHeadInfo>
-			<Type>LEADER_SHIN_SAWBU_2</Type>
-			<Description>TXT_KEY_LEADER_SHIN_SAWBU_2</Description>
-			<ArtDefineTag>ART_DEF_LEADER_SHIN_SAWBU_2</ArtDefineTag>
+			<Type>LEADER_LIEU_YE_2</Type>
+			<Description>TXT_KEY_LEADER_LIEU_YE_2</Description>
+			<ArtDefineTag>ART_DEF_LEADER_LIEU_YE_2</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
 			<Type>LEADER_ANNE_BONNY</Type>
