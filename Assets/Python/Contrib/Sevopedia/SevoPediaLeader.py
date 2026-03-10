@@ -72,6 +72,12 @@ class SevoPediaLeader:
 		self.iLeader = -1
 		self.top = main
 		self.iSelectedAttitude = AttitudeTypes.ATTITUDE_PLEASED
+		self.attitudeButtonLabelCache = {}
+		self.ATTITUDES_PANEL_ID = "SevoPediaLeaderAttitudesPanel"
+		self.ATTITUDE_BUTTON_WIDGET_BY_ATTITUDE = {}
+		for iAttitude in SAS_LEADER_ATTITUDE_PREVIEW_ORDER:
+			self.ATTITUDE_BUTTON_WIDGET_BY_ATTITUDE[iAttitude] = "SevoPediaLeaderAttitudeBtn%d" % iAttitude
+		self.buildAttitudeButtonLabelCache()
 
 		self.X_LEADERHEAD_PANE = self.top.X_PEDIA_PAGE
 		self.Y_LEADERHEAD_PANE = self.top.Y_PEDIA_PAGE
@@ -241,9 +247,9 @@ class SevoPediaLeader:
 			return
 
 		screen = self.top.getScreen()
-		panelName = self.top.getNextWidgetName()
+		self.deleteAttitudeWidgets(screen)
 		# <!-- custom: add direct mood buttons in the center gap (between Favorites and Music) so clicking previews leader attitude animations without keyboard-only hotkeys. (GPT-5.3-Codex) -->
-		screen.addPanel(panelName, "", "", False, True, self.X_ATTITUDES, self.Y_ATTITUDES, self.W_ATTITUDES, self.H_ATTITUDES, PanelStyles.PANEL_STYLE_BLUE50)
+		screen.addPanel(self.ATTITUDES_PANEL_ID, "", "", False, True, self.X_ATTITUDES, self.Y_ATTITUDES, self.W_ATTITUDES, self.H_ATTITUDES, PanelStyles.PANEL_STYLE_BLUE50)
 
 		attitudeOrder = SAS_LEADER_ATTITUDE_PREVIEW_ORDER
 		iButtonCount = len(attitudeOrder)
@@ -264,10 +270,40 @@ class SevoPediaLeader:
 		iButtonY = self.Y_ATTITUDES + 18
 
 		for iAttitude in attitudeOrder:
-			# <!-- custom: derive compact stable labels from enum types (Furious..Friendly) to avoid untranslated TXT keys/truncation artifacts on buttons. (GPT-5.3-Codex) -->
-			szLabel = gc.getAttitudeInfo(iAttitude).getType().replace("ATTITUDE_", "").capitalize()
-			screen.setButtonGFC(self.top.getNextWidgetName(), szLabel, "", iButtonX, iButtonY, iButtonW, iButtonH, WidgetTypes.WIDGET_PYTHON, SAS_PEDIA_PYTHON_LEADER_ATTITUDE, iAttitude, ButtonStyles.BUTTON_STYLE_STANDARD)
+			szWidget = self.ATTITUDE_BUTTON_WIDGET_BY_ATTITUDE[iAttitude]
+			szLabel = self.getAttitudeButtonLabel(iAttitude)
+			screen.setButtonGFC(szWidget, szLabel, "", iButtonX, iButtonY, iButtonW, iButtonH, WidgetTypes.WIDGET_PYTHON, SAS_PEDIA_PYTHON_LEADER_ATTITUDE, iAttitude, ButtonStyles.BUTTON_STYLE_STANDARD)
 			iButtonX += iButtonW + iButtonSpacing
+
+
+	def deleteAttitudeWidgets(self, screen):
+		try:
+			screen.deleteWidget(self.ATTITUDES_PANEL_ID)
+		except:
+			pass
+		for iAttitude in SAS_LEADER_ATTITUDE_PREVIEW_ORDER:
+			try:
+				screen.deleteWidget(self.ATTITUDE_BUTTON_WIDGET_BY_ATTITUDE[iAttitude])
+			except:
+				pass
+
+
+	def getAttitudeButtonLabel(self, iAttitude):
+		if iAttitude not in self.attitudeButtonLabelCache:
+			if iAttitude == self.iSelectedAttitude:
+				return u"!!"
+			return u"??"
+		szLabelLower, szLabelUpper = self.attitudeButtonLabelCache[iAttitude]
+		if iAttitude == self.iSelectedAttitude:
+			return szLabelUpper
+		return szLabelLower
+
+
+	def buildAttitudeButtonLabelCache(self):
+		for iAttitude in SAS_LEADER_ATTITUDE_PREVIEW_ORDER:
+			szLabel = gc.getAttitudeInfo(iAttitude).getType().replace("ATTITUDE_", "").lower()
+			szLabel = szLabel[:2]
+			self.attitudeButtonLabelCache[iAttitude] = (szLabel, szLabel.upper())
 
 
 	def refreshLeaderheadWidget(self):
@@ -476,4 +512,6 @@ class SevoPediaLeader:
 			return 0
 		self.iSelectedAttitude = iAttitude
 		# <!-- custom: force-refresh the leaderhead widget so attitude changes show immediately on click; mood-only updates can be visually ignored while another anim is still running. (GPT-5.3-Codex) -->
-		return self.refreshLeaderheadWidget()
+		self.refreshLeaderheadWidget()
+		self.placeAttitudes()
+		return 1
