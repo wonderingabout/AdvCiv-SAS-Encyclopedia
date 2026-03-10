@@ -149,9 +149,9 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<ArtDefineTag>ART_DEF_LEADER_DIDO</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
-			<Type>LEADER_DIHYA</Type>
-			<Description>TXT_KEY_LEADER_DIHYA</Description>
-			<ArtDefineTag>ART_DEF_LEADER_DIHYA</ArtDefineTag>
+			<Type>LEADER_ZENOBIA_3</Type>
+			<Description>TXT_KEY_LEADER_ZENOBIA_3</Description>
+			<ArtDefineTag>ART_DEF_LEADER_ZENOBIA_3</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
 			<Type>LEADER_ISABELLA_1</Type>

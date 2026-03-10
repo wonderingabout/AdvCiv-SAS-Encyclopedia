@@ -53,7 +53,7 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 
 - Base Civ4 (Advciv-SAS): Boudica 0, Catherine 0, Elizabeth 0, Hatshepsut 0, Isabella 0, Victoria 0
 - AdvCiv-SAS: Grace O'Malley
-- History Rewritten: Amanirena, Aminah, Awiakta, Mavia (Bilqis), Dido, Dihya, Isabella 1, Jingu, Mangammal, Atotoztli 2 (Nzinga), Salamasina, Wu Zetian, Lieu-Ye (Black Hair), Nanye-hi (Tomyris), Trung Sisters, Xoc, Catherine 1 (Yekaterina)
+- History Rewritten: Amanirena, Aminah, Awiakta, Mavia (Bilqis), Dido, Zenobia 3 (Dihya), Isabella 1, Jingu, Mangammal, Atotoztli 2 (Nzinga), Salamasina, Wu Zetian, Lieu-Ye (Black Hair), Nanye-hi (Tomyris), Trung Sisters, Xoc, Catherine 1 (Yekaterina)
 - RFC Dawn of Civilization: Benazir Bhutto, Isabella 2, Maria, Maria 2 (no ribbon) (further modified in AdvCiv-SAS-NIF-Gallery)
 - Beyond the Game 2.43: Maria Theresa, Marpesia, Penthesilea, Theodora
 - Base 6.4: Jacquotte Delahaye, Atotoztli, Mavia 2, Cixi, Cleopatra, Elizabeth 8 (Wilhelmina)
