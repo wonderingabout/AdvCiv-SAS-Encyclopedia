@@ -1896,6 +1896,18 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 
 			# <!-- custom: make a common initial variable so we can tweak it in specific elif or such blocks as we see fit and keep common logic at the end; using a long name to avoid weird python scope inheritance issues to unrelated scopes -->
 			sTitlePlaceItems = item[0]
+			# <!-- custom: tentative UnicodeDecodeError fix for placeItems path: normalize list titles to unicode before UI concatenation so Python 2.4 does not implicitly ascii-decode non-ASCII entries; raise with row context if decoding still fails. (GPT-5.3-Codex) -->
+			if not isinstance(sTitlePlaceItems, unicode):
+				if isinstance(sTitlePlaceItems, str):
+					try:
+						sTitlePlaceItems = sTitlePlaceItems.decode("utf-8")
+					except:
+						try:
+							sTitlePlaceItems = sTitlePlaceItems.decode("cp1252")
+						except:
+							raise Exception("SevoPediaMain.placeItems: cannot decode title at list index %d: %r" % (idx, sTitlePlaceItems))
+				else:
+					sTitlePlaceItems = unicode(sTitlePlaceItems)
 			widgetPlaceItems = widget
 			bSAS_hasCustomData2 = False
 			# Even though you later handle data1 == -1 inside the civics block, you still do szButtonPlaceItems = info(item[1]).getButton() before any header check.

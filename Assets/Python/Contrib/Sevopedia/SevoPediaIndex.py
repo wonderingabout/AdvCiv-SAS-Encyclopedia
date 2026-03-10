@@ -49,6 +49,19 @@ class SevoPediaIndex:
 		self.Y_LETTER = self.Y_INDEX
 		self.W_LETTER = 20
 
+	def SAS_asUnicode(self, value, context):
+		if isinstance(value, unicode):
+			return value
+		if isinstance(value, str):
+			try:
+				return value.decode("utf-8")
+			except:
+				try:
+					return value.decode("cp1252")
+				except:
+					raise Exception("SevoPediaIndex: cannot decode '%s': %r" % (context, value))
+		return unicode(value)
+
 	def interfaceScreen(self, bCategory=False):
 		self.SAS_indexSetLayout(bCategory)
 		self.buildIndex()
@@ -213,6 +226,10 @@ class SevoPediaIndex:
 		# <!-- custom: add Builds to index (Claude Opus 4.5) -->
 		for item in buildList:
 			list.append([item[0],"Build",item])
+
+		# <!-- custom: tentative UnicodeDecodeError fix: normalize index labels to unicode before sorting/filtering so Python 2.4 does not implicitly ascii-decode non-ASCII entries; keep strict context in errors if decoding still fails. (GPT-5.3-Codex) -->
+		for iEntry in xrange(len(list)):
+			list[iEntry][0] = self.SAS_asUnicode(list[iEntry][0], list[iEntry][1])
 		
 		list.sort()
 		self.index = list
@@ -344,7 +361,8 @@ class SevoPediaIndex:
 			elif (type == "Concept"):
 				screen.setTableText(self.tableName, iColumn, iRow, u"<font=3>%c %s</font>" % (CONCEPT_CHAR, item[0]), gc.getConceptInfo(iData1).getButton(), WidgetTypes.WIDGET_PEDIA_DESCRIPTION, CivilopediaPageTypes.CIVILOPEDIA_PAGE_CONCEPT, iData1, CvUtil.FONT_LEFT_JUSTIFY)
 			elif (type == "NewConcept"):
-				screen.setTableText(self.tableName, iColumn, iRow, u"<font=3>%c %s</font>" % (CONCEPT_CHAR, item[0]), gc.getConceptInfo(iData1).getButton(), WidgetTypes.WIDGET_PEDIA_DESCRIPTION, CivilopediaPageTypes.CIVILOPEDIA_PAGE_CONCEPT_NEW, iData1, CvUtil.FONT_LEFT_JUSTIFY)
+				# <!-- custom: AttributeError root cause note: after removing most Concept/NewConcept infos, this branch must use gc.getNewConceptInfo(iData1); using gc.getConceptInfo(iData1) can return None/wrong entry and then getButton crashes. (GPT-5.3-Codex) -->
+				screen.setTableText(self.tableName, iColumn, iRow, u"<font=3>%c %s</font>" % (CONCEPT_CHAR, item[0]), gc.getNewConceptInfo(iData1).getButton(), WidgetTypes.WIDGET_PEDIA_DESCRIPTION, CivilopediaPageTypes.CIVILOPEDIA_PAGE_CONCEPT_NEW, iData1, CvUtil.FONT_LEFT_JUSTIFY)
 		
 		self.iLastRow = iRow
 

@@ -19,7 +19,7 @@ from CvPythonExtensions import *
 import CvUtil
 import ScreenInput
 import SevoScreenEnums
-from SASUtils import getInfoTypeOrFail
+from SASUtils import getInfoTypeOrFail, getInfoTypeOrMinusOne
 
 from _sevopedia_helpers import *
 
@@ -79,7 +79,7 @@ class SevoPediaImprovement:
 		self.top = main
 		self.SAS_iBuildRoad = getInfoTypeOrFail("BUILD_ROAD")
 		self.SAS_iBuildRailroad = getInfoTypeOrFail("BUILD_ROAD")
-		self.I_CONCEPT_IRRIGATION = getInfoTypeOrFail("CONCEPT_IRRIGATION")
+		self.I_CONCEPT_IRRIGATION = getInfoTypeOrMinusOne("CONCEPT_IRRIGATION")
 		self.I_TERRAIN_HILL = getInfoTypeOrFail("TERRAIN_HILL")
 
 		self.MEDIUM_MARGIN = 15
@@ -371,8 +371,13 @@ class SevoPediaImprovement:
 			if iYieldChange != 0:
 				sText += u"%+d%c" % (iYieldChange, gc.getYieldInfo(k).getChar())
 		if len(sText) > 0:
-			screen.setImageButtonAt(self.top.getNextWidgetName(), scrollPanelName, ArtFileMgr.getInterfaceArtInfo("INTERFACE_TECH_IRRIGATION").getPath(), 0, iY, iButtonSize, iButtonSize, WidgetTypes.WIDGET_PEDIA_DESCRIPTION, CivilopediaPageTypes.CIVILOPEDIA_PAGE_CONCEPT, self.I_CONCEPT_IRRIGATION)
-			screen.setLabelAt(self.top.getNextWidgetName(), scrollPanelName, u"<font=4>" + sText + u"</font>", CvUtil.FONT_LEFT_JUSTIFY, iButtonSize + 8, iY + iButtonSize/2 - 8, -0.1, FontTypes.SMALL_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
+			iTextX = iButtonSize + 8
+			# <!-- custom: CONCEPT_IRRIGATION is optional in stripped galleries; only add the clickable concept icon if that tag exists. (GPT-5.3-Codex) -->
+			if self.I_CONCEPT_IRRIGATION > -1:
+				screen.setImageButtonAt(self.top.getNextWidgetName(), scrollPanelName, ArtFileMgr.getInterfaceArtInfo("INTERFACE_TECH_IRRIGATION").getPath(), 0, iY, iButtonSize, iButtonSize, WidgetTypes.WIDGET_PEDIA_DESCRIPTION, CivilopediaPageTypes.CIVILOPEDIA_PAGE_CONCEPT, self.I_CONCEPT_IRRIGATION)
+			else:
+				iTextX = 0
+			screen.setLabelAt(self.top.getNextWidgetName(), scrollPanelName, u"<font=4>" + sText + u"</font>", CvUtil.FONT_LEFT_JUSTIFY, iTextX, iY + iButtonSize/2 - 8, -0.1, FontTypes.SMALL_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
 			iY += (iButtonSize + 8)
 
 		# Hills yield changes
