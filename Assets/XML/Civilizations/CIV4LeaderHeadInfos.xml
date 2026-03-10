@@ -364,9 +364,9 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<ArtDefineTag>ART_DEF_LEADER_ELIZABETH_3</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
-			<Type>LEADER_HELEN_CLARK</Type>
-			<Description>TXT_KEY_LEADER_HELEN_CLARK</Description>
-			<ArtDefineTag>ART_DEF_LEADER_HELEN_CLARK</ArtDefineTag>
+			<Type>LEADER_ANNE_BONNY_3</Type>
+			<Description>TXT_KEY_LEADER_ANNE_BONNY_3</Description>
+			<ArtDefineTag>ART_DEF_LEADER_ANNE_BONNY_3</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
 			<Type>LEADER_ISABELLA_3</Type>
