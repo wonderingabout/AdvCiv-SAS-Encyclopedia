@@ -619,9 +619,9 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<ArtDefineTag>ART_DEF_LEADER_SALAMASINA_10</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
-			<Type>LEADER_LY_CHIEU_HOANG</Type>
-			<Description>TXT_KEY_LEADER_LY_CHIEU_HOANG</Description>
-			<ArtDefineTag>ART_DEF_LEADER_LY_CHIEU_HOANG</ArtDefineTag>
+			<Type>LEADER_SALAMASINA_12</Type>
+			<Description>TXT_KEY_LEADER_SALAMASINA_12</Description>
+			<ArtDefineTag>ART_DEF_LEADER_SALAMASINA_12</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
 			<Type>LEADER_NUR_JAHAN</Type>

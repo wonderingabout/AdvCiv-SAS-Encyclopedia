@@ -840,12 +840,12 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		</LeaderheadArtInfo>
 		<!-- custom: fixed purple overlays by adding missing texture alias Wu_Clothes_ENV_MAS2.dds referenced by Trung.nif. (GPT-5.3-Codex) -->
 		<LeaderheadArtInfo>
-			<Type>ART_DEF_LEADER_LY_CHIEU_HOANG</Type>
-			<Button>Art/LeaderHeads/Ly_Chieu_Hoang/Ly_Chieu_Hoang.dds</Button>
-			<NIF>Art/LeaderHeads/Ly_Chieu_Hoang/Trung.nif</NIF>
-			<KFM>Art/LeaderHeads/Ly_Chieu_Hoang/Trung2.kfm</KFM>
-			<NoShaderNIF>Art/LeaderHeads/Ly_Chieu_Hoang/Trung.nif</NoShaderNIF>
-			<BackgroundKFM>Art/LeaderHeads/Ly_Chieu_Hoang/Boudica_BG2.kfm</BackgroundKFM>
+			<Type>ART_DEF_LEADER_SALAMASINA_12</Type>
+			<Button>Art/LeaderHeads/Salamasina_12/Ly_Chieu_Hoang.dds</Button>
+			<NIF>Art/LeaderHeads/Salamasina_12/Trung.nif</NIF>
+			<KFM>Art/LeaderHeads/Salamasina_12/Trung2.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Salamasina_12/Trung.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Salamasina_12/Boudica_BG2.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<!-- custom: fixed purple eyes/face by adding missing catherine_env/env_mask/nrml/spec and shaka_nrml textures required by catherine.nif. (GPT-5.3-Codex); added a button; also catherine_noshader.nif looks like an interesting variant but seemingly not working properly so not added -->
 		<LeaderheadArtInfo>

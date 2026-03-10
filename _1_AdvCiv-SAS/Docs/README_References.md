@@ -118,7 +118,7 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 - SaibotLieh: Cockacoeske (https://forums.civfanatics.com/resources/lh-cockacoeske.20004/)
 - Civciv5: Salamasina 11 (Generic Asian Empress) (https://forums.civfanatics.com/resources/wu-zetian-or-generic-chinese-empress.19642/)
 - Civciv5: Salamasina 9 (Khri ma lod), Salamasina 10 (Khri ma lod 2) (https://forums.civfanatics.com/resources/khri-ma-lod.19088/)
-- Civciv5: Ly Chieu Hoang (https://forums.civfanatics.com/resources/ly-chieu-hoang.19641/)
+- Civciv5: Salamasina 12 (Ly Chieu Hoang) (https://forums.civfanatics.com/resources/ly-chieu-hoang.19641/)
 - Civciv5: Nur Jahan (https://forums.civfanatics.com/resources/nur-jahan.19637/)
 - Civciv5: Pope Joan (https://forums.civfanatics.com/resources/pope-joan.19625/)
 - Civciv5: Salamasina 4 (Ana Nzinga) (https://forums.civfanatics.com/resources/ana-nzinga.19636/)
