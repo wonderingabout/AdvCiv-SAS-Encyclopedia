@@ -1606,6 +1606,23 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<NoShaderNIF>Art/LeaderHeads/Isabella_15/isabella_noshader.nif</NoShaderNIF>
 			<BackgroundKFM>Art/LeaderHeads/Isabella_15/isabella_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_ISABELLA_17</Type>
+			<Button>Art/LeaderHeads/Isabella_17/Maria.dds</Button>
+			<NIF>Art/LeaderHeads/Isabella_17/isabella.nif</NIF>
+			<KFM>Art/LeaderHeads/Isabella_17/isabella.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Isabella_17/isabella_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Isabella_17/isabella_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<!-- custom: Isabella 16 (Boadicea) uses isabella_noshader.nif instead of the base nif because the base nif has a floating pendant issue (Claude code Sonnet 4.6) -->
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_ISABELLA_16</Type>
+			<Button>Art/LeaderHeads/Isabella_16/Boadicea.dds</Button>
+			<NIF>Art/LeaderHeads/Isabella_16/isabella_noshader.nif</NIF>
+			<KFM>Art/LeaderHeads/Isabella_16/isabella.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Isabella_16/isabella_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Isabella_16/isabella_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
 	<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_ATOTOZTLI_3</Type>
 			<Button>Art/LeaderHeads/Atotoztli_3/Btn_LH_Atotoztli.dds</Button>
