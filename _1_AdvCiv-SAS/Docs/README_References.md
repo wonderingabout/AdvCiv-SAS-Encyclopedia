@@ -159,6 +159,7 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 - Refar: Fury Road Aelwyn — Anne Bonny 2 (Martha (Aelwyn))'s Aelwyn_Button.dds, Readme.txt (and Aelwyn_Picture.jpg) (https://forums.civfanatics.com/resources/fury-road-aelwyn.10100/)
 - esnaz: Theodora 3 (https://forums.civfanatics.com/resources/bts-empress-theodora.6717/)
 - GarretSidzaka: Isabella 12 (No Crown) (https://forums.civfanatics.com/resources/no-crown-izzy.6640/)
+- esnaz: Isabella 14 (Celtic Boudica), Isabella 15 (Celtic Boudica (isabella_noshader.nif)) (https://forums.civfanatics.com/resources/boudica.3834/)
 
 #### Female Non-Human (CFC)
 

@@ -1590,6 +1590,22 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<NoShaderNIF>Art/LeaderHeads/Isabella_13/isabella_noshader.nif</NoShaderNIF>
 			<BackgroundKFM>Art/LeaderHeads/Isabella_13/leader_BG.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_ISABELLA_14</Type>
+			<Button>Art/LeaderHeads/Isabella_14/btn_lh_celtic_boudica.dds</Button>
+			<NIF>Art/LeaderHeads/Isabella_14/isabella.nif</NIF>
+			<KFM>Art/LeaderHeads/Isabella_14/isabella.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Isabella_14/isabella_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Isabella_14/isabella_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_ISABELLA_15</Type>
+			<Button>Art/LeaderHeads/Isabella_15/btn_lh_celtic_boudica.dds</Button>
+			<NIF>Art/LeaderHeads/Isabella_15/isabella_noshader.nif</NIF>
+			<KFM>Art/LeaderHeads/Isabella_15/isabella.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Isabella_15/isabella_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Isabella_15/isabella_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
 	<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_ATOTOZTLI_3</Type>
 			<Button>Art/LeaderHeads/Atotoztli_3/Btn_LH_Atotoztli.dds</Button>

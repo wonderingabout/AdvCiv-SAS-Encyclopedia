@@ -1072,6 +1072,16 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<ArtDefineTag>ART_DEF_LEADER_ISABELLA_13</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
+			<Type>LEADER_ISABELLA_14</Type>
+			<Description>TXT_KEY_LEADER_ISABELLA_14</Description>
+			<ArtDefineTag>ART_DEF_LEADER_ISABELLA_14</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_ISABELLA_15</Type>
+			<Description>TXT_KEY_LEADER_ISABELLA_15</Description>
+			<ArtDefineTag>ART_DEF_LEADER_ISABELLA_15</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
 			<Type>LEADER_ATOTOZTLI_3</Type>
 			<Description>TXT_KEY_LEADER_ATOTOZTLI_3</Description>
 			<ArtDefineTag>ART_DEF_LEADER_ATOTOZTLI_3</ArtDefineTag>
