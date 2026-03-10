@@ -85,6 +85,7 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 - TAM BTS Animated LeaderHeads Addon: Isabella 13 (Semiramis)
 - Powers That Be: Dido 13 (Salamasina) (note: .psd was removed in our mod so Leaderhead remains lightweight, available in the original source)
 - SevoMod 3.0: Isabella 16 (Boadicea), Isabella 17 (Maria)
+- WoC 1.2 (WoC_Full-v1_20-setup.exe): Isabella 18 (Dido)
 
 #### Skipped (Modpacks)
 
