@@ -389,6 +389,14 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<BackgroundKFM>Art/LeaderHeads/Elizabeth_4/Elizabeth_BG.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_ELIZABETH_5</Type>
+			<Button>Art/LeaderHeads/Elizabeth_5/zenobia.dds</Button>
+			<NIF>Art/LeaderHeads/Elizabeth_5/elizabeth.nif</NIF>
+			<KFM>Art/LeaderHeads/Elizabeth_5/elizabeth.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Elizabeth_5/elizabeth_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Elizabeth_5/elizabeth_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_ELIZABETH_1</Type>
 			<Button>Art/LeaderHeads/Elizabeth_1/Jean.dds</Button>
 			<NIF>Art/LeaderHeads/Elizabeth_1/elizabeth.nif</NIF>
