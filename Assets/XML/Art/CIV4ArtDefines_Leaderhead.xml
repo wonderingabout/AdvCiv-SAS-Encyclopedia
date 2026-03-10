@@ -372,21 +372,21 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<BackgroundKFM>Art/LeaderHeads/Joan_Of_Arc_3/catherine_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
-			<Type>ART_DEF_LEADER_GALADRIEL</Type>
-			<Button>Art/LeaderHeads/Galadriel/Galadriel_BT.dds</Button>
-			<NIF>Art/LeaderHeads/Galadriel/Galadriel.nif</NIF>
-			<KFM>Art/LeaderHeads/Galadriel/Elizabeth.kfm</KFM>
-			<NoShaderNIF>Art/LeaderHeads/Galadriel/Galadriel.nif</NoShaderNIF>
-			<BackgroundKFM>Art/LeaderHeads/Galadriel/Elizabeth_BG.kfm</BackgroundKFM>
+			<Type>ART_DEF_LEADER_ELIZABETH_6</Type>
+			<Button>Art/LeaderHeads/Elizabeth_6/Galadriel_BT.dds</Button>
+			<NIF>Art/LeaderHeads/Elizabeth_6/Galadriel.nif</NIF>
+			<KFM>Art/LeaderHeads/Elizabeth_6/Elizabeth.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Elizabeth_6/Galadriel.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Elizabeth_6/Elizabeth_BG.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<!-- custom: Elizabeth 4 reuses Galadriel assets with elizabeth.nif, kept in a separate folder for modularity (Claude code Sonnet 4.6) -->
 		<LeaderheadArtInfo>
-			<Type>ART_DEF_LEADER_ELIZABETH_4</Type>
+			<Type>ART_DEF_LEADER_ELIZABETH_7</Type>
 			<Button>,Art/Interface/LeaderHeads/Btn_LH_England_ElizabethI.dds,Art/Interface/Buttons/Actions_Builds_LeaderHeads_Specialists_Atlas.dds,8,10</Button>
-			<NIF>Art/LeaderHeads/Elizabeth_4/elizabeth.nif</NIF>
-			<KFM>Art/LeaderHeads/Elizabeth_4/Elizabeth.kfm</KFM>
-			<NoShaderNIF>Art/LeaderHeads/Elizabeth_4/Galadriel.nif</NoShaderNIF>
-			<BackgroundKFM>Art/LeaderHeads/Elizabeth_4/Elizabeth_BG.kfm</BackgroundKFM>
+			<NIF>Art/LeaderHeads/Elizabeth_7/elizabeth.nif</NIF>
+			<KFM>Art/LeaderHeads/Elizabeth_7/Elizabeth.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Elizabeth_7/Galadriel.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Elizabeth_7/Elizabeth_BG.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_ELIZABETH_5</Type>
@@ -1417,12 +1417,12 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<BackgroundKFM>Art/LeaderHeads/Salamasina_5/mao_tse_tung_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
-			<Type>ART_DEF_LEADER_TEUTA</Type>
-			<Button>Art/LeaderHeads/Teuta/teuta_64px_no_border.dds</Button>
-			<NIF>Art/LeaderHeads/Teuta/teuta.nif</NIF>
-			<KFM>Art/LeaderHeads/Teuta/teuta.kfm</KFM>
-			<NoShaderNIF>Art/LeaderHeads/Teuta/teuta_noshader.nif</NoShaderNIF>
-			<BackgroundKFM>Art/LeaderHeads/Teuta/leader_bg.kfm</BackgroundKFM>
+			<Type>ART_DEF_LEADER_ELIZABETH_4</Type>
+			<Button>Art/LeaderHeads/Elizabeth_4/teuta_64px_no_border.dds</Button>
+			<NIF>Art/LeaderHeads/Elizabeth_4/teuta.nif</NIF>
+			<KFM>Art/LeaderHeads/Elizabeth_4/teuta.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Elizabeth_4/teuta_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Elizabeth_4/leader_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_AMINAH_2</Type>
@@ -1485,12 +1485,12 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<BackgroundKFM>Art/LeaderHeads/Cleopatra_9/hatshepsut_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
-			<Type>ART_DEF_LEADER_TEUTA_2</Type>
-			<Button>Art/LeaderHeads/Teuta_2/teuta_2_64px_no_border.dds</Button>
-			<NIF>Art/LeaderHeads/Teuta_2/teuta.nif</NIF>
-			<KFM>Art/LeaderHeads/Teuta_2/isabella.kfm</KFM>
-			<NoShaderNIF>Art/LeaderHeads/Teuta_2/teuta.nif</NoShaderNIF>
-			<BackgroundKFM>Art/LeaderHeads/Teuta_2/isabella_bg.kfm</BackgroundKFM>
+			<Type>ART_DEF_LEADER_ISABELLA_20</Type>
+			<Button>Art/LeaderHeads/Isabella_20/teuta_2_64px_no_border.dds</Button>
+			<NIF>Art/LeaderHeads/Isabella_20/teuta.nif</NIF>
+			<KFM>Art/LeaderHeads/Isabella_20/isabella.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Isabella_20/teuta.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Isabella_20/isabella_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_BOUDICA_0</Type>

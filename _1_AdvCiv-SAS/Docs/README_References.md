@@ -60,7 +60,7 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 - Future Mod: Blonde Girl (Sarah Fedler)
 - Destiny: Cleopatra 2 (Darker 01), Joan of Arc, Joan of Arc 2 (elizabeth_noshader.nif), Mandukhai Khatun, Nefertiti, Nefertiti 3 (isabella.nif), Jingu 3
 - Rise of Mankind 2.91: Cleopatra 6, Hatshepsut 3 (Cleopatra 6 (hatshepsut_noshader.nif)), Dido 2, Joan of Arc 3
-- Middle-earth: Galadriel, Elizabeth 4 (Galadriel (elizabeth.nif))
+- Middle-earth: Elizabeth 6 (Galadriel), Elizabeth 7 (Galadriel (elizabeth.nif))
 - Civ Gold 5.2: Elizabeth 1 (Michaelle Jean), Elizabeth 2 (Makeda), Elizabeth 3 (Teuta), Helen Clark, Isabella 3 (Margrete I), Isabella 4 (Trung Trac), Salamasina 2, Salamasina 4 (Ranavalona), Catherine 4 (Thanadelthur), Victoria 1 (Benazir Bhutto), Victoria 2 (Hasina), Catherine 5 (Yulia Tymoshenko), Zenobia
 - Fictionalization beta: Sheherazade, Wu Qinghua
 - AdvCiv Plus: Ana Nzinga, Boudica 1, Isabella 5, Tamar, Victoria 3 (Maria Theresa)
@@ -154,11 +154,11 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 - cfkane: Miriam Godwinson (https://forums.civfanatics.com/resources/lh-miriam-godwinson.14815/)
 - kid anubis: Sheherazade 2 (Valeria) (https://forums.civfanatics.com/resources/valeria.14205/)
 - IgorS: Salamasina 5 (Xoc) (https://forums.civfanatics.com/resources/lh-lady-xoc.14181/)
-- ambrox62: Teuta (https://forums.civfanatics.com/resources/lh-teuta-illyrian-queen-from-231-to-228-bc.14033/)
+- ambrox62: Elizabeth 4 (Teuta) (https://forums.civfanatics.com/resources/lh-teuta-illyrian-queen-from-231-to-228-bc.14033/)
 - Ekmek: Aminah 2 (Amina of Zazzua) (https://forums.civfanatics.com/resources/lh-amina-of-zazzua.11043/)
 - cfkane: Gloriana 2 (https://forums.civfanatics.com/resources/lh-gloriana-the-faerie-queene.11024/)
 - Ekmek: Cleopatra 9 (https://forums.civfanatics.com/resources/lh-cleopatra.8664/)
-- GarretSidzaka: Teuta 2 (https://forums.civfanatics.com/resources/queen-teuta-of-illyria.7776/)
+- GarretSidzaka: Isabella 20 (Teuta 2) (https://forums.civfanatics.com/resources/queen-teuta-of-illyria.7776/)
 - Refar: Fury Road Aelwyn — Anne Bonny 2 (Martha (Aelwyn))'s Aelwyn_Button.dds, Readme.txt (and Aelwyn_Picture.jpg) (https://forums.civfanatics.com/resources/fury-road-aelwyn.10100/)
 - esnaz: Theodora 3 (https://forums.civfanatics.com/resources/bts-empress-theodora.6717/)
 - GarretSidzaka: Isabella 12 (No Crown) (https://forums.civfanatics.com/resources/no-crown-izzy.6640/)

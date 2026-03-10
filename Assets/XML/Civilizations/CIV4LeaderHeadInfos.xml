@@ -334,14 +334,14 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<ArtDefineTag>ART_DEF_LEADER_JOAN_OF_ARC_3</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
-			<Type>LEADER_GALADRIEL</Type>
-			<Description>TXT_KEY_LEADER_GALADRIEL</Description>
-			<ArtDefineTag>ART_DEF_LEADER_GALADRIEL</ArtDefineTag>
+			<Type>LEADER_ELIZABETH_6</Type>
+			<Description>TXT_KEY_LEADER_ELIZABETH_6</Description>
+			<ArtDefineTag>ART_DEF_LEADER_ELIZABETH_6</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
-			<Type>LEADER_ELIZABETH_4</Type>
-			<Description>TXT_KEY_LEADER_ELIZABETH_4</Description>
-			<ArtDefineTag>ART_DEF_LEADER_ELIZABETH_4</ArtDefineTag>
+			<Type>LEADER_ELIZABETH_7</Type>
+			<Description>TXT_KEY_LEADER_ELIZABETH_7</Description>
+			<ArtDefineTag>ART_DEF_LEADER_ELIZABETH_7</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
 			<Type>LEADER_ELIZABETH_5</Type>
@@ -967,9 +967,9 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<ArtDefineTag>ART_DEF_LEADER_SALAMASINA_5</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
-			<Type>LEADER_TEUTA</Type>
-			<Description>TXT_KEY_LEADER_TEUTA</Description>
-			<ArtDefineTag>ART_DEF_LEADER_TEUTA</ArtDefineTag>
+			<Type>LEADER_ELIZABETH_4</Type>
+			<Description>TXT_KEY_LEADER_ELIZABETH_4</Description>
+			<ArtDefineTag>ART_DEF_LEADER_ELIZABETH_4</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
 			<Type>LEADER_AMINAH_2</Type>
@@ -1007,9 +1007,9 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<ArtDefineTag>ART_DEF_LEADER_CLEOPATRA_9</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
-			<Type>LEADER_TEUTA_2</Type>
-			<Description>TXT_KEY_LEADER_TEUTA_2</Description>
-			<ArtDefineTag>ART_DEF_LEADER_TEUTA_2</ArtDefineTag>
+			<Type>LEADER_ISABELLA_20</Type>
+			<Description>TXT_KEY_LEADER_ISABELLA_20</Description>
+			<ArtDefineTag>ART_DEF_LEADER_ISABELLA_20</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
 			<Type>LEADER_BOUDICA_0</Type>
