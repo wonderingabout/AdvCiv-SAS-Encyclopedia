@@ -1066,12 +1066,12 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<BackgroundKFM>Art/LeaderHeads/Aminah_3/catherine_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
-			<Type>ART_DEF_LEADER_THEODORA_2</Type>
-			<Button>Art/LeaderHeads/Theodora_2/btn_byzantium_theodora.dds</Button>
-			<NIF>Art/LeaderHeads/Theodora_2/isabella.nif</NIF>
-			<KFM>Art/LeaderHeads/Theodora_2/isabella.kfm</KFM>
-			<NoShaderNIF>Art/LeaderHeads/Theodora_2/isabella_noshader.nif</NoShaderNIF>
-			<BackgroundKFM>Art/LeaderHeads/Theodora_2/isabella_bg.kfm</BackgroundKFM>
+			<Type>ART_DEF_LEADER_ISABELLA_21</Type>
+			<Button>Art/LeaderHeads/Isabella_21/btn_byzantium_theodora.dds</Button>
+			<NIF>Art/LeaderHeads/Isabella_21/isabella.nif</NIF>
+			<KFM>Art/LeaderHeads/Isabella_21/isabella.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Isabella_21/isabella_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Isabella_21/isabella_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_EVITA_PERON_3</Type>
@@ -1574,12 +1574,12 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<BackgroundKFM>Art/Leaderheads/Isabella_9/Isabella_BG.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
-			<Type>ART_DEF_LEADER_THEODORA_3</Type>
-			<Button>Art/LeaderHeads/Theodora_3/theodora_btn.dds</Button>
-			<NIF>Art/LeaderHeads/Theodora_3/isabella.nif</NIF>
-			<KFM>Art/LeaderHeads/Theodora_3/isabella.kfm</KFM>
-			<NoShaderNIF>Art/LeaderHeads/Theodora_3/isabella_noshader.nif</NoShaderNIF>
-			<BackgroundKFM>Art/LeaderHeads/Theodora_3/isabella_bg.kfm</BackgroundKFM>
+			<Type>ART_DEF_LEADER_ISABELLA_22</Type>
+			<Button>Art/LeaderHeads/Isabella_22/theodora_btn.dds</Button>
+			<NIF>Art/LeaderHeads/Isabella_22/isabella.nif</NIF>
+			<KFM>Art/LeaderHeads/Isabella_22/isabella.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Isabella_22/isabella_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Isabella_22/isabella_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<!-- custom: based on Isabella_0 (base Civ4) except we use the provided nocrwnizzy2.nif. The nif alone like in downloaded file causes her to have purple animation, so adding the base civ4 files manually in this leaderhead's folder as well -->
 		<LeaderheadArtInfo>

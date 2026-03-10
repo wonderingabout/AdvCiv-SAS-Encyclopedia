@@ -75,7 +75,7 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 - thecowwarrior's Variety Mod v1.99r3: Aelia Pulcheria, Ishtar
 - Thomas' War v3.5a: Elizabeth 9 (Mary Stuart), Nefertiti 2, Victoria 6 (Maria Theresa 4)
 - Fallout-TTW: Hatshepsut 1 (Tandi Williams (Old) (NoShaderNIF)), Tandi Williams
-- Diversica 1.95: Aminah 3 (Prisbit), Theodora 2
+- Diversica 1.95: Aminah 3 (Prisbit), Isabella 21 (Theodora 2)
 - Dawn of a New Era 6.00: Nanye-hi 3 (Running Eagle)
 - Fury Road v11: Anne Bonny 2 (Martha (Aelwyn)), Blonde Girl 2 (Debbie), Joan of Arc 4 (Debbie (Old)), Salamasina 6 (Brandi)
 - MarnzMod 1.8c: Catherine 3 (Mary Stuart 2 (NoShaderNIF)), Hatshepsut 2 (Salamasina), Isabella 9 (Theodora), Isabella 10 (Dido), Joan of Arc 4 (btn_lh_france_joanofarc.dds, different background, not currently used)
@@ -160,7 +160,7 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 - Ekmek: Cleopatra 9 (https://forums.civfanatics.com/resources/lh-cleopatra.8664/)
 - GarretSidzaka: Isabella 20 (Teuta) (https://forums.civfanatics.com/resources/queen-teuta-of-illyria.7776/)
 - Refar: Fury Road Aelwyn — Anne Bonny 2 (Martha (Aelwyn))'s Aelwyn_Button.dds, Readme.txt (and Aelwyn_Picture.jpg) (https://forums.civfanatics.com/resources/fury-road-aelwyn.10100/)
-- esnaz: Theodora 3 (https://forums.civfanatics.com/resources/bts-empress-theodora.6717/)
+- esnaz: Isabella 22 (Theodora 3) (https://forums.civfanatics.com/resources/bts-empress-theodora.6717/)
 - GarretSidzaka: Isabella 12 (No Crown) (https://forums.civfanatics.com/resources/no-crown-izzy.6640/)
 - esnaz: Isabella 14 (Celtic Boudica), Isabella 15 (Celtic Boudica (isabella_noshader.nif)) (https://forums.civfanatics.com/resources/boudica.3834/)
 
