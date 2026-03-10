@@ -61,7 +61,7 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 - Destiny: Cleopatra 2 (Darker 01), Joan of Arc, Joan of Arc 2 (elizabeth_noshader.nif), Mandukhai Khatun, Nefertiti, Nefertiti 3 (isabella.nif), Jingu 3
 - Rise of Mankind 2.91: Cleopatra 6, Hatshepsut 3 (Cleopatra 6 (hatshepsut_noshader.nif)), Dido 2, Joan of Arc 3
 - Middle-earth: Elizabeth 6 (Galadriel), Elizabeth 7 (Galadriel (elizabeth.nif))
-- Civ Gold 5.2: Elizabeth 1 (Michaelle Jean), Elizabeth 2 (Makeda), Elizabeth 3 (Teuta), Helen Clark, Isabella 3 (Margrete I), Isabella 4 (Trung Trac), Salamasina 2, Salamasina 4, Catherine 4 (Thanadelthur), Victoria 1 (Benazir Bhutto), Victoria 2 (Hasina), Catherine 5 (Yulia Tymoshenko), Zenobia
+- Civ Gold 5.2: Elizabeth 1 (Michaelle Jean), Elizabeth 2 (Makeda), Elizabeth 3 (Teuta), Helen Clark, Isabella 3 (Margrete I), Isabella 4 (Trung Trac), Salamasina 2, Salamasina 8, Catherine 4 (Thanadelthur), Victoria 1 (Benazir Bhutto), Victoria 2 (Hasina), Catherine 5 (Yulia Tymoshenko), Zenobia
 - Fictionalization beta: Sheherazade, Wu Qinghua
 - AdvCiv Plus: Ana Nzinga, Boudica 1, Isabella 5, Tamar, Victoria 3 (Maria Theresa)
 - PSYX's Modern world 4: Catherine 2 (Mary Stuart), Victoria 5 (Maria Theresa 3)
@@ -77,7 +77,7 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 - Fallout-TTW: Hatshepsut 1 (Tandi Williams (Old) (NoShaderNIF)), Tandi Williams
 - Diversica 1.95: Aminah 3 (Prisbit), Isabella 21 (Theodora 2)
 - Dawn of a New Era 6.00: Nanye-hi 3 (Running Eagle)
-- Fury Road v11: Anne Bonny 2 (Martha (Aelwyn)), Blonde Girl 2 (Debbie), Joan of Arc 4 (Debbie (Old)), Salamasina 6 (Brandi)
+- Fury Road v11: Anne Bonny 2 (Martha (Aelwyn)), Blonde Girl 2 (Debbie), Joan of Arc 4 (Debbie (Old)), Salamasina 3 (Brandi)
 - MarnzMod 1.8c: Catherine 3 (Mary Stuart 2 (NoShaderNIF)), Hatshepsut 2 (Salamasina), Isabella 9 (Theodora), Isabella 10 (Dido), Joan of Arc 4 (btn_lh_france_joanofarc.dds, different background, not currently used)
 - Quot Capita Majesty: Atotoztli 3 (atotoztli.nif), Dido 12 (almost naked), Nefertiti (Nefertiti.dds btn), Nefertiti 3 (Nefertiti.dds btn)
 - 2100 mod: Victoria 8 (The Great Leader (victoria_noshader.nif)), Victoria 9 (The Great Leader (victoria (2).nif)), Victoria 10 (The Great Leader (victoria2.nif)), Victoria 11 (The Great Leader (victoria.nif))
@@ -107,7 +107,7 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 - ambrox62: Dido 3 (Red), Dido 4 (Gold), Dido 5 (White) (https://forums.civfanatics.com/threads/lh-dido-v-2.270476/)
 - SaibotLieh: Ariadne (https://forums.civfanatics.com/resources/lh-ariadne.30092/)
 - SaibotLieh: Himiko (https://forums.civfanatics.com/resources/lh-himiko.29449/)
-- Mr-Goriyaki: Lady of Cao (https://forums.civfanatics.com/resources/lady-of-cao-lh.28470/)
+- Mr-Goriyaki: Salamasina 5 (Lady of Cao) (https://forums.civfanatics.com/resources/lady-of-cao-lh.28470/)
 - Sword_Of_Geddon: Purea (https://forums.civfanatics.com/resources/purea-of-tahiti.28684/)
 - SaibotLieh: Brunhild (https://forums.civfanatics.com/resources/lh-brunhild.22615/)
 - Kathy: Evita Peron, Evita Peron 2 (catherine_noshader.nif) (https://forums.civfanatics.com/resources/evita-peron.22900/)
@@ -117,11 +117,11 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 - SaibotLieh: Ulpia Severina 2 (No Laurel) (request by Kathy) (https://forums.civfanatics.com/threads/saibotliehs-leaderhead-collection.378346/page-24)
 - SaibotLieh: Cockacoeske (https://forums.civfanatics.com/resources/lh-cockacoeske.20004/)
 - Civciv5: Generic Asian Empress (https://forums.civfanatics.com/resources/wu-zetian-or-generic-chinese-empress.19642/)
-- Civciv5: Khri ma lod, Khri ma lod 2 (https://forums.civfanatics.com/resources/khri-ma-lod.19088/)
+- Civciv5: Salamasina 9 (Khri ma lod), Salamasina 10 (Khri ma lod 2) (https://forums.civfanatics.com/resources/khri-ma-lod.19088/)
 - Civciv5: Ly Chieu Hoang (https://forums.civfanatics.com/resources/ly-chieu-hoang.19641/)
 - Civciv5: Nur Jahan (https://forums.civfanatics.com/resources/nur-jahan.19637/)
 - Civciv5: Pope Joan (https://forums.civfanatics.com/resources/pope-joan.19625/)
-- Civciv5: Salamasina 3 (Ana Nzinga) (https://forums.civfanatics.com/resources/ana-nzinga.19636/)
+- Civciv5: Salamasina 4 (Ana Nzinga) (https://forums.civfanatics.com/resources/ana-nzinga.19636/)
 - Civciv5: Tamar 2 (https://forums.civfanatics.com/resources/tamar.19638/)
 - melcher kürzer: Maria Eleonora (https://forums.civfanatics.com/resources/lh-mary-queen-of-hungary.17884/)
 - SaibotLieh: Miranda Lawson (https://forums.civfanatics.com/resources/lh-miranda-lawson.17911/)
@@ -129,7 +129,7 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 - SaibotLieh: Lieu-Ye 2 (Brown Hair) (https://forums.civfanatics.com/resources/lh-lieu-ye.17799/)
 - SaibotLieh: Quilago, Quilago 2 (isabella_noshader.nif, background from Hatshepsut 4) (https://forums.civfanatics.com/resources/lh-quilago.17685/)
 - Civciv5: Jingu 2 (Seondeok) (https://forums.civfanatics.com/resources/queen-seondeok-of-silla.17724/)
-- Civciv5: Hatshepsut 4 (Shin Sawbu) (https://forums.civfanatics.com/resources/shin-sawbu.18142/)
+- Civciv5: Salamasina 7 (Shin Sawbu) (https://forums.civfanatics.com/resources/shin-sawbu.18142/)
 - SaibotLieh: Evita Peron 2 (Bunny Girl) (https://forums.civfanatics.com/resources/lh-bunny-girl.16973/)
 - SaibotLieh (Lemon Merchant's post): Evita Peron 3 (Bunny Girl 2 (Brunette), lounge background by <a href="https://pixabay.com/users/stokpic-692575/?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=601303">stokpic</a> from <a href="https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=601303">Pixabay</a> (https://pixabay.com/photos/bar-interior-luxury-design-601303/)), Evita Peron 4 (Bunny Girl 3 (catherine_noshader.nif), casino background by <a href="https://pixabay.com/users/theandrasbarta-2004841/?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=1264078">TheAndrasBarta</a> from <a href="https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=1264078">Pixabay</a> (https://pixabay.com/photos/roulette-casino-black-red-dealer-1264078/)) (https://forums.civfanatics.com/threads/saibotliehs-leaderhead-collection.378346/page-13)
 - melcher kürzer: Maria Eleonora 2 (https://forums.civfanatics.com/resources/lh-maria-elenora.16487/)
@@ -153,7 +153,7 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 - cfkane: Corazon Santiago (https://forums.civfanatics.com/resources/lh-corazon-santiago.14816/)
 - cfkane: Miriam Godwinson (https://forums.civfanatics.com/resources/lh-miriam-godwinson.14815/)
 - kid anubis: Sheherazade 2 (Valeria) (https://forums.civfanatics.com/resources/valeria.14205/)
-- IgorS: Salamasina 5 (Xoc) (https://forums.civfanatics.com/resources/lh-lady-xoc.14181/)
+- IgorS: Salamasina 6 (Xoc) (https://forums.civfanatics.com/resources/lh-lady-xoc.14181/)
 - ambrox62: Elizabeth 4 (Teuta 2) (https://forums.civfanatics.com/resources/lh-teuta-illyrian-queen-from-231-to-228-bc.14033/)
 - Ekmek: Aminah 2 (Amina of Zazzua) (https://forums.civfanatics.com/resources/lh-amina-of-zazzua.11043/)
 - cfkane: Gloriana 2 (https://forums.civfanatics.com/resources/lh-gloriana-the-faerie-queene.11024/)

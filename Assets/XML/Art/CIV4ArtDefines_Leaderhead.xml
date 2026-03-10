@@ -446,12 +446,12 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		</LeaderheadArtInfo>
 		<!-- custom: fixed purple teeth by adding missing texture file hatshepsut_diff.dds required by Wu.nif. (GPT-5.3-Codex) -->
 		<LeaderheadArtInfo>
-			<Type>ART_DEF_LEADER_SALAMASINA_4</Type>
-			<Button>Art/LeaderHeads/Salamasina_4/BtnWu.dds</Button>
-			<NIF>Art/LeaderHeads/Salamasina_4/Wu.nif</NIF>
-			<KFM>Art/LeaderHeads/Salamasina_4/hatshepsut.kfm</KFM>
-			<NoShaderNIF>Art/LeaderHeads/Salamasina_4/Wu.nif</NoShaderNIF>
-			<BackgroundKFM>Art/LeaderHeads/Salamasina_4/hatshepsut_BG.kfm</BackgroundKFM>
+			<Type>ART_DEF_LEADER_SALAMASINA_8</Type>
+			<Button>Art/LeaderHeads/Salamasina_8/BtnWu.dds</Button>
+			<NIF>Art/LeaderHeads/Salamasina_8/Wu.nif</NIF>
+			<KFM>Art/LeaderHeads/Salamasina_8/hatshepsut.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Salamasina_8/Wu.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Salamasina_8/hatshepsut_BG.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_SALAMASINA_2</Type>
@@ -738,12 +738,12 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<BackgroundKFM>Art/LeaderHeads/Himiko/mansa_musa_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
-			<Type>ART_DEF_LEADER_LADY_OF_CAO</Type>
-			<Button>Art/LeaderHeads/Lady_Of_Cao/Xoc.dds</Button>
-			<NIF>Art/LeaderHeads/Lady_Of_Cao/hatshepsut.nif</NIF>
-			<KFM>Art/LeaderHeads/Lady_Of_Cao/hatshepsut.kfm</KFM>
-			<NoShaderNIF>Art/LeaderHeads/Lady_Of_Cao/hatshepsut.nif</NoShaderNIF>
-			<BackgroundKFM>Art/LeaderHeads/Lady_Of_Cao/mao_tse_tung_bg.kfm</BackgroundKFM>
+			<Type>ART_DEF_LEADER_SALAMASINA_5</Type>
+			<Button>Art/LeaderHeads/Salamasina_5/Xoc.dds</Button>
+			<NIF>Art/LeaderHeads/Salamasina_5/hatshepsut.nif</NIF>
+			<KFM>Art/LeaderHeads/Salamasina_5/hatshepsut.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Salamasina_5/hatshepsut.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Salamasina_5/mao_tse_tung_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_PUREA</Type>
@@ -823,20 +823,20 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		</LeaderheadArtInfo>
 		<!-- custom: switched NIF from Wu.nif to Wu2.nif because Wu.nif referenced missing textures and caused purple parts. (GPT-5.3-Codex). Update: fixed by using Wu.nif for NIF and Wu2.nif for NoShaderNIF so now added as a variant instead since these are 2 different animations with this change -->
 		<LeaderheadArtInfo>
-			<Type>ART_DEF_LEADER_KHRI_MA_LOD</Type>
-			<Button>Art/LeaderHeads/Khri_ma_lod/Khri_ma_lod.dds</Button>
-			<NIF>Art/LeaderHeads/Khri_ma_lod/Wu2.nif</NIF>
-			<KFM>Art/LeaderHeads/Khri_ma_lod/hatshepsut.kfm</KFM>
-			<NoShaderNIF>Art/LeaderHeads/Khri_ma_lod/Wu2.nif</NoShaderNIF>
-			<BackgroundKFM>Art/LeaderHeads/Khri_ma_lod/hatshepsut_bg2.kfm</BackgroundKFM>
+			<Type>ART_DEF_LEADER_SALAMASINA_9</Type>
+			<Button>Art/LeaderHeads/Salamasina_9/Khri_ma_lod.dds</Button>
+			<NIF>Art/LeaderHeads/Salamasina_9/Wu2.nif</NIF>
+			<KFM>Art/LeaderHeads/Salamasina_9/hatshepsut.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Salamasina_9/Wu2.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Salamasina_9/hatshepsut_bg2.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
-			<Type>ART_DEF_LEADER_KHRI_MA_LOD_2</Type>
-			<Button>Art/LeaderHeads/Khri_ma_lod/Khri_ma_lod.dds</Button>
-			<NIF>Art/LeaderHeads/Khri_ma_lod/Wu.nif</NIF>
-			<KFM>Art/LeaderHeads/Khri_ma_lod/hatshepsut.kfm</KFM>
-			<NoShaderNIF>Art/LeaderHeads/Khri_ma_lod/Wu2.nif</NoShaderNIF>
-			<BackgroundKFM>Art/LeaderHeads/Khri_ma_lod/hatshepsut_bg2.kfm</BackgroundKFM>
+			<Type>ART_DEF_LEADER_SALAMASINA_10</Type>
+			<Button>Art/LeaderHeads/Salamasina_9/Khri_ma_lod.dds</Button>
+			<NIF>Art/LeaderHeads/Salamasina_9/Wu.nif</NIF>
+			<KFM>Art/LeaderHeads/Salamasina_9/hatshepsut.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Salamasina_9/Wu2.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Salamasina_9/hatshepsut_bg2.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<!-- custom: fixed purple overlays by adding missing texture alias Wu_Clothes_ENV_MAS2.dds referenced by Trung.nif. (GPT-5.3-Codex) -->
 		<LeaderheadArtInfo>
@@ -867,12 +867,12 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		</LeaderheadArtInfo>
 		<!-- custom: fixed purple teeth/details by adding missing hatshepsut_bkgr/diff/sky and hc_copac_nrml textures used by SalmasinaFinal.nif. (GPT-5.3-Codex) -->
 		<LeaderheadArtInfo>
-			<Type>ART_DEF_LEADER_SALAMASINA_3</Type>
-			<Button>Art/LeaderHeads/Salamasina_3/Btn_Salamasina.dds</Button>
-			<NIF>Art/LeaderHeads/Salamasina_3/SalmasinaFinal.nif</NIF>
-			<KFM>Art/LeaderHeads/Salamasina_3/hatshepsut.kfm</KFM>
-			<NoShaderNIF>Art/LeaderHeads/Salamasina_3/hatshepsut_noshader.nif</NoShaderNIF>
-			<BackgroundKFM>Art/LeaderHeads/Salamasina_3/winston_churchill_bg4.kfm</BackgroundKFM>
+			<Type>ART_DEF_LEADER_SALAMASINA_4</Type>
+			<Button>Art/LeaderHeads/Salamasina_4/Btn_Salamasina.dds</Button>
+			<NIF>Art/LeaderHeads/Salamasina_4/SalmasinaFinal.nif</NIF>
+			<KFM>Art/LeaderHeads/Salamasina_4/hatshepsut.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Salamasina_4/hatshepsut_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Salamasina_4/winston_churchill_bg4.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_TAMAR_2</Type>
@@ -941,12 +941,12 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<BackgroundKFM>Art/LeaderHeads/Shajar_al_Durr/cyrus_bg2.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
-			<Type>ART_DEF_LEADER_HATSHEPSUT_4</Type>
-			<Button>Art/LeaderHeads/Hatshepsut_4/Shinsawbubutton.dds</Button>
-			<NIF>Art/LeaderHeads/Hatshepsut_4/SalmasinaFinal.nif</NIF>
-			<KFM>Art/LeaderHeads/Hatshepsut_4/hatshepsut.kfm</KFM>
-			<NoShaderNIF>Art/LeaderHeads/Hatshepsut_4/hatshepsut_noshader.nif</NoShaderNIF>
-			<BackgroundKFM>Art/LeaderHeads/Hatshepsut_4/winston_churchill_bg4.kfm</BackgroundKFM>
+			<Type>ART_DEF_LEADER_SALAMASINA_7</Type>
+			<Button>Art/LeaderHeads/Salamasina_7/Shinsawbubutton.dds</Button>
+			<NIF>Art/LeaderHeads/Salamasina_7/SalmasinaFinal.nif</NIF>
+			<KFM>Art/LeaderHeads/Salamasina_7/hatshepsut.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Salamasina_7/hatshepsut_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Salamasina_7/winston_churchill_bg4.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_QUILAGO</Type>
@@ -1409,12 +1409,12 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<BackgroundKFM>Art/LeaderHeads/Cyrus/Cyrus_BG.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
-			<Type>ART_DEF_LEADER_SALAMASINA_5</Type>
-			<Button>Art/LeaderHeads/Salamasina_5/Xoc.dds</Button>
-			<NIF>Art/LeaderHeads/Salamasina_5/hatshepsut.nif</NIF>
-			<KFM>Art/LeaderHeads/Salamasina_5/hatshepsut.kfm</KFM>
-			<NoShaderNIF>Art/LeaderHeads/Salamasina_5/hatshepsut.nif</NoShaderNIF>
-			<BackgroundKFM>Art/LeaderHeads/Salamasina_5/mao_tse_tung_bg.kfm</BackgroundKFM>
+			<Type>ART_DEF_LEADER_SALAMASINA_6</Type>
+			<Button>Art/LeaderHeads/Salamasina_6/Xoc.dds</Button>
+			<NIF>Art/LeaderHeads/Salamasina_6/hatshepsut.nif</NIF>
+			<KFM>Art/LeaderHeads/Salamasina_6/hatshepsut.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Salamasina_6/hatshepsut.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Salamasina_6/mao_tse_tung_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_ELIZABETH_4</Type>
@@ -1452,12 +1452,12 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<BackgroundKFM>Art/LeaderHeads/Anne_Bonny_2/boudica_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
-			<Type>ART_DEF_LEADER_SALAMASINA_6</Type>
-			<Button>Art/LeaderHeads/Salamasina_6/salamasina_6_64px_no_border.dds</Button>
-			<NIF>Art/LeaderHeads/Salamasina_6/hatshepsut.nif</NIF>
-			<KFM>Art/LeaderHeads/Salamasina_6/hatshepsut.kfm</KFM>
-			<NoShaderNIF>Art/LeaderHeads/Salamasina_6/hatshepsut_noshader.nif</NoShaderNIF>
-			<BackgroundKFM>Art/LeaderHeads/Salamasina_6/saladin_bg.kfm</BackgroundKFM>
+			<Type>ART_DEF_LEADER_SALAMASINA_3</Type>
+			<Button>Art/LeaderHeads/Salamasina_3/salamasina_6_64px_no_border.dds</Button>
+			<NIF>Art/LeaderHeads/Salamasina_3/hatshepsut.nif</NIF>
+			<KFM>Art/LeaderHeads/Salamasina_3/hatshepsut.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Salamasina_3/hatshepsut_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Salamasina_3/saladin_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_BLONDE_GIRL_2</Type>
