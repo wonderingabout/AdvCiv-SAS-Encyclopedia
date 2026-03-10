@@ -9,7 +9,7 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 (c) 2026 wonderingabout & AI helpers (see Authors in root README.md)
 -->
 <!-- Leaderhead art path information -->
-<!-- custom: note: some paths use base civ4 one; e.g. Mavia uses base Hammurabi KFM but custom Hammurabi nif. -->
+<!-- custom: note: some paths use base civ4 one; e.g. Mavia (Bilqis) uses base Hammurabi KFM but custom Hammurabi nif. -->
 <!-- custom: note 2: respect case for Art/LeaderHeads/ else another capitalization like art or Leaderheads or such causes an index error as in KI#111 as describe in AdvCiv-SAS' documentation,, or an unidentifiable C++ exception -->
 <!-- custom: note 3: this error also appears when asset folder name is incorrect; e.g. /Elizabeth/ instead of /Elizabeth_1/ in the AdvCiv-SAS NIF Gallery mod; also sometimes just restarting the game sometime later weirdly fixes it -->
 <Civ4ArtDefines xmlns="x-schema:CIV4ArtDefinesSchema.xml">
@@ -135,12 +135,12 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<BackgroundKFM>Art/LeaderHeads/Shin_Sawbu/catherine_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
-			<Type>ART_DEF_LEADER_TOMYRIS</Type>
-			<Button>Art/LeaderHeads/Tomyris/Button_Tomyris.dds</Button>
-			<NIF>Art/LeaderHeads/Tomyris/Tomyris.nif</NIF>
+			<Type>ART_DEF_LEADER_NANYE_HI</Type>
+			<Button>Art/LeaderHeads/Nanye_Hi/Button_Tomyris.dds</Button>
+			<NIF>Art/LeaderHeads/Nanye_Hi/Tomyris.nif</NIF>
 			<KFM>Art/LeaderHeads/Boudica/Boudica.kfm</KFM>
-			<NoShaderNIF>Art/LeaderHeads/Tomyris/Tomyris.nif</NoShaderNIF>
-			<BackgroundKFM>Art/LeaderHeads/Tomyris/Pericles_BG.kfm</BackgroundKFM>
+			<NoShaderNIF>Art/LeaderHeads/Nanye_Hi/Tomyris.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Nanye_Hi/Pericles_BG.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_TRUNG_SISTERS</Type>
@@ -593,12 +593,12 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<BackgroundKFM>Art/LeaderHeads/Victoria_4/victoria_BG.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
-			<Type>ART_DEF_LEADER_TOMYRIS_2</Type>
-			<Button>Art/LeaderHeads/Tomyris_2/nanyehi.dds</Button>
-			<NIF>Art/LeaderHeads/Tomyris_2/Boudica.nif</NIF>
+			<Type>ART_DEF_LEADER_NANYE_HI_2</Type>
+			<Button>Art/LeaderHeads/Nanye_Hi_2/nanyehi.dds</Button>
+			<NIF>Art/LeaderHeads/Nanye_Hi_2/Boudica.nif</NIF>
 			<KFM>Art/LeaderHeads/Boudica/Boudica.kfm</KFM>
-			<NoShaderNIF>Art/LeaderHeads/Tomyris_2/Boudica_NONSHADER.nif</NoShaderNIF>
-			<BackgroundKFM>Art/LeaderHeads/Tomyris_2/cyrus_bg.kfm</BackgroundKFM>
+			<NoShaderNIF>Art/LeaderHeads/Nanye_Hi_2/Boudica_NONSHADER.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Nanye_Hi_2/cyrus_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_ISABELLA_6</Type>
@@ -1345,12 +1345,12 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<BackgroundKFM>Art/LeaderHeads/Evita_Peron_5/catherine_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
-			<Type>ART_DEF_LEADER_TOMYRIS_3</Type>
-			<Button>Art/LeaderHeads/Tomyris_3/nanyehi.dds</Button>
-			<NIF>Art/LeaderHeads/Tomyris_3/Boudica.nif</NIF>
-			<KFM>Art/LeaderHeads/Tomyris_3/Boudica.kfm</KFM>
-			<NoShaderNIF>Art/LeaderHeads/Tomyris_3/Boudica.nif</NoShaderNIF>
-			<BackgroundKFM>Art/LeaderHeads/Tomyris_3/hatshepsut_bg.kfm</BackgroundKFM>
+			<Type>ART_DEF_LEADER_NANYE_HI_3</Type>
+			<Button>Art/LeaderHeads/Nanye_Hi_3/nanyehi.dds</Button>
+			<NIF>Art/LeaderHeads/Nanye_Hi_3/Boudica.nif</NIF>
+			<KFM>Art/LeaderHeads/Nanye_Hi_3/Boudica.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Nanye_Hi_3/Boudica.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Nanye_Hi_3/hatshepsut_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_BENAZIR_2</Type>

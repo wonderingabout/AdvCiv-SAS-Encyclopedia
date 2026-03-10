@@ -189,9 +189,9 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<ArtDefineTag>ART_DEF_LEADER_SHIN_SAWBU</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
-			<Type>LEADER_TOMYRIS</Type>
-			<Description>TXT_KEY_LEADER_TOMYRIS</Description>
-			<ArtDefineTag>ART_DEF_LEADER_TOMYRIS</ArtDefineTag>
+			<Type>LEADER_NANYE_HI</Type>
+			<Description>TXT_KEY_LEADER_NANYE_HI</Description>
+			<ArtDefineTag>ART_DEF_LEADER_NANYE_HI</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
 			<Type>LEADER_TRUNG_SISTERS</Type>
@@ -469,9 +469,9 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<ArtDefineTag>ART_DEF_LEADER_VICTORIA_5</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
-			<Type>LEADER_TOMYRIS_2</Type>
-			<Description>TXT_KEY_LEADER_TOMYRIS_2</Description>
-			<ArtDefineTag>ART_DEF_LEADER_TOMYRIS_2</ArtDefineTag>
+			<Type>LEADER_NANYE_HI_2</Type>
+			<Description>TXT_KEY_LEADER_NANYE_HI_2</Description>
+			<ArtDefineTag>ART_DEF_LEADER_NANYE_HI_2</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
 			<Type>LEADER_ISABELLA_6</Type>
@@ -922,9 +922,9 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<ArtDefineTag>ART_DEF_LEADER_EVITA_PERON_5</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
-			<Type>LEADER_TOMYRIS_3</Type>
-			<Description>TXT_KEY_LEADER_TOMYRIS_3</Description>
-			<ArtDefineTag>ART_DEF_LEADER_TOMYRIS_3</ArtDefineTag>
+			<Type>LEADER_NANYE_HI_3</Type>
+			<Description>TXT_KEY_LEADER_NANYE_HI_3</Description>
+			<ArtDefineTag>ART_DEF_LEADER_NANYE_HI_3</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
 			<Type>LEADER_BENAZIR_2</Type>
