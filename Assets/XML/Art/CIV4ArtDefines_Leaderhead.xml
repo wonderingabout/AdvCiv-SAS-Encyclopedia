@@ -746,12 +746,12 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<BackgroundKFM>Art/LeaderHeads/Salamasina_5/mao_tse_tung_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
-			<Type>ART_DEF_LEADER_PUREA</Type>
-			<Button>Art/LeaderHeads/Purea/PureaButton.dds</Button>
-			<NIF>Art/LeaderHeads/Purea/cyrus.nif</NIF>
-			<KFM>Art/LeaderHeads/Purea/cyrus.kfm</KFM>
-			<NoShaderNIF>Art/LeaderHeads/Purea/cyrus_noshader.nif</NoShaderNIF>
-			<BackgroundKFM>Art/LeaderHeads/Purea/cyrus_bg.kfm</BackgroundKFM>
+			<Type>ART_DEF_LEADER_MANDUKHAI_KHATUN_3</Type>
+			<Button>Art/LeaderHeads/Mandukhai_Khatun_3/PureaButton.dds</Button>
+			<NIF>Art/LeaderHeads/Mandukhai_Khatun_3/cyrus.nif</NIF>
+			<KFM>Art/LeaderHeads/Mandukhai_Khatun_3/cyrus.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Mandukhai_Khatun_3/cyrus_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Mandukhai_Khatun_3/cyrus_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_BRUNHILD</Type>
@@ -933,12 +933,12 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<BackgroundKFM>Art/LeaderHeads/Miranda_Lawson/peter_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
-			<Type>ART_DEF_LEADER_SHAJAR_AL_DURR</Type>
-			<Button>Art/LeaderHeads/Shajar_al_Durr/Shajar.dds</Button>
-			<NIF>Art/LeaderHeads/Shajar_al_Durr/cyrus.nif</NIF>
-			<KFM>Art/LeaderHeads/Shajar_al_Durr/cyrus2.kfm</KFM>
-			<NoShaderNIF>Art/LeaderHeads/Shajar_al_Durr/cyrus_noshader.nif</NoShaderNIF>
-			<BackgroundKFM>Art/LeaderHeads/Shajar_al_Durr/cyrus_bg2.kfm</BackgroundKFM>
+			<Type>ART_DEF_LEADER_MANDUKHAI_KHATUN_2</Type>
+			<Button>Art/LeaderHeads/Mandukhai_Khatun_2/Shajar.dds</Button>
+			<NIF>Art/LeaderHeads/Mandukhai_Khatun_2/cyrus.nif</NIF>
+			<KFM>Art/LeaderHeads/Mandukhai_Khatun_2/cyrus2.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Mandukhai_Khatun_2/cyrus_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Mandukhai_Khatun_2/cyrus_bg2.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_SALAMASINA_7</Type>

@@ -564,9 +564,9 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<ArtDefineTag>ART_DEF_LEADER_SALAMASINA_5</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
-			<Type>LEADER_PUREA</Type>
-			<Description>TXT_KEY_LEADER_PUREA</Description>
-			<ArtDefineTag>ART_DEF_LEADER_PUREA</ArtDefineTag>
+			<Type>LEADER_MANDUKHAI_KHATUN_3</Type>
+			<Description>TXT_KEY_LEADER_MANDUKHAI_KHATUN_3</Description>
+			<ArtDefineTag>ART_DEF_LEADER_MANDUKHAI_KHATUN_3</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
 			<Type>LEADER_BRUNHILD</Type>
@@ -677,9 +677,9 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<ArtDefineTag>ART_DEF_LEADER_MIRANDA_LAWSON</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
-			<Type>LEADER_SHAJAR_AL_DURR</Type>
-			<Description>TXT_KEY_LEADER_SHAJAR_AL_DURR</Description>
-			<ArtDefineTag>ART_DEF_LEADER_SHAJAR_AL_DURR</ArtDefineTag>
+			<Type>LEADER_MANDUKHAI_KHATUN_2</Type>
+			<Description>TXT_KEY_LEADER_MANDUKHAI_KHATUN_2</Description>
+			<ArtDefineTag>ART_DEF_LEADER_MANDUKHAI_KHATUN_2</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
 			<Type>LEADER_SALAMASINA_7</Type>
