@@ -3,7 +3,7 @@
 This mod is a modified version of [AdvCiv-SAS (Simple Advanced Strategy)](https://github.com/wonderingabout/AdvCiv-SAS) ([Discussion thread here](https://forums.civfanatics.com/threads/advciv-sas-simple-advanced-strategy.699716/)), aiming to:
 
 - use it as a NIF gallery mod (non-playable)
-- make browsing much easier with the help of AdvCiv-SAS' sevopedia (search bar, keyboard UP/DOWN navigation, etc) plus further adjustments (e.g., Leader gallery in sevopedia civilization)
+- make browsing much easier with the help of AdvCiv-SAS' sevopedia (search bar, keyboard UP/DOWN navigation, leader animation attitude buttons) plus further adjustments (e.g., Leader gallery in sevopedia civilization)
 - aggressively strip almost all assets (so it is lighter and since we don't need them), notably using `minOccurs="0"` for almost all leaderHead XML info, or by adding or modifying to functionally  empty base Civ4 XML like [CIV4PlotLSystem.xml](/Assets/XML/Buildings/CIV4PlotLSystem.xml) or [CIV4GameText_Events_BTS.xml](/Assets/XML/Text/CIV4GameText_Events_BTS.xml) (with a focus on heaviest ones using Wiztree to find them), resulting in very compact and lightweight XML mod (suits minimal leaderhead NIF Gallery need).
 - fix animations that had errors (e.g., Salasamina_3, Tandi Williams, etc.) or risky file structure design (e.g., Isabella_5 hard requiring folder name to be Isabella which risks conflicting with base BTS one: fixed by reimporting o, our NIF-Gallery mod all civ4 files from base civ4 (`Art0.FPK`) so leaderhead is modular)
 - add buttons for leaderheads that had none (e.g. Pope Joan), as of now a no border button to help identify the leader

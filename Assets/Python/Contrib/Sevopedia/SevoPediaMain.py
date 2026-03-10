@@ -2199,6 +2199,10 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 				if self.iCategory == SevoScreenEnums.PEDIA_ERA_CHART:
 					self.pediaEraChart.dumpCsvLog()
 					return 1
+			# <!-- custom: route Sevopedia leader attitude preview buttons here as a fallback because some WIDGET_PYTHON clicks may not reach SevoPediaLeader.handleInput depending on pythonFile routing. (GPT-5.3-Codex) -->
+			if iData1 == SevoPediaLeader.SAS_PEDIA_PYTHON_LEADER_ATTITUDE:
+				if self.iCategory == SevoScreenEnums.PEDIA_LEADERS:
+					return self.pediaLeader.applyLeaderAttitude(iData2)
 
 		return 0
 		# <!-- custom: End - type-to-filter search bar for the left item list (in the same style as done in other mod(s)) (chatgpt 5.2 + claude opus 4.5) -->

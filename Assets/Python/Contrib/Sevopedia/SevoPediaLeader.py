@@ -40,6 +40,14 @@ localText = CyTranslator()
 IS_SHOW_TRAIT_ICONS_IN_LEADER = (gc.getDefineINT("SAS_SEVOPEDIA_LEADER_TRAITS_SHOW_ICONS") > 0)
 IS_SAS_SHOW_LEGEND_LINK = (gc.getDefineINT("SAS_SHOW_LEGEND_LINK") > 0)
 IS_SAS_SEVOPEDIA_LEADER_AI_PERSONALITY_ENABLE = (gc.getDefineINT("SAS_SEVOPEDIA_LEADER_AI_PERSONALITY_ENABLE") > 0)
+SAS_PEDIA_PYTHON_LEADER_ATTITUDE = 6805
+SAS_LEADER_ATTITUDE_PREVIEW_ORDER = (
+	AttitudeTypes.ATTITUDE_FURIOUS,
+	AttitudeTypes.ATTITUDE_ANNOYED,
+	AttitudeTypes.ATTITUDE_CAUTIOUS,
+	AttitudeTypes.ATTITUDE_PLEASED,
+	AttitudeTypes.ATTITUDE_FRIENDLY,
+)
 
 # <!-- custom: keep debug flag available in this module for existing debug print sites. -->
 IS_DEBUG_LEADER = _SAS_LeaderAIPValues.IS_DEBUG_LEADER
@@ -63,6 +71,7 @@ class SevoPediaLeader:
 	def __init__(self, main):
 		self.iLeader = -1
 		self.top = main
+		self.iSelectedAttitude = AttitudeTypes.ATTITUDE_PLEASED
 
 		self.X_LEADERHEAD_PANE = self.top.X_PEDIA_PAGE
 		self.Y_LEADERHEAD_PANE = self.top.Y_PEDIA_PAGE
@@ -116,6 +125,10 @@ class SevoPediaLeader:
 		self.X_MUSIC = self.X_HISTORY + self.W_HISTORY - self.W_CIV - self.SMALL_MARGIN - self.W_MUSIC
 		self.Y_MUSIC = self.Y_FAVORITES
 		self.H_MUSIC = self.H_FAVORITES
+		self.X_ATTITUDES = self.X_FAVORITES + self.W_FAVORITES + self.SMALL_MARGIN
+		self.Y_ATTITUDES = self.Y_FAVORITES
+		self.W_ATTITUDES = self.X_MUSIC - self.X_ATTITUDES - self.SMALL_MARGIN
+		self.H_ATTITUDES = self.H_FAVORITES
 		self.playButtonPath = ArtFileMgr.getInterfaceArtInfo("SAS_EMOJI_PLAY_BUTTON").getPath()
 
 		# <!-- custom: the rest of the coordinates here, as it is dependent on other coordinates we need first that (i.e. before being able to add these) -->
@@ -157,6 +170,7 @@ class SevoPediaLeader:
 		self.placeLeaderHeadPane()
 		self.placeFavorites()
 		self.placeMusic()
+		self.placeAttitudes()
 		self.placeHistory()
 		self.placeCiv()
 		self.placeTraits()
@@ -179,7 +193,7 @@ class SevoPediaLeader:
 		leaderPanelWidget = self.top.getNextWidgetName()
 		screen.addPanel(leaderPanelWidget, "", "", True, True, self.X_LEADERHEAD_PANE, self.Y_LEADERHEAD_PANE, self.W_LEADERHEAD_PANE, self.H_LEADERHEAD_PANE, PanelStyles.PANEL_STYLE_BLUE50)
 		self.leaderWidget = self.top.getNextWidgetName()
-		screen.addLeaderheadGFC(self.leaderWidget, self.iLeader, AttitudeTypes.ATTITUDE_PLEASED, self.X_LEADERHEAD, self.Y_LEADERHEAD, self.W_LEADERHEAD, self.H_LEADERHEAD, WidgetTypes.WIDGET_GENERAL, -1, -1)
+		screen.addLeaderheadGFC(self.leaderWidget, self.iLeader, self.iSelectedAttitude, self.X_LEADERHEAD, self.Y_LEADERHEAD, self.W_LEADERHEAD, self.H_LEADERHEAD, WidgetTypes.WIDGET_GENERAL, -1, -1)
 
 
 
@@ -220,6 +234,52 @@ class SevoPediaLeader:
 			screen.setImageButtonAt(self.top.getNextWidgetName(), panelName, self.playButtonPath, buttonX, buttonY, buttonSize, buttonSize, WidgetTypes.WIDGET_PYTHON, self.top.SAS_PEDIA_PYTHON_MUSIC_ENTRY, iMusicKey)
 		else:
 			screen.setImageButtonAt(self.top.getNextWidgetName(), panelName, self.playButtonPath, buttonX, buttonY, buttonSize, buttonSize, WidgetTypes.WIDGET_PEDIA_MAIN, SevoScreenEnums.PEDIA_MUSIC, -1)
+
+
+	def placeAttitudes(self):
+		if self.W_ATTITUDES <= 0:
+			return
+
+		screen = self.top.getScreen()
+		panelName = self.top.getNextWidgetName()
+		# <!-- custom: add direct mood buttons in the center gap (between Favorites and Music) so clicking previews leader attitude animations without keyboard-only hotkeys. (GPT-5.3-Codex) -->
+		screen.addPanel(panelName, "", "", False, True, self.X_ATTITUDES, self.Y_ATTITUDES, self.W_ATTITUDES, self.H_ATTITUDES, PanelStyles.PANEL_STYLE_BLUE50)
+
+		attitudeOrder = SAS_LEADER_ATTITUDE_PREVIEW_ORDER
+		iButtonCount = len(attitudeOrder)
+		iButtonSpacing = 4
+		iContentPadding = 8
+		iButtonW = (self.W_ATTITUDES - 2 * iContentPadding - iButtonSpacing * (iButtonCount - 1)) / iButtonCount
+		if iButtonW < 22:
+			iButtonSpacing = 2
+			iContentPadding = 6
+			iButtonW = (self.W_ATTITUDES - 2 * iContentPadding - iButtonSpacing * (iButtonCount - 1)) / iButtonCount
+		if iButtonW < 16:
+			iButtonW = 16
+		iButtonH = self.H_ATTITUDES - 28
+		if iButtonH < 20:
+			iButtonH = 20
+		iTotalButtonsW = iButtonCount * iButtonW + (iButtonCount - 1) * iButtonSpacing
+		iButtonX = self.X_ATTITUDES + (self.W_ATTITUDES - iTotalButtonsW) / 2
+		iButtonY = self.Y_ATTITUDES + 18
+
+		for iAttitude in attitudeOrder:
+			# <!-- custom: derive compact stable labels from enum types (Furious..Friendly) to avoid untranslated TXT keys/truncation artifacts on buttons. (GPT-5.3-Codex) -->
+			szLabel = gc.getAttitudeInfo(iAttitude).getType().replace("ATTITUDE_", "").capitalize()
+			screen.setButtonGFC(self.top.getNextWidgetName(), szLabel, "", iButtonX, iButtonY, iButtonW, iButtonH, WidgetTypes.WIDGET_PYTHON, SAS_PEDIA_PYTHON_LEADER_ATTITUDE, iAttitude, ButtonStyles.BUTTON_STYLE_STANDARD)
+			iButtonX += iButtonW + iButtonSpacing
+
+
+	def refreshLeaderheadWidget(self):
+		if self.iLeader < 0:
+			return 0
+		screen = self.top.getScreen()
+		try:
+			screen.deleteWidget(self.leaderWidget)
+		except:
+			pass
+		screen.addLeaderheadGFC(self.leaderWidget, self.iLeader, self.iSelectedAttitude, self.X_LEADERHEAD, self.Y_LEADERHEAD, self.W_LEADERHEAD, self.H_LEADERHEAD, WidgetTypes.WIDGET_GENERAL, -1, -1)
+		return 1
 
 
 
@@ -383,6 +443,10 @@ class SevoPediaLeader:
 
 
 	def handleInput (self, inputClass):
+		if inputClass.getButtonType() == WidgetTypes.WIDGET_PYTHON:
+			if inputClass.getData1() == SAS_PEDIA_PYTHON_LEADER_ATTITUDE:
+				return self.applyLeaderAttitude(inputClass.getData2())
+
 		# <!-- custom: leaderhead hotkeys (animations/moods) are cosmetic; if they conflict with search,
 		# consider removing or remapping here. (GPT-5.2-Codex) -->
 		if (inputClass.getNotifyCode() == NotifyCode.NOTIFY_CHARACTER):
@@ -393,20 +457,23 @@ class SevoPediaLeader:
 			elif (inputClass.getData() == int(InputTypes.KB_7)):
 				self.top.getScreen().performLeaderheadAction(self.leaderWidget, LeaderheadAction.LEADERANIM_AGREE)
 			elif (inputClass.getData() == int(InputTypes.KB_1)):
-				self.top.getScreen().setLeaderheadMood(self.leaderWidget, AttitudeTypes.ATTITUDE_FRIENDLY)
-				self.top.getScreen().performLeaderheadAction(self.leaderWidget, LeaderheadAction.NO_LEADERANIM)
+				return self.applyLeaderAttitude(AttitudeTypes.ATTITUDE_FRIENDLY)
 			elif (inputClass.getData() == int(InputTypes.KB_2)):
-				self.top.getScreen().setLeaderheadMood(self.leaderWidget, AttitudeTypes.ATTITUDE_PLEASED)
-				self.top.getScreen().performLeaderheadAction(self.leaderWidget, LeaderheadAction.NO_LEADERANIM)
+				return self.applyLeaderAttitude(AttitudeTypes.ATTITUDE_PLEASED)
 			elif (inputClass.getData() == int(InputTypes.KB_3)):
-				self.top.getScreen().setLeaderheadMood(self.leaderWidget, AttitudeTypes.ATTITUDE_CAUTIOUS)
-				self.top.getScreen().performLeaderheadAction(self.leaderWidget, LeaderheadAction.NO_LEADERANIM)
+				return self.applyLeaderAttitude(AttitudeTypes.ATTITUDE_CAUTIOUS)
 			elif (inputClass.getData() == int(InputTypes.KB_4)):
-				self.top.getScreen().setLeaderheadMood(self.leaderWidget, AttitudeTypes.ATTITUDE_ANNOYED)
-				self.top.getScreen().performLeaderheadAction(self.leaderWidget, LeaderheadAction.NO_LEADERANIM)
+				return self.applyLeaderAttitude(AttitudeTypes.ATTITUDE_ANNOYED)
 			elif (inputClass.getData() == int(InputTypes.KB_5)):
-				self.top.getScreen().setLeaderheadMood(self.leaderWidget, AttitudeTypes.ATTITUDE_FURIOUS)
-				self.top.getScreen().performLeaderheadAction(self.leaderWidget, LeaderheadAction.NO_LEADERANIM)
+				return self.applyLeaderAttitude(AttitudeTypes.ATTITUDE_FURIOUS)
 			else:
 				self.top.getScreen().leaderheadKeyInput(self.leaderWidget, inputClass.getData())
 		return 0
+
+
+	def applyLeaderAttitude(self, iAttitude):
+		if iAttitude not in SAS_LEADER_ATTITUDE_PREVIEW_ORDER:
+			return 0
+		self.iSelectedAttitude = iAttitude
+		# <!-- custom: force-refresh the leaderhead widget so attitude changes show immediately on click; mood-only updates can be visually ignored while another anim is still running. (GPT-5.3-Codex) -->
+		return self.refreshLeaderheadWidget()
