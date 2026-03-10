@@ -604,9 +604,9 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<ArtDefineTag>ART_DEF_LEADER_COCKACOESKE</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
-			<Type>LEADER_GENERIC_ASIAN_EMPRESS</Type>
-			<Description>TXT_KEY_LEADER_GENERIC_ASIAN_EMPRESS</Description>
-			<ArtDefineTag>ART_DEF_LEADER_GENERIC_ASIAN_EMPRESS</ArtDefineTag>
+			<Type>LEADER_SALAMASINA_11</Type>
+			<Description>TXT_KEY_LEADER_SALAMASINA_11</Description>
+			<ArtDefineTag>ART_DEF_LEADER_SALAMASINA_11</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
 			<Type>LEADER_SALAMASINA_9</Type>

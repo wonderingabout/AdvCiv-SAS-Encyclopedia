@@ -814,12 +814,12 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		</LeaderheadArtInfo>
 		<!-- custom: fixed purple overlays by adding missing texture aliases Wu_Clothes_ENV_MAS2.dds and Wu_Clothes_nrml.dds used by Trung.nif. (GPT-5.3-Codex) -->
 		<LeaderheadArtInfo>
-			<Type>ART_DEF_LEADER_GENERIC_ASIAN_EMPRESS</Type>
-			<Button>Art/LeaderHeads/Generic_Asian_Empress/The Empress.dds</Button>
-			<NIF>Art/LeaderHeads/Generic_Asian_Empress/Trung.nif</NIF>
-			<KFM>Art/LeaderHeads/Generic_Asian_Empress/Trung2.kfm</KFM>
-			<NoShaderNIF>Art/LeaderHeads/Generic_Asian_Empress/Trung.nif</NoShaderNIF>
-			<BackgroundKFM>Art/LeaderHeads/Generic_Asian_Empress/Boudica_BG2.kfm</BackgroundKFM>
+			<Type>ART_DEF_LEADER_SALAMASINA_11</Type>
+			<Button>Art/LeaderHeads/Salamasina_11/The Empress.dds</Button>
+			<NIF>Art/LeaderHeads/Salamasina_11/Trung.nif</NIF>
+			<KFM>Art/LeaderHeads/Salamasina_11/Trung2.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Salamasina_11/Trung.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Salamasina_11/Boudica_BG2.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<!-- custom: switched NIF from Wu.nif to Wu2.nif because Wu.nif referenced missing textures and caused purple parts. (GPT-5.3-Codex). Update: fixed by using Wu.nif for NIF and Wu2.nif for NoShaderNIF so now added as a variant instead since these are 2 different animations with this change -->
 		<LeaderheadArtInfo>
