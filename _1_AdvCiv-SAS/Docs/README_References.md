@@ -53,10 +53,10 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 
 - Base Civ4 (Advciv-SAS): Boudica 0, Catherine 0, Elizabeth 0, Hatshepsut 0, Isabella 0, Victoria 0
 - AdvCiv-SAS: Grace O'Malley
-- History Rewritten: Amanirena, Aminah, Awiakta, Bilqis, Dido, Dihya, Isabella 1, Jingu, Mangammal, Atotoztli 2 (Nzinga), Salamasina, Wu Zetian, Shin Sawbu, Tomyris, Trung Sisters, Xoc, Yekaterina
+- History Rewritten: Amanirena, Aminah, Awiakta, Mavia (Bilqis), Dido, Dihya, Isabella 1, Jingu, Mangammal, Atotoztli 2 (Nzinga), Salamasina, Wu Zetian, Shin Sawbu, Tomyris, Trung Sisters, Xoc, Yekaterina
 - RFC Dawn of Civilization: Benazir Bhutto, Isabella 2, Maria, Maria 2 (no ribbon) (further modified in AdvCiv-SAS-NIF-Gallery)
 - Beyond the Game 2.43: Maria Theresa, Marpesia, Penthesilea, Theodora
-- Base 6.4: Jacquotte Delahaye, Atotoztli, Bilqis 2, Cixi, Cleopatra, Wilhelmina
+- Base 6.4: Jacquotte Delahaye, Atotoztli, Mavia 2, Cixi, Cleopatra, Wilhelmina
 - Future Mod: Blonde Girl (Sarah Fedler)
 - Destiny: Cleopatra 2 (Darker 01), Joan of Arc, Joan of Arc 2 (elizabeth_noshader.nif), Mandukhai Khatun, Nefertiti, Nefertiti 3 (isabella.nif), Seondeok 2
 - Rise of Mankind 2.91: Cleopatra 6, Hatshepsut 3 (Cleopatra 6 (hatshepsut_noshader.nif)), Dido 2, Joan of Arc 3

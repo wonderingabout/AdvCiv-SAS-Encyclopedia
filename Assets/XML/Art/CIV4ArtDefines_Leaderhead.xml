@@ -9,7 +9,7 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 (c) 2026 wonderingabout & AI helpers (see Authors in root README.md)
 -->
 <!-- Leaderhead art path information -->
-<!-- custom: note: some paths use base civ4 one; e.g. Bilqis uses base Hammurabi KFM but custom Hammurabi nif. -->
+<!-- custom: note: some paths use base civ4 one; e.g. Mavia uses base Hammurabi KFM but custom Hammurabi nif. -->
 <!-- custom: note 2: respect case for Art/LeaderHeads/ else another capitalization like art or Leaderheads or such causes an index error as in KI#111 as describe in AdvCiv-SAS' documentation,, or an unidentifiable C++ exception -->
 <!-- custom: note 3: this error also appears when asset folder name is incorrect; e.g. /Elizabeth/ instead of /Elizabeth_1/ in the AdvCiv-SAS NIF Gallery mod; also sometimes just restarting the game sometime later weirdly fixes it -->
 <Civ4ArtDefines xmlns="x-schema:CIV4ArtDefinesSchema.xml">
@@ -55,12 +55,12 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<BackgroundKFM>Art/LeaderHeads/Awiakta/zenobia_BG.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
-			<Type>ART_DEF_LEADER_BILQIS</Type>
-			<Button>Art/LeaderHeads/Bilqis/Button_Bilqis.dds</Button>
-			<NIF>Art/LeaderHeads/Bilqis/Hammurabi.nif</NIF>
+			<Type>ART_DEF_LEADER_MAVIA</Type>
+			<Button>Art/LeaderHeads/Mavia/Button_Bilqis.dds</Button>
+			<NIF>Art/LeaderHeads/Mavia/Hammurabi.nif</NIF>
 			<KFM>Art/LeaderHeads/Hammurabi/Hammurabi.kfm</KFM>
-			<NoShaderNIF>Art/LeaderHeads/Bilqis/Hammurabi.nif</NoShaderNIF>
-			<BackgroundKFM>Art/LeaderHeads/Bilqis/Hammurabi_Backgrnd.kfm</BackgroundKFM>
+			<NoShaderNIF>Art/LeaderHeads/Mavia/Hammurabi.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Mavia/Hammurabi_Backgrnd.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_DIDO</Type>
@@ -248,12 +248,12 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<BackgroundKFM>Art/LeaderHeads/Atotoztli/Atotoztli_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
-			<Type>ART_DEF_LEADER_BILQIS_2</Type>
-			<Button>Art/LeaderHeads/Bilqis_2/button.dds</Button>
-			<NIF>Art/LeaderHeads/Bilqis_2/Hammurabi.nif</NIF>
+			<Type>ART_DEF_LEADER_MAVIA_2</Type>
+			<Button>Art/LeaderHeads/Mavia_2/button.dds</Button>
+			<NIF>Art/LeaderHeads/Mavia_2/Hammurabi.nif</NIF>
 			<KFM>Art/LeaderHeads/Hammurabi/Hammurabi.kfm</KFM>
-			<NoShaderNIF>Art/LeaderHeads/Bilqis_2/Hammurabi_NONSHADER.nif</NoShaderNIF>
-			<BackgroundKFM>Art/LeaderHeads/Bilqis_2/Hammurabi_Backgrnd.kfm</BackgroundKFM>
+			<NoShaderNIF>Art/LeaderHeads/Mavia_2/Hammurabi_NONSHADER.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Mavia_2/Hammurabi_Backgrnd.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_CIXI</Type>

@@ -40,8 +40,8 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<English>Aminah</English>
 	</TEXT>
 	<TEXT>
-		<Tag>TXT_KEY_LEADER_BILQIS</Tag>
-		<English>Bilqis</English>
+		<Tag>TXT_KEY_LEADER_MAVIA</Tag>
+		<English>Mavia (Bilqis)</English>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_LEADER_DIDO</Tag>
@@ -140,8 +140,8 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<English>Atotoztli</English>
 	</TEXT>
 	<TEXT>
-		<Tag>TXT_KEY_LEADER_BILQIS_2</Tag>
-		<English>Bilqis 2 (Mavia)</English>
+		<Tag>TXT_KEY_LEADER_MAVIA_2</Tag>
+		<English>Mavia 2</English>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_LEADER_CIXI</Tag>
