@@ -309,9 +309,9 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<ArtDefineTag>ART_DEF_LEADER_NEFERTITI</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
-			<Type>LEADER_SEONDEOK_2</Type>
-			<Description>TXT_KEY_LEADER_SEONDEOK_2</Description>
-			<ArtDefineTag>ART_DEF_LEADER_SEONDEOK_2</ArtDefineTag>
+			<Type>LEADER_JINGU_3</Type>
+			<Description>TXT_KEY_LEADER_JINGU_3</Description>
+			<ArtDefineTag>ART_DEF_LEADER_JINGU_3</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
 			<Type>LEADER_CLEOPATRA_6</Type>
@@ -697,9 +697,9 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<ArtDefineTag>ART_DEF_LEADER_QUILAGO_2</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
-			<Type>LEADER_SEONDEOK</Type>
-			<Description>TXT_KEY_LEADER_SEONDEOK</Description>
-			<ArtDefineTag>ART_DEF_LEADER_SEONDEOK</ArtDefineTag>
+			<Type>LEADER_JINGU_2</Type>
+			<Description>TXT_KEY_LEADER_JINGU_2</Description>
+			<ArtDefineTag>ART_DEF_LEADER_JINGU_2</ArtDefineTag>
 		</LeaderHeadInfo>
 <LeaderHeadInfo>
 			<Type>LEADER_LIEU_YE_2</Type>

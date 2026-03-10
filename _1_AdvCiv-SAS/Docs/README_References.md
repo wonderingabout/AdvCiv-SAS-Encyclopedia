@@ -58,7 +58,7 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 - Beyond the Game 2.43: Maria Theresa, Marpesia, Penthesilea, Theodora
 - Base 6.4: Jacquotte Delahaye, Atotoztli, Mavia 2, Cixi, Cleopatra, Wilhelmina
 - Future Mod: Blonde Girl (Sarah Fedler)
-- Destiny: Cleopatra 2 (Darker 01), Joan of Arc, Joan of Arc 2 (elizabeth_noshader.nif), Mandukhai Khatun, Nefertiti, Nefertiti 3 (isabella.nif), Seondeok 2
+- Destiny: Cleopatra 2 (Darker 01), Joan of Arc, Joan of Arc 2 (elizabeth_noshader.nif), Mandukhai Khatun, Nefertiti, Nefertiti 3 (isabella.nif), Jingu 3
 - Rise of Mankind 2.91: Cleopatra 6, Hatshepsut 3 (Cleopatra 6 (hatshepsut_noshader.nif)), Dido 2, Joan of Arc 3
 - Middle-earth: Galadriel, Elizabeth 4 (Galadriel (elizabeth.nif))
 - Civ Gold 5.2: Elizabeth 1 (Michaelle Jean), Elizabeth 2 (Makeda), Elizabeth 3 (Teuta), Helen Clark, Isabella 3 (Margrete I), Isabella 4 (Trung Trac), Salamasina 2, Salamasina 4 (Ranavalona), Thanadelthur, Victoria 1 (Benazir Bhutto), Victoria 2 (Hasina), Yulia Tymoshenko, Zenobia
@@ -128,7 +128,7 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 - Civciv5: Shajar al-Durr (https://forums.civfanatics.com/resources/shajar-al-durr.19086/)
 - SaibotLieh: Lieu-Ye 2 (Brown Hair) (https://forums.civfanatics.com/resources/lh-lieu-ye.17799/)
 - SaibotLieh: Quilago, Quilago 2 (isabella_noshader.nif, background from Hatshepsut 4) (https://forums.civfanatics.com/resources/lh-quilago.17685/)
-- Civciv5: Seondeok (https://forums.civfanatics.com/resources/queen-seondeok-of-silla.17724/)
+- Civciv5: Jingu 2 (Seondeok) (https://forums.civfanatics.com/resources/queen-seondeok-of-silla.17724/)
 - Civciv5: Hatshepsut 4 (Shin Sawbu) (https://forums.civfanatics.com/resources/shin-sawbu.18142/)
 - SaibotLieh: Evita Peron 2 (Bunny Girl) (https://forums.civfanatics.com/resources/lh-bunny-girl.16973/)
 - SaibotLieh (Lemon Merchant's post): Evita Peron 3 (Bunny Girl 2 (Brunette), lounge background by <a href="https://pixabay.com/users/stokpic-692575/?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=601303">stokpic</a> from <a href="https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=601303">Pixabay</a> (https://pixabay.com/photos/bar-interior-luxury-design-601303/)), Evita Peron 4 (Bunny Girl 3 (catherine_noshader.nif), casino background by <a href="https://pixabay.com/users/theandrasbarta-2004841/?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=1264078">TheAndrasBarta</a> from <a href="https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=1264078">Pixabay</a> (https://pixabay.com/photos/roulette-casino-black-red-dealer-1264078/)) (https://forums.civfanatics.com/threads/saibotliehs-leaderhead-collection.378346/page-13)
