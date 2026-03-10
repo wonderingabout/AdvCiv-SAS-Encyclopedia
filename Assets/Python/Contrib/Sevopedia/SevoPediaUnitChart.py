@@ -13,7 +13,7 @@
 
 from CvPythonExtensions import *
 import CvUtil
-from SASUtils import getInfoTypeOrFail
+from SASUtils import getInfoTypeOrMinusOne
 
 from _sevopedia_helpers import *
 
@@ -26,8 +26,9 @@ class SevoPediaUnitChart:
 	def __init__(self, main):
 		self.iGroup = -1
 		self.top = main
-		self.I_UNITCOMBAT_AIR_BOMBER = getInfoTypeOrFail("UNITCOMBAT_AIR_BOMBER")
-		self.I_UNITCOMBAT_AIR_FIGHTER = getInfoTypeOrFail("UNITCOMBAT_AIR_FIGHTER")
+		# <!-- custom: optional for stripped NIF-gallery XML builds where air unitcombat classes are removed. Keep UI alive instead of failing at init. (GPT-5.3-Codex) -->
+		self.I_UNITCOMBAT_AIR_BOMBER = getInfoTypeOrMinusOne("UNITCOMBAT_AIR_BOMBER")
+		self.I_UNITCOMBAT_AIR_FIGHTER = getInfoTypeOrMinusOne("UNITCOMBAT_AIR_FIGHTER")
 
 		self.X_TABLE = self.top.X_PEDIA_PAGE
 		self.Y_TABLE = self.top.Y_PEDIA_PAGE
