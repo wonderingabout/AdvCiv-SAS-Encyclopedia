@@ -37,7 +37,7 @@ For License and Reuse, see [License and reuse](/README.md#license-and-reuse).
 &emsp;&emsp;[Example of Leaderhead fix 1](/README.md#example-of-leaderhead-fix-1)  
 &emsp;&emsp;[Example of Leaderhead fix 2](/README.md#example-of-leaderhead-fix-2)  
 &emsp;[Temporary Errors](/README.md#temporary-errors)  
-[UnicodeDecodeError: 'ascii' codec can't decode byte 0xff in position 0: ordinal not in range](/README.md#unicodedecodeerror-ascii-codec-cant-decode-byte-0xff-in-position-0-ordinal-not-in-range) 
+[UnicodeDecodeError: 'ascii' codec can't decode byte 0xff in position 0: ordinal not in range](/README.md#unicodedecodeerror-ascii-codec-cant-decode-byte-0xff-in-position-0-ordinal-not-in-range)  
 [Copyright and Disclaimer](/README.md#copyright-and-disclaimer)  
 [Credits](/README.md#credits)  
 [Some Useful tools while doing this](/README.md#some-useful-tools-while-doing-this)  
@@ -247,7 +247,9 @@ UnicodeDecodeError: 'ascii' codec can't decode byte 0xff in position 0: ordinal 
 ERR: Python function pediaMain failed, module CvScreensInterface
 ```
 
-If you added or modified a Leaderhead and have this error, try exiting and restarting the game again if it helps.
+If you added or modified a Leaderhead and encounter this error, try exiting and restarting the game again if it helps.
+
+Update: a [tentative fix azt commit/de0a8a7b2d033bcd2ac90fe32fe798e6ce10c825](https://github.com/wonderingabout/AdvCiv-SAS-NIF-Gallery/commit/de0a8a7b2d033bcd2ac90fe32fe798e6ce10c825) was added so this may be solved but since issue is intermittent and appears inconsistently, i did not test it long enough since then to know if it is now fixed for sure.
 
 ## Copyright and Disclaimer
 
