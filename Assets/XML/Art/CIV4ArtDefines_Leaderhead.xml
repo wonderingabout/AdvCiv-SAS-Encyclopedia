@@ -542,7 +542,7 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<NoShaderNIF>Art/LeaderHeads/Ana_Nzinga/AnaNzinga2.nif</NoShaderNIF>
 			<BackgroundKFM>Art/LeaderHeads/Ana_Nzinga/Arawak_BG.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
-		<!-- custom: ART_DEF_LEADER_BOUDICA_01 had purple animation errors in AdvCiv Plus; fixed by copying Boudica animation files from the local Civ4 installation (not from Art0.fpk) into the Boudica_1/ folder. Paths use Boudica_1/ because the files are copied there, not because cross-folder references are bad Ã¢â‚¬â€ referencing base Civ4 assets cross-folder is fine and all mods do it; it is only problematic when using vanilla folder names that could conflict with base game paths. (Claude code Sonnet 4.6) -->
+		<!-- custom: ART_DEF_LEADER_BOUDICA_01 had purple animation errors in AdvCiv Plus; fixed by copying Boudica animation files from the local Civ4 installation (not from Art0.fpk) into the Boudica_1/ folder. Paths use Boudica_1/ because the files are copied there, not because cross-folder references are bad - referencing base Civ4 assets cross-folder is fine and all mods do it; it is only problematic when using vanilla folder names that could conflict with base game paths. (Claude code Sonnet 4.6) -->
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_BOUDICA_01</Type>
 			<Button>,Art/interface/LeaderHeads/Btn_LH_England_ElizabethI.dds,Art/Interface/Buttons/Beyond_the_Sword_Atlas.dds,6,2</Button>
@@ -1240,7 +1240,7 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<NoShaderNIF>Art/LeaderHeads/Victoria_11/victoria_noshader.nif</NoShaderNIF>
 			<BackgroundKFM>Art/LeaderHeads/Victoria_11/saladin_bg2.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
-		<!-- custom: ART_DEF_LEADER_BOUDICA_02 had the same purple animation errors as BOUDICA_1; fixed by importing base Civ4 Boudica animation files into the Boudica_2/ folder (no overwrite of existing files). Same fix as BOUDICA_1 Ã¢â‚¬â€ see that entry's comment for rationale on why local copies are used vs cross-folder references. (Claude code Sonnet 4.6) -->
+		<!-- custom: ART_DEF_LEADER_BOUDICA_02 had the same purple animation errors as BOUDICA_1; fixed by importing base Civ4 Boudica animation files into the Boudica_2/ folder (no overwrite of existing files). Same fix as BOUDICA_1 - see that entry's comment for rationale on why local copies are used vs cross-folder references. (Claude code Sonnet 4.6) -->
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_BOUDICA_02</Type>
 			<Button>,Art/interface/LeaderHeads/Btn_LH_England_ElizabethI.dds,Art/Interface/Buttons/Beyond_the_Sword_Atlas.dds,6,2</Button>
@@ -1300,7 +1300,7 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<NoShaderNIF>Art/Leaderheads/Cleopatra_05/isabella_noshader.nif</NoShaderNIF>
 			<BackgroundKFM>Art/Leaderheads/Cleopatra_05/isabella_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
-		<!-- custom: COCKACOESKE_2 is a no-warpaint variant from the same pack. The warpaint difference is visible in the NIF mesh/texture rather than the button, so it likely only appears during certain leader attitudes/animations rather than the base idle pose (which may not show the paint in the base variant either) Ã¢â‚¬â€ speculative, based on how Civ4 leaderhead NIFs work. (Claude code Sonnet 4.6) -->
+		<!-- custom: COCKACOESKE_2 is a no-warpaint variant from the same pack. The warpaint difference is visible in the NIF mesh/texture rather than the button, so it likely only appears during certain leader attitudes/animations rather than the base idle pose (which may not show the paint in the base variant either) - speculative, based on how Civ4 leaderhead NIFs work. (Claude code Sonnet 4.6) -->
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_COCKACOESKE_02</Type>
 			<Button>Art/Leaderheads/Cockacoeske_02/cockacoeske.dds</Button>
@@ -1467,7 +1467,7 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<NoShaderNIF>Art/Leaderheads/Blonde_Girl_02/eli_noshader.nif</NoShaderNIF>
 			<BackgroundKFM>Art/Leaderheads/Blonde_Girl_02/elizabeth_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
-		<!-- custom: btn_lh_france_joanofarc.dds from MarnzMod 1.8c is included in this leaderhead's folder for exhaustiveness Ã¢â‚¬â€ it has a different background than the current button but is not currently used. See README_References.md. (Claude code Sonnet 4.6) -->
+		<!-- custom: btn_lh_france_joanofarc.dds from MarnzMod 1.8c is included in this leaderhead's folder for exhaustiveness - it has a different background than the current button but is not currently used. See README_References.md. (Claude code Sonnet 4.6) -->
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_JOAN_OF_ARC_04</Type>
 			<Button>Art/Leaderheads/Joan_Of_Arc_04/joan_of_arc_3_64px_no_border.dds</Button>
