@@ -444,7 +444,7 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<NoShaderNIF>Art/LeaderHeads/Isabella_4/isabella_noshader.nif</NoShaderNIF>
 			<BackgroundKFM>Art/LeaderHeads/Isabella_4/isabella_BG.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
-		<!-- custom: fixed purple teeth by adding missing texture file Art/LeaderHeads/Ranavalona/hatshepsut_diff.dds required by Wu.nif. (GPT-5.3-Codex) -->
+		<!-- custom: fixed purple teeth by adding missing texture file hatshepsut_diff.dds required by Wu.nif. (GPT-5.3-Codex) -->
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_SALAMASINA_4</Type>
 			<Button>Art/LeaderHeads/Salamasina_4/BtnWu.dds</Button>
