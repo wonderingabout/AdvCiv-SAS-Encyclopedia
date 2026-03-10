@@ -47,7 +47,6 @@ class SevoPediaCivilization:
 		self.W_CITIES = 290
 		self.X_CITIES = self.top.R_PEDIA_PAGE - self.W_CITIES
 		self.Y_CITIES = self.Y_CIVILIZATION_PANE
-		self.H_CITIES = self.top.B_PEDIA_PAGE - self.Y_CITIES
 
 		# <!-- custom: Music panel uses helper-computed one-button width, right of Civilization Pane. -->
 		self.X_MUSIC = self.X_CIVILIZATION_PANE + self.W_CIVILIZATION_PANE + self.MEDIUM_MARGIN
@@ -84,24 +83,26 @@ class SevoPediaCivilization:
 		self.W_UNIT = halfRowW
 		self.H_UNIT = rowH
 
+		# <!-- custom: NIF Gallery layout - keep Cities panel height aligned to the Leaders/Units row instead of spanning the full page. (GPT-5.2-Codex) -->
+		self.H_CITIES = (self.Y_UNIT + self.H_UNIT) - self.Y_CITIES
+
 		self.X_HISTORY = self.X_CIVILIZATION_PANE
 		self.Y_HISTORY = self.Y_CIVILIZATION_PANE + self.H_CIVILIZATION_PANE + self.MEDIUM_MARGIN
 		self.W_HISTORY = self.W_CIVILIZATION_PANE + self.MEDIUM_MARGIN + self.W_LEADER + self.MEDIUM_MARGIN + self.W_UNIT
 		self.H_HISTORY = self.top.B_PEDIA_PAGE - self.Y_HISTORY
+		# <!-- custom: NIF Gallery layout - reuse the history area as a full-width leaders multilist panel. (GPT-5.2-Codex) -->
+		self.X_LEADER_GALLERY = self.X_HISTORY
+		self.Y_LEADER_GALLERY = self.Y_HISTORY
+		self.W_LEADER_GALLERY = self.W_HISTORY
+		self.H_LEADER_GALLERY = self.H_HISTORY
 
 
 
 	def interfaceScreen(self, iCivilization):
 		self.iCivilization = iCivilization
 
-		self.placeCivilizationPane()
-		self.placeCities()
-		self.placeMusic()
-		self.placeTech()
-		self.placeBuilding()
-		self.placeUnit()
-		self.placeLeader()
-		self.placeHistory()
+		# <!-- custom: NIF Gallery layout - leader gallery takes the whole page; disable other civ panels. (GPT-5.2-Codex) -->
+		self.placeLeaderGallery()
 
 
 
@@ -195,11 +196,44 @@ class SevoPediaCivilization:
 		panelName = self.top.getNextWidgetName()
 		screen.addPanel(panelName, localText.getText("TXT_KEY_CONCEPT_LEADERS", ()), "", False, True, self.X_LEADER, self.Y_LEADER, self.W_LEADER, self.H_LEADER, PanelStyles.PANEL_STYLE_BLUE50)
 		screen.attachLabel(panelName, "", "  ")
-		for iLeader in range(gc.getNumLeaderHeadInfos()):
-			civ = gc.getCivilizationInfo(self.iCivilization)
-			if civ.isLeaders(iLeader):
-				screen.attachImageButton(panelName, "", gc.getLeaderHeadInfo(iLeader).getButton(), GenericButtonSizes.BUTTON_SIZE_CUSTOM, WidgetTypes.WIDGET_PEDIA_JUMP_TO_LEADER, iLeader, self.iCivilization, False)
+		# <!-- custom: NIF Gallery layout - leaders list disabled for now; use the standard "None" text style/padding. (GPT-5.2-Codex) -->
+		txtKeyNone = "TXT_KEY_PEDIA_SAS_NO_BUTTON_FOUND_NONE"
+		textName = self.top.getNextWidgetName()
+		szText = localText.getText(txtKeyNone, ())
+		yPanelCenter = self.Y_LEADER + (self.H_LEADER / 2)
+		screen.addMultilineText(textName, szText, self.X_LEADER + 7, yPanelCenter, self.W_LEADER - 14, self.H_LEADER - 20, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
 
+
+	def placeLeaderGallery(self):
+		xPanel = self.top.X_PEDIA_PAGE
+		yPanel = self.top.Y_PEDIA_PAGE
+		wPanel = self.top.R_PEDIA_PAGE - self.top.X_PEDIA_PAGE
+		hPanel = self.top.B_PEDIA_PAGE - self.top.Y_PEDIA_PAGE
+
+		headerLabel = localText.getText("TXT_KEY_PEDIA_CATEGORY_LEADER", ())
+		leader_ids, unused_leader_to_civ, unused_total_real = get_real_leader_maps_and_count(EXCLUDED_LEADER_TYPES_FROM_SEVOPEDIA)
+		num_for_civ = 0
+		for iLeader in leader_ids:
+			if gc.getCivilizationInfo(self.iCivilization).isLeaders(iLeader):
+				num_for_civ += 1
+		headerText = format_leaders_header_text(num_for_civ, len(leader_ids), headerLabel)
+
+		screen = self.top.getScreen()
+		panelName = self.top.getNextWidgetName()
+		# <!-- custom: NIF Gallery layout - full-width leaders multilist panel for leader gallery browsing. (GPT-5.2-Codex) -->
+		screen.addPanel(panelName, headerText, "", False, True, xPanel, yPanel, wPanel, hPanel, PanelStyles.PANEL_STYLE_BLUE50)
+
+		rowListName = self.top.getNextWidgetName()
+		multiListX = xPanel + MULTI_LIST_PANEL_OFFSET_X
+		multiListY = yPanel + MULTI_LIST_PANEL_OFFSET_Y
+		multiListW = wPanel + MULTI_LIST_PANEL_ADDITIONAL_W
+		multiListH = hPanel + MULTI_LIST_PANEL_ADDITIONAL_H
+		screen.addMultiListControlGFC(rowListName, "", multiListX, multiListY, multiListW, multiListH, SEVOPEDIA_MULTILIST_NUM_LISTS_AUTO_CALCULATE, MULTILIST_BUTTON_SIZE, MULTILIST_BUTTON_SIZE, TableStyles.TABLE_STYLE_STANDARD)
+
+		for iLeader in leader_ids:
+			if gc.getCivilizationInfo(self.iCivilization).isLeaders(iLeader):
+				leaderInfo = gc.getLeaderHeadInfo(iLeader)
+				screen.appendMultiListButton(rowListName, leaderInfo.getButton(), SEVOPEDIA_MULTILIST_COLUMN_INDEX_AUTO, WidgetTypes.WIDGET_PEDIA_JUMP_TO_LEADER, iLeader, self.iCivilization, False)
 
 
 	def placeHistory(self):

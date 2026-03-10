@@ -3,6 +3,7 @@
 This mod is a modified version of [AdvCiv-SAS (Simple Advanced Strategy)](https://github.com/wonderingabout/AdvCiv-SAS) ([Discussion thread here](https://forums.civfanatics.com/threads/advciv-sas-simple-advanced-strategy.699716/)), aiming to:
 
 - use it as a NIF gallery mod (non-playable)
+- make browsing much easier with the help of AdvCiv-SAS' sevopedia (search bar, keyboard UP/DOWN navigation, etc) plus further adjustments (e.g., Leader gallery in sevopedia civilization)
 - aggressively strip almost all assets (so it is lighter and since we don't need them), notably using `minOccurs="0"` for almost all leaderHead XML info, or by adding or modifying to functionally  empty base Civ4 XML like [CIV4PlotLSystem.xml](/Assets/XML/Buildings/CIV4PlotLSystem.xml) or [CIV4GameText_Events_BTS.xml](/Assets/XML/Text/CIV4GameText_Events_BTS.xml) (with a focus on heaviest ones using Wiztree to find them), resulting in very compact and lightweight XML mod (suits minimal leaderhead NIF Gallery need).
 - fix animations that had errors (e.g., Salasamina_3, Tandi Williams, etc.) or risky file structure design (e.g., Isabella_5 hard requiring folder name to be Isabella which risks conflicting with base BTS one: fixed by reimporting o, our NIF-Gallery mod all civ4 files from base civ4 (`Art0.FPK`) so leaderhead is modular)
 - add buttons for leaderheads that had none (e.g. Pope Joan), as of now a no border button to help identify the leader
@@ -22,6 +23,8 @@ For License and Reuse, see [License and reuse](/README.md#license-and-reuse).
 
 ## Menu
 
+[Sevopedia changes](/README.md#sevopedia-changes)  
+&emsp;[Sevopedia Civilization Leader gallery](/README.md#sevopedia-civilization-leader-gallery)  
 [New Leaderheads (AdvCiv-SAS-NIF-Gallery original) (e.g., Atossa, Roshanak)](/README.md#new-leaderheads-advciv-sas-nif-gallery-original-eg-atossa-roshanak)  
 [Hidden NIF variants (e.g., Maria 03, Quilago 02, Bunny Girl 03, Victoria 11 (The Great Leader), Dido 13 (Salamasina))](/README.md#hidden-nif-variants-eg-maria-3-quilago-2-bunny-girl-3-victoria-11-the-great-leader-dido-13-salamasina)  
 [Example of minimal compact XML info](/README.md#example-of-minimal-compact-xml-info)  
@@ -39,6 +42,16 @@ For License and Reuse, see [License and reuse](/README.md#license-and-reuse).
 [Some Useful tools while doing this](/README.md#some-useful-tools-while-doing-this)  
 [License and reuse](/README.md#license-and-reuse)  
 [Authors](/README.md#authors)  
+
+## Sevopedia changes
+
+### Sevopedia Civilization Leader gallery
+
+Unlike in AdvCiv-SAS, we display only as a long, full page spanning multilist the list of all leaders in a civ with counts/total and percentages (e.g. `Leaders 189/201 (94%)` for as civilization_america that has almost 200 new female leaderheads or their variants).
+
+<img src="./_1_AdvCiv-SAS/Images/sevopedia/0.300_sevopedia_civilizations (1).JPG" alt="0.300_sevopedia_civilizations (1).JPG" width="150"></img>
+<img src="./_1_AdvCiv-SAS/Images/sevopedia/0.300_sevopedia_civilizations (2).JPG" alt="0.300_sevopedia_civilizations (2).JPG" width="150"></img>
+<img src="./_1_AdvCiv-SAS/Images/sevopedia/0.300_sevopedia_civilizations (3).JPG" alt="0.300_sevopedia_civilizations (3).JPG" width="150"></img>
 
 ## New Leaderheads (AdvCiv-SAS-NIF-Gallery original) (e.g., Atossa, Roshanak)
 
