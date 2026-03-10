@@ -2219,6 +2219,8 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 
 	def deleteAllWidgets(self):
 		screen = self.getScreen()
+		# <!-- custom: SevoPediaLeader attitude preview widgets use fixed IDs, so they are not covered by the sequential getNextWidgetName deletion loop; remove them explicitly to prevent persistence across category changes. (GPT-5.3-Codex) -->
+		self.pediaLeader.deleteAttitudeWidgets(screen)
 		iNumWidgets = self.nWidgetCount
 		self.nWidgetCount = 0
 		for i in range(iNumWidgets):
