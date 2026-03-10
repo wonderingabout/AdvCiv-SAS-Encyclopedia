@@ -95,6 +95,14 @@ class SevoPediaCivilization:
 		self.Y_LEADER_GALLERY = self.Y_HISTORY
 		self.W_LEADER_GALLERY = self.W_HISTORY
 		self.H_LEADER_GALLERY = self.H_HISTORY
+		# <!-- custom: NIF Gallery layout - cache alphabetical leader order once per session to avoid per-civ sorting. (GPT-5.2-Codex) -->
+		if not hasattr(self.top, "SAS_leader_sorted_cache"):
+			cache = []
+			for iLeader in range(gc.getNumLeaderHeadInfos()):
+				leaderInfo = gc.getLeaderHeadInfo(iLeader)
+				cache.append((leaderInfo.getDescription(), iLeader, leaderInfo.getButton()))
+			cache.sort()
+			self.top.SAS_leader_sorted_cache = cache
 
 
 
@@ -230,10 +238,9 @@ class SevoPediaCivilization:
 		multiListH = hPanel + MULTI_LIST_PANEL_ADDITIONAL_H
 		screen.addMultiListControlGFC(rowListName, "", multiListX, multiListY, multiListW, multiListH, SEVOPEDIA_MULTILIST_NUM_LISTS_AUTO_CALCULATE, MULTILIST_BUTTON_SIZE, MULTILIST_BUTTON_SIZE, TableStyles.TABLE_STYLE_STANDARD)
 
-		for iLeader in leader_ids:
+		for leaderName, iLeader, buttonPath in self.top.SAS_leader_sorted_cache:
 			if gc.getCivilizationInfo(self.iCivilization).isLeaders(iLeader):
-				leaderInfo = gc.getLeaderHeadInfo(iLeader)
-				screen.appendMultiListButton(rowListName, leaderInfo.getButton(), SEVOPEDIA_MULTILIST_COLUMN_INDEX_AUTO, WidgetTypes.WIDGET_PEDIA_JUMP_TO_LEADER, iLeader, self.iCivilization, False)
+				screen.appendMultiListButton(rowListName, buttonPath, SEVOPEDIA_MULTILIST_COLUMN_INDEX_AUTO, WidgetTypes.WIDGET_PEDIA_JUMP_TO_LEADER, iLeader, self.iCivilization, False)
 
 
 	def placeHistory(self):

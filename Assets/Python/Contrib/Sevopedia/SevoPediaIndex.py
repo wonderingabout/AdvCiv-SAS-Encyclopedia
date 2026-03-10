@@ -185,6 +185,15 @@ class SevoPediaIndex:
 		for item in civList:
 			list.append([item[0],"Civ",item])
 		for item in leaderList:
+			# <!-- custom: AdvCiv-SAS KI#111 - fail loudly on non-ascii leader names so we can identify the bad entry.
+			# We documented this in AdvCiv-SAS (not NIF Gallery) even though the symptom matches; this is where we need the
+			# explicit error to trace the root cause since AdvCiv-SAS did not show it yet. (GPT-5.2-Codex) -->
+			name = item[0]
+			if not isinstance(name, unicode):
+				try:
+					name.decode('ascii')
+				except UnicodeDecodeError:
+					raise Exception("SevoPediaIndex: non-ascii leader name in leaderList: %r (item=%r). Fix leader text or path case; see KI#111." % (name, item))
 			list.append([item[0],"Leader",item])
 		for item in traitList:
 			list.append([item[0][2:],"Trait",item])
