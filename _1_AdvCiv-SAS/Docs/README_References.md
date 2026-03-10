@@ -53,7 +53,7 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 
 - Base Civ4 (Advciv-SAS): Boudica 0, Catherine 0, Elizabeth 0, Hatshepsut 0, Isabella 0, Victoria 0
 - AdvCiv-SAS: Grace O'Malley
-- History Rewritten: Amanirena, Aminah, Awiakta, Mavia (Bilqis), Dido, Dihya, Isabella 1, Jingu, Mangammal, Atotoztli 2 (Nzinga), Salamasina, Wu Zetian, Lieu-Ye (Black Hair), Nanye-hi (Tomyris), Trung Sisters, Xoc, Yekaterina
+- History Rewritten: Amanirena, Aminah, Awiakta, Mavia (Bilqis), Dido, Dihya, Isabella 1, Jingu, Mangammal, Atotoztli 2 (Nzinga), Salamasina, Wu Zetian, Lieu-Ye (Black Hair), Nanye-hi (Tomyris), Trung Sisters, Xoc, Catherine 1 (Yekaterina)
 - RFC Dawn of Civilization: Benazir Bhutto, Isabella 2, Maria, Maria 2 (no ribbon) (further modified in AdvCiv-SAS-NIF-Gallery)
 - Beyond the Game 2.43: Maria Theresa, Marpesia, Penthesilea, Theodora
 - Base 6.4: Jacquotte Delahaye, Atotoztli, Mavia 2, Cixi, Cleopatra, Wilhelmina
@@ -64,7 +64,7 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 - Civ Gold 5.2: Elizabeth 1 (Michaelle Jean), Elizabeth 2 (Makeda), Elizabeth 3 (Teuta), Helen Clark, Isabella 3 (Margrete I), Isabella 4 (Trung Trac), Salamasina 2, Salamasina 4 (Ranavalona), Thanadelthur, Victoria 1 (Benazir Bhutto), Victoria 2 (Hasina), Yulia Tymoshenko, Zenobia
 - Fictionalization beta: Sheherazade, Wu Qinghua
 - AdvCiv Plus: Ana Nzinga, Boudica 1, Isabella 5, Tamar, Victoria 3 (Maria Theresa)
-- PSYX's Modern world 4: Catherine 1 (Mary Stuart), Victoria 5 (Maria Theresa 3)
+- PSYX's Modern world 4: Catherine 2 (Mary Stuart), Victoria 5 (Maria Theresa 3)
 - Vincentz Infinite Projects (VIP): Nanye-hi 2 (nif)
 - The Sword of Islam: Isabella 6 (Tamar)
 - RFC Europe 1.5: Isabella 7 (Margrete 2), Theophanu
@@ -78,7 +78,7 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 - Diversica 1.95: Aminah 3 (Prisbit), Theodora 2
 - Dawn of a New Era 6.00: Nanye-hi 3 (Running Eagle)
 - Fury Road v11: Anne Bonny 2 (Martha (Aelwyn)), Blonde Girl 2 (Debbie), Joan of Arc 4 (Debbie (Old)), Salamasina 6 (Brandi)
-- MarnzMod 1.8c: Catherine 2 (Mary Stuart 2 (NoShaderNIF)), Hatshepsut 2 (Salamasina), Isabella 9 (Theodora), Isabella 10 (Dido), Joan of Arc 4 (btn_lh_france_joanofarc.dds, different background, not currently used)
+- MarnzMod 1.8c: Catherine 3 (Mary Stuart 2 (NoShaderNIF)), Hatshepsut 2 (Salamasina), Isabella 9 (Theodora), Isabella 10 (Dido), Joan of Arc 4 (btn_lh_france_joanofarc.dds, different background, not currently used)
 - Quot Capita Majesty: Atotoztli 3 (atotoztli.nif), Dido 12 (almost naked), Nefertiti (Nefertiti.dds btn), Nefertiti 3 (Nefertiti.dds btn)
 - 2100 mod: Victoria 8 (The Great Leader (victoria_noshader.nif)), Victoria 9 (The Great Leader (victoria (2).nif)), Victoria 10 (The Great Leader (victoria2.nif)), Victoria 11 (The Great Leader (victoria.nif))
 - Facing Terrorism: Miriam Godwinson 2 (Gillard), Miriam Godwinson 3 (Merkel)

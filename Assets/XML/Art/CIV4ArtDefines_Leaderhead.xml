@@ -159,12 +159,12 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<BackgroundKFM>Art/LeaderHeads/Xoc/Yohl_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
-			<Type>ART_DEF_LEADER_YEKATERINA</Type>
-			<Button>Art/LeaderHeads/Yekaterina/Button_Yekaterina.dds</Button>
-			<NIF>Art/LeaderHeads/Yekaterina/catherine.nif</NIF>
-			<KFM>Art/LeaderHeads/Yekaterina/catherine.kfm</KFM>
-			<NoShaderNIF>Art/LeaderHeads/Yekaterina/catherine.nif</NoShaderNIF>
-			<BackgroundKFM>Art/LeaderHeads/Yekaterina/catherine_BG.kfm</BackgroundKFM>
+			<Type>ART_DEF_LEADER_CATHERINE_1</Type>
+			<Button>Art/LeaderHeads/Catherine_1/Button_Yekaterina.dds</Button>
+			<NIF>Art/LeaderHeads/Catherine_1/catherine.nif</NIF>
+			<KFM>Art/LeaderHeads/Catherine_1/catherine.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Catherine_1/catherine.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Catherine_1/catherine_BG.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_BENAZIR_BHUTTO</Type>
@@ -577,12 +577,12 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<BackgroundKFM>Art/LeaderHeads/Victoria_3/Victoria_BG.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
-			<Type>ART_DEF_LEADER_CATHERINE_1</Type>
-			<Button>Art/LeaderHeads/Catherine_1/Mary_Stuart.dds</Button>
-			<NIF>Art/LeaderHeads/Catherine_1/catherine.nif</NIF>
-			<KFM>Art/LeaderHeads/Catherine_1/catherine.kfm</KFM>
-			<NoShaderNIF>Art/LeaderHeads/Catherine_1/catherine_noshader.nif</NoShaderNIF>
-			<BackgroundKFM>Art/LeaderHeads/Catherine_1/Catherine_BG.kfm</BackgroundKFM>
+			<Type>ART_DEF_LEADER_CATHERINE_2</Type>
+			<Button>Art/LeaderHeads/Catherine_2/Mary_Stuart.dds</Button>
+			<NIF>Art/LeaderHeads/Catherine_2/catherine.nif</NIF>
+			<KFM>Art/LeaderHeads/Catherine_2/catherine.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Catherine_2/catherine_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Catherine_2/Catherine_BG.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_VICTORIA_5</Type>
@@ -1550,12 +1550,12 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		</LeaderheadArtInfo>
 		<!-- custom: using the noshader nif version because it looks like it has a different art -->
 		<LeaderheadArtInfo>
-			<Type>ART_DEF_LEADER_CATHERINE_2</Type>
-			<Button>Art/LeaderHeads/Catherine_2/mary_stuart.dds</Button>
-			<NIF>Art/LeaderHeads/Catherine_2/catherine_noshader.nif</NIF>
-			<KFM>Art/LeaderHeads/Catherine_2/catherine.kfm</KFM>
-			<NoShaderNIF>Art/LeaderHeads/Catherine_2/catherine_noshader.nif</NoShaderNIF>
-			<BackgroundKFM>Art/LeaderHeads/Catherine_2/catherine_bg.kfm</BackgroundKFM>
+			<Type>ART_DEF_LEADER_CATHERINE_3</Type>
+			<Button>Art/LeaderHeads/Catherine_3/mary_stuart.dds</Button>
+			<NIF>Art/LeaderHeads/Catherine_3/catherine_noshader.nif</NIF>
+			<KFM>Art/LeaderHeads/Catherine_3/catherine.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Catherine_3/catherine_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Catherine_3/catherine_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_HATSHEPSUT_2</Type>

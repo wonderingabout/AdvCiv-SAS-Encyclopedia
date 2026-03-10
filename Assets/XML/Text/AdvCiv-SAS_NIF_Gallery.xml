@@ -96,8 +96,8 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<English>Xoc</English>
 	</TEXT>
 	<TEXT>
-		<Tag>TXT_KEY_LEADER_YEKATERINA</Tag>
-		<English>Yekaterina</English>
+		<Tag>TXT_KEY_LEADER_CATHERINE_1</Tag>
+		<English>Catherine 1 (Yekaterina)</English>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_LEADER_BENAZIR_BHUTTO</Tag>
@@ -302,8 +302,8 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<English>Victoria 3 (Maria Theresa)</English>
 	</TEXT>
 	<TEXT>
-		<Tag>TXT_KEY_LEADER_CATHERINE_1</Tag>
-		<English>Catherine 1 (Mary Stuart)</English>
+		<Tag>TXT_KEY_LEADER_CATHERINE_2</Tag>
+		<English>Catherine 2 (Mary Stuart)</English>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_LEADER_VICTORIA_5</Tag>
@@ -778,8 +778,8 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<English>Isabella 10 (Dido)</English>
 	</TEXT>
 	<TEXT>
-		<Tag>TXT_KEY_LEADER_CATHERINE_2</Tag>
-		<English>Catherine 2 (Mary Stuart 2 (NoShaderNIF))</English>
+		<Tag>TXT_KEY_LEADER_CATHERINE_3</Tag>
+		<English>Catherine 3 (Mary Stuart 2 (NoShaderNIF))</English>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_LEADER_HATSHEPSUT_2</Tag>
