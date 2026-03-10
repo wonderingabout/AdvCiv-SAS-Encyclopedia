@@ -2203,6 +2203,10 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 			if iData1 == SevoPediaLeader.SAS_PEDIA_PYTHON_LEADER_ATTITUDE:
 				if self.iCategory == SevoScreenEnums.PEDIA_LEADERS:
 					return self.pediaLeader.applyLeaderAttitude(iData2)
+			# <!-- custom: route Sevopedia leader action preview buttons (no/greeting/agree/disagree) here as the same fallback path used for attitude buttons. (GPT-5.3-Codex) -->
+			if iData1 == SevoPediaLeader.SAS_PEDIA_PYTHON_LEADER_ACTION:
+				if self.iCategory == SevoScreenEnums.PEDIA_LEADERS:
+					return self.pediaLeader.applyLeaderAction(iData2)
 
 		return 0
 		# <!-- custom: End - type-to-filter search bar for the left item list (in the same style as done in other mod(s)) (chatgpt 5.2 + claude opus 4.5) -->

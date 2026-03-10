@@ -41,12 +41,19 @@ IS_SHOW_TRAIT_ICONS_IN_LEADER = (gc.getDefineINT("SAS_SEVOPEDIA_LEADER_TRAITS_SH
 IS_SAS_SHOW_LEGEND_LINK = (gc.getDefineINT("SAS_SHOW_LEGEND_LINK") > 0)
 IS_SAS_SEVOPEDIA_LEADER_AI_PERSONALITY_ENABLE = (gc.getDefineINT("SAS_SEVOPEDIA_LEADER_AI_PERSONALITY_ENABLE") > 0)
 SAS_PEDIA_PYTHON_LEADER_ATTITUDE = 6805
+SAS_PEDIA_PYTHON_LEADER_ACTION = 6806
 SAS_LEADER_ATTITUDE_PREVIEW_ORDER = (
 	AttitudeTypes.ATTITUDE_FURIOUS,
 	AttitudeTypes.ATTITUDE_ANNOYED,
 	AttitudeTypes.ATTITUDE_CAUTIOUS,
 	AttitudeTypes.ATTITUDE_PLEASED,
 	AttitudeTypes.ATTITUDE_FRIENDLY,
+)
+SAS_LEADER_ACTION_PREVIEW_ORDER = (
+	(LeaderheadAction.NO_LEADERANIM, u"no"),
+	(LeaderheadAction.LEADERANIM_GREETING, u"gr"),
+	(LeaderheadAction.LEADERANIM_AGREE, u"ag"),
+	(LeaderheadAction.LEADERANIM_DISAGREE, u"dg"),
 )
 
 # <!-- custom: keep debug flag available in this module for existing debug print sites. -->
@@ -77,6 +84,9 @@ class SevoPediaLeader:
 		self.ATTITUDE_BUTTON_WIDGET_BY_ATTITUDE = {}
 		for iAttitude in SAS_LEADER_ATTITUDE_PREVIEW_ORDER:
 			self.ATTITUDE_BUTTON_WIDGET_BY_ATTITUDE[iAttitude] = "SevoPediaLeaderAttitudeBtn%d" % iAttitude
+		self.ACTION_BUTTON_WIDGET_BY_ACTION = {}
+		for iAction, _ in SAS_LEADER_ACTION_PREVIEW_ORDER:
+			self.ACTION_BUTTON_WIDGET_BY_ACTION[iAction] = "SevoPediaLeaderActionBtn%d" % iAction
 		self.buildAttitudeButtonLabelCache()
 
 		self.X_LEADERHEAD_PANE = self.top.X_PEDIA_PAGE
@@ -251,29 +261,52 @@ class SevoPediaLeader:
 		# <!-- custom: add direct mood buttons in the center gap (between Favorites and Music) so clicking previews leader attitude animations without keyboard-only hotkeys. (GPT-5.3-Codex) -->
 		screen.addPanel(self.ATTITUDES_PANEL_ID, "", "", False, True, self.X_ATTITUDES, self.Y_ATTITUDES, self.W_ATTITUDES, self.H_ATTITUDES, PanelStyles.PANEL_STYLE_BLUE50)
 
+		iRowGap = 4
+		iTopPadding = 8
+		iBottomPadding = 8
+		iButtonH = (self.H_ATTITUDES - iTopPadding - iBottomPadding - iRowGap) / 2
+		if iButtonH < 16:
+			iButtonH = 16
+
 		attitudeOrder = SAS_LEADER_ATTITUDE_PREVIEW_ORDER
-		iButtonCount = len(attitudeOrder)
-		iButtonSpacing = 4
-		iContentPadding = 8
-		iButtonW = (self.W_ATTITUDES - 2 * iContentPadding - iButtonSpacing * (iButtonCount - 1)) / iButtonCount
-		if iButtonW < 22:
-			iButtonSpacing = 2
-			iContentPadding = 6
-			iButtonW = (self.W_ATTITUDES - 2 * iContentPadding - iButtonSpacing * (iButtonCount - 1)) / iButtonCount
-		if iButtonW < 16:
-			iButtonW = 16
-		iButtonH = self.H_ATTITUDES - 28
-		if iButtonH < 20:
-			iButtonH = 20
-		iTotalButtonsW = iButtonCount * iButtonW + (iButtonCount - 1) * iButtonSpacing
-		iButtonX = self.X_ATTITUDES + (self.W_ATTITUDES - iTotalButtonsW) / 2
-		iButtonY = self.Y_ATTITUDES + 18
+		iAttitudeCount = len(attitudeOrder)
+		iAttitudeSpacing = 3
+		iAttitudePadding = 6
+		iAttitudeButtonW = (self.W_ATTITUDES - 2 * iAttitudePadding - iAttitudeSpacing * (iAttitudeCount - 1)) / iAttitudeCount
+		if iAttitudeButtonW < 16:
+			iAttitudeSpacing = 2
+			iAttitudePadding = 4
+			iAttitudeButtonW = (self.W_ATTITUDES - 2 * iAttitudePadding - iAttitudeSpacing * (iAttitudeCount - 1)) / iAttitudeCount
+		if iAttitudeButtonW < 14:
+			iAttitudeButtonW = 14
+		iAttitudeTotalW = iAttitudeCount * iAttitudeButtonW + (iAttitudeCount - 1) * iAttitudeSpacing
+		iAttitudeX = self.X_ATTITUDES + (self.W_ATTITUDES - iAttitudeTotalW) / 2
+		iAttitudeY = self.Y_ATTITUDES + iTopPadding
 
 		for iAttitude in attitudeOrder:
 			szWidget = self.ATTITUDE_BUTTON_WIDGET_BY_ATTITUDE[iAttitude]
 			szLabel = self.getAttitudeButtonLabel(iAttitude)
-			screen.setButtonGFC(szWidget, szLabel, "", iButtonX, iButtonY, iButtonW, iButtonH, WidgetTypes.WIDGET_PYTHON, SAS_PEDIA_PYTHON_LEADER_ATTITUDE, iAttitude, ButtonStyles.BUTTON_STYLE_STANDARD)
-			iButtonX += iButtonW + iButtonSpacing
+			screen.setButtonGFC(szWidget, szLabel, "", iAttitudeX, iAttitudeY, iAttitudeButtonW, iButtonH, WidgetTypes.WIDGET_PYTHON, SAS_PEDIA_PYTHON_LEADER_ATTITUDE, iAttitude, ButtonStyles.BUTTON_STYLE_STANDARD)
+			iAttitudeX += iAttitudeButtonW + iAttitudeSpacing
+
+		iActionCount = len(SAS_LEADER_ACTION_PREVIEW_ORDER)
+		iActionSpacing = 3
+		iActionPadding = 6
+		iActionButtonW = (self.W_ATTITUDES - 2 * iActionPadding - iActionSpacing * (iActionCount - 1)) / iActionCount
+		if iActionButtonW < 16:
+			iActionSpacing = 2
+			iActionPadding = 4
+			iActionButtonW = (self.W_ATTITUDES - 2 * iActionPadding - iActionSpacing * (iActionCount - 1)) / iActionCount
+		if iActionButtonW < 14:
+			iActionButtonW = 14
+		iActionTotalW = iActionCount * iActionButtonW + (iActionCount - 1) * iActionSpacing
+		iActionX = self.X_ATTITUDES + (self.W_ATTITUDES - iActionTotalW) / 2
+		iActionY = iAttitudeY + iButtonH + iRowGap
+
+		for iAction, szLabel in SAS_LEADER_ACTION_PREVIEW_ORDER:
+			szWidget = self.ACTION_BUTTON_WIDGET_BY_ACTION[iAction]
+			screen.setButtonGFC(szWidget, szLabel, "", iActionX, iActionY, iActionButtonW, iButtonH, WidgetTypes.WIDGET_PYTHON, SAS_PEDIA_PYTHON_LEADER_ACTION, iAction, ButtonStyles.BUTTON_STYLE_STANDARD)
+			iActionX += iActionButtonW + iActionSpacing
 
 
 	def deleteAttitudeWidgets(self, screen):
@@ -284,6 +317,11 @@ class SevoPediaLeader:
 		for iAttitude in SAS_LEADER_ATTITUDE_PREVIEW_ORDER:
 			try:
 				screen.deleteWidget(self.ATTITUDE_BUTTON_WIDGET_BY_ATTITUDE[iAttitude])
+			except:
+				pass
+		for iAction, _ in SAS_LEADER_ACTION_PREVIEW_ORDER:
+			try:
+				screen.deleteWidget(self.ACTION_BUTTON_WIDGET_BY_ACTION[iAction])
 			except:
 				pass
 
@@ -482,6 +520,8 @@ class SevoPediaLeader:
 		if inputClass.getButtonType() == WidgetTypes.WIDGET_PYTHON:
 			if inputClass.getData1() == SAS_PEDIA_PYTHON_LEADER_ATTITUDE:
 				return self.applyLeaderAttitude(inputClass.getData2())
+			if inputClass.getData1() == SAS_PEDIA_PYTHON_LEADER_ACTION:
+				return self.applyLeaderAction(inputClass.getData2())
 
 		# <!-- custom: leaderhead hotkeys (animations/moods) are cosmetic; if they conflict with search,
 		# consider removing or remapping here. (GPT-5.2-Codex) -->
@@ -514,4 +554,9 @@ class SevoPediaLeader:
 		# <!-- custom: force-refresh the leaderhead widget so attitude changes show immediately on click; mood-only updates can be visually ignored while another anim is still running. (GPT-5.3-Codex) -->
 		self.refreshLeaderheadWidget()
 		self.placeAttitudes()
+		return 1
+
+
+	def applyLeaderAction(self, iAction):
+		self.top.getScreen().performLeaderheadAction(self.leaderWidget, iAction)
 		return 1

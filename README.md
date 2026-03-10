@@ -3,7 +3,7 @@
 This mod is a modified version of [AdvCiv-SAS (Simple Advanced Strategy)](https://github.com/wonderingabout/AdvCiv-SAS) ([Discussion thread here](https://forums.civfanatics.com/threads/advciv-sas-simple-advanced-strategy.699716/)), aiming to:
 
 - use it as a NIF gallery mod (non-playable)
-- make browsing much easier with the help of AdvCiv-SAS' sevopedia (search bar, keyboard UP/DOWN navigation, leader animation attitude buttons) plus further adjustments (e.g., Leader gallery in sevopedia civilization)
+- make browsing much easier with the help of AdvCiv-SAS' sevopedia (search bar, keyboard UP/DOWN navigation, leader animation attitude (furious, annoyed, cautious, pleased, friendly) and action (noanim, greeting, agree, disagree) buttons) plus further adjustments (e.g., Leader gallery in sevopedia civilization)
 - aggressively strip almost all assets (so it is lighter and since we don't need them), notably using `minOccurs="0"` for almost all leaderHead XML info, or by adding or modifying to functionally  empty base Civ4 XML like [CIV4PlotLSystem.xml](/Assets/XML/Buildings/CIV4PlotLSystem.xml) or [CIV4GameText_Events_BTS.xml](/Assets/XML/Text/CIV4GameText_Events_BTS.xml) (with a focus on heaviest ones using Wiztree to find them), resulting in very compact and lightweight XML mod (suits minimal leaderhead NIF Gallery need).
 - fix animations that had errors (e.g., Salasamina_3, Tandi Williams, etc.) or risky file structure design (e.g., Isabella_5 hard requiring folder name to be Isabella which risks conflicting with base BTS one: fixed by reimporting o, our NIF-Gallery mod all civ4 files from base civ4 (`Art0.FPK`) so leaderhead is modular)
 - add buttons for leaderheads that had none (e.g. Pope Joan), as of now a no border button to help identify the leader
@@ -25,6 +25,7 @@ For License and Reuse, see [License and reuse](/README.md#license-and-reuse).
 
 [Sevopedia changes](/README.md#sevopedia-changes)  
 &emsp;[Sevopedia Civilization Leader gallery](/README.md#sevopedia-civilization-leader-gallery)  
+&emsp;[Sevopedia Leader Attitude and Action buttons](/README.md#sevopedia-leader-attitude-and-action-buttons)  
 [New Leaderheads (AdvCiv-SAS-NIF-Gallery original) (e.g., Atossa, Roshanak)](/README.md#new-leaderheads-advciv-sas-nif-gallery-original-eg-atossa-roshanak)  
 [Hidden NIF variants (e.g., Maria 03, Quilago 02, Bunny Girl 03, Victoria 11 (The Great Leader), Dido 13 (Salamasina))](/README.md#hidden-nif-variants-eg-maria-3-quilago-2-bunny-girl-3-victoria-11-the-great-leader-dido-13-salamasina)  
 [Example of minimal compact XML info](/README.md#example-of-minimal-compact-xml-info)  
@@ -49,9 +50,21 @@ For License and Reuse, see [License and reuse](/README.md#license-and-reuse).
 
 Unlike in AdvCiv-SAS, we display only as a long, full page spanning multilist the list of all leaders in a civ with counts/total and percentages (e.g. `Leaders 189/201 (94%)` for as civilization_america that has almost 200 new female leaderheads or their variants).
 
+Added with the very nice help of GPT-5.2-Codex thanks (since i couldn't use GPT-5.4 successfully for a task, reverted to GPT-5.3-Codex and then GPT-5.2-Codex that could complete it then didn't sswitch back until much later to GPT-5.3-Codex again).
+
 <img src="./_1_AdvCiv-SAS/Images/sevopedia/0.300_sevopedia_civilizations (1).JPG" alt="0.300_sevopedia_civilizations (1).JPG" width="150"></img>
 <img src="./_1_AdvCiv-SAS/Images/sevopedia/0.300_sevopedia_civilizations (2).JPG" alt="0.300_sevopedia_civilizations (2).JPG" width="150"></img>
 <img src="./_1_AdvCiv-SAS/Images/sevopedia/0.300_sevopedia_civilizations (3).JPG" alt="0.300_sevopedia_civilizations (3).JPG" width="150"></img>
+
+### Sevopedia Leader Attitude and Action buttons
+
+Existent in AdvCiv-SAS, but originally added in AdvCiv-SAS-NIF-Gallery
+
+It is now possible to click on attitude (furious, annoyed, cautious, pleased, friendly) and action (noanim, greeting, agree, disagree) buttons to reload animaiton with desired behaviour.
+
+You can literally push her buttons.
+
+Added with the very nice help of GPT-5.3-Codex thanks.
 
 ## New Leaderheads (AdvCiv-SAS-NIF-Gallery original) (e.g., Atossa, Roshanak)
 
