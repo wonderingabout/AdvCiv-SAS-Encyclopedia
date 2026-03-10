@@ -22,176 +22,176 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 				<Leader><LeaderName>LEADER_AWIAKTA</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_MAVIA</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_DIDO</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_ZENOBIA_3</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_ISABELLA_1</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_ZENOBIA_03</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_ISABELLA_01</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_JINGU</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_MANGAMMAL</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_ATOTOZTLI_2</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_ATOTOZTLI_02</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_SALAMASINA</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_WU_ZETIAN</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_LIEU_YE</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_NANYE_HI</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_TRUNG_SISTERS</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_XOC</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_CATHERINE_1</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_CATHERINE_01</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_BENAZIR</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_ISABELLA_2</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_ISABELLA_02</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_MARIA</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_MARIA_2</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_MARIA_02</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_MARIA_THERESA</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_MARPESIA</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_PENTHESILEA</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_THEODORA</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_JACQUOTTE_DELAHAYE</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_ATOTOZTLI</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_MAVIA_2</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_MAVIA_02</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_CIXI</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_CLEOPATRA</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_ELIZABETH_8</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_ELIZABETH_08</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_BLONDE_GIRL</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_CLEOPATRA_2</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_CLEOPATRA_02</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_JOAN_OF_ARC</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_JOAN_OF_ARC_2</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_JOAN_OF_ARC_02</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_MANDUKHAI_KHATUN</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_NEFERTITI</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_JINGU_3</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_CLEOPATRA_6</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_HATSHEPSUT_3</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_DIDO_2</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_JOAN_OF_ARC_3</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_ELIZABETH_6</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_ELIZABETH_7</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_ELIZABETH_5</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_ELIZABETH_1</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_ELIZABETH_2</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_ELIZABETH_3</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_ANNE_BONNY_3</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_ISABELLA_3</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_ISABELLA_4</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_SALAMASINA_8</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_SALAMASINA_2</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_CATHERINE_4</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_VICTORIA_1</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_VICTORIA_2</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_CATHERINE_5</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_JINGU_03</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_CLEOPATRA_06</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_HATSHEPSUT_03</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_DIDO_02</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_JOAN_OF_ARC_03</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_ELIZABETH_06</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_ELIZABETH_07</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_ELIZABETH_05</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_ELIZABETH_01</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_ELIZABETH_02</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_ELIZABETH_03</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_ANNE_BONNY_03</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_ISABELLA_03</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_ISABELLA_04</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_SALAMASINA_08</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_SALAMASINA_02</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_CATHERINE_04</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_VICTORIA_01</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_VICTORIA_02</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_CATHERINE_05</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_ZENOBIA</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_SHEHERAZADE</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_WU_QINGHUA</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_ANA_NZINGA</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_BOUDICA_1</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_ISABELLA_5</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_BOUDICA_01</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_ISABELLA_05</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_TAMAR</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_VICTORIA_3</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_CATHERINE_2</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_VICTORIA_5</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_NANYE_HI_2</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_ISABELLA_6</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_ISABELLA_7</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_VICTORIA_03</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_CATHERINE_02</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_VICTORIA_05</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_NANYE_HI_02</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_ISABELLA_06</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_ISABELLA_07</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_THEOPHANU</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_MARFA_BORETSKAYA</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_CLEOPATRA_7</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_CLEOPATRA_8</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_ISABELLA_8</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_VICTORIA_4</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_DIDO_3</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_DIDO_4</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_DIDO_5</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_DIDO_6</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_DIDO_7</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_DIDO_8</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_DIDO_9</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_CLEOPATRA_07</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_CLEOPATRA_08</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_ISABELLA_08</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_VICTORIA_04</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_DIDO_03</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_DIDO_04</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_DIDO_05</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_DIDO_06</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_DIDO_07</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_DIDO_08</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_DIDO_09</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_ARIADNE</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_HIMIKO</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_SALAMASINA_5</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_MANDUKHAI_KHATUN_3</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_SALAMASINA_05</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_MANDUKHAI_KHATUN_03</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_BRUNHILD</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_EVITA_PERON</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_EVITA_PERON_2</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_ANA_NZINGA_2</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_EVITA_PERON_02</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_ANA_NZINGA_02</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_HELEN_OF_TROY</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_ULPIA_SEVERINA</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_ULPIA_SEVERINA_2</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_ULPIA_SEVERINA_02</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_COCKACOESKE</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_SALAMASINA_11</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_SALAMASINA_9</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_SALAMASINA_09</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_SALAMASINA_10</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_SALAMASINA_12</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_NUR_JAHAN</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_POPE_JOAN</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_SALAMASINA_4</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_TAMAR_2</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_TAMAR_3</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_TAMAR_4</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_SALAMASINA_04</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_TAMAR_02</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_TAMAR_03</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_TAMAR_04</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_MARIA_ELEONORA</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_MIRANDA_LAWSON</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_MANDUKHAI_KHATUN_2</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_SALAMASINA_7</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_MANDUKHAI_KHATUN_02</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_SALAMASINA_07</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_QUILAGO</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_QUILAGO_2</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_JINGU_2</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-<Leader><LeaderName>LEADER_LIEU_YE_2</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_QUILAGO_02</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_JINGU_02</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+<Leader><LeaderName>LEADER_LIEU_YE_02</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_ANNE_BONNY</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_JACQUOTTE_DELAHAYE_2</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_JACQUOTTE_DELAHAYE_02</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_AELIA_PULCHERIA</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_ISHTAR</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_ELIZABETH_9</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_NEFERTITI_2</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_VICTORIA_6</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_VICTORIA_7</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_VICTORIA_8</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_VICTORIA_9</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_ELIZABETH_09</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_NEFERTITI_02</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_VICTORIA_06</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_VICTORIA_07</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_VICTORIA_08</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_VICTORIA_09</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_VICTORIA_10</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_VICTORIA_11</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_HATSHEPSUT_1</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_HATSHEPSUT_01</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_TANDI_WILLIAMS</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_AMINAH_3</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_AMINAH_03</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_ISABELLA_21</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_EVITA_PERON_3</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_MARIA_ELEONORA_2</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_EVITA_PERON_03</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_MARIA_ELEONORA_02</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_MISS_SANTA</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_GUNNHILD</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_MARIA_3</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_MARIA_03</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_DIDO_10</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_DIDO_11</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_TALI_ZORAH</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_MACHA_MONG_RUAD</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_ZENOBIA_2</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_ZENOBIA_02</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_FEMALE_RANGER</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_FEMALE_RANGER_2</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_FEMALE_RANGER_3</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_FEMALE_RANGER_02</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_FEMALE_RANGER_03</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_GREEK_QUEEN</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_FREYDIS_EIRIKSDOTTIR</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_BOUDICA_2</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_BOUDICA_02</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_VELETA</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_ISABELLA_11</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_CLEOPATRA_3</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_CLEOPATRA_4</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_CLEOPATRA_5</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_COCKACOESKE_2</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_GRACE_OMALLEY_2</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_EVITA_PERON_4</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_EVITA_PERON_5</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_NANYE_HI_3</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_BENAZIR_2</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_CLEOPATRA_03</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_CLEOPATRA_04</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_CLEOPATRA_05</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_COCKACOESKE_02</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_GRACE_OMALLEY_02</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_EVITA_PERON_04</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_EVITA_PERON_05</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_NANYE_HI_03</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_BENAZIR_02</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_DEIRDRE_SKYE</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_CORAZON_SANTIAGO</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_MIRIAM_GODWINSON</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_MIRIAM_GODWINSON_2</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_MIRIAM_GODWINSON_3</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_SHEHERAZADE_2</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_SALAMASINA_6</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_ELIZABETH_4</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_AMINAH_2</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_ANNE_BONNY_2</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_SALAMASINA_3</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_BLONDE_GIRL_2</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_JOAN_OF_ARC_4</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_CLEOPATRA_9</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_MIRIAM_GODWINSON_02</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_MIRIAM_GODWINSON_03</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_SHEHERAZADE_02</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_SALAMASINA_06</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_ELIZABETH_04</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_AMINAH_02</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_ANNE_BONNY_02</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_SALAMASINA_03</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_BLONDE_GIRL_02</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_JOAN_OF_ARC_04</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_CLEOPATRA_09</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_ISABELLA_20</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_ISABELLA_10</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_CATHERINE_3</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_HATSHEPSUT_2</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_ISABELLA_9</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_CATHERINE_03</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_HATSHEPSUT_02</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_ISABELLA_09</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_ISABELLA_22</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_ISABELLA_12</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_ISABELLA_13</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
@@ -201,10 +201,10 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 				<Leader><LeaderName>LEADER_ISABELLA_16</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_ISABELLA_18</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_ISABELLA_19</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_ATOTOZTLI_3</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_ATOTOZTLI_03</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_DIDO_12</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_DIDO_13</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_NEFERTITI_3</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_NEFERTITI_03</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 			</Leaders>
 		</CivilizationInfo>
 		<CivilizationInfo>
@@ -215,9 +215,9 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 				<Leader><LeaderName>LEADER_GLORIANA</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_SNOW_QUEEN</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_ZELDA</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_ZELDA_2</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_ZELDA_3</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_GLORIANA_2</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_ZELDA_02</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_ZELDA_03</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_GLORIANA_02</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 			</Leaders>
 		</CivilizationInfo>
 		<CivilizationInfo>

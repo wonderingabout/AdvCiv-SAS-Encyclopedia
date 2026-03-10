@@ -23,7 +23,7 @@ For License and Reuse, see [License and reuse](/README.md#license-and-reuse).
 ## Menu
 
 [New Leaderheads (AdvCiv-SAS-NIF-Gallery original) (e.g., Atossa, Roshanak)](/README.md#new-leaderheads-advciv-sas-nif-gallery-original-eg-atossa-roshanak)  
-[Hidden NIF variants (e.g., Maria 3, Quilago 2, Bunny Girl 3, Victoria 11 (The Great Leader), Dido 13 (Salamasina))](/README.md#hidden-nif-variants-eg-maria-3-quilago-2-bunny-girl-3-victoria-11-the-great-leader-dido-13-salamasina)  
+[Hidden NIF variants (e.g., Maria 03, Quilago 02, Bunny Girl 03, Victoria 11 (The Great Leader), Dido 13 (Salamasina))](/README.md#hidden-nif-variants-eg-maria-3-quilago-2-bunny-girl-3-victoria-11-the-great-leader-dido-13-salamasina)  
 [Example of minimal compact XML info](/README.md#example-of-minimal-compact-xml-info)  
 [Cleanup](/README.md#cleanup)  
 &emsp;[Wiztree (Cleanup)](/README.md#wiztree-cleanup)  
@@ -62,7 +62,7 @@ AdvCiv-SAS-NIF-Gallery original Leaderhead by wonderingabout and GPT-5.4-Thinkin
 <img src="./_1_AdvCiv-SAS/Images/sevopedia/0.101_sevopedia_leader_roshanak.JPG" alt="0.101_sevopedia_leader_roshanak.JPG" width="150"></img>
 <img src="./_1_AdvCiv-SAS/Images/sevopedia/roshanak_192px_cropped.png" alt="roshanak_192px_cropped.png" width="150"></img>
 
-## Hidden NIF variants (e.g., Maria 3, Quilago 2, Bunny Girl 3, Victoria 11 (The Great Leader), Dido 13 (Salamasina))
+## Hidden NIF variants (e.g., Maria 03, Quilago 02, Bunny Girl 03, Victoria 11 (The Great Leader), Dido 13 (Salamasina))
 
 As part of skimming through NIF files, we notably found unknown NIF variants that we customized a bit (e.g. background, button) if needed.
 
@@ -78,21 +78,21 @@ We also modified her: replaced the green ribbon with a darker more fitting with 
 <img src="./_1_AdvCiv-SAS/Images/sevopedia/0.200_sevopedia_leader_maria_3 (2).JPG" alt="0.200_sevopedia_leader_maria_3 (2).JPG" width="150"></img>
 <img src="./_1_AdvCiv-SAS/Images/sevopedia/0.200_sevopedia_leader_maria_3 (3).JPG" alt="0.200_sevopedia_leader_maria_3 (3).JPG" width="150"></img>
 
-### Quilago 2
+### Quilago 02
 
-Another example is Quilago_2 that uses the `isabella_noshader.nif` that was provided in the Quilago CFC download but not showcased on CFC so hard to know it existed. The identity of Quilago_2 is dinstinct from Quilago and seems to be working fine, so worth adding.
+Another example is Quilago_02 that uses the `isabella_noshader.nif` that was provided in the Quilago CFC download but not showcased on CFC so hard to know it existed. The identity of Quilago_02 is dinstinct from Quilago and seems to be working fine, so worth adding.
 
-We changed the background to move away from her Mesoamerican background that doesn't fit the clear Asian almost Chinese looking make-up, so an eastern leaning background (from Shin Sawbu 3) with the golden building background better fits this her golden attire + asian temple + meditation vibe and allows to show her as a new leaderhead.
+We changed the background to move away from her Mesoamerican background that doesn't fit the clear Asian almost Chinese looking make-up, so an eastern leaning background (from Shin Sawbu 03) with the golden building background better fits this her golden attire + asian temple + meditation vibe and allows to show her as a new leaderhead.
 
 <img src="./_1_AdvCiv-SAS/Images/sevopedia/0.201_sevopedia_leader_quilago_2 (1).JPG" alt="0.201_sevopedia_leader_quilago_2 (1).JPG" width="150"></img>
 <img src="./_1_AdvCiv-SAS/Images/sevopedia/0.201_sevopedia_leader_quilago_2 (2).JPG" alt="0.201_sevopedia_leader_quilago_2 (2).JPG" width="150"></img>
 <img src="./_1_AdvCiv-SAS/Images/sevopedia/0.201_sevopedia_leader_quilago_2 (3).JPG" alt="0.201_sevopedia_leader_quilago_2 (3).JPG" width="150"></img>
 
-### Bunny Girl 3
+### Bunny Girl 03
 
 Another example is Bunny Girl. To extend on the original blonde Bunny Girl and the rare Brunette variant not available in CFC downloads but instead found on a CFC thread as an attachment, we used `catherine_noshader.nif` instead, and as a result we get a new green clothed bunny girl design, with hair that goes closer to original blonde of the base Bunny Girl, plus the eyes are darker too.
 
-Also, as part of this rework, updated some of the Bunny Girl backgrounds for better fitting ones (Bunny Girl 3 (Green) needing a different background to match its color and more eccentric theme and darker, more intense lips, so Casino theme seems to fit well, while Bunny Girl 2 (Brunette) has a more classy feel and darker contrast that looks like it fits better with a Lounge).
+Also, as part of this rework, updated some of the Bunny Girl backgrounds for better fitting ones (Bunny Girl 03 (Green) needing a different background to match its color and more eccentric theme and darker, more intense lips, so Casino theme seems to fit well, while Bunny Girl 02 (Brunette) has a more classy feel and darker contrast that looks like it fits better with a Lounge).
 
 So all in all a new variant worth adding.
 
@@ -109,7 +109,7 @@ Another example is a very rare nif variant that was stored in a mod's folder and
 
 ### Dido 13 (Salamasina)
 
-Another example is another very rare nif, not strictly a variant since there is no other main nif for Dido 13, but it seems clearly derived from Dido 2so fits as a variant.
+Another example is another very rare nif, not strictly a variant since there is no other main nif for Dido 13, but it seems clearly derived from Dido 2 so fits as a variant.
 
 It features a rare tropical black/polynesian vibe that is attractive. Definitely worth adding.
 

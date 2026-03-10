@@ -53,144 +53,144 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 
 - Base Civ4 (Advciv-SAS): Boudica 0, Catherine 0, Elizabeth 0, Hatshepsut 0, Isabella 0, Victoria 0
 - AdvCiv-SAS: Grace O'Malley
-- History Rewritten: Amanirena, Aminah, Awiakta, Mavia (Bilqis), Dido, Zenobia 3 (Dihya), Isabella 1, Jingu, Mangammal, Atotoztli 2 (Nzinga), Salamasina, Wu Zetian, Lieu-Ye (Black Hair), Nanye-hi (Tomyris), Trung Sisters, Xoc, Catherine 1 (Yekaterina)
-- RFC Dawn of Civilization: Benazir Bhutto, Isabella 2, Maria, Maria 2 (no ribbon) (further modified in AdvCiv-SAS-NIF-Gallery)
+- History Rewritten: Amanirena, Aminah, Awiakta, Mavia (Bilqis), Dido, Zenobia 03 (Dihya), Isabella 01, Jingu, Mangammal, Atotoztli 02 (Nzinga), Salamasina, Wu Zetian, Lieu-Ye (Black Hair), Nanye-hi (Tomyris), Trung Sisters, Xoc, Catherine 01 (Yekaterina)
+- RFC Dawn of Civilization: Benazir Bhutto, Isabella 02, Maria, Maria 02 (no ribbon) (further modified in AdvCiv-SAS-NIF-Gallery)
 - Beyond the Game 2.43: Maria Theresa, Marpesia, Penthesilea, Theodora
-- Base 6.4: Jacquotte Delahaye, Atotoztli, Mavia 2, Cixi, Cleopatra, Elizabeth 8 (Wilhelmina)
+- Base 6.4: Jacquotte Delahaye, Atotoztli, Mavia 02, Cixi, Cleopatra, Elizabeth 08 (Wilhelmina)
 - Future Mod: Blonde Girl (Sarah Fedler)
-- Destiny: Cleopatra 2 (Darker 01), Joan of Arc, Joan of Arc 2 (elizabeth_noshader.nif), Mandukhai Khatun, Nefertiti, Nefertiti 3 (isabella.nif), Jingu 3
-- Rise of Mankind 2.91: Cleopatra 6, Hatshepsut 3 (Cleopatra 6 (hatshepsut_noshader.nif)), Dido 2, Joan of Arc 3
-- Middle-earth: Elizabeth 6 (Galadriel), Elizabeth 7 (Galadriel (elizabeth.nif))
-- Civ Gold 5.2: Elizabeth 1 (Michaelle Jean), Elizabeth 2 (Makeda), Elizabeth 3 (Teuta), Anne Bonny 3 (Helen Clark), Isabella 3 (Margrete I), Isabella 4 (Trung Trac), Salamasina 2, Salamasina 8, Catherine 4 (Thanadelthur), Victoria 1 (Benazir Bhutto), Victoria 2 (Hasina), Catherine 5 (Yulia Tymoshenko), Zenobia
+- Destiny: Cleopatra 02 (Darker 01), Joan of Arc, Joan of Arc 02 (elizabeth_noshader.nif), Mandukhai Khatun, Nefertiti, Nefertiti 03 (isabella.nif), Jingu 03
+- Rise of Mankind 2.91: Cleopatra 06, Hatshepsut 03 (Cleopatra 06 (hatshepsut_noshader.nif)), Dido 02, Joan of Arc 03
+- Middle-earth: Elizabeth 06 (Galadriel), Elizabeth 07 (Galadriel (elizabeth.nif))
+- Civ Gold 5.2: Elizabeth 01 (Michaelle Jean), Elizabeth 02 (Makeda), Elizabeth 03 (Teuta), Anne Bonny 03 (Helen Clark), Isabella 03 (Margrete I), Isabella 04 (Trung Trac), Salamasina 02, Salamasina 08, Catherine 04 (Thanadelthur), Victoria 01 (Benazir Bhutto), Victoria 02 (Hasina), Catherine 05 (Yulia Tymoshenko), Zenobia
 - Fictionalization beta: Sheherazade, Wu Qinghua
-- AdvCiv Plus: Ana Nzinga, Boudica 1, Isabella 5, Tamar, Victoria 3 (Maria Theresa)
-- PSYX's Modern world 4: Catherine 2 (Mary Stuart), Victoria 5 (Maria Theresa 3)
-- Vincentz Infinite Projects (VIP): Nanye-hi 2 (nif)
-- The Sword of Islam: Isabella 6 (Tamar)
-- RFC Europe 1.5: Isabella 7 (Margrete 2), Theophanu
+- AdvCiv Plus: Ana Nzinga, Boudica 01, Isabella 05, Tamar, Victoria 03 (Maria Theresa)
+- PSYX's Modern world 4: Catherine 02 (Mary Stuart), Victoria 05 (Maria Theresa 03)
+- Vincentz Infinite Projects (VIP): Nanye-hi 02 (nif)
+- The Sword of Islam: Isabella 06 (Tamar)
+- RFC Europe 1.5: Isabella 07 (Margrete 02), Theophanu
 - RFC Europe 1.5 + CIV IV RFC Europe (Unofficial Leaderhead Patches): Marfa Boretskaya
-- Historia Vincit: Cleopatra 7
-- Total War 1.3: Cleopatra 8, Isabella 8 (Puduhepa), Victoria 4 (Maria Theresa 2)
-- thecowwarrior's Pirates Mod: Anne Bonny, Jacquotte Delahaye 2 (no eyepatch)
+- Historia Vincit: Cleopatra 07
+- Total War 1.3: Cleopatra 08, Isabella 08 (Puduhepa), Victoria 04 (Maria Theresa 02)
+- thecowwarrior's Pirates Mod: Anne Bonny, Jacquotte Delahaye 02 (no eyepatch)
 - thecowwarrior's Variety Mod v1.99r3: Aelia Pulcheria, Ishtar
-- Thomas' War v3.5a: Elizabeth 9 (Mary Stuart), Nefertiti 2, Victoria 6 (Maria Theresa 4)
-- Fallout-TTW: Hatshepsut 1 (Tandi Williams (Old) (NoShaderNIF)), Tandi Williams
-- Diversica 1.95: Aminah 3 (Prisbit), Isabella 21 (Theodora 2)
-- Dawn of a New Era 6.00: Nanye-hi 3 (Running Eagle)
-- Fury Road v11: Anne Bonny 2 (Martha (Aelwyn)), Blonde Girl 2 (Debbie), Joan of Arc 4 (Debbie (Old)), Salamasina 3 (Brandi)
-- MarnzMod 1.8c: Catherine 3 (Mary Stuart 2 (NoShaderNIF)), Hatshepsut 2 (Salamasina), Isabella 9 (Theodora), Isabella 10 (Dido), Joan of Arc 4 (btn_lh_france_joanofarc.dds, different background, not currently used)
-- Quot Capita Majesty: Atotoztli 3 (atotoztli.nif), Dido 12 (almost naked), Nefertiti (Nefertiti.dds btn), Nefertiti 3 (Nefertiti.dds btn)
-- 2100 mod: Victoria 8 (The Great Leader (victoria_noshader.nif)), Victoria 9 (The Great Leader (victoria (2).nif)), Victoria 10 (The Great Leader (victoria2.nif)), Victoria 11 (The Great Leader (victoria.nif))
-- Facing Terrorism: Miriam Godwinson 2 (Gillard), Miriam Godwinson 3 (Merkel)
+- Thomas' War v3.5a: Elizabeth 09 (Mary Stuart), Nefertiti 02, Victoria 06 (Maria Theresa 04)
+- Fallout-TTW: Hatshepsut 01 (Tandi Williams (Old) (NoShaderNIF)), Tandi Williams
+- Diversica 1.95: Aminah 03 (Prisbit), Isabella 21 (Theodora 02)
+- Dawn of a New Era 6.00: Nanye-hi 03 (Running Eagle)
+- Fury Road v11: Anne Bonny 02 (Martha (Aelwyn)), Blonde Girl 02 (Debbie), Joan of Arc 04 (Debbie (Old)), Salamasina 03 (Brandi)
+- MarnzMod 1.8c: Catherine 03 (Mary Stuart 02 (NoShaderNIF)), Hatshepsut 02 (Salamasina), Isabella 09 (Theodora), Isabella 10 (Dido), Joan of Arc 04 (btn_lh_france_joanofarc.dds, different background, not currently used)
+- Quot Capita Majesty: Atotoztli 03 (atotoztli.nif), Dido 12 (almost naked), Nefertiti (Nefertiti.dds btn), Nefertiti 03 (Nefertiti.dds btn)
+- 2100 mod: Victoria 08 (The Great Leader (victoria_noshader.nif)), Victoria 09 (The Great Leader (victoria (2).nif)), Victoria 10 (The Great Leader (victoria2.nif)), Victoria 11 (The Great Leader (victoria.nif))
+- Facing Terrorism: Miriam Godwinson 02 (Gillard), Miriam Godwinson 03 (Merkel)
 - TAM BTS Animated LeaderHeads Addon: Isabella 13 (Semiramis)
 - Powers That Be: Dido 13 (Salamasina) (note: .psd was removed in our mod so Leaderhead remains lightweight, available in the original source)
 - SevoMod 3.0: Isabella 16 (Boadicea), Isabella 17 (Maria), Isabella 19 (Anne (isabella_noshader.nif))
 - WoC 1.2 (WoC_Full-v1_20-setup.exe): Isabella 18 (Dido)
-- Amra v210 (Amra v210.7z): Elizabeth 5 (Zenobia)
+- Amra v210 (Amra v210.7z): Elizabeth 05 (Zenobia)
 
 #### Skipped (Modpacks)
 
-- Quot Capita v8.1: Nefertiti — similar to existing Nefertiti variants, skipped (not 100% sure i actually did it, to recheck ideally)
-- 2100 mod: victoria4.nif — similar to existing variants, doesn't render well; huayna1_capac24.nif — error
+- Quot Capita v8.1: Nefertiti - similar to existing Nefertiti variants, skipped (not 100% sure i actually did it, to recheck ideally)
+- 2100 mod: victoria4.nif - similar to existing variants, doesn't render well; huayna1_capac24.nif - error
 
 #### Female Non-Human (Modpacks)
 
 - Fictionalization beta: Gloriana, Snow Queen
-- Middle-earth: Zelda 2 (Arwen)
+- Middle-earth: Zelda 02 (Arwen)
 
 ### CFC
 
 #### Female Human (CFC)
 
-- SaibotLieh: Nanye-hi 2 (button) (https://forums.civfanatics.com/resources/lh-nanye-hi.16341/)
-- ambrox62: Dido 6, Dido 7, Dido 8 (dido_izzy.nif), Dido 9 (dido_eliz.nif) (https://forums.civfanatics.com/threads/shaded-lh-dido.247286/page-3)
-- ambrox62: Dido 3 (Red), Dido 4 (Gold), Dido 5 (White) (https://forums.civfanatics.com/threads/lh-dido-v-2.270476/)
+- SaibotLieh: Nanye-hi 02 (button) (https://forums.civfanatics.com/resources/lh-nanye-hi.16341/)
+- ambrox62: Dido 06, Dido 07, Dido 08 (dido_izzy.nif), Dido 09 (dido_eliz.nif) (https://forums.civfanatics.com/threads/shaded-lh-dido.247286/page-3)
+- ambrox62: Dido 03 (Red), Dido 04 (Gold), Dido 05 (White) (https://forums.civfanatics.com/threads/lh-dido-v-2.270476/)
 - SaibotLieh: Ariadne (https://forums.civfanatics.com/resources/lh-ariadne.30092/)
 - SaibotLieh: Himiko (https://forums.civfanatics.com/resources/lh-himiko.29449/)
-- Mr-Goriyaki: Salamasina 5 (Lady of Cao) (https://forums.civfanatics.com/resources/lady-of-cao-lh.28470/)
-- Sword_Of_Geddon: Mandukhai Khatun 3 (Purea) (https://forums.civfanatics.com/resources/purea-of-tahiti.28684/)
+- Mr-Goriyaki: Salamasina 05 (Lady of Cao) (https://forums.civfanatics.com/resources/lady-of-cao-lh.28470/)
+- Sword_Of_Geddon: Mandukhai Khatun 03 (Purea) (https://forums.civfanatics.com/resources/purea-of-tahiti.28684/)
 - SaibotLieh: Brunhild (https://forums.civfanatics.com/resources/lh-brunhild.22615/)
-- Kathy: Evita Peron, Evita Peron 2 (catherine_noshader.nif) (https://forums.civfanatics.com/resources/evita-peron.22900/)
-- il marchese: Ana Nzinga 2 (https://forums.civfanatics.com/resources/lh-nzinga-of-ndongo-and-matamba.21128/)
+- Kathy: Evita Peron, Evita Peron 02 (catherine_noshader.nif) (https://forums.civfanatics.com/resources/evita-peron.22900/)
+- il marchese: Ana Nzinga 02 (https://forums.civfanatics.com/resources/lh-nzinga-of-ndongo-and-matamba.21128/)
 - SaibotLieh: Helen of Troy (https://forums.civfanatics.com/resources/lh-helen-of-troy.20392/)
 - SaibotLieh: Ulpia Severina (https://forums.civfanatics.com/resources/lh-ulpia-severina.20393/)
-- SaibotLieh: Ulpia Severina 2 (No Laurel) (request by Kathy) (https://forums.civfanatics.com/threads/saibotliehs-leaderhead-collection.378346/page-24)
+- SaibotLieh: Ulpia Severina 02 (No Laurel) (request by Kathy) (https://forums.civfanatics.com/threads/saibotliehs-leaderhead-collection.378346/page-24)
 - SaibotLieh: Cockacoeske (https://forums.civfanatics.com/resources/lh-cockacoeske.20004/)
 - Civciv5: Salamasina 11 (Generic Asian Empress) (https://forums.civfanatics.com/resources/wu-zetian-or-generic-chinese-empress.19642/)
-- Civciv5: Salamasina 9 (Khri ma lod), Salamasina 10 (Khri ma lod 2) (https://forums.civfanatics.com/resources/khri-ma-lod.19088/)
+- Civciv5: Salamasina 09 (Khri ma lod), Salamasina 10 (Khri ma lod 02) (https://forums.civfanatics.com/resources/khri-ma-lod.19088/)
 - Civciv5: Salamasina 12 (Ly Chieu Hoang) (https://forums.civfanatics.com/resources/ly-chieu-hoang.19641/)
 - Civciv5: Nur Jahan (https://forums.civfanatics.com/resources/nur-jahan.19637/)
 - Civciv5: Pope Joan (https://forums.civfanatics.com/resources/pope-joan.19625/)
-- Civciv5: Salamasina 4 (Ana Nzinga) (https://forums.civfanatics.com/resources/ana-nzinga.19636/)
-- Civciv5: Tamar 2 (https://forums.civfanatics.com/resources/tamar.19638/)
-- melcher kürzer: Maria Eleonora (https://forums.civfanatics.com/resources/lh-mary-queen-of-hungary.17884/)
+- Civciv5: Salamasina 04 (Ana Nzinga) (https://forums.civfanatics.com/resources/ana-nzinga.19636/)
+- Civciv5: Tamar 02 (https://forums.civfanatics.com/resources/tamar.19638/)
+- melcher kÃ¼rzer: Maria Eleonora (https://forums.civfanatics.com/resources/lh-mary-queen-of-hungary.17884/)
 - SaibotLieh: Miranda Lawson (https://forums.civfanatics.com/resources/lh-miranda-lawson.17911/)
-- Civciv5: Mandukhai Khatun 2 (Shajar al-Durr) (https://forums.civfanatics.com/resources/shajar-al-durr.19086/)
-- SaibotLieh: Lieu-Ye 2 (Brown Hair) (https://forums.civfanatics.com/resources/lh-lieu-ye.17799/)
-- SaibotLieh: Quilago, Quilago 2 (isabella_noshader.nif, background from Hatshepsut 4) (https://forums.civfanatics.com/resources/lh-quilago.17685/)
-- Civciv5: Jingu 2 (Seondeok) (https://forums.civfanatics.com/resources/queen-seondeok-of-silla.17724/)
-- Civciv5: Salamasina 7 (Shin Sawbu) (https://forums.civfanatics.com/resources/shin-sawbu.18142/)
-- SaibotLieh: Evita Peron 2 (Bunny Girl) (https://forums.civfanatics.com/resources/lh-bunny-girl.16973/)
-- SaibotLieh (Lemon Merchant's post): Evita Peron 3 (Bunny Girl 2 (Brunette), lounge background by <a href="https://pixabay.com/users/stokpic-692575/?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=601303">stokpic</a> from <a href="https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=601303">Pixabay</a> (https://pixabay.com/photos/bar-interior-luxury-design-601303/)), Evita Peron 4 (Bunny Girl 3 (catherine_noshader.nif), casino background by <a href="https://pixabay.com/users/theandrasbarta-2004841/?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=1264078">TheAndrasBarta</a> from <a href="https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=1264078">Pixabay</a> (https://pixabay.com/photos/roulette-casino-black-red-dealer-1264078/)) (https://forums.civfanatics.com/threads/saibotliehs-leaderhead-collection.378346/page-13)
-- melcher kürzer: Maria Eleonora 2 (https://forums.civfanatics.com/resources/lh-maria-elenora.16487/)
+- Civciv5: Mandukhai Khatun 02 (Shajar al-Durr) (https://forums.civfanatics.com/resources/shajar-al-durr.19086/)
+- SaibotLieh: Lieu-Ye 02 (Brown Hair) (https://forums.civfanatics.com/resources/lh-lieu-ye.17799/)
+- SaibotLieh: Quilago, Quilago 02 (isabella_noshader.nif, background from Hatshepsut 04) (https://forums.civfanatics.com/resources/lh-quilago.17685/)
+- Civciv5: Jingu 02 (Seondeok) (https://forums.civfanatics.com/resources/queen-seondeok-of-silla.17724/)
+- Civciv5: Salamasina 07 (Shin Sawbu) (https://forums.civfanatics.com/resources/shin-sawbu.18142/)
+- SaibotLieh: Evita Peron 02 (Bunny Girl) (https://forums.civfanatics.com/resources/lh-bunny-girl.16973/)
+- SaibotLieh (Lemon Merchant's post): Evita Peron 03 (Bunny Girl 02 (Brunette), lounge background by <a href="https://pixabay.com/users/stokpic-692575/?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=601303">stokpic</a> from <a href="https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=601303">Pixabay</a> (https://pixabay.com/photos/bar-interior-luxury-design-601303/)), Evita Peron 04 (Bunny Girl 03 (catherine_noshader.nif), casino background by <a href="https://pixabay.com/users/theandrasbarta-2004841/?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=1264078">TheAndrasBarta</a> from <a href="https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=1264078">Pixabay</a> (https://pixabay.com/photos/roulette-casino-black-red-dealer-1264078/)) (https://forums.civfanatics.com/threads/saibotliehs-leaderhead-collection.378346/page-13)
+- melcher kÃ¼rzer: Maria Eleonora 02 (https://forums.civfanatics.com/resources/lh-maria-elenora.16487/)
 - SaibotLieh: Miss Santa (https://forums.civfanatics.com/resources/lh-miss-santa.16228/)
-- smeagolheart: Gunnhild, Maria 3 (Gunnhild (elizabeth_noshader.nif), background from Blond Girl 2 (Debbie)) (https://forums.civfanatics.com/resources/lh-gunnhild.16057/)
+- smeagolheart: Gunnhild, Maria 03 (Gunnhild (elizabeth_noshader.nif), background from Blond Girl 02 (Debbie)) (https://forums.civfanatics.com/resources/lh-gunnhild.16057/)
 - smeagolheart: Dido 10 (Hippolyta), Dido 11 (Hippolyta - Silver Hair variant from included DidoHairSilver.dds) (https://forums.civfanatics.com/resources/lh-hippolyta.16046/)
 - SaibotLieh: Tali'Zorah (https://forums.civfanatics.com/resources/lh-talizorah.15125/)
 - Axel: Macha Mong Ruad (https://forums.civfanatics.com/resources/lh-bgs-macha-mong-ruad-queen-of-gaelach.15106/)
-- Axel: Zenobia 2 (Kug-Bau) (https://forums.civfanatics.com/resources/bgs-kug-bau-queen-of-sumer.15096/)
-- SaibotLieh: Female Ranger, Female Ranger 2 (Revealing), Female Ranger 3 (Non-Shaded) (https://forums.civfanatics.com/resources/lh-female-ranger.15064/)
+- Axel: Zenobia 02 (Kug-Bau) (https://forums.civfanatics.com/resources/bgs-kug-bau-queen-of-sumer.15096/)
+- SaibotLieh: Female Ranger, Female Ranger 02 (Revealing), Female Ranger 03 (Non-Shaded) (https://forums.civfanatics.com/resources/lh-female-ranger.15064/)
 - Wonderblunder: Greek Queen (https://forums.civfanatics.com/resources/lh-greek-queen-v1.15051/)
-- kid anubis: Freydís Eiríksdóttir, Victoria 7 (Freydís Eiríksdóttir (victoria.nif)) (https://forums.civfanatics.com/resources/lh-freyd%C3%ADs-eir%C3%ADksd%C3%B3ttir-female-viking.14925/)
-- Krieger66: Boudica 2 (https://forums.civfanatics.com/resources/better-boudica-maybe.14849/)
+- kid anubis: FreydÃ­s EirÃ­ksdÃ³ttir, Victoria 07 (FreydÃ­s EirÃ­ksdÃ³ttir (victoria.nif)) (https://forums.civfanatics.com/resources/lh-freyd%C3%ADs-eir%C3%ADksd%C3%B3ttir-female-viking.14925/)
+- Krieger66: Boudica 02 (https://forums.civfanatics.com/resources/better-boudica-maybe.14849/)
 - Spillsandstains: Veleta (https://forums.civfanatics.com/resources/veleta.14841/)
 - Civciv5 (SaibotLieh fix not applied): Isabella 11 (Indian Empress) (https://forums.civfanatics.com/threads/saibotliehs-leaderhead-collection.378346/page-22)
-- SaibotLieh (request by Civciv5): Cleopatra 3 (Darker 02), Cleopatra 4 (Darker 03), Cleopatra 5 (Darker 04) (https://forums.civfanatics.com/threads/saibotliehs-leaderhead-collection.378346/page-19)
-- SaibotLieh (sun78945612's question): Cockacoeske 2 (No Warpaint) (https://forums.civfanatics.com/threads/saibotliehs-leaderhead-collection.378346/page-18)
-- SaibotLieh (Lemon Merchant's question): Grace O'Malley 2 (https://forums.civfanatics.com/threads/saibotliehs-leaderhead-collection.378346/page-17)
-- Ekmek: Benazir Bhutto 2 (Glasses) (https://forums.civfanatics.com/threads/ekmeks-civ4-leaderhead-gallery.277514/page-84)
+- SaibotLieh (request by Civciv5): Cleopatra 03 (Darker 02), Cleopatra 04 (Darker 03), Cleopatra 05 (Darker 04) (https://forums.civfanatics.com/threads/saibotliehs-leaderhead-collection.378346/page-19)
+- SaibotLieh (sun78945612's question): Cockacoeske 02 (No Warpaint) (https://forums.civfanatics.com/threads/saibotliehs-leaderhead-collection.378346/page-18)
+- SaibotLieh (Lemon Merchant's question): Grace O'Malley 02 (https://forums.civfanatics.com/threads/saibotliehs-leaderhead-collection.378346/page-17)
+- Ekmek: Benazir Bhutto 02 (Glasses) (https://forums.civfanatics.com/threads/ekmeks-civ4-leaderhead-gallery.277514/page-84)
 - cfkane: Deirdre Skye (https://forums.civfanatics.com/resources/lh-deirdre-skye.14819/)
 - cfkane: Corazon Santiago (https://forums.civfanatics.com/resources/lh-corazon-santiago.14816/)
 - cfkane: Miriam Godwinson (https://forums.civfanatics.com/resources/lh-miriam-godwinson.14815/)
-- kid anubis: Sheherazade 2 (Valeria) (https://forums.civfanatics.com/resources/valeria.14205/)
-- IgorS: Salamasina 6 (Xoc) (https://forums.civfanatics.com/resources/lh-lady-xoc.14181/)
-- ambrox62: Elizabeth 4 (Teuta 2) (https://forums.civfanatics.com/resources/lh-teuta-illyrian-queen-from-231-to-228-bc.14033/)
-- Ekmek: Aminah 2 (Amina of Zazzua) (https://forums.civfanatics.com/resources/lh-amina-of-zazzua.11043/)
-- cfkane: Gloriana 2 (https://forums.civfanatics.com/resources/lh-gloriana-the-faerie-queene.11024/)
-- Ekmek: Cleopatra 9 (https://forums.civfanatics.com/resources/lh-cleopatra.8664/)
+- kid anubis: Sheherazade 02 (Valeria) (https://forums.civfanatics.com/resources/valeria.14205/)
+- IgorS: Salamasina 06 (Xoc) (https://forums.civfanatics.com/resources/lh-lady-xoc.14181/)
+- ambrox62: Elizabeth 04 (Teuta 02) (https://forums.civfanatics.com/resources/lh-teuta-illyrian-queen-from-231-to-228-bc.14033/)
+- Ekmek: Aminah 02 (Amina of Zazzua) (https://forums.civfanatics.com/resources/lh-amina-of-zazzua.11043/)
+- cfkane: Gloriana 02 (https://forums.civfanatics.com/resources/lh-gloriana-the-faerie-queene.11024/)
+- Ekmek: Cleopatra 09 (https://forums.civfanatics.com/resources/lh-cleopatra.8664/)
 - GarretSidzaka: Isabella 20 (Teuta) (https://forums.civfanatics.com/resources/queen-teuta-of-illyria.7776/)
-- Refar: Fury Road Aelwyn — Anne Bonny 2 (Martha (Aelwyn))'s Aelwyn_Button.dds, Readme.txt (and Aelwyn_Picture.jpg) (https://forums.civfanatics.com/resources/fury-road-aelwyn.10100/)
-- esnaz: Isabella 22 (Theodora 3) (https://forums.civfanatics.com/resources/bts-empress-theodora.6717/)
+- Refar: Fury Road Aelwyn - Anne Bonny 02 (Martha (Aelwyn))'s Aelwyn_Button.dds, Readme.txt (and Aelwyn_Picture.jpg) (https://forums.civfanatics.com/resources/fury-road-aelwyn.10100/)
+- esnaz: Isabella 22 (Theodora 03) (https://forums.civfanatics.com/resources/bts-empress-theodora.6717/)
 - GarretSidzaka: Isabella 12 (No Crown) (https://forums.civfanatics.com/resources/no-crown-izzy.6640/)
 - esnaz: Isabella 14 (Celtic Boudica), Isabella 15 (Celtic Boudica (isabella_noshader.nif)) (https://forums.civfanatics.com/resources/boudica.3834/)
 
 #### Female Non-Human (CFC)
 
 - SaibotLieh: Zelda (https://forums.civfanatics.com/resources/lh-zelda.19697/)
-- SaibotLieh (The Capo and Kathy's posts): Zelda 3 (Human Ears) (https://forums.civfanatics.com/threads/saibotliehs-leaderhead-collection.378346/page-14)
+- SaibotLieh (The Capo and Kathy's posts): Zelda 03 (Human Ears) (https://forums.civfanatics.com/threads/saibotliehs-leaderhead-collection.378346/page-14)
 
 #### Skipped (CFC)
 
 Among those we skipped, notably there is:
 
-- SaibotLieh: Mundakhai.zip, Helen.zip, Ulipa.zip — skipped, likely duplicate (https://forums.civfanatics.com/threads/saibotliehs-leaderhead-collection.378346/page-16)
-- SaibotLieh: Cleo.zip — skipped, likely doesn't work (https://forums.civfanatics.com/threads/saibotliehs-leaderhead-collection.378346/page-16)
-- SaibotLieh: LieuYe_blackhair.zip — likely duplicate, plus can't make it work easily enough (https://forums.civfanatics.com/threads/saibotliehs-leaderhead-collection.378346/page-10)
-- Ekmek: Wu v2 — likely duplicate (https://forums.civfanatics.com/resources/lh-wu-v2-civ4bts.14803/)
-- Ekmek: Atototzli v2 — likely duplicate (https://forums.civfanatics.com/resources/lh-atototzli-v2-civ4.14384/)
-- The Capo: Salamasina (v1) — likely duplicate (https://forums.civfanatics.com/resources/lh-salamasina-v1.14048/)
-- cfkane: Gloriana v.2 — likely duplicate (https://forums.civfanatics.com/resources/lh-gloriana-v-2.13774/)
-- Ekmek: Jingu of Japan v3 — likely duplicate (https://forums.civfanatics.com/resources/lh-jingu-of-japan-v3.13004/)
-- C.Roland: Blond Girl — likely duplicate (https://forums.civfanatics.com/resources/blond-girl.11265/)
-- Ekmek: Aminah — likely duplicate (https://forums.civfanatics.com/resources/lh-aminah.10726/)
-- Ekmek: Zenobia v2 — likely duplicate (https://forums.civfanatics.com/resources/lh-zenobia-v2.9979/)
-- mourndraken: Theodora of Byzantium — likely duplicate (https://forums.civfanatics.com/resources/theodora-of-byzantium.9055/)
-- Zerver: Shaherezade Final — likely duplicate (https://forums.civfanatics.com/resources/shaherezade-final.8696/)
+- SaibotLieh: Mundakhai.zip, Helen.zip, Ulipa.zip - skipped, likely duplicate (https://forums.civfanatics.com/threads/saibotliehs-leaderhead-collection.378346/page-16)
+- SaibotLieh: Cleo.zip - skipped, likely doesn't work (https://forums.civfanatics.com/threads/saibotliehs-leaderhead-collection.378346/page-16)
+- SaibotLieh: LieuYe_blackhair.zip - likely duplicate, plus can't make it work easily enough (https://forums.civfanatics.com/threads/saibotliehs-leaderhead-collection.378346/page-10)
+- Ekmek: Wu v2 - likely duplicate (https://forums.civfanatics.com/resources/lh-wu-v2-civ4bts.14803/)
+- Ekmek: Atototzli v2 - likely duplicate (https://forums.civfanatics.com/resources/lh-atototzli-v2-civ4.14384/)
+- The Capo: Salamasina (v1) - likely duplicate (https://forums.civfanatics.com/resources/lh-salamasina-v1.14048/)
+- cfkane: Gloriana v.2 - likely duplicate (https://forums.civfanatics.com/resources/lh-gloriana-v-2.13774/)
+- Ekmek: Jingu of Japan v3 - likely duplicate (https://forums.civfanatics.com/resources/lh-jingu-of-japan-v3.13004/)
+- C.Roland: Blond Girl - likely duplicate (https://forums.civfanatics.com/resources/blond-girl.11265/)
+- Ekmek: Aminah - likely duplicate (https://forums.civfanatics.com/resources/lh-aminah.10726/)
+- Ekmek: Zenobia v2 - likely duplicate (https://forums.civfanatics.com/resources/lh-zenobia-v2.9979/)
+- mourndraken: Theodora of Byzantium - likely duplicate (https://forums.civfanatics.com/resources/theodora-of-byzantium.9055/)
+- Zerver: Shaherezade Final - likely duplicate (https://forums.civfanatics.com/resources/shaherezade-final.8696/)
 
 ### AdvCiv-SAS-NIF-Gallery original Leaderheads
 
-- wonderingabout & GPT-5.4-Thinking: Tamar 3 (Atossa). Merges Tamar and Isabella 0 (base Civ4). See also [Readme.md (Atossa)](/README.md#atossa).
-- wonderingabout & GPT-5.4-Thinking: Tamar 4 (Roshanak). Merges Tamar 3 (Atossa) and Isabella 12 (No Crown). See also [Readme.md (Roshanak)](/README.md#roshanak).
+- wonderingabout & GPT-5.4-Thinking: Tamar 03 (Atossa). Merges Tamar and Isabella 0 (base Civ4). See also [Readme.md (Atossa)](/README.md#atossa).
+- wonderingabout & GPT-5.4-Thinking: Tamar 04 (Roshanak). Merges Tamar 03 (Atossa) and Isabella 12 (No Crown). See also [Readme.md (Roshanak)](/README.md#roshanak).
 
 ## Credits
 
@@ -246,7 +246,7 @@ it too though unless i'm mistaken)
 - Microsoft Paint (i very much love this image editor)
 - Paint.NET for .dds conversion for example (see modding ressources for details)
 - removebg (free version limit is 500 x 500 as of now it seems, but more than enough for our 64 x 64 buttons in dds, recommended by chatgpt even though i knew about iti didnt know it was ai based for example as chatgpt told me if not mistaken/inaccurate thanks a lot for the info :) if i may say)
-- [Game Font Editor (v0.6) fir Civ4](https://forums.civfanatics.com/resources/game-font-editor-v0-6-for-civ-4.17276/), which is an amazing software (as recommended by gemini 3 pro thanks a lot), tremendously better than dxtbmp that was shit xd real bad, now it's so easy and effective and reliable with this thanks. Used to edit .tga files in [GameFont tga file(s) in the AdvCiv-SAS's Fonts folder](/Assets/Res/Fonts/).
+- [Game Font Editor (v0.6) fir Civ4](https://forums.civfanatics.com/resources/game-font-editor-v0-6-for-civ-4.17276/), which is an amazing software (as recommended by gemini 03 pro thanks a lot), tremendously better than dxtbmp that was shit xd real bad, now it's so easy and effective and reliable with this thanks. Used to edit .tga files in [GameFont tga file(s) in the AdvCiv-SAS's Fonts folder](/Assets/Res/Fonts/).
 - Dragon UnPACKer to view inside .fpk files and do operations such as file search or such if there operations if any other, for example finding all "tao" (search) assests in a base civ4 .fpk [(Google Drive preview example here)](https://drive.google.com/drive/folders/1lFqJ0LLa03a0oDTrJO9ahYigY6yjesTj?usp=sharing)
 - PakBuild (note: i don't know the details, but it seems not recommended to use PakBuild at all to pack (not unpack) your assets into .fpk files according to [this discussion at least in civfanatics forum](https://forums.civfanatics.com/threads/utilizing-pakbuild-for-faster-mod-load.679925/), note: be careful if unpacking all fpks in same folder may create errors or missing files)
 - NifSkope to read .nif files (see [Google Drive preview examples here](https://drive.google.com/drive/folders/1StBDHqJ6LfOf8yxFuRxfkYUuKu6QgZz2?usp=drive_link)) helps too even though some people seem to say it's not too good but seems to do the trick for civ4 at least for advciv-sas, for example viewing the HR mod's baalism religion .nif file which is the religion's movie file, or the shamanism one that we finally choose for paganism.
