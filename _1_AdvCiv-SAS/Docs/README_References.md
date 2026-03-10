@@ -51,7 +51,7 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 
 #### Female Human (Modpacks)
 
-- Base Civ4 (Advciv-SAS): Boudica 0, Catherine 0, Elizabeth 0, Hatshepsut 0, Isabella 0, Victoria 0
+- Base Civ4 (Advciv-SAS): Boudica 00, Catherine 00, Elizabeth 00, Hatshepsut 00, Isabella 00, Victoria 00
 - AdvCiv-SAS: Grace O'Malley
 - History Rewritten: Amanirena, Aminah, Awiakta, Mavia (Bilqis), Dido, Zenobia 03 (Dihya), Isabella 01, Jingu, Mangammal, Atotoztli 02 (Nzinga), Salamasina, Wu Zetian, Lieu-Ye (Black Hair), Nanye-hi (Tomyris), Trung Sisters, Xoc, Catherine 01 (Yekaterina)
 - RFC Dawn of Civilization: Benazir Bhutto, Isabella 02, Maria, Maria 02 (no ribbon) (further modified in AdvCiv-SAS-NIF-Gallery)
@@ -123,7 +123,7 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 - Civciv5: Pope Joan (https://forums.civfanatics.com/resources/pope-joan.19625/)
 - Civciv5: Salamasina 04 (Ana Nzinga) (https://forums.civfanatics.com/resources/ana-nzinga.19636/)
 - Civciv5: Tamar 02 (https://forums.civfanatics.com/resources/tamar.19638/)
-- melcher kÃ¼rzer: Maria Eleonora (https://forums.civfanatics.com/resources/lh-mary-queen-of-hungary.17884/)
+- melcher kÃƒÂ¼rzer: Maria Eleonora (https://forums.civfanatics.com/resources/lh-mary-queen-of-hungary.17884/)
 - SaibotLieh: Miranda Lawson (https://forums.civfanatics.com/resources/lh-miranda-lawson.17911/)
 - Civciv5: Mandukhai Khatun 02 (Shajar al-Durr) (https://forums.civfanatics.com/resources/shajar-al-durr.19086/)
 - SaibotLieh: Lieu-Ye 02 (Brown Hair) (https://forums.civfanatics.com/resources/lh-lieu-ye.17799/)
@@ -132,7 +132,7 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 - Civciv5: Salamasina 07 (Shin Sawbu) (https://forums.civfanatics.com/resources/shin-sawbu.18142/)
 - SaibotLieh: Evita Peron 02 (Bunny Girl) (https://forums.civfanatics.com/resources/lh-bunny-girl.16973/)
 - SaibotLieh (Lemon Merchant's post): Evita Peron 03 (Bunny Girl 02 (Brunette), lounge background by <a href="https://pixabay.com/users/stokpic-692575/?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=601303">stokpic</a> from <a href="https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=601303">Pixabay</a> (https://pixabay.com/photos/bar-interior-luxury-design-601303/)), Evita Peron 04 (Bunny Girl 03 (catherine_noshader.nif), casino background by <a href="https://pixabay.com/users/theandrasbarta-2004841/?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=1264078">TheAndrasBarta</a> from <a href="https://pixabay.com//?utm_source=link-attribution&utm_medium=referral&utm_campaign=image&utm_content=1264078">Pixabay</a> (https://pixabay.com/photos/roulette-casino-black-red-dealer-1264078/)) (https://forums.civfanatics.com/threads/saibotliehs-leaderhead-collection.378346/page-13)
-- melcher kÃ¼rzer: Maria Eleonora 02 (https://forums.civfanatics.com/resources/lh-maria-elenora.16487/)
+- melcher kÃƒÂ¼rzer: Maria Eleonora 02 (https://forums.civfanatics.com/resources/lh-maria-elenora.16487/)
 - SaibotLieh: Miss Santa (https://forums.civfanatics.com/resources/lh-miss-santa.16228/)
 - smeagolheart: Gunnhild, Maria 03 (Gunnhild (elizabeth_noshader.nif), background from Blond Girl 02 (Debbie)) (https://forums.civfanatics.com/resources/lh-gunnhild.16057/)
 - smeagolheart: Dido 10 (Hippolyta), Dido 11 (Hippolyta - Silver Hair variant from included DidoHairSilver.dds) (https://forums.civfanatics.com/resources/lh-hippolyta.16046/)
@@ -141,7 +141,7 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 - Axel: Zenobia 02 (Kug-Bau) (https://forums.civfanatics.com/resources/bgs-kug-bau-queen-of-sumer.15096/)
 - SaibotLieh: Female Ranger, Female Ranger 02 (Revealing), Female Ranger 03 (Non-Shaded) (https://forums.civfanatics.com/resources/lh-female-ranger.15064/)
 - Wonderblunder: Greek Queen (https://forums.civfanatics.com/resources/lh-greek-queen-v1.15051/)
-- kid anubis: FreydÃ­s EirÃ­ksdÃ³ttir, Victoria 07 (FreydÃ­s EirÃ­ksdÃ³ttir (victoria.nif)) (https://forums.civfanatics.com/resources/lh-freyd%C3%ADs-eir%C3%ADksd%C3%B3ttir-female-viking.14925/)
+- kid anubis: FreydÃƒÂ­s EirÃƒÂ­ksdÃƒÂ³ttir, Victoria 07 (FreydÃƒÂ­s EirÃƒÂ­ksdÃƒÂ³ttir (victoria.nif)) (https://forums.civfanatics.com/resources/lh-freyd%C3%ADs-eir%C3%ADksd%C3%B3ttir-female-viking.14925/)
 - Krieger66: Boudica 02 (https://forums.civfanatics.com/resources/better-boudica-maybe.14849/)
 - Spillsandstains: Veleta (https://forums.civfanatics.com/resources/veleta.14841/)
 - Civciv5 (SaibotLieh fix not applied): Isabella 11 (Indian Empress) (https://forums.civfanatics.com/threads/saibotliehs-leaderhead-collection.378346/page-22)
@@ -189,7 +189,7 @@ Among those we skipped, notably there is:
 
 ### AdvCiv-SAS-NIF-Gallery original Leaderheads
 
-- wonderingabout & GPT-5.4-Thinking: Tamar 03 (Atossa). Merges Tamar and Isabella 0 (base Civ4). See also [Readme.md (Atossa)](/README.md#atossa).
+- wonderingabout & GPT-5.4-Thinking: Tamar 03 (Atossa). Merges Tamar and Isabella 00 (base Civ4). See also [Readme.md (Atossa)](/README.md#atossa).
 - wonderingabout & GPT-5.4-Thinking: Tamar 04 (Roshanak). Merges Tamar 03 (Atossa) and Isabella 12 (No Crown). See also [Readme.md (Roshanak)](/README.md#roshanak).
 
 ## Credits
