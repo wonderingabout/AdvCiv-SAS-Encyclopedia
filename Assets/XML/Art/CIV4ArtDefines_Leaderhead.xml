@@ -273,12 +273,12 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		</LeaderheadArtInfo>
 
 		<LeaderheadArtInfo>
-			<Type>ART_DEF_LEADER_WILHELMINA</Type>
-			<Button>Art/LeaderHeads/Wilhelmina/Wilhelmina.dds</Button>
-			<NIF>Art/LeaderHeads/Wilhelmina/elizabeth.nif</NIF>
-			<KFM>Art/LeaderHeads/Wilhelmina/elizabeth.kfm</KFM>
-			<NoShaderNIF>Art/LeaderHeads/Wilhelmina/elizabeth_noshader.nif</NoShaderNIF>
-			<BackgroundKFM>Art/LeaderHeads/Wilhelmina/elizabeth_bg.kfm</BackgroundKFM>
+			<Type>ART_DEF_LEADER_ELIZABETH_8</Type>
+			<Button>Art/LeaderHeads/Elizabeth_8/Wilhelmina.dds</Button>
+			<NIF>Art/LeaderHeads/Elizabeth_8/elizabeth.nif</NIF>
+			<KFM>Art/LeaderHeads/Elizabeth_8/elizabeth.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Elizabeth_8/elizabeth_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Elizabeth_8/elizabeth_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_BLONDE_GIRL</Type>
@@ -1016,12 +1016,12 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<BackgroundKFM>Art/LeaderHeads/Ishtar/nefertiti_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
-			<Type>ART_DEF_LEADER_MARY_STUART</Type>
-			<Button>Art/LeaderHeads/Mary_Stuart/QueenofScots.dds</Button>
-			<NIF>Art/LeaderHeads/Mary_Stuart/Elizabeth.nif</NIF>
+			<Type>ART_DEF_LEADER_ELIZABETH_9</Type>
+			<Button>Art/LeaderHeads/Elizabeth_9/QueenofScots.dds</Button>
+			<NIF>Art/LeaderHeads/Elizabeth_9/Elizabeth.nif</NIF>
 			<KFM>Art/LeaderHeads/Elizabeth/elizabeth.kfm</KFM>
-			<NoShaderNIF>Art/LeaderHeads/Mary_Stuart/Elizabeth.nif</NoShaderNIF>
-			<BackgroundKFM>Art/LeaderHeads/Mary_Stuart/elizabeth_bg.kfm</BackgroundKFM>
+			<NoShaderNIF>Art/LeaderHeads/Elizabeth_9/Elizabeth.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Elizabeth_9/elizabeth_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_NEFERTITI_2</Type>

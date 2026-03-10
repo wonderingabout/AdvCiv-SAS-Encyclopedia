@@ -56,7 +56,7 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 - History Rewritten: Amanirena, Aminah, Awiakta, Mavia (Bilqis), Dido, Dihya, Isabella 1, Jingu, Mangammal, Atotoztli 2 (Nzinga), Salamasina, Wu Zetian, Lieu-Ye (Black Hair), Nanye-hi (Tomyris), Trung Sisters, Xoc, Catherine 1 (Yekaterina)
 - RFC Dawn of Civilization: Benazir Bhutto, Isabella 2, Maria, Maria 2 (no ribbon) (further modified in AdvCiv-SAS-NIF-Gallery)
 - Beyond the Game 2.43: Maria Theresa, Marpesia, Penthesilea, Theodora
-- Base 6.4: Jacquotte Delahaye, Atotoztli, Mavia 2, Cixi, Cleopatra, Wilhelmina
+- Base 6.4: Jacquotte Delahaye, Atotoztli, Mavia 2, Cixi, Cleopatra, Elizabeth 8 (Wilhelmina)
 - Future Mod: Blonde Girl (Sarah Fedler)
 - Destiny: Cleopatra 2 (Darker 01), Joan of Arc, Joan of Arc 2 (elizabeth_noshader.nif), Mandukhai Khatun, Nefertiti, Nefertiti 3 (isabella.nif), Jingu 3
 - Rise of Mankind 2.91: Cleopatra 6, Hatshepsut 3 (Cleopatra 6 (hatshepsut_noshader.nif)), Dido 2, Joan of Arc 3
@@ -73,7 +73,7 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 - Total War 1.3: Cleopatra 8, Isabella 8 (Puduhepa), Victoria 4 (Maria Theresa 2)
 - thecowwarrior's Pirates Mod: Anne Bonny, Jacquotte Delahaye 2 (no eyepatch)
 - thecowwarrior's Variety Mod v1.99r3: Aelia Pulcheria, Ishtar
-- Thomas' War v3.5a: Mary Stuart, Nefertiti 2, Victoria 6 (Maria Theresa 4)
+- Thomas' War v3.5a: Elizabeth 9 (Mary Stuart), Nefertiti 2, Victoria 6 (Maria Theresa 4)
 - Fallout-TTW: Hatshepsut 1 (Tandi Williams (Old) (NoShaderNIF)), Tandi Williams
 - Diversica 1.95: Aminah 3 (Prisbit), Theodora 2
 - Dawn of a New Era 6.00: Nanye-hi 3 (Running Eagle)
@@ -154,11 +154,11 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 - cfkane: Miriam Godwinson (https://forums.civfanatics.com/resources/lh-miriam-godwinson.14815/)
 - kid anubis: Sheherazade 2 (Valeria) (https://forums.civfanatics.com/resources/valeria.14205/)
 - IgorS: Salamasina 5 (Xoc) (https://forums.civfanatics.com/resources/lh-lady-xoc.14181/)
-- ambrox62: Elizabeth 4 (Teuta) (https://forums.civfanatics.com/resources/lh-teuta-illyrian-queen-from-231-to-228-bc.14033/)
+- ambrox62: Elizabeth 4 (Teuta 2) (https://forums.civfanatics.com/resources/lh-teuta-illyrian-queen-from-231-to-228-bc.14033/)
 - Ekmek: Aminah 2 (Amina of Zazzua) (https://forums.civfanatics.com/resources/lh-amina-of-zazzua.11043/)
 - cfkane: Gloriana 2 (https://forums.civfanatics.com/resources/lh-gloriana-the-faerie-queene.11024/)
 - Ekmek: Cleopatra 9 (https://forums.civfanatics.com/resources/lh-cleopatra.8664/)
-- GarretSidzaka: Isabella 20 (Teuta 2) (https://forums.civfanatics.com/resources/queen-teuta-of-illyria.7776/)
+- GarretSidzaka: Isabella 20 (Teuta) (https://forums.civfanatics.com/resources/queen-teuta-of-illyria.7776/)
 - Refar: Fury Road Aelwyn — Anne Bonny 2 (Martha (Aelwyn))'s Aelwyn_Button.dds, Readme.txt (and Aelwyn_Picture.jpg) (https://forums.civfanatics.com/resources/fury-road-aelwyn.10100/)
 - esnaz: Theodora 3 (https://forums.civfanatics.com/resources/bts-empress-theodora.6717/)
 - GarretSidzaka: Isabella 12 (No Crown) (https://forums.civfanatics.com/resources/no-crown-izzy.6640/)

@@ -274,9 +274,9 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<ArtDefineTag>ART_DEF_LEADER_CLEOPATRA_2</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
-			<Type>LEADER_WILHELMINA</Type>
-			<Description>TXT_KEY_LEADER_WILHELMINA</Description>
-			<ArtDefineTag>ART_DEF_LEADER_WILHELMINA</ArtDefineTag>
+			<Type>LEADER_ELIZABETH_8</Type>
+			<Description>TXT_KEY_LEADER_ELIZABETH_8</Description>
+			<ArtDefineTag>ART_DEF_LEADER_ELIZABETH_8</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
 			<Type>LEADER_BLONDE_GIRL</Type>
@@ -727,9 +727,9 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<ArtDefineTag>ART_DEF_LEADER_ISHTAR</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
-			<Type>LEADER_MARY_STUART</Type>
-			<Description>TXT_KEY_LEADER_MARY_STUART</Description>
-			<ArtDefineTag>ART_DEF_LEADER_MARY_STUART</ArtDefineTag>
+			<Type>LEADER_ELIZABETH_9</Type>
+			<Description>TXT_KEY_LEADER_ELIZABETH_9</Description>
+			<ArtDefineTag>ART_DEF_LEADER_ELIZABETH_9</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
 			<Type>LEADER_NEFERTITI_2</Type>
