@@ -5,10 +5,12 @@ This mod is a modified version of [AdvCiv-SAS (Simple Advanced Strategy)](https:
 - use it as a NIF gallery mod (non-playable)
 - make browsing much easier with the help of AdvCiv-SAS' sevopedia (search bar, keyboard UP/DOWN navigation, leader animation attitude (furious, annoyed, cautious, pleased, friendly) and action (noanim, greeting, agree, disagree) buttons) 
 - add further adjustments (e.g., Leader gallery in sevopedia civilization, optionally maximized leader NIF animation in sevopedia leader)
-- aggressively strip almost all assets (so it is lighter and since we don't need them), notably using `minOccurs="0"` for almost all leaderHead XML info, or by adding or modifying to functionally  empty base Civ4 XML like [CIV4PlotLSystem.xml](/Assets/XML/Buildings/CIV4PlotLSystem.xml) or [CIV4GameText_Events_BTS.xml](/Assets/XML/Text/CIV4GameText_Events_BTS.xml) (with a focus on heaviest ones using Wiztree to find them), resulting in very compact and lightweight XML mod (suits minimal leaderhead NIF Gallery need).
+- aggressively strip almost all assets (so it is lighter and since we don't need them), notably using `minOccurs="0"` for almost all leaderHead XML info, or by adding or modifying to functionally empty base Civ4 XML like [CIV4PlotLSystem.xml](/Assets/XML/Buildings/CIV4PlotLSystem.xml) or [CIV4GameText_Events_BTS.xml](/Assets/XML/Text/CIV4GameText_Events_BTS.xml) (with a focus on heaviest ones using Wiztree to find them), resulting in very compact and lightweight XML mod (suits minimal leaderhead NIF Gallery need). The mod is unintended for normal play, only sevopedia browsing though.
 - fix animations that had errors (e.g., Salasamina_3, Tandi Williams, etc.) or risky file structure design (e.g., Isabella_5 hard requiring folder name to be Isabella which risks conflicting with base BTS one: fixed by reimporting in our NIF-Gallery mod all civ4 files from base civ4 (`Art0.FPK`) so leaderhead is modular)
 - add buttons for leaderheads that had none (e.g. Pope Joan), as of now a no border button to help identify the leader
-- leaderhead XML naming rule: reusing base Civ4 leader IDs as-is is forbidden (e.g., do not use `LEADER_BOUDICA` / `ART_DEF_LEADER_BOUDICA` for custom entries). Suffix from the first custom variant (e.g., `LEADER_BOUDICA_1`, `ART_DEF_LEADER_BOUDICA_1`) to avoid conflicts and hidden dependencies. `ZENOBIA` naming is fine only when it is not a base-Civ4 leader ID. If not enforced, while some leaders may run, it is likely to cause issues in the long run one way or another, so we do not use base civ4 names for leaders (`_1` suffix is added to said name instead).
+- leaderhead XML naming rule: reusing base Civ4 leader IDs as-is is forbidden (e.g., do not use `LEADER_BOUDICA` / `ART_DEF_LEADER_BOUDICA` for custom entries). Suffix from the first custom variant (e.g., `LEADER_BOUDICA_01`, `ART_DEF_LEADER_BOUDICA_01`) to avoid conflicts and hidden dependencies. `ZENOBIA` naming is fine only when it is not a base-Civ4 leader ID. If not enforced, while some leaders may run, it is likely to cause issues in the long run one way or another, so we do not use base civ4 names for leaders (`_01` suffix is added to said name instead).
+
+If you have more Leaderheads you want to add to this mod or corrections or such, send them to me and unless i have an issue with them or am unavailable i'd like to add them and expand the mod with them too.
 
 For documentation, see AdvCiv-SAS' github page rather.
 
@@ -255,7 +257,7 @@ ERR: Python function pediaMain failed, module CvScreensInterface
 
 If you added or modified a Leaderhead and encounter this error, try exiting and restarting the game again if it helps.
 
-Update: a [tentative fix azt commit/de0a8a7b2d033bcd2ac90fe32fe798e6ce10c825](https://github.com/wonderingabout/AdvCiv-SAS-NIF-Gallery/commit/de0a8a7b2d033bcd2ac90fe32fe798e6ce10c825) was added so this may be solved but since issue is intermittent and appears inconsistently, i did not test it long enough since then to know if it is now fixed for sure.
+Update: tentative fixes have been made since then so this may be solved but since issue is intermittent and appears inconsistently, i did not test it long enough since then to know if it is now fixed for sure.
 
 ## Copyright and Disclaimer
 
