@@ -64,6 +64,12 @@ It is now possible to click on attitude (furious, annoyed, cautious, pleased, fr
 
 You can literally push her buttons.
 
+The buttons also show emojis with the current one being bigger so it is clearer to see
+
+<img src="./_1_AdvCiv-SAS/Images/sevopedia/0.210_sevopedia_leader_attitudes (1).JPG" alt="0.210_sevopedia_leader_attitudes (1).JPG" width="150"></img>
+<img src="./_1_AdvCiv-SAS/Images/sevopedia/0.210_sevopedia_leader_attitudes (2).JPG" alt="0.210_sevopedia_leader_attitudes (2).JPG" width="150"></img>
+<img src="./_1_AdvCiv-SAS/Images/sevopedia/0.210_sevopedia_leader_attitudes (3).JPG" alt="0.210_sevopedia_leader_attitudes (3).JPG" width="150"></img>
+
 Added with the very nice help of GPT-5.3-Codex thanks.
 
 ## New Leaderheads (AdvCiv-SAS-NIF-Gallery original) (e.g., Atossa, Roshanak)
@@ -103,6 +109,7 @@ We also modified her: replaced the green ribbon with a darker more fitting with 
 <img src="./_1_AdvCiv-SAS/Images/sevopedia/0.200_sevopedia_leader_maria_3 (1).JPG" alt="0.200_sevopedia_leader_maria_3 (1).JPG" width="150"></img>
 <img src="./_1_AdvCiv-SAS/Images/sevopedia/0.200_sevopedia_leader_maria_3 (2).JPG" alt="0.200_sevopedia_leader_maria_3 (2).JPG" width="150"></img>
 <img src="./_1_AdvCiv-SAS/Images/sevopedia/0.200_sevopedia_leader_maria_3 (3).JPG" alt="0.200_sevopedia_leader_maria_3 (3).JPG" width="150"></img>
+<img src="./_1_AdvCiv-SAS/Images/sevopedia/0.200_sevopedia_leader_maria_3 (4).JPG" alt="0.200_sevopedia_leader_maria_3 (4).JPG" width="150"></img>
 
 ### Quilago 02
 
@@ -113,6 +120,7 @@ We changed the background to move away from her Mesoamerican background that doe
 <img src="./_1_AdvCiv-SAS/Images/sevopedia/0.201_sevopedia_leader_quilago_2 (1).JPG" alt="0.201_sevopedia_leader_quilago_2 (1).JPG" width="150"></img>
 <img src="./_1_AdvCiv-SAS/Images/sevopedia/0.201_sevopedia_leader_quilago_2 (2).JPG" alt="0.201_sevopedia_leader_quilago_2 (2).JPG" width="150"></img>
 <img src="./_1_AdvCiv-SAS/Images/sevopedia/0.201_sevopedia_leader_quilago_2 (3).JPG" alt="0.201_sevopedia_leader_quilago_2 (3).JPG" width="150"></img>
+<img src="./_1_AdvCiv-SAS/Images/sevopedia/0.201_sevopedia_leader_quilago_2 (4).JPG" alt="0.201_sevopedia_leader_quilago_2 (4).JPG" width="150"></img>
 
 ### Bunny Girl 03
 
@@ -168,9 +176,8 @@ It features a rare tropical black/polynesian vibe that is attractive. Definitely
 				<Leader><LeaderName>LEADER_AMANIRENA</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_AMINAH</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_AWIAKTA</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_BILQIS</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_MAVIA</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_DIDO</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
-				<Leader><LeaderName>LEADER_DIHYA</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 			</Leaders>
 		</CivilizationInfo>
 	</CivilizationInfos>

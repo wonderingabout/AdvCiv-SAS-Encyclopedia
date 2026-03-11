@@ -134,10 +134,10 @@ Created as part of AdvCiv-SAS improvements
 
 	<TEXT>
 		<Tag>TXT_KEY_CONCEPT_SAS_AI_PERSONALITY_LEGEND</Tag>
-		<English>AI Personality Legend</English>
+		<English>Sevopedia Leader Legend</English>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_CONCEPT_SAS_AI_PERSONALITY_LEGEND_PEDIA</Tag>
-		<English></English>
+		<English>[H1]Sevopedia Leader Legend[\H1][PARAGRAPH:2][H2]Attitude / Action Buttons[\H2][PARAGRAPH:2]- Attitude buttons row (top): pick the leader mood preview shown in the 3D leaderhead. Emoji mode uses icons (furious, annoyed, cautious, pleased, friendly); text mode uses FU/AN/CA/PL/FR.[PARAGRAPH:2]- Action buttons row (bottom): trigger animation preview (no/idle reset, greeting, agree, disagree) for the selected leader.[PARAGRAPH:2]</English>
 	</TEXT>
 </Civ4GameText>

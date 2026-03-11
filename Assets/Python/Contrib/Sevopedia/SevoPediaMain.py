@@ -1780,6 +1780,19 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 	def isShortcutInfo(self, info):
 		return info.getType().find("SHORTCUTS") != -1
 
+	def SAS_asUnicode(self, value, context):
+		if isinstance(value, unicode):
+			return value
+		if isinstance(value, str):
+			try:
+				return value.decode("utf-8")
+			except:
+				try:
+					return value.decode("cp1252")
+				except:
+					raise Exception("SevoPediaMain: cannot decode '%s': %r" % (context, value))
+		return unicode(value)
+
 	
 	def placeItems(self, widget, info):
 		screen = self.getScreen()
@@ -1805,7 +1818,7 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 
 		# <!-- custom: type-to-filter search bar for the left item list (in the same style as done in other mod(s)) (chatgpt 5.2 + claude opus 4.5) -->
 		# <!-- custom: get filter string for type-to-filter (chatgpt 5.2 + claude opus 4.5) -->
-		szFilter = self.SAS_szSearchString.strip().lower()
+		szFilter = self.SAS_asUnicode(self.SAS_szSearchString, "item-list search string").strip().lower()
 		bFiltering = (len(szFilter) > 0)
 
 		# <!-- custom: when filtering, keep headers and separators only for groups that contain at least one match (chatgpt 5.2 + claude opus 4.5) -->
@@ -1836,7 +1849,7 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 			if len(listHeaderIdx) == 0:
 				for iListIdx, it in enumerate(self.list):
 					if it[1] != -1:
-						szName = it[0]
+						szName = self.SAS_asUnicode(it[0], "item-list filter name")
 						if (szName is not None) and (szFilter in szName.lower()):
 							setShowListIdx.add(iListIdx)
 			else:
@@ -1851,7 +1864,7 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 					for j in range(iHeaderIdx + 1, iNextHeaderIdx):
 						it = self.list[j]
 						if it[1] != -1:
-							szName = it[0]
+							szName = self.SAS_asUnicode(it[0], "item-list filter name")
 							if (szName is not None) and (szFilter in szName.lower()):
 								bSectionHasMatch = True
 								setShowListIdx.add(j)
@@ -1896,18 +1909,8 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 
 			# <!-- custom: make a common initial variable so we can tweak it in specific elif or such blocks as we see fit and keep common logic at the end; using a long name to avoid weird python scope inheritance issues to unrelated scopes -->
 			sTitlePlaceItems = item[0]
-			# <!-- custom: tentative UnicodeDecodeError fix for placeItems path: normalize list titles to unicode before UI concatenation so Python 2.4 does not implicitly ascii-decode non-ASCII entries; raise with row context if decoding still fails. (GPT-5.3-Codex) -->
-			if not isinstance(sTitlePlaceItems, unicode):
-				if isinstance(sTitlePlaceItems, str):
-					try:
-						sTitlePlaceItems = sTitlePlaceItems.decode("utf-8")
-					except:
-						try:
-							sTitlePlaceItems = sTitlePlaceItems.decode("cp1252")
-						except:
-							raise Exception("SevoPediaMain.placeItems: cannot decode title at list index %d: %r" % (idx, sTitlePlaceItems))
-				else:
-					sTitlePlaceItems = unicode(sTitlePlaceItems)
+			# <!-- custom: tentative UnicodeDecodeError fix for placeItems path: normalize list titles to unicode before UI concatenation/filtering/header coloring so Python 2.4 does not implicitly ascii-decode non-ASCII entries. (GPT-5.3-Codex) -->
+			sTitlePlaceItems = self.SAS_asUnicode(sTitlePlaceItems, "placeItems title index %d" % idx)
 			widgetPlaceItems = widget
 			bSAS_hasCustomData2 = False
 			# Even though you later handle data1 == -1 inside the civics block, you still do szButtonPlaceItems = info(item[1]).getButton() before any header check.
@@ -1963,7 +1966,7 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 			# <advc.001> Widget help for leaders needs the civ ID in data2 (from Taurus)
 			elif (info == gc.getLeaderHeadInfo):
 				if data1 == -1:
-					sTitlePlaceItems = CyTranslator().changeTextColor(item[0], self.COLOR_HIGHLIGHT_TEXT)
+					sTitlePlaceItems = CyTranslator().changeTextColor(sTitlePlaceItems, self.COLOR_HIGHLIGHT_TEXT)
 					widgetPlaceItems = WidgetTypes.WIDGET_GENERAL
 					szButtonPlaceItems = szCustomHeaderButtonPlaceItems
 					data2 = 1
@@ -1982,7 +1985,7 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 				# <!-- custom: similarly, in sevopedia techs, group techs by era (e.g. Ancient Era, Classical Era, etc.) instead of one long list. Also did similarly for sevopedia buildings and similar pages. Code added with the help of chatgpt 5.2 thanks -->
 				# (That is basically the DoC approach, adapted to your variable names.). After this, your item lists can safely contain (..., -1) headers and blank separators.
 				if data1 == -1:
-					sTitlePlaceItems = CyTranslator().changeTextColor(item[0], self.COLOR_HIGHLIGHT_TEXT)
+					sTitlePlaceItems = CyTranslator().changeTextColor(sTitlePlaceItems, self.COLOR_HIGHLIGHT_TEXT)
 					widgetPlaceItems = WidgetTypes.WIDGET_GENERAL
 					szButtonPlaceItems = szCustomHeaderButtonPlaceItems
 
@@ -1991,6 +1994,8 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 				self.SAS_itemToSelectablePos[item[1]] = len(self.SAS_selectableListIdx)
 				self.SAS_selectableListIdx.append(idx)
 
+			# <!-- custom: final UnicodeDecodeError guard for item-list rendering; helpers like changeTextColor can return byte strings, so normalize again before unicode concatenation in setTableText. (GPT-5.3-Codex) -->
+			sTitlePlaceItems = self.SAS_asUnicode(sTitlePlaceItems, "placeItems final title index %d" % idx)
 			screen.appendTableRow(self.ITEM_LIST_ID)
 			screen.setTableText(self.ITEM_LIST_ID, 0, i, u"<font=3>" + sTitlePlaceItems + u"</font>", szButtonPlaceItems, widgetPlaceItems, data1, data2, CvUtil.FONT_LEFT_JUSTIFY)
 			self.SAS_rowToListIdx[i] = idx
@@ -2275,7 +2280,8 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 			item = getInfo(i)
 			# advc.004y: GraphicalOnly check added
 			if item and (not bCheckGraphicalOnly or not item.isGraphicalOnly()):
-				list.append((item.getDescription(), i))
+				# <!-- custom: tentative UnicodeDecodeError fix for list construction/sort path: normalize descriptions before sorting/display so mixed byte/unicode data does not trigger implicit ascii decoding. (GPT-5.3-Codex) -->
+				list.append((self.SAS_asUnicode(item.getDescription(), "sorted list description"), i))
 		if self.isSortLists() and not noSort:
 			list.sort()
 		return list

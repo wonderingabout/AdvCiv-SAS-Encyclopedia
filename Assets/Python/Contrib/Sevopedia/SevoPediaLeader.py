@@ -40,6 +40,7 @@ localText = CyTranslator()
 IS_SHOW_TRAIT_ICONS_IN_LEADER = (gc.getDefineINT("SAS_SEVOPEDIA_LEADER_TRAITS_SHOW_ICONS") > 0)
 IS_SAS_SHOW_LEGEND_LINK = (gc.getDefineINT("SAS_SHOW_LEGEND_LINK") > 0)
 IS_SAS_SEVOPEDIA_LEADER_AI_PERSONALITY_ENABLE = (gc.getDefineINT("SAS_SEVOPEDIA_LEADER_AI_PERSONALITY_ENABLE") > 0)
+IS_SAS_SEVOPEDIA_LEADER_ATTITUDE_EMOJI_ENABLE = (gc.getDefineINT("SAS_SEVOPEDIA_LEADER_ATTITUDE_EMOJI_ENABLE") > 0)
 SAS_PEDIA_PYTHON_LEADER_ATTITUDE = 6805
 SAS_PEDIA_PYTHON_LEADER_ACTION = 6806
 SAS_LEADER_ATTITUDE_PREVIEW_ORDER = (
@@ -79,7 +80,20 @@ class SevoPediaLeader:
 		self.iLeader = -1
 		self.top = main
 		self.iSelectedAttitude = AttitudeTypes.ATTITUDE_PLEASED
+		self.ATTITUDE_SELECTED_EMOJI_SIZE = 24
+		self.ATTITUDE_UNSELECTED_EMOJI_SIZE = 12
 		self.attitudeButtonLabelCache = {}
+		self.attitudeButtonLabelCache[AttitudeTypes.ATTITUDE_FURIOUS] = (u"fu", u"FU")
+		self.attitudeButtonLabelCache[AttitudeTypes.ATTITUDE_ANNOYED] = (u"an", u"AN")
+		self.attitudeButtonLabelCache[AttitudeTypes.ATTITUDE_CAUTIOUS] = (u"ca", u"CA")
+		self.attitudeButtonLabelCache[AttitudeTypes.ATTITUDE_PLEASED] = (u"pl", u"PL")
+		self.attitudeButtonLabelCache[AttitudeTypes.ATTITUDE_FRIENDLY] = (u"fr", u"FR")
+		self.attitudeSelectedEmojiPathByAttitude = {}
+		self.attitudeSelectedEmojiPathByAttitude[AttitudeTypes.ATTITUDE_FURIOUS] = ArtFileMgr.getInterfaceArtInfo("SAS_EMOJI_ATTITUDE_FURIOUS").getPath()
+		self.attitudeSelectedEmojiPathByAttitude[AttitudeTypes.ATTITUDE_ANNOYED] = ArtFileMgr.getInterfaceArtInfo("SAS_EMOJI_ATTITUDE_ANNOYED").getPath()
+		self.attitudeSelectedEmojiPathByAttitude[AttitudeTypes.ATTITUDE_CAUTIOUS] = ArtFileMgr.getInterfaceArtInfo("SAS_EMOJI_ATTITUDE_CAUTIOUS").getPath()
+		self.attitudeSelectedEmojiPathByAttitude[AttitudeTypes.ATTITUDE_PLEASED] = ArtFileMgr.getInterfaceArtInfo("SAS_EMOJI_ATTITUDE_PLEASED").getPath()
+		self.attitudeSelectedEmojiPathByAttitude[AttitudeTypes.ATTITUDE_FRIENDLY] = ArtFileMgr.getInterfaceArtInfo("SAS_EMOJI_ATTITUDE_FRIENDLY").getPath()
 		self.ATTITUDES_PANEL_ID = "SevoPediaLeaderAttitudesPanel"
 		self.ATTITUDE_BUTTON_WIDGET_BY_ATTITUDE = {}
 		for iAttitude in SAS_LEADER_ATTITUDE_PREVIEW_ORDER:
@@ -87,7 +101,6 @@ class SevoPediaLeader:
 		self.ACTION_BUTTON_WIDGET_BY_ACTION = {}
 		for iAction, _ in SAS_LEADER_ACTION_PREVIEW_ORDER:
 			self.ACTION_BUTTON_WIDGET_BY_ACTION[iAction] = "SevoPediaLeaderActionBtn%d" % iAction
-		self.buildAttitudeButtonLabelCache()
 
 		self.X_LEADERHEAD_PANE = self.top.X_PEDIA_PAGE
 		self.Y_LEADERHEAD_PANE = self.top.Y_PEDIA_PAGE
@@ -110,8 +123,8 @@ class SevoPediaLeader:
 		
 		self.H_FAVORITES = NON_MULTILIST_PANEL_STANDARD_HEIGHT
 		self.N_AI_TABLE_NUM = 3
-		self.AI_LEGEND_NEW_CONCEPT_ID = getNewConceptID("CONCEPT_SAS_AI_PERSONALITY_LEGEND")
-		self.AI_LEGEND_LINK_TEXT = u"<font=3>Legend</font>"
+		self.SEVOPEDIA_LEADER_LEGEND_NEW_CONCEPT_ID = getNewConceptID("CONCEPT_SAS_AI_PERSONALITY_LEGEND")
+		self.SEVOPEDIA_LEADER_LEGEND_LINK_TEXT = u"<font=3>Legend</font>"
 
 		# <!-- custom: 2) (most) relative dimensions or positions then -->
 
@@ -190,8 +203,7 @@ class SevoPediaLeader:
 		self.placeHistory()
 		self.placeCiv()
 		self.placeTraits()
-		if IS_SAS_SEVOPEDIA_LEADER_AI_PERSONALITY_ENABLE:
-			self.placeAILegendLink()
+		self.placeLegendLink()
 
 		# <!-- custom: for excluded leader indexes from calculations, leave the zone/space where the AI personality panel was supposed to be especially empty, instead of getting a key error or missing leader from leaders_info_cached; Long_Comments_py.txt #10 -->
 		#
@@ -264,6 +276,8 @@ class SevoPediaLeader:
 		iRowGap = 4
 		iTopPadding = 8
 		iBottomPadding = 8
+		# <!-- custom: simple manual Y nudge for the two attitude/action rows as one block; increase to move both rows lower. (GPT-5.3-Codex) -->
+		iVerticalNudgeY = 3
 		iButtonH = (self.H_ATTITUDES - iTopPadding - iBottomPadding - iRowGap) / 2
 		if iButtonH < 16:
 			iButtonH = 16
@@ -281,12 +295,25 @@ class SevoPediaLeader:
 			iAttitudeButtonW = 14
 		iAttitudeTotalW = iAttitudeCount * iAttitudeButtonW + (iAttitudeCount - 1) * iAttitudeSpacing
 		iAttitudeX = self.X_ATTITUDES + (self.W_ATTITUDES - iAttitudeTotalW) / 2
-		iAttitudeY = self.Y_ATTITUDES + iTopPadding
+		iAttitudeY = self.Y_ATTITUDES + iTopPadding + iVerticalNudgeY
+		iSelectedEmojiSize = self.ATTITUDE_SELECTED_EMOJI_SIZE
+		iUnselectedEmojiSize = self.ATTITUDE_UNSELECTED_EMOJI_SIZE
 
+		# <!-- custom: We tested the city-screen filter-style GFC checkbox DDS route here (similar to CvMainInterface building filter buttons),
+		# but icon sizing could not be controlled independently enough in this attitude row. Keeping inline <img> gives reliable per-button size
+		# control despite the minor known vertical lift side effect. (GPT-5.3-Codex) -->
 		for iAttitude in attitudeOrder:
 			szWidget = self.ATTITUDE_BUTTON_WIDGET_BY_ATTITUDE[iAttitude]
-			szLabel = self.getAttitudeButtonLabel(iAttitude)
-			screen.setButtonGFC(szWidget, szLabel, "", iAttitudeX, iAttitudeY, iAttitudeButtonW, iButtonH, WidgetTypes.WIDGET_PYTHON, SAS_PEDIA_PYTHON_LEADER_ATTITUDE, iAttitude, ButtonStyles.BUTTON_STYLE_STANDARD)
+			if IS_SAS_SEVOPEDIA_LEADER_ATTITUDE_EMOJI_ENABLE:
+				szEmojiPath = self.attitudeSelectedEmojiPathByAttitude[iAttitude]
+				iEmojiSize = iUnselectedEmojiSize
+				if iAttitude == self.iSelectedAttitude:
+					iEmojiSize = iSelectedEmojiSize
+				szLabel = u"<img=%s size=%d></img>" % (szEmojiPath, iEmojiSize)
+				screen.setButtonGFC(szWidget, szLabel, "", iAttitudeX, iAttitudeY, iAttitudeButtonW, iButtonH, WidgetTypes.WIDGET_PYTHON, SAS_PEDIA_PYTHON_LEADER_ATTITUDE, iAttitude, ButtonStyles.BUTTON_STYLE_STANDARD)
+			else:
+				szLabel = self.getAttitudeButtonLabel(iAttitude)
+				screen.setButtonGFC(szWidget, szLabel, "", iAttitudeX, iAttitudeY, iAttitudeButtonW, iButtonH, WidgetTypes.WIDGET_PYTHON, SAS_PEDIA_PYTHON_LEADER_ATTITUDE, iAttitude, ButtonStyles.BUTTON_STYLE_STANDARD)
 			iAttitudeX += iAttitudeButtonW + iAttitudeSpacing
 
 		iActionCount = len(SAS_LEADER_ACTION_PREVIEW_ORDER)
@@ -310,63 +337,40 @@ class SevoPediaLeader:
 
 
 	def deleteAttitudeWidgets(self, screen):
-		try:
-			screen.deleteWidget(self.ATTITUDES_PANEL_ID)
-		except:
-			pass
+		screen.deleteWidget(self.ATTITUDES_PANEL_ID)
 		for iAttitude in SAS_LEADER_ATTITUDE_PREVIEW_ORDER:
-			try:
-				screen.deleteWidget(self.ATTITUDE_BUTTON_WIDGET_BY_ATTITUDE[iAttitude])
-			except:
-				pass
+			screen.deleteWidget(self.ATTITUDE_BUTTON_WIDGET_BY_ATTITUDE[iAttitude])
 		for iAction, _ in SAS_LEADER_ACTION_PREVIEW_ORDER:
-			try:
-				screen.deleteWidget(self.ACTION_BUTTON_WIDGET_BY_ACTION[iAction])
-			except:
-				pass
+			screen.deleteWidget(self.ACTION_BUTTON_WIDGET_BY_ACTION[iAction])
 
 
 	def getAttitudeButtonLabel(self, iAttitude):
-		if iAttitude not in self.attitudeButtonLabelCache:
-			if iAttitude == self.iSelectedAttitude:
-				return u"!!"
-			return u"??"
 		szLabelLower, szLabelUpper = self.attitudeButtonLabelCache[iAttitude]
 		if iAttitude == self.iSelectedAttitude:
 			return szLabelUpper
 		return szLabelLower
 
 
-	def buildAttitudeButtonLabelCache(self):
-		for iAttitude in SAS_LEADER_ATTITUDE_PREVIEW_ORDER:
-			szLabel = gc.getAttitudeInfo(iAttitude).getType().replace("ATTITUDE_", "").lower()
-			szLabel = szLabel[:2]
-			self.attitudeButtonLabelCache[iAttitude] = (szLabel, szLabel.upper())
-
-
 	def refreshLeaderheadWidget(self):
 		if self.iLeader < 0:
 			return 0
 		screen = self.top.getScreen()
-		try:
-			screen.deleteWidget(self.leaderWidget)
-		except:
-			pass
+		screen.deleteWidget(self.leaderWidget)
 		screen.addLeaderheadGFC(self.leaderWidget, self.iLeader, self.iSelectedAttitude, self.X_LEADERHEAD, self.Y_LEADERHEAD, self.W_LEADERHEAD, self.H_LEADERHEAD, WidgetTypes.WIDGET_GENERAL, -1, -1)
 		return 1
 
 
 
-	def placeAILegendLink(self):
+	def placeLegendLink(self):
 		if not IS_SAS_SHOW_LEGEND_LINK:
 			return
-		if self.AI_LEGEND_NEW_CONCEPT_ID < 0:
+		if self.SEVOPEDIA_LEADER_LEGEND_NEW_CONCEPT_ID < 0:
 			return
 		screen = self.top.getScreen()
 		screen.setText(
 			self.top.getNextWidgetName(),
 			"Background",
-			self.AI_LEGEND_LINK_TEXT,
+			self.SEVOPEDIA_LEADER_LEGEND_LINK_TEXT,
 			CvUtil.FONT_LEFT_JUSTIFY,
 			self.top.X_TOC,
 			self.top.Y_BOT_PANEL + 16,
@@ -374,7 +378,7 @@ class SevoPediaLeader:
 			FontTypes.TITLE_FONT,
 			WidgetTypes.WIDGET_PEDIA_DESCRIPTION,
 			CivilopediaPageTypes.CIVILOPEDIA_PAGE_CONCEPT_NEW,
-			self.AI_LEGEND_NEW_CONCEPT_ID
+			self.SEVOPEDIA_LEADER_LEGEND_NEW_CONCEPT_ID
 		)
 
 
