@@ -113,6 +113,11 @@ Created as part of AdvCiv-SAS improvements
 		<DefineName>SAS_SEVOPEDIA_LEADER_AI_PERSONALITY_PANEL_SHOW_EMOJI</DefineName>
 		<iDefineIntVal>1</iDefineIntVal>
 	</Define>
+	<!-- custom: set the Sevopedia leader item list width in the contents view; set <= 0 to use default item-list width. (GPT-5.3-Codex) -->
+	<Define>
+		<DefineName>SAS_SEVOPEDIA_LEADER_ITEMS_WIDTH</DefineName>
+		<iDefineIntVal>470</iDefineIntVal>
+	</Define>
 
 
 

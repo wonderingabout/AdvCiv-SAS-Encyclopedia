@@ -371,6 +371,7 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 		self.IS_SAS_SEVOPEDIA_MAIN_RELIGIONS_GROUP_BY_ERA = (gc.getDefineINT("SAS_SEVOPEDIA_MAIN_RELIGIONS_GROUP_BY_ERA") > 0)
 		self.IS_SAS_SEVOPEDIA_MAIN_PROJECTS_GROUP_BY_ERA = (gc.getDefineINT("SAS_SEVOPEDIA_MAIN_PROJECTS_GROUP_BY_ERA") > 0)
 		self.SAS_SEVOPEDIA_MUSIC_ITEMS_WIDTH = gc.getDefineINT("SAS_SEVOPEDIA_MUSIC_ITEMS_WIDTH")
+		self.SAS_SEVOPEDIA_LEADER_ITEMS_WIDTH = gc.getDefineINT("SAS_SEVOPEDIA_LEADER_ITEMS_WIDTH")
 		self.IS_SAS_SEVOPEDIA_MAIN_SPECIALISTS_GROUP_BY_TYPE = (gc.getDefineINT("SAS_SEVOPEDIA_MAIN_SPECIALISTS_GROUP_BY_TYPE") > 0)
 		self.IS_SAS_SEVOPEDIA_MAIN_BONUSES_GROUP_BY_IMPROVEMENT = (gc.getDefineINT("SAS_SEVOPEDIA_MAIN_BONUSES_GROUP_BY_IMPROVEMENT") > 0)
 		self.IS_SAS_SEVOPEDIA_MAIN_IMPROVEMENTS_GROUP_BY_TERRAIN = (gc.getDefineINT("SAS_SEVOPEDIA_MAIN_IMPROVEMENTS_GROUP_BY_TERRAIN") > 0)
@@ -677,6 +678,11 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 			if iMusicItemsWidth <= 0:
 				iMusicItemsWidth = self.SAS_W_ITEMS_BASE
 			self.SAS_setItemsWidth(iMusicItemsWidth)
+		elif iCategory == SevoScreenEnums.PEDIA_LEADERS:
+			iLeaderItemsWidth = self.SAS_SEVOPEDIA_LEADER_ITEMS_WIDTH
+			if iLeaderItemsWidth <= 0:
+				iLeaderItemsWidth = self.SAS_W_ITEMS_BASE
+			self.SAS_setItemsWidth(iLeaderItemsWidth)
 		else:
 			self.SAS_setItemsWidth(self.SAS_W_ITEMS_BASE)
 		if not self.isContentsShowing():

@@ -102,8 +102,6 @@ class SevoPediaLeader:
 		for iAction, _ in SAS_LEADER_ACTION_PREVIEW_ORDER:
 			self.ACTION_BUTTON_WIDGET_BY_ACTION[iAction] = "SevoPediaLeaderActionBtn%d" % iAction
 
-		self.X_LEADERHEAD_PANE = self.top.X_PEDIA_PAGE
-		self.Y_LEADERHEAD_PANE = self.top.Y_PEDIA_PAGE
 		# <!-- custom: for the ratio of the portrait, aim to match closely the ingame diplomacy portrait ratio; Long_Comments_py.txt #2 -->
 		self.W_LEADERHEAD_PANE = 327
 		self.H_LEADERHEAD_PANE = 400
@@ -125,15 +123,42 @@ class SevoPediaLeader:
 		self.N_AI_TABLE_NUM = 3
 		self.SEVOPEDIA_LEADER_LEGEND_NEW_CONCEPT_ID = getNewConceptID("CONCEPT_SAS_AI_PERSONALITY_LEGEND")
 		self.SEVOPEDIA_LEADER_LEGEND_LINK_TEXT = u"<font=3>Legend</font>"
+		self.playButtonPath = ArtFileMgr.getInterfaceArtInfo("SAS_EMOJI_PLAY_BUTTON").getPath()
+
+		# <!-- custom: AI Personality Panel(s) column widths -->
+		self.W_AI_VALUE = 35
+		self.W_AI_SCALE = 100
+		self.W_AI_LABEL = self.W_AI_PERSONALITY - self.W_AI_VALUE - self.W_AI_SCALE
+		self.H_AI_LINE_HEIGHT = 22
+		self.H_AI_CATEGORY_SPACING = 10
+		self.W_AI_LEFT_SIDE_PADDING = 12
+		# <!-- custom: Long_Comments_py.txt #4 -->
+		#self.H_AI_UPPER_PADDING = 36
+		self.H_AI_UPPER_PADDING = 15
+
+		self.AI_PANEL_RIGHT_TXT_KEY = "TXT_KEY_AI_PERSONALITY_RIGHT_PANEL"
+		self.AI_PANEL_MIDDLE_TXT_KEY = "TXT_KEY_AI_PERSONALITY_MIDDLE_PANEL"
+		self.AI_PANEL_LEFT_TXT_KEY = "TXT_KEY_AI_PERSONALITY_LEFT_PANEL"
+		self._updateLayoutFromMain()
+
+
+
+	# <!-- custom: recompute leader page coordinates from current Sevopedia main layout so category-specific item-list widths (e.g. leader/music) stay aligned. (GPT-5.3-Codex) -->
+	def _updateLayoutFromMain(self):
+		self.X_LEADERHEAD_PANE = self.top.X_PEDIA_PAGE
+		self.Y_LEADERHEAD_PANE = self.top.Y_PEDIA_PAGE
 
 		# <!-- custom: 2) (most) relative dimensions or positions then -->
-
 		self.W_LEADERHEAD = self.W_LEADERHEAD_PANE - 30
 		self.H_LEADERHEAD = self.H_LEADERHEAD_PANE - 34
 		self.X_LEADERHEAD = self.X_LEADERHEAD_PANE + (self.W_LEADERHEAD_PANE - self.W_LEADERHEAD) / 2
 		self.Y_LEADERHEAD = self.Y_LEADERHEAD_PANE + (self.H_LEADERHEAD_PANE - self.H_LEADERHEAD) / 2 + 3
 
+		# <!-- custom: when leader list width is increased, keep the leader-page body from overexpanding by shrinking the right-side AI reserve by the same delta (current items width - base items width); this preserves the pre-existing visual balance while restoring center controls. (GPT-5.3-Codex) -->
 		self.W_AI_TOTAL_TABLES_WIDTH = self.N_AI_TABLE_NUM * self.W_AI_PERSONALITY + self.N_AI_TABLE_NUM * self.MEDIUM_MARGIN
+		iItemsWidthDelta = self.top.W_ITEMS - self.top.SAS_W_ITEMS_BASE
+		if iItemsWidthDelta > 0:
+			self.W_AI_TOTAL_TABLES_WIDTH = max(0, self.W_AI_TOTAL_TABLES_WIDTH - iItemsWidthDelta)
 
 		self.Y_FAVORITES = self.Y_LEADERHEAD_PANE + self.H_LEADERHEAD_PANE + self.SMALL_MARGIN
 
@@ -158,27 +183,11 @@ class SevoPediaLeader:
 		self.Y_ATTITUDES = self.Y_FAVORITES
 		self.W_ATTITUDES = self.X_MUSIC - self.X_ATTITUDES - self.SMALL_MARGIN
 		self.H_ATTITUDES = self.H_FAVORITES
-		self.playButtonPath = ArtFileMgr.getInterfaceArtInfo("SAS_EMOJI_PLAY_BUTTON").getPath()
 
 		# <!-- custom: the rest of the coordinates here, as it is dependent on other coordinates we need first that (i.e. before being able to add these) -->
-		self.X_AI_PERSONALITY = self.top.R_PEDIA_PAGE - self.W_AI_PERSONALITY 
+		self.X_AI_PERSONALITY = self.top.R_PEDIA_PAGE - self.W_AI_PERSONALITY
 		self.Y_AI_PERSONALITY = self.Y_LEADERHEAD_PANE
 		self.H_AI_PERSONALITY = self.H_LEADERHEAD_PANE + self.SMALL_MARGIN + self.H_FAVORITES + self.SMALL_MARGIN + self.H_HISTORY
-
-		# <!-- custom: AI Personality Panel(s) column widths -->
-		self.W_AI_VALUE = 35
-		self.W_AI_SCALE = 100
-		self.W_AI_LABEL = self.W_AI_PERSONALITY - self.W_AI_VALUE - self.W_AI_SCALE
-		self.H_AI_LINE_HEIGHT = 22
-		self.H_AI_CATEGORY_SPACING = 10
-		self.W_AI_LEFT_SIDE_PADDING = 12
-		# <!-- custom: Long_Comments_py.txt #4 -->
-		#self.H_AI_UPPER_PADDING = 36
-		self.H_AI_UPPER_PADDING = 15
-
-		self.AI_PANEL_RIGHT_TXT_KEY = "TXT_KEY_AI_PERSONALITY_RIGHT_PANEL"
-		self.AI_PANEL_MIDDLE_TXT_KEY = "TXT_KEY_AI_PERSONALITY_MIDDLE_PANEL"
-		self.AI_PANEL_LEFT_TXT_KEY = "TXT_KEY_AI_PERSONALITY_LEFT_PANEL"
 
 		self.X_TRAITS = self.X_LEADERHEAD_PANE + self.W_LEADERHEAD_PANE + self.SMALL_MARGIN
 		self.Y_TRAITS = self.Y_LEADERHEAD_PANE
@@ -193,6 +202,7 @@ class SevoPediaLeader:
 
 
 	def interfaceScreen(self, iLeader):
+		self._updateLayoutFromMain()
 		self.iLeader = iLeader
 
 		# <!-- custom: change call order to match filling/building order, generally from top left to bottom and left to right but not always, reordering in such a way is maybe a bit more intuitive this way perhaps or clearer or helpful or not or other etc anyways, -->
@@ -362,6 +372,8 @@ class SevoPediaLeader:
 
 
 	def placeLegendLink(self):
+		if not IS_SAS_SEVOPEDIA_LEADER_AI_PERSONALITY_ENABLE:
+			return
 		if not IS_SAS_SHOW_LEGEND_LINK:
 			return
 		if self.SEVOPEDIA_LEADER_LEGEND_NEW_CONCEPT_ID < 0:
