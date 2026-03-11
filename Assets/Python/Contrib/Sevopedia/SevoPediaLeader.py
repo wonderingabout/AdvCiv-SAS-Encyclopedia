@@ -41,6 +41,8 @@ IS_SHOW_TRAIT_ICONS_IN_LEADER = (gc.getDefineINT("SAS_SEVOPEDIA_LEADER_TRAITS_SH
 IS_SAS_SHOW_LEGEND_LINK = (gc.getDefineINT("SAS_SHOW_LEGEND_LINK") > 0)
 IS_SAS_SEVOPEDIA_LEADER_AI_PERSONALITY_ENABLE = (gc.getDefineINT("SAS_SEVOPEDIA_LEADER_AI_PERSONALITY_ENABLE") > 0)
 IS_SAS_SEVOPEDIA_LEADER_ATTITUDE_EMOJI_ENABLE = (gc.getDefineINT("SAS_SEVOPEDIA_LEADER_ATTITUDE_EMOJI_ENABLE") > 0)
+IS_SAS_SEVOPEDIA_LEADER_SMALL_NIF_ENABLE = (gc.getDefineINT("SAS_SEVOPEDIA_LEADER_SMALL_NIF_ENABLE") > 0)
+IS_SAS_SEVOPEDIA_LEADER_LARGE_NIF_ENABLE = (gc.getDefineINT("SAS_SEVOPEDIA_LEADER_LARGE_NIF_ENABLE") > 0)
 SAS_PEDIA_PYTHON_LEADER_ATTITUDE = 6805
 SAS_PEDIA_PYTHON_LEADER_ACTION = 6806
 SAS_LEADER_ATTITUDE_PREVIEW_ORDER = (
@@ -118,6 +120,10 @@ class SevoPediaLeader:
 		self.H_CIV = 64
 		self.CIV_MARGIN = 0
 		self.CIV_DISELEVATION = 38
+		self.leaderWidget = None
+		self.leaderWidgetLarge = None
+		self.LEADERHEAD_LARGE_PANEL_WIDGET = None
+		self.IS_LARGE_LEADERHEAD_ACTIVE = False
 		
 		self.H_FAVORITES = NON_MULTILIST_PANEL_STANDARD_HEIGHT
 		self.N_AI_TABLE_NUM = 3
@@ -147,6 +153,7 @@ class SevoPediaLeader:
 	def _updateLayoutFromMain(self):
 		self.X_LEADERHEAD_PANE = self.top.X_PEDIA_PAGE
 		self.Y_LEADERHEAD_PANE = self.top.Y_PEDIA_PAGE
+		self.IS_COMPACT_LAYOUT_FOR_LARGE_NIF = (IS_SAS_SEVOPEDIA_LEADER_LARGE_NIF_ENABLE and not IS_SAS_SEVOPEDIA_LEADER_AI_PERSONALITY_ENABLE)
 
 		# <!-- custom: 2) (most) relative dimensions or positions then -->
 		self.W_LEADERHEAD = self.W_LEADERHEAD_PANE - 30
@@ -174,15 +181,24 @@ class SevoPediaLeader:
 
 		# <!-- custom: Favorites panel only needs two icons (favorite civic/religion), so size it with shared helper for a strict two-button layout. (GPT-5.3-Codex) -->
 		self.W_FAVORITES = get_panel_width_for_buttons(2, MULTILIST_BUTTON_SIZE, HYPOTHESIZED_NON_MULTILIST_PANEL_EDGE_PADDING, HYPOTHESIZED_NON_MULTILIST_PANEL_INTER_BUTTON_SPACING)
+		if self.IS_COMPACT_LAYOUT_FOR_LARGE_NIF:
+			self.W_HISTORY = max(0, self.W_HISTORY - (self.W_FAVORITES + self.SMALL_MARGIN))
 		# <!-- custom: layout order tweak: Favorites at left, then Music, then civ icon at far right. (GPT-5.3-Codex) -->
 		self.X_FAVORITES = self.X_LEADERHEAD_PANE
-		self.X_MUSIC = self.X_HISTORY + self.W_HISTORY - self.W_CIV - self.SMALL_MARGIN - self.W_MUSIC
 		self.Y_MUSIC = self.Y_FAVORITES
 		self.H_MUSIC = self.H_FAVORITES
-		self.X_ATTITUDES = self.X_FAVORITES + self.W_FAVORITES + self.SMALL_MARGIN
 		self.Y_ATTITUDES = self.Y_FAVORITES
-		self.W_ATTITUDES = self.X_MUSIC - self.X_ATTITUDES - self.SMALL_MARGIN
 		self.H_ATTITUDES = self.H_FAVORITES
+		if self.IS_COMPACT_LAYOUT_FOR_LARGE_NIF:
+			self.X_ATTITUDES = self.X_LEADERHEAD_PANE
+			self.W_ATTITUDES = self.W_HISTORY - self.W_MUSIC - self.W_CIV - (2 * self.SMALL_MARGIN)
+			if self.W_ATTITUDES < 0:
+				self.W_ATTITUDES = 0
+			self.X_MUSIC = self.X_ATTITUDES + self.W_ATTITUDES + self.SMALL_MARGIN
+		else:
+			self.X_MUSIC = self.X_HISTORY + self.W_HISTORY - self.W_CIV - self.SMALL_MARGIN - self.W_MUSIC
+			self.X_ATTITUDES = self.X_FAVORITES + self.W_FAVORITES + self.SMALL_MARGIN
+			self.W_ATTITUDES = self.X_MUSIC - self.X_ATTITUDES - self.SMALL_MARGIN
 
 		# <!-- custom: the rest of the coordinates here, as it is dependent on other coordinates we need first that (i.e. before being able to add these) -->
 		self.X_AI_PERSONALITY = self.top.R_PEDIA_PAGE - self.W_AI_PERSONALITY
@@ -193,8 +209,12 @@ class SevoPediaLeader:
 		self.Y_TRAITS = self.Y_LEADERHEAD_PANE
 		self.W_TRAITS = self.W_HISTORY - self.W_LEADERHEAD_PANE - self.SMALL_MARGIN
 		self.H_TRAITS = self.H_LEADERHEAD_PANE
+		self._updateLargeLeaderheadLayout()
 
-		self.X_CIV = self.X_HISTORY + self.W_HISTORY - self.CIV_MARGIN - self.W_CIV
+		if self.IS_COMPACT_LAYOUT_FOR_LARGE_NIF:
+			self.X_CIV = self.X_MUSIC + self.W_MUSIC + self.SMALL_MARGIN
+		else:
+			self.X_CIV = self.X_HISTORY + self.W_HISTORY - self.CIV_MARGIN - self.W_CIV
 		# <!-- custom: put the flag/civ at the middle Y of the favourites panel -->
 		# <!-- custom: quite high as compared to favourites panel's lowest point -->
 		self.Y_CIV = self.Y_FAVORITES + self.CIV_DISELEVATION
@@ -207,12 +227,15 @@ class SevoPediaLeader:
 
 		# <!-- custom: change call order to match filling/building order, generally from top left to bottom and left to right but not always, reordering in such a way is maybe a bit more intuitive this way perhaps or clearer or helpful or not or other etc anyways, -->
 		self.placeLeaderHeadPane()
-		self.placeFavorites()
+		self.placeLargeLeaderHeadPane()
+		if not self.IS_COMPACT_LAYOUT_FOR_LARGE_NIF:
+			self.placeFavorites()
 		self.placeMusic()
 		self.placeAttitudes()
 		self.placeHistory()
 		self.placeCiv()
-		self.placeTraits()
+		if not self.IS_LARGE_LEADERHEAD_ACTIVE:
+			self.placeTraits()
 		self.placeLegendLink()
 
 		# <!-- custom: for excluded leader indexes from calculations, leave the zone/space where the AI personality panel was supposed to be especially empty, instead of getting a key error or missing leader from leaders_info_cached; Long_Comments_py.txt #10 -->
@@ -227,11 +250,86 @@ class SevoPediaLeader:
 
 	# <!-- custom: wrap leader placement in a specific function for clarity or flexibility or not anyways, -->
 	def placeLeaderHeadPane(self):
+		if not IS_SAS_SEVOPEDIA_LEADER_SMALL_NIF_ENABLE:
+			self.leaderWidget = None
+			return
 		screen = self.top.getScreen()
 		leaderPanelWidget = self.top.getNextWidgetName()
 		screen.addPanel(leaderPanelWidget, "", "", True, True, self.X_LEADERHEAD_PANE, self.Y_LEADERHEAD_PANE, self.W_LEADERHEAD_PANE, self.H_LEADERHEAD_PANE, PanelStyles.PANEL_STYLE_BLUE50)
 		self.leaderWidget = self.top.getNextWidgetName()
 		screen.addLeaderheadGFC(self.leaderWidget, self.iLeader, self.iSelectedAttitude, self.X_LEADERHEAD, self.Y_LEADERHEAD, self.W_LEADERHEAD, self.H_LEADERHEAD, WidgetTypes.WIDGET_GENERAL, -1, -1)
+
+
+	# <!-- custom: optional large right-side leader animation for NIF gallery browsing; it keeps the same pane ratio as the main leader panel and scales to the largest size that fits the available right-side area. (GPT-5.3-Codex) -->
+	def _updateLargeLeaderheadLayout(self):
+		self.IS_LARGE_LEADERHEAD_ACTIVE = False
+		self.X_LEADERHEAD_LARGE_PANE = -1
+		self.Y_LEADERHEAD_LARGE_PANE = -1
+		self.W_LEADERHEAD_LARGE_PANE = 0
+		self.H_LEADERHEAD_LARGE_PANE = 0
+		self.X_LEADERHEAD_LARGE = -1
+		self.Y_LEADERHEAD_LARGE = -1
+		self.W_LEADERHEAD_LARGE = 0
+		self.H_LEADERHEAD_LARGE = 0
+
+		if not IS_SAS_SEVOPEDIA_LEADER_LARGE_NIF_ENABLE:
+			return
+		if IS_SAS_SEVOPEDIA_LEADER_AI_PERSONALITY_ENABLE:
+			return
+		if self.W_HISTORY <= 0:
+			return
+
+		# <!-- custom: use the true right-side reserve area (to the right of history/leader content), not the traits slot, so the large NIF fills that empty space. (GPT-5.3-Codex) -->
+		iAvailX = self.X_HISTORY + self.W_HISTORY + self.SMALL_MARGIN
+		iAvailY = self.top.Y_PEDIA_PAGE
+		iAvailW = self.top.R_PEDIA_PAGE - iAvailX
+		iAvailH = self.top.B_PEDIA_PAGE - iAvailY
+		if iAvailW <= 0 or iAvailH <= 0:
+			return
+		iPaneRatioW = self.W_LEADERHEAD_PANE
+		iPaneRatioH = self.H_LEADERHEAD_PANE
+
+		iFitW = min(iAvailW, (iAvailH * iPaneRatioW) / iPaneRatioH)
+		iFitH = (iFitW * iPaneRatioH) / iPaneRatioW
+		if iFitH > iAvailH:
+			iFitH = iAvailH
+			iFitW = (iFitH * iPaneRatioW) / iPaneRatioH
+		if iFitW <= 0 or iFitH <= 0:
+			return
+
+		self.X_LEADERHEAD_LARGE_PANE = iAvailX + (iAvailW - iFitW) / 2
+		self.Y_LEADERHEAD_LARGE_PANE = iAvailY + (iAvailH - iFitH) / 2
+		self.W_LEADERHEAD_LARGE_PANE = iFitW
+		self.H_LEADERHEAD_LARGE_PANE = iFitH
+
+		self.W_LEADERHEAD_LARGE = self.W_LEADERHEAD_LARGE_PANE - 30
+		self.H_LEADERHEAD_LARGE = self.H_LEADERHEAD_LARGE_PANE - 34
+		if self.W_LEADERHEAD_LARGE <= 0 or self.H_LEADERHEAD_LARGE <= 0:
+			return
+		self.X_LEADERHEAD_LARGE = self.X_LEADERHEAD_LARGE_PANE + (self.W_LEADERHEAD_LARGE_PANE - self.W_LEADERHEAD_LARGE) / 2
+		self.Y_LEADERHEAD_LARGE = self.Y_LEADERHEAD_LARGE_PANE + (self.H_LEADERHEAD_LARGE_PANE - self.H_LEADERHEAD_LARGE) / 2 + 3
+		self.IS_LARGE_LEADERHEAD_ACTIVE = True
+
+
+	def placeLargeLeaderHeadPane(self):
+		if not self.IS_LARGE_LEADERHEAD_ACTIVE:
+			self.leaderWidgetLarge = None
+			return
+		screen = self.top.getScreen()
+		self.LEADERHEAD_LARGE_PANEL_WIDGET = self.top.getNextWidgetName()
+		screen.addPanel(self.LEADERHEAD_LARGE_PANEL_WIDGET, "", "", True, True, self.X_LEADERHEAD_LARGE_PANE, self.Y_LEADERHEAD_LARGE_PANE, self.W_LEADERHEAD_LARGE_PANE, self.H_LEADERHEAD_LARGE_PANE, PanelStyles.PANEL_STYLE_BLUE50)
+		self.leaderWidgetLarge = self.top.getNextWidgetName()
+		screen.addLeaderheadGFC(self.leaderWidgetLarge, self.iLeader, self.iSelectedAttitude, self.X_LEADERHEAD_LARGE, self.Y_LEADERHEAD_LARGE, self.W_LEADERHEAD_LARGE, self.H_LEADERHEAD_LARGE, WidgetTypes.WIDGET_GENERAL, -1, -1)
+
+
+	# <!-- custom: return currently active leaderhead widget IDs (small and/or large) so actions/key input keep working when one panel is disabled. (GPT-5.3-Codex) -->
+	def _getActiveLeaderWidgets(self):
+		listWidgets = []
+		if self.leaderWidget is not None:
+			listWidgets.append(self.leaderWidget)
+		if self.leaderWidgetLarge is not None:
+			listWidgets.append(self.leaderWidgetLarge)
+		return listWidgets
 
 
 
@@ -365,8 +463,12 @@ class SevoPediaLeader:
 		if self.iLeader < 0:
 			return 0
 		screen = self.top.getScreen()
-		screen.deleteWidget(self.leaderWidget)
-		screen.addLeaderheadGFC(self.leaderWidget, self.iLeader, self.iSelectedAttitude, self.X_LEADERHEAD, self.Y_LEADERHEAD, self.W_LEADERHEAD, self.H_LEADERHEAD, WidgetTypes.WIDGET_GENERAL, -1, -1)
+		if self.leaderWidget is not None:
+			screen.deleteWidget(self.leaderWidget)
+			screen.addLeaderheadGFC(self.leaderWidget, self.iLeader, self.iSelectedAttitude, self.X_LEADERHEAD, self.Y_LEADERHEAD, self.W_LEADERHEAD, self.H_LEADERHEAD, WidgetTypes.WIDGET_GENERAL, -1, -1)
+		if self.leaderWidgetLarge is not None:
+			screen.deleteWidget(self.leaderWidgetLarge)
+			screen.addLeaderheadGFC(self.leaderWidgetLarge, self.iLeader, self.iSelectedAttitude, self.X_LEADERHEAD_LARGE, self.Y_LEADERHEAD_LARGE, self.W_LEADERHEAD_LARGE, self.H_LEADERHEAD_LARGE, WidgetTypes.WIDGET_GENERAL, -1, -1)
 		return 1
 
 
@@ -543,11 +645,14 @@ class SevoPediaLeader:
 		# consider removing or remapping here. (GPT-5.2-Codex) -->
 		if (inputClass.getNotifyCode() == NotifyCode.NOTIFY_CHARACTER):
 			if (inputClass.getData() == int(InputTypes.KB_0)):
-				self.top.getScreen().performLeaderheadAction(self.leaderWidget, LeaderheadAction.LEADERANIM_GREETING)
+				for szWidget in self._getActiveLeaderWidgets():
+					self.top.getScreen().performLeaderheadAction(szWidget, LeaderheadAction.LEADERANIM_GREETING)
 			elif (inputClass.getData() == int(InputTypes.KB_6)):
-				self.top.getScreen().performLeaderheadAction(self.leaderWidget, LeaderheadAction.LEADERANIM_DISAGREE)
+				for szWidget in self._getActiveLeaderWidgets():
+					self.top.getScreen().performLeaderheadAction(szWidget, LeaderheadAction.LEADERANIM_DISAGREE)
 			elif (inputClass.getData() == int(InputTypes.KB_7)):
-				self.top.getScreen().performLeaderheadAction(self.leaderWidget, LeaderheadAction.LEADERANIM_AGREE)
+				for szWidget in self._getActiveLeaderWidgets():
+					self.top.getScreen().performLeaderheadAction(szWidget, LeaderheadAction.LEADERANIM_AGREE)
 			elif (inputClass.getData() == int(InputTypes.KB_1)):
 				return self.applyLeaderAttitude(AttitudeTypes.ATTITUDE_FRIENDLY)
 			elif (inputClass.getData() == int(InputTypes.KB_2)):
@@ -559,7 +664,8 @@ class SevoPediaLeader:
 			elif (inputClass.getData() == int(InputTypes.KB_5)):
 				return self.applyLeaderAttitude(AttitudeTypes.ATTITUDE_FURIOUS)
 			else:
-				self.top.getScreen().leaderheadKeyInput(self.leaderWidget, inputClass.getData())
+				for szWidget in self._getActiveLeaderWidgets():
+					self.top.getScreen().leaderheadKeyInput(szWidget, inputClass.getData())
 		return 0
 
 
@@ -574,5 +680,6 @@ class SevoPediaLeader:
 
 
 	def applyLeaderAction(self, iAction):
-		self.top.getScreen().performLeaderheadAction(self.leaderWidget, iAction)
+		for szWidget in self._getActiveLeaderWidgets():
+			self.top.getScreen().performLeaderheadAction(szWidget, iAction)
 		return 1

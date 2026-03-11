@@ -3,13 +3,12 @@
 This mod is a modified version of [AdvCiv-SAS (Simple Advanced Strategy)](https://github.com/wonderingabout/AdvCiv-SAS) ([Discussion thread here](https://forums.civfanatics.com/threads/advciv-sas-simple-advanced-strategy.699716/)), aiming to:
 
 - use it as a NIF gallery mod (non-playable)
-- make browsing much easier with the help of AdvCiv-SAS' sevopedia (search bar, keyboard UP/DOWN navigation, leader animation attitude (furious, annoyed, cautious, pleased, friendly) and action (noanim, greeting, agree, disagree) buttons) plus further adjustments (e.g., Leader gallery in sevopedia civilization)
+- make browsing much easier with the help of AdvCiv-SAS' sevopedia (search bar, keyboard UP/DOWN navigation, leader animation attitude (furious, annoyed, cautious, pleased, friendly) and action (noanim, greeting, agree, disagree) buttons) 
+- add further adjustments (e.g., Leader gallery in sevopedia civilization, optionally maximized leader NIF animation in sevopedia leader)
 - aggressively strip almost all assets (so it is lighter and since we don't need them), notably using `minOccurs="0"` for almost all leaderHead XML info, or by adding or modifying to functionally  empty base Civ4 XML like [CIV4PlotLSystem.xml](/Assets/XML/Buildings/CIV4PlotLSystem.xml) or [CIV4GameText_Events_BTS.xml](/Assets/XML/Text/CIV4GameText_Events_BTS.xml) (with a focus on heaviest ones using Wiztree to find them), resulting in very compact and lightweight XML mod (suits minimal leaderhead NIF Gallery need).
-- fix animations that had errors (e.g., Salasamina_3, Tandi Williams, etc.) or risky file structure design (e.g., Isabella_5 hard requiring folder name to be Isabella which risks conflicting with base BTS one: fixed by reimporting o, our NIF-Gallery mod all civ4 files from base civ4 (`Art0.FPK`) so leaderhead is modular)
+- fix animations that had errors (e.g., Salasamina_3, Tandi Williams, etc.) or risky file structure design (e.g., Isabella_5 hard requiring folder name to be Isabella which risks conflicting with base BTS one: fixed by reimporting in our NIF-Gallery mod all civ4 files from base civ4 (`Art0.FPK`) so leaderhead is modular)
 - add buttons for leaderheads that had none (e.g. Pope Joan), as of now a no border button to help identify the leader
 - leaderhead XML naming rule: reusing base Civ4 leader IDs as-is is forbidden (e.g., do not use `LEADER_BOUDICA` / `ART_DEF_LEADER_BOUDICA` for custom entries). Suffix from the first custom variant (e.g., `LEADER_BOUDICA_1`, `ART_DEF_LEADER_BOUDICA_1`) to avoid conflicts and hidden dependencies. `ZENOBIA` naming is fine only when it is not a base-Civ4 leader ID. If not enforced, while some leaders may run, it is likely to cause issues in the long run one way or another, so we do not use base civ4 names for leaders (`_1` suffix is added to said name instead).
-
-Since it is based on AdvCiv-SAS, you can notably use AdvCiv-SAS features like keyboard UP/DOWN navigation and search bar in Sevopedia.
 
 For documentation, see AdvCiv-SAS' github page rather.
 
