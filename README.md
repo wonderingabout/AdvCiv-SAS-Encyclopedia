@@ -1,6 +1,10 @@
 # AdvCiv-SAS (Simple Advanced Strategy)
 
-This mod is a modified version of [AdvCiv-SAS (Simple Advanced Strategy)](https://github.com/wonderingabout/AdvCiv-SAS) ([Discussion thread here](https://forums.civfanatics.com/threads/advciv-sas-simple-advanced-strategy.699716/)), aiming to:
+This mod is a modified version of [AdvCiv-SAS (Simple Advanced Strategy)](https://github.com/wonderingabout/AdvCiv-SAS) ([Discussion thread here](https://forums.civfanatics.com/threads/advciv-sas-simple-advanced-strategy.699716/))
+
+It is now available as AdvCiv-SAS-NIF-Gallery (Female Leaderheads) on [CFC](https://forums.civfanatics.com/resources/advciv-sas-nif-gallery-female-leaderheads.32737/) and on [ModDB](https://www.moddb.com/mods/advciv-sas-nif-gallery-female-leaderheads).
+
+This mod aims to:
 
 - use it as a NIF gallery mod (non-playable)
 - make browsing much easier with the help of AdvCiv-SAS' sevopedia (search bar, keyboard UP/DOWN navigation, leader animation attitude (furious, annoyed, cautious, pleased, friendly) and action (noanim, greeting, agree, disagree) buttons) 
@@ -37,6 +41,7 @@ For License and Reuse, see [License and reuse](/README.md#license-and-reuse).
 [LLM Agents (Debugging/Fixing Leaderheads)](/README.md#llm-agents-debuggingfixing-leaderheads)  
 &emsp;&emsp;[Example of Leaderhead fix 1](/README.md#example-of-leaderhead-fix-1)  
 &emsp;&emsp;[Example of Leaderhead fix 2](/README.md#example-of-leaderhead-fix-2)  
+[PakBuild settings (for the FPK version)](/README.md#pakbuild-settings-for-the-fpk-version)  
 &emsp;[Temporary Errors](/README.md#temporary-errors)  
 [UnicodeDecodeError: 'ascii' codec can't decode byte 0xff in position 0: ordinal not in range](/README.md#unicodedecodeerror-ascii-codec-cant-decode-byte-0xff-in-position-0-ordinal-not-in-range)  
 [Copyright and Disclaimer](/README.md#copyright-and-disclaimer)  
@@ -229,6 +234,14 @@ Fixed:
 
 <img src="./_1_AdvCiv-SAS/Images/leaderheads/nur_jahan_issue.JPG" alt="nur_jahan_issue.JPG" width="150"></img>
 <img src="./_1_AdvCiv-SAS/Images/leaderheads/nur_jahan_fixed.JPG" alt="nur_jahan_fixed.JPG" width="150"></img>
+
+## PakBuild settings (for the FPK version)
+
+For the FPK version, i used PakBuild, notably i could use this [YouTube tutorial](https://www.youtube.com/watch?v=TthydFMXXV0) by topsecret, that helped a lot in figuring out how to create FPKs.
+
+Although i am not knowledgeable to know for sure, i suspect notably that using instead unlike in the tutorial a `Compression Level (0)` instead of leaving default (6) likely further helps load times, but again it is pure speculation. However this ~1.52GB / 195 Leaderheads / 6293 files FPK loads almost instantly on Dragon UnPACKer 5 unlike much smaller FPKs from other mods.
+
+<img src="./_1_AdvCiv-SAS/Images/tools/pakbuild_settings.PNG" alt="/pakbuild_settings.PNG" width="150"></img>
 
 ## Temporary Errors
 
