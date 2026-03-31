@@ -87,6 +87,7 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 - SevoMod 3.0: Isabella 16 (Boadicea), Isabella 17 (Maria), Isabella 19 (Anne (isabella_noshader.nif))
 - WoC 1.2 (WoC_Full-v1_20-setup.exe): Isabella 18 (Dido)
 - Amra v210 (Amra v210.7z): Elizabeth 05 (Zenobia)
+- Women of the Sword 1.02: Aspasia of Miletus, Dido 14 (Trung Trac) (note: .psd was removed in our mod so Leaderhead remains lightweight, available in the original source)
 
 #### Female Non-Human (Modpacks)
 

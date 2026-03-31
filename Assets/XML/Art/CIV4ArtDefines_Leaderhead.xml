@@ -1681,5 +1681,23 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<NoShaderNIF>Art/Leaderheads/Nefertiti_03/Nefertiti.nif</NoShaderNIF>
 			<BackgroundKFM>Art/Leaderheads/Nefertiti_03/Nefertiti_BG.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
+		<!-- custom: .psd was removed in our mod so Leaderhead remains lightweight, available in the original source (Claude code Sonnet 4.6) -->
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_DIDO_14</Type>
+			<Button>Art/LeaderHeads/Dido_14/trung.dds</Button>
+			<NIF>Art/LeaderHeads/Dido_14/Dido_Toga.nif</NIF>
+			<KFM>Art/LeaderHeads/Dido_14/isabella.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Dido_14/Dido_Toga_Nonshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Dido_14/Isabella_BG.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<!-- custom: button replaced because the original used seemingly real-life art, unneeded and not representative of the in-game leaderhead appearance (Claude code Sonnet 4.6) -->
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_ASPASIA</Type>
+			<Button>Art/LeaderHeads/Aspasia/aspasia_64px_no_border.dds</Button>
+			<NIF>Art/LeaderHeads/Aspasia/isabella.nif</NIF>
+			<KFM>Art/LeaderHeads/Aspasia/isabella.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Aspasia/isabella_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Aspasia/isabella_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
 	</LeaderheadArtInfos>
 </Civ4ArtDefines>
