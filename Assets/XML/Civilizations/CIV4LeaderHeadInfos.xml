@@ -188,9 +188,11 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<Description>TXT_KEY_LEADER_LIEU_YE</Description>
 			<ArtDefineTag>ART_DEF_LEADER_LIEU_YE</ArtDefineTag>
 		</LeaderHeadInfo>
+		<!-- custom: add pedia entry to notify of the crash -->
 		<LeaderHeadInfo>
 			<Type>LEADER_NANYE_HI</Type>
 			<Description>TXT_KEY_LEADER_NANYE_HI</Description>
+			<Civilopedia>TXT_KEY_LEADER_NANYE_HI_PEDIA</Civilopedia>
 			<ArtDefineTag>ART_DEF_LEADER_NANYE_HI</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>

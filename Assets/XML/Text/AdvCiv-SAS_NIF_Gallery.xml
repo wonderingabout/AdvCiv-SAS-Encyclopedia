@@ -88,6 +88,10 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<English>Nanye-hi (Tomyris)</English>
 	</TEXT>
 	<TEXT>
+		<Tag>TXT_KEY_LEADER_NANYE_HI_PEDIA</Tag>
+		<English>Note: a crash seemingly occurs when navigating leader entries with keyboard Up/Down arrows around this leader. See KI-NIF#1.</English>
+	</TEXT>
+	<TEXT>
 		<Tag>TXT_KEY_LEADER_TRUNG_SISTERS</Tag>
 		<English>Trung Sisters</English>
 	</TEXT>

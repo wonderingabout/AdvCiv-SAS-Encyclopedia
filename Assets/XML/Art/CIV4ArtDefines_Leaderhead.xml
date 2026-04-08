@@ -134,6 +134,7 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<NoShaderNIF>Art/LeaderHeads/Lieu_Ye/asoka.nif</NoShaderNIF>
 			<BackgroundKFM>Art/LeaderHeads/Lieu_Ye/catherine_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
+		<!-- custom: Sevopedia leader list navigation with keyboard arrows can crash around Nanye-hi (Tomyris). See KI-NIF#1. (GPT-5.3-Codex) -->
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_NANYE_HI</Type>
 			<Button>Art/LeaderHeads/Nanye_Hi/Button_Tomyris.dds</Button>
@@ -1090,6 +1091,7 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<BackgroundKFM>Art/LeaderHeads/Maria_Eleonora/isabella_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
+			<!-- custom: KI-NIF#1 context note: this nearby art def was observed in the same local navigation zone while reproducing the Nanye-hi (Tomyris) crash in Sevopedia keyboard Up/Down navigation. (GPT-5.3-Codex) -->
 			<Type>ART_DEF_LEADER_MISS_SANTA</Type>
 			<Button>Art/LeaderHeads/Miss_Santa/miss_santa.dds</Button>
 			<NIF>Art/LeaderHeads/Miss_Santa/Charlemagne.nif</NIF>
