@@ -88,6 +88,7 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 - WoC 1.2 (WoC_Full-v1_20-setup.exe): Isabella 18 (Dido)
 - Amra v210 (Amra v210.7z): Elizabeth 05 (Zenobia)
 - Women of the Sword 1.02: Aspasia of Miletus, Dido 14 (Trung Trac) (note: .psd was removed in our mod so Leaderhead remains lightweight, available in the original source)
+- A New Dawn (A New Dawn v1.1.rar): Elizabeth 10 (Wilhelmina 02)
 
 #### Female Non-Human (Modpacks)
 

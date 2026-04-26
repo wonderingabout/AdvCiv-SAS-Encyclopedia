@@ -852,4 +852,8 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<Tag>TXT_KEY_LEADER_NEFERTITI_03</Tag>
 		<English>Nefertiti 03 (isabella.nif)</English>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ELIZABETH_10</Tag>
+		<English>Elizabeth 10 (Wilhelmina 02)</English>
+	</TEXT>
 </Civ4GameText>

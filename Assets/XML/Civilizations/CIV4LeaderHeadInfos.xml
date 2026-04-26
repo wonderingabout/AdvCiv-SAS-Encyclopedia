@@ -1138,5 +1138,10 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<Description>TXT_KEY_LEADER_NEFERTITI_03</Description>
 			<ArtDefineTag>ART_DEF_LEADER_NEFERTITI_03</ArtDefineTag>
 		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_ELIZABETH_10</Type>
+			<Description>TXT_KEY_LEADER_ELIZABETH_10</Description>
+			<ArtDefineTag>ART_DEF_LEADER_ELIZABETH_10</ArtDefineTag>
+		</LeaderHeadInfo>
 	</LeaderHeadInfos>
 </Civ4LeaderHeadInfos>
