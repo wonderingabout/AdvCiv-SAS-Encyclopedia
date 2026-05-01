@@ -2185,4 +2185,9 @@ Created as part of AdvCiv-SAS improvements
 		<Tag>TXT_KEY_MISC_HELP_OBSOLETE_BUILDING_COMMERCE</Tag>
 		<English>[ICON_BULLET]%D1%F2 from Obsolete Buildings</English>
 	</TEXT>
+	<!-- custom: footer Clear button to reset session-persistent Sevopedia Back/Next history without closing the game. (GPT-5.5) -->
+	<TEXT>
+		<Tag>TXT_KEY_PEDIA_SAS_CLEAR</Tag>
+		<English>Clear</English>
+	</TEXT>
 </Civ4GameText>

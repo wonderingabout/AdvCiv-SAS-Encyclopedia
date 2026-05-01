@@ -90,6 +90,7 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 		self.INDEX_ID		= "PediaMainIndex"
 		self.BACK_ID		= "PediaMainBack"
 		self.NEXT_ID		= "PediaMainForward"
+		self.SAS_CLEAR_ID = "PediaMainClear"
 		self.EXIT_ID		= "PediaMainExit"
 		self.CATEGORY_LIST_ID	= "PediaMainCategoryList"
 		self.ITEM_LIST_ID	= "PediaMainItemList"
@@ -209,6 +210,9 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 		self.Y_BACK = Y_FOOTER_CONTROLS
 		self.X_NEXT = 133 + (self.W_SCREEN // 2) # advc.004y: was 645
 		self.Y_NEXT = Y_FOOTER_CONTROLS
+		# <!-- custom: place Clear near the Legend footer link, opposite Exit and visually separate from Back/Next. (GPT-5.5) -->
+		self.SAS_X_CLEAR = self.X_TOC + 120
+		self.SAS_Y_CLEAR = Y_FOOTER_CONTROLS
 		self.X_EXIT = self.W_SCREEN - 30 # advc.004y: was 994
 		self.Y_EXIT = Y_FOOTER_CONTROLS
 
@@ -581,13 +585,14 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 		if self.SAS_lastPediaJump is not None:
 			current = self.SAS_lastPediaJump
 		elif self.pediaHistory:
-			current = self.pediaHistory.pop()
+			current = self.pediaHistory[-1]
 		else:
 			# <!-- custom: default to the first row in SAS_CATEGORY_DEFS, so the opening category always
 			# matches the current category order instead of being hardcoded to Techs. (GPT-5.2-Codex) -->
 			current = (SevoScreenEnums.PEDIA_MAIN, self.SAS_CATEGORY_DEFS[0][0])
-		self.pediaFuture = []
-		self.pediaHistory = []
+		# <!-- custom: keep Back/Next history across closing and reopening Sevopedia during the same game session.
+		# This lets players inspect several entries (e.g. Leader AIP pages), exit to the map, reopen Sevopedia,
+		# and still use Back/Next instead of rebuilding the same navigation chain. See KI#125. (GPT-5.5) -->
 		self.pediaJump(current[0], current[1], False, True)
 
 
@@ -730,6 +735,7 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 				screen.setText(self.INDEX_ID, "Background", self.INDEX_TEXT, CvUtil.FONT_LEFT_JUSTIFY, self.X_INDEX, self.Y_INDEX, 0, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_GENERAL,      -1, -1)
 			screen.show(self.BACK_ID)
 			screen.show(self.NEXT_ID)
+			screen.show(self.SAS_CLEAR_ID)
 
 		if not self.isContentsShowing() or self.iCategory != iCategory or bForce:
 			BugUtil.debug("Drawing item list %d" % iCategory)
@@ -775,6 +781,7 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 		screen.setText(self.INDEX_ID, "Background", self.INDEX_ACTIVE_TEXT, CvUtil.FONT_LEFT_JUSTIFY, self.X_INDEX, self.Y_INDEX, 0, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_GENERAL,      -1, -1)
 		screen.hide(self.BACK_ID)
 		screen.hide(self.NEXT_ID)
+		screen.hide(self.SAS_CLEAR_ID)
 		self.pediaIndex.interfaceScreen()
 		self.tab = self.TAB_INDEX
 	
@@ -793,6 +800,7 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 		self.HEAD_TEXT = u"<font=4b>" + localText.getText("TXT_KEY_CIVILOPEDIA_TITLE",      ())         + u"</font>"
 		self.BACK_TEXT = u"<font=4>"  + localText.getText("TXT_KEY_PEDIA_SCREEN_BACK",    ()).upper() + u"</font>"
 		self.NEXT_TEXT = u"<font=4>"  + localText.getText("TXT_KEY_PEDIA_SCREEN_FORWARD", ()).upper() + u"</font>"
+		self.SAS_CLEAR_TEXT = u"<font=4>" + localText.getText("TXT_KEY_PEDIA_SAS_CLEAR", ()).upper() + u"</font>"
 		self.EXIT_TEXT = u"<font=4>"  + localText.getText("TXT_KEY_PEDIA_SCREEN_EXIT",    ()).upper() + u"</font>"
 		
 		self.TOC_TEXT = u"<font=4>"  + localText.getText("TXT_KEY_PEDIA_SCREEN_CONTENTS", ()).upper() + u"</font>"
@@ -862,9 +870,10 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 		screen.setDimensions(X_SCREEN, Y_SCREEN, self.W_SCREEN, self.H_SCREEN)
 
 		screen.setText(self.HEAD_ID, "Background", self.HEAD_TEXT, CvUtil.FONT_CENTER_JUSTIFY, self.X_TITLE, self.Y_TITLE, 0, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_GENERAL,      -1, -1)
-		screen.setText(self.BACK_ID, "Background", self.BACK_TEXT, CvUtil.FONT_LEFT_JUSTIFY,   self.X_BACK,  self.Y_BACK,  0, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_PEDIA_BACK,    1, -1)
-		screen.setText(self.NEXT_ID, "Background", self.NEXT_TEXT, CvUtil.FONT_LEFT_JUSTIFY,   self.X_NEXT,  self.Y_NEXT,  0, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_PEDIA_FORWARD, 1, -1)
-		screen.setText(self.EXIT_ID, "Background", self.EXIT_TEXT, CvUtil.FONT_RIGHT_JUSTIFY,  self.X_EXIT,  self.Y_EXIT,  0, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_CLOSE_SCREEN, -1, -1)
+		screen.setText(self.BACK_ID,     "Background", self.BACK_TEXT,      CvUtil.FONT_LEFT_JUSTIFY,  self.X_BACK,      self.Y_BACK,      0, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_PEDIA_BACK,    1, -1)
+		screen.setText(self.NEXT_ID,     "Background", self.NEXT_TEXT,      CvUtil.FONT_LEFT_JUSTIFY,  self.X_NEXT,      self.Y_NEXT,      0, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_PEDIA_FORWARD, 1, -1)
+		screen.setText(self.SAS_CLEAR_ID,"Background", self.SAS_CLEAR_TEXT, CvUtil.FONT_LEFT_JUSTIFY,  self.SAS_X_CLEAR, self.SAS_Y_CLEAR, 0, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_GENERAL,      -1, -1)
+		screen.setText(self.EXIT_ID,     "Background", self.EXIT_TEXT,      CvUtil.FONT_RIGHT_JUSTIFY, self.X_EXIT,      self.Y_EXIT,      0, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_CLOSE_SCREEN, -1, -1)
 
 
 
@@ -2059,6 +2068,17 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 		return 1
 
 
+	def SAS_clearNavigation(self):
+		self.pediaFuture = []
+		if self.SAS_lastPediaJump is not None:
+			self.pediaHistory = [self.SAS_lastPediaJump]
+		elif self.iCategory != -1:
+			self.pediaHistory = [(self.iCategory, self.iItem)]
+		else:
+			self.pediaHistory = []
+		return 1
+
+
 
 	def link(self, szLink):
 		iCategory = self.SAS_mainLinkToCategory.get(szLink, None)
@@ -2113,6 +2133,10 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 
 		# <!-- custom: clear button click (chatgpt 5.2 + claude opus 4.5) -->
 		if inputClass.getNotifyCode() == NotifyCode.NOTIFY_CLICKED:
+			if inputClass.getFunctionName() == self.SAS_CLEAR_ID:
+				# <!-- custom: manual reset for session-persistent Sevopedia Back/Next history; keeps the current page only
+				# so players can recover a clean navigation chain without closing the game. (GPT-5.5) -->
+				return self.SAS_clearNavigation()
 			if inputClass.getFunctionName() == self.SAS_SEARCH_CLEAR_ID:
 				if self.SAS_isSearchActive():
 					self.SAS_szSearchString = u""
