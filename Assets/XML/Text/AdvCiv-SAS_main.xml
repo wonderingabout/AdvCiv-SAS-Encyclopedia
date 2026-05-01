@@ -1575,7 +1575,7 @@ Created as part of AdvCiv-SAS improvements
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_BUILDING_PROVIDES_AREA_CLEAN_POWER_IN_THIS_CITY_CLEAN_OR_DIRTY_QUESTION</Tag>
-		<English>; as for in this City specifically rather instead, i (advciv-sas developer/maintainer) don't know if clean in all cities overrides dirty in this city specifically or if if dirty in this city specifically adds up (only in this city) to clean power health change from all cities so showing both for this city, so in this city clean power ([ICON_POWER]) (or dirty power ([ICON_POWER]) ?): </English>
+		<English></English>
 	</TEXT>
 	<TEXT>
 		<Tag>TXT_KEY_BUILDING_PROVIDES_AREA_CLEAN_POWER_IN_THIS_CITY_CLEAN</Tag>

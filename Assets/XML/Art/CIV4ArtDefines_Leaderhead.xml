@@ -919,11 +919,11 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_MARIA_ELEONORA</Type>
-			<Button>Art/LeaderHeads/Maria_Elenora/Btn_LH_dutch.dds</Button>
-			<NIF>Art/LeaderHeads/Maria_Elenora/maria_elenora.nif</NIF>
-			<KFM>Art/LeaderHeads/Maria_Elenora/maria_elenora.kfm</KFM>
-			<NoShaderNIF>Art/LeaderHeads/Maria_Elenora/maria_elenora.nif</NoShaderNIF>
-			<BackgroundKFM>Art/LeaderHeads/Maria_Elenora/maria_elenora_bg.kfm</BackgroundKFM>
+			<Button>Art/LeaderHeads/Maria_Eleonora/Btn_LH_dutch.dds</Button>
+			<NIF>Art/LeaderHeads/Maria_Eleonora/maria_elenora.nif</NIF>
+			<KFM>Art/LeaderHeads/Maria_Eleonora/maria_elenora.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Maria_Eleonora/maria_elenora.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Maria_Eleonora/maria_elenora_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_MIRANDA_LAWSON</Type>
@@ -1084,11 +1084,11 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_MARIA_ELEONORA_02</Type>
-			<Button>Art/LeaderHeads/Maria_Eleonora/btn_lh_maria_elenora.dds</Button>
-			<NIF>Art/LeaderHeads/Maria_Eleonora/maria_eleonora.nif</NIF>
-			<KFM>Art/LeaderHeads/Maria_Eleonora/maria_eleonora.kfm</KFM>
-			<NoShaderNIF>Art/LeaderHeads/Maria_Eleonora/maria_eleonora.nif</NoShaderNIF>
-			<BackgroundKFM>Art/LeaderHeads/Maria_Eleonora/isabella_bg.kfm</BackgroundKFM>
+			<Button>Art/LeaderHeads/Maria_Eleonora_02/btn_lh_maria_elenora.dds</Button>
+			<NIF>Art/LeaderHeads/Maria_Eleonora_02/maria_eleonora.nif</NIF>
+			<KFM>Art/LeaderHeads/Maria_Eleonora_02/maria_eleonora.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Maria_Eleonora_02/maria_eleonora.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Maria_Eleonora_02/isabella_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<!-- custom: KI-NIF#1 context note: this nearby art def was observed in the same local navigation zone while reproducing the Nanye-hi (Tomyris) crash in Sevopedia keyboard Up/Down navigation. (GPT-5.3-Codex) -->
