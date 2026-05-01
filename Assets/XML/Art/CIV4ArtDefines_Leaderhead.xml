@@ -1709,5 +1709,14 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<NoShaderNIF>Art/Leaderheads/Elizabeth_10/elizabeth_noshader.nif</NoShaderNIF>
 			<BackgroundKFM>Art/Leaderheads/Elizabeth_10/elizabeth_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
+		<!-- custom: Victoria 12 assets imported from Victoria 00 (in "C:\Program Files (x86)\Steam\steamapps\common\Sid Meier's Civilization IV Beyond the Sword\Assets\Art0.FPK") into Victoria_12/ folder to avoid folder name collision and allow easy export of this leaderhead; existing Victoria_12 files were not overwritten (Claude code Sonnet 4.6) -->
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_VICTORIA_12</Type>
+			<Button>,Art/interface/LeaderHeads/Btn_LH_England_Victoria.dds,Art/Interface/Buttons/Actions_Builds_LeaderHeads_Specialists_Atlas.dds,6,13</Button>
+			<NIF>Art/Leaderheads/Victoria_12/victoria.nif</NIF>
+			<KFM>Art/Leaderheads/Victoria_12/victoria.kfm</KFM>
+			<NoShaderNIF>Art/Leaderheads/Victoria_12/victoria_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/Leaderheads/Victoria_12/Victoria_BG.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
 	</LeaderheadArtInfos>
 </Civ4ArtDefines>

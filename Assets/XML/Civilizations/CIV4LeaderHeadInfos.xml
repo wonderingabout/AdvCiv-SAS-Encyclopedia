@@ -1143,5 +1143,10 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<Description>TXT_KEY_LEADER_ELIZABETH_10</Description>
 			<ArtDefineTag>ART_DEF_LEADER_ELIZABETH_10</ArtDefineTag>
 		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_VICTORIA_12</Type>
+			<Description>TXT_KEY_LEADER_VICTORIA_12</Description>
+			<ArtDefineTag>ART_DEF_LEADER_VICTORIA_12</ArtDefineTag>
+		</LeaderHeadInfo>
 	</LeaderHeadInfos>
 </Civ4LeaderHeadInfos>
