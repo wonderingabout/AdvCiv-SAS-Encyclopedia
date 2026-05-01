@@ -723,10 +723,11 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 			self.SAS_setItemsWidth(iLeaderItemsWidth)
 		else:
 			self.SAS_setItemsWidth(self.SAS_W_ITEMS_BASE)
+		screen = self.getScreen()
+		self.SAS_setFooterNavigationTexts(screen, iCategory)
 		if not self.isContentsShowing():
 			BugUtil.debug("Drawing category list")
 			self.placeCategories(iCategory)
-			screen = self.getScreen()
 			if not self.SAS_USE_BOTTOM_TABS:
 				self.SAS_safeDeleteWidget(screen, self.TOC_ID)
 				self.SAS_safeDeleteWidget(screen, self.INDEX_ID)
@@ -802,6 +803,11 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 		self.NEXT_TEXT = u"<font=4>"  + localText.getText("TXT_KEY_PEDIA_SCREEN_FORWARD", ()).upper() + u"</font>"
 		self.SAS_CLEAR_TEXT = u"<font=4>" + localText.getText("TXT_KEY_PEDIA_SAS_CLEAR", ()).upper() + u"</font>"
 		self.EXIT_TEXT = u"<font=4>"  + localText.getText("TXT_KEY_PEDIA_SCREEN_EXIT",    ()).upper() + u"</font>"
+		# <!-- custom: build grey labels for global footer controls that stay visible but may be inactive. See KI#126. (GPT-5.5) -->
+		eLightGrey = gc.getInfoTypeForString("COLOR_LIGHT_GREY")
+		self.BACK_TEXT_DISABLED      = u"<font=4>" + localText.changeTextColor(localText.getText("TXT_KEY_PEDIA_SCREEN_BACK",    ()).upper(), eLightGrey) + u"</font>"
+		self.NEXT_TEXT_DISABLED      = u"<font=4>" + localText.changeTextColor(localText.getText("TXT_KEY_PEDIA_SCREEN_FORWARD", ()).upper(), eLightGrey) + u"</font>"
+		self.SAS_CLEAR_TEXT_DISABLED = u"<font=4>" + localText.changeTextColor(localText.getText("TXT_KEY_PEDIA_SAS_CLEAR",     ()).upper(), eLightGrey) + u"</font>"
 		
 		self.TOC_TEXT = u"<font=4>"  + localText.getText("TXT_KEY_PEDIA_SCREEN_CONTENTS", ()).upper() + u"</font>"
 		self.INDEX_TEXT = u"<font=4>"  + localText.getText("TXT_KEY_PEDIA_SCREEN_INDEX",  ()).upper() + u"</font>"
@@ -2076,7 +2082,30 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 			self.pediaHistory = [(self.iCategory, self.iItem)]
 		else:
 			self.pediaHistory = []
+		self.SAS_setFooterNavigationTexts(self.getScreen(), self.iCategory)
 		return 1
+
+	def SAS_setFooterNavigationTexts(self, screen, iCategory):
+		bCanBack = (len(self.pediaHistory) > 1)
+		bCanForward = (len(self.pediaFuture) > 0)
+		bCanClear = (bCanBack or bCanForward)
+		if bCanBack:
+			szBackText = self.BACK_TEXT
+		else:
+			szBackText = self.BACK_TEXT_DISABLED
+		if bCanForward:
+			szNextText = self.NEXT_TEXT
+		else:
+			szNextText = self.NEXT_TEXT_DISABLED
+		if bCanClear:
+			szClearText = self.SAS_CLEAR_TEXT
+		else:
+			szClearText = self.SAS_CLEAR_TEXT_DISABLED
+		# <!-- custom: keep footer controls stable but grey Back/Next/Clear when they have no effect. (GPT-5.5) -->
+		screen.setText(self.BACK_ID,      "Background", szBackText,     CvUtil.FONT_LEFT_JUSTIFY,  self.X_BACK,      self.Y_BACK,      0, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_PEDIA_BACK,    1, -1)
+		screen.setText(self.NEXT_ID,      "Background", szNextText,     CvUtil.FONT_LEFT_JUSTIFY,  self.X_NEXT,      self.Y_NEXT,      0, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_PEDIA_FORWARD, 1, -1)
+		screen.setText(self.SAS_CLEAR_ID, "Background", szClearText,   CvUtil.FONT_LEFT_JUSTIFY,  self.SAS_X_CLEAR, self.SAS_Y_CLEAR, 0, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_GENERAL,      -1, -1)
+		screen.setText(self.EXIT_ID,      "Background", self.EXIT_TEXT, CvUtil.FONT_RIGHT_JUSTIFY, self.X_EXIT,      self.Y_EXIT,      0, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_CLOSE_SCREEN, -1, -1)
 
 
 
