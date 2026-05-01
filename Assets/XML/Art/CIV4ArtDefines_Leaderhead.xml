@@ -1718,5 +1718,14 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<NoShaderNIF>Art/Leaderheads/Victoria_12/victoria_noshader.nif</NoShaderNIF>
 			<BackgroundKFM>Art/Leaderheads/Victoria_12/Victoria_BG.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
+		<!-- custom: note: Nanye-hi 04 implements SaibotLieh's leaderhead fixes (Claude code Sonnet 4.6) -->
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_NANYE_HI_04</Type>
+			<Button>Art/Leaderheads/Nanye_Hi_04/Button_Tomyris.dds</Button>
+			<NIF>Art/Leaderheads/Nanye_Hi_04/Tomyrisnewest.nif</NIF>
+			<KFM>Art/LeaderHeads/Boudica/Boudica.kfm</KFM>
+			<NoShaderNIF>Art/Leaderheads/Nanye_Hi_04/Tomyrisnewest.nif</NoShaderNIF>
+			<BackgroundKFM>Art/Leaderheads/Nanye_Hi_04/Pericles_BG.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
 	</LeaderheadArtInfos>
 </Civ4ArtDefines>

@@ -166,6 +166,7 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 - @esnaz: Isabella 22 (Theodora 03) (https://forums.civfanatics.com/resources/bts-empress-theodora.6717/)
 - @GarretSidzaka: Isabella 12 (No Crown) (https://forums.civfanatics.com/resources/no-crown-izzy.6640/)
 - @esnaz: Isabella 14 (Celtic Boudica), Isabella 15 (Celtic Boudica (isabella_noshader.nif)) (https://forums.civfanatics.com/resources/boudica.3834/)
+- @tantanmen & @SaibotLieh: Nanye-hi 04 (Tomyris 02) (https://forums.civfanatics.com/threads/leveling-up-lh-creation.673934/post-16177346)
 
 #### Female Non-Human (CFC)
 

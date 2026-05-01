@@ -860,4 +860,8 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<Tag>TXT_KEY_LEADER_VICTORIA_12</Tag>
 		<English>Victoria 12</English>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_NANYE_HI_04</Tag>
+		<English>Nanye-hi 04 (Tomyris 02)</English>
+	</TEXT>
 </Civ4GameText>
