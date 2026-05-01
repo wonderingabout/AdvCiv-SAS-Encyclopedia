@@ -864,4 +864,12 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<Tag>TXT_KEY_LEADER_NANYE_HI_04</Tag>
 		<English>Nanye-hi 04 (Tomyris 02)</English>
 	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ANA_NZINGA_03</Tag>
+		<English>Ana Nzinga 03 (Michaelle Jean)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_SALAMASINA_13</Tag>
+		<English>Salamasina 13 (Shin Sawbu)</English>
+	</TEXT>
 </Civ4GameText>

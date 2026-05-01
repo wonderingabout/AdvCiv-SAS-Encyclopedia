@@ -1727,5 +1727,21 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<NoShaderNIF>Art/Leaderheads/Nanye_Hi_04/Tomyrisnewest.nif</NoShaderNIF>
 			<BackgroundKFM>Art/Leaderheads/Nanye_Hi_04/Pericles_BG.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_ANA_NZINGA_03</Type>
+			<Button>Art/Leaderheads/Ana_Nzinga_03/Leaderheads4_atlas_2_5.dds</Button>
+			<NIF>Art/Leaderheads/Ana_Nzinga_03/AnaNzinga2.nif</NIF>
+			<KFM>Art/Leaderheads/Ana_Nzinga_03/Atotoztli.kfm</KFM>
+			<NoShaderNIF>Art/Leaderheads/Ana_Nzinga_03/AnaNzinga2.nif</NoShaderNIF>
+			<BackgroundKFM>Art/Leaderheads/Ana_Nzinga_03/Arawak_BG.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_SALAMASINA_13</Type>
+			<Button>Art/Leaderheads/Salamasina_13/LeaderHeads4_Atlas_8_7.dds</Button>
+			<NIF>Art/Leaderheads/Salamasina_13/SalmasinaFinal Inverted.nif</NIF>
+			<KFM>Art/Leaderheads/Salamasina_13/hatshepsut.kfm</KFM>
+			<NoShaderNIF>Art/Leaderheads/Salamasina_13/SalmasinaFinal Inverted.nif</NoShaderNIF>
+			<BackgroundKFM>Art/Leaderheads/Salamasina_13/shaka_BG.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
 	</LeaderheadArtInfos>
 </Civ4ArtDefines>

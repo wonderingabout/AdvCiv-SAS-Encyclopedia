@@ -1153,5 +1153,15 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<Description>TXT_KEY_LEADER_NANYE_HI_04</Description>
 			<ArtDefineTag>ART_DEF_LEADER_NANYE_HI_04</ArtDefineTag>
 		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_ANA_NZINGA_03</Type>
+			<Description>TXT_KEY_LEADER_ANA_NZINGA_03</Description>
+			<ArtDefineTag>ART_DEF_LEADER_ANA_NZINGA_03</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_SALAMASINA_13</Type>
+			<Description>TXT_KEY_LEADER_SALAMASINA_13</Description>
+			<ArtDefineTag>ART_DEF_LEADER_SALAMASINA_13</ArtDefineTag>
+		</LeaderHeadInfo>
 	</LeaderHeadInfos>
 </Civ4LeaderHeadInfos>
