@@ -1163,5 +1163,20 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<Description>TXT_KEY_LEADER_SALAMASINA_13</Description>
 			<ArtDefineTag>ART_DEF_LEADER_SALAMASINA_13</ArtDefineTag>
 		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_DIDO_15</Type>
+			<Description>TXT_KEY_LEADER_DIDO_15</Description>
+			<ArtDefineTag>ART_DEF_LEADER_DIDO_15</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_GREEK_QUEEN_02</Type>
+			<Description>TXT_KEY_LEADER_GREEK_QUEEN_02</Description>
+			<ArtDefineTag>ART_DEF_LEADER_GREEK_QUEEN_02</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_WU_QINGHUA_02</Type>
+			<Description>TXT_KEY_LEADER_WU_QINGHUA_02</Description>
+			<ArtDefineTag>ART_DEF_LEADER_WU_QINGHUA_02</ArtDefineTag>
+		</LeaderHeadInfo>
 	</LeaderHeadInfos>
 </Civ4LeaderHeadInfos>

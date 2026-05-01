@@ -1743,5 +1743,31 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<NoShaderNIF>Art/Leaderheads/Salamasina_13/SalmasinaFinal Inverted.nif</NoShaderNIF>
 			<BackgroundKFM>Art/Leaderheads/Salamasina_13/shaka_BG.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
+		<!-- custom: .psd not included for Dido 15 to keep leaderhead lightweight; available in downloaded source (Claude code Sonnet 4.6) -->
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_DIDO_15</Type>
+			<Button>Art/Leaderheads/Dido_15/Leaderheads4_atlas_4_5.dds</Button>
+			<NIF>Art/Leaderheads/Dido_15/dido_toga.nif</NIF>
+			<KFM>Art/Leaderheads/Dido_15/isabella.kfm</KFM>
+			<NoShaderNIF>Art/Leaderheads/Dido_15/Dido_Toga.nif</NoShaderNIF>
+			<BackgroundKFM>Art/Leaderheads/Dido_15/Isabella_BG.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<!-- custom: .xcf not included for Greek Queen 02 to keep leaderhead lightweight; available in downloaded source (Claude code Sonnet 4.6) -->
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_GREEK_QUEEN_02</Type>
+			<Button>Art/Leaderheads/Greek_Queen_02/Leaderheads3_atlas_8_10.dds</Button>
+			<NIF>Art/Leaderheads/Greek_Queen_02/Teuta.nif</NIF>
+			<KFM>Art/Leaderheads/Greek_Queen_02/isabella.kfm</KFM>
+			<NoShaderNIF>Art/Leaderheads/Greek_Queen_02/Teuta.nif</NoShaderNIF>
+			<BackgroundKFM>Art/Leaderheads/Greek_Queen_02/isabella_bg.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_WU_QINGHUA_02</Type>
+			<Button>Art/Leaderheads/Wu_Qinghua_02/Leaderheads3_atlas_2_16.dds</Button>
+			<NIF>Art/Leaderheads/Wu_Qinghua_02/hatshepsut.nif</NIF>
+			<KFM>Art/Leaderheads/Wu_Qinghua_02/hatshepsut.kfm</KFM>
+			<NoShaderNIF>Art/Leaderheads/Wu_Qinghua_02/hatshepsut.nif</NoShaderNIF>
+			<BackgroundKFM>Art/Leaderheads/Wu_Qinghua_02/hatshepsut_BG.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
 	</LeaderheadArtInfos>
 </Civ4ArtDefines>

@@ -212,6 +212,9 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 				<Leader><LeaderName>LEADER_NANYE_HI_04</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_ANA_NZINGA_03</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 				<Leader><LeaderName>LEADER_SALAMASINA_13</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_DIDO_15</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_GREEK_QUEEN_02</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
+				<Leader><LeaderName>LEADER_WU_QINGHUA_02</LeaderName><bLeaderAvailability>1</bLeaderAvailability></Leader>
 			</Leaders>
 		</CivilizationInfo>
 		<CivilizationInfo>
