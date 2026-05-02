@@ -603,7 +603,7 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_ISABELLA_06</Type>
-			<Button>Art/Leaderheads/Isabella_06/mem_leaders_atlas_6_3_cropped.dds</Button>
+			<Button>Art/Leaderheads/Isabella_06/mem_leaders_atlas_6_3.dds</Button>
 			<NIF>Art/Leaderheads/Isabella_06/isabella.nif</NIF>
 			<KFM>Art/Leaderheads/Isabella_06/isabella.kfm</KFM>
 			<NoShaderNIF>Art/Leaderheads/Isabella_06/isabella_noshader.nif</NoShaderNIF>
@@ -651,7 +651,7 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_ISABELLA_08</Type>
-			<Button>Art/Leaderheads/Isabella_08/atlas8_2_6_cropped.dds</Button>
+			<Button>Art/Leaderheads/Isabella_08/atlas8_2_6.dds</Button>
 			<NIF>Art/Leaderheads/Isabella_08/isabella.nif</NIF>
 			<KFM>Art/Leaderheads/Isabella_08/isabella.kfm</KFM>
 			<NoShaderNIF>Art/Leaderheads/Isabella_08/isabella_noshader.nif</NoShaderNIF>
@@ -659,7 +659,7 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_VICTORIA_04</Type>
-			<Button>Art/Leaderheads/Victoria_05/atlas8_3_3_cropped.dds</Button>
+			<Button>Art/Leaderheads/Victoria_05/atlas8_3_3.dds</Button>
 			<NIF>Art/Leaderheads/Victoria_05/victoria.nif</NIF>
 			<KFM>Art/Leaderheads/Victoria_05/victoria.kfm</KFM>
 			<NoShaderNIF>Art/Leaderheads/Victoria_05/victoria_noshader.nif</NoShaderNIF>
@@ -765,7 +765,7 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<!-- custom: added a button -->
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_EVITA_PERON</Type>
-			<Button>Art/LeaderHeads/Evita_Peron/evita_peron_64px_no_border.dds</Button>
+			<Button>Art/LeaderHeads/Evita_Peron/evita_peron_64px.dds</Button>
 			<NIF>Art/LeaderHeads/Evita_Peron/catherine.nif</NIF>
 			<KFM>Art/LeaderHeads/Evita_Peron/catherine.kfm</KFM>
 			<NoShaderNIF>Art/LeaderHeads/Evita_Peron/catherine_noshader.nif</NoShaderNIF>
@@ -774,7 +774,7 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<!-- custom: Evita Peron 2 is a variant of base Evita Peron using catherine_noshader.nif (Claude code Sonnet 4.6) -->
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_EVITA_PERON_02</Type>
-			<Button>Art/Leaderheads/Evita_Peron_02/evita_peron_64px_no_border.dds</Button>
+			<Button>Art/Leaderheads/Evita_Peron_02/evita_peron_64px.dds</Button>
 			<NIF>Art/Leaderheads/Evita_Peron_02/catherine_noshader.nif</NIF>
 			<KFM>Art/Leaderheads/Evita_Peron_02/catherine.kfm</KFM>
 			<NoShaderNIF>Art/Leaderheads/Evita_Peron_02/catherine_noshader.nif</NoShaderNIF>
@@ -851,7 +851,7 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<!-- custom: fixed purple eyes/face by adding missing catherine_env/env_mask/nrml/spec and shaka_nrml textures required by catherine.nif. (GPT-5.3-Codex); added a button; also catherine_noshader.nif looks like an interesting variant but seemingly not working properly so not added -->
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_NUR_JAHAN</Type>
-			<Button>Art/LeaderHeads/Nur_Jahan/nur_jahan_64px_no_border.dds</Button>
+			<Button>Art/LeaderHeads/Nur_Jahan/nur_jahan_64px.dds</Button>
 			<NIF>Art/LeaderHeads/Nur_Jahan/catherine.nif</NIF>
 			<KFM>Art/LeaderHeads/Nur_Jahan/catherine2.kfm</KFM>
 			<NoShaderNIF>Art/LeaderHeads/Nur_Jahan/catherine_noshader.nif</NoShaderNIF>
@@ -860,7 +860,7 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<!-- custom: added a button -->
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_POPE_JOAN</Type>
-			<Button>Art/LeaderHeads/Pope_Joan/pope_joan_64px_no_border.dds</Button>
+			<Button>Art/LeaderHeads/Pope_Joan/pope_joan_64px.dds</Button>
 			<NIF>Art/LeaderHeads/Pope_Joan/elizabeth.nif</NIF>
 			<KFM>Art/LeaderHeads/Pope_Joan/elizabeth2.kfm</KFM>
 			<NoShaderNIF>Art/LeaderHeads/Pope_Joan/elizabeth.nif</NoShaderNIF>
@@ -886,7 +886,7 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<!-- custom: AdvCiv-SAS-NIF-Gallery original leaderhead. See docs. -->
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_TAMAR_03</Type>
-			<Button>Art/Leaderheads/Tamar_03/atossa_64px_no_border.dds</Button>
+			<Button>Art/Leaderheads/Tamar_03/atossa_64px.dds</Button>
 			<NIF>Art/Leaderheads/Tamar_03/isabella_noshader.nif</NIF>
 			<KFM>Art/Leaderheads/Tamar_03/Isabella.kfm</KFM>
 			<NoShaderNIF>Art/Leaderheads/Tamar_03/Theodora2.nif</NoShaderNIF>
@@ -895,7 +895,7 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<!-- custom: AdvCiv-SAS-NIF-Gallery original leaderhead. See docs. -->
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_TAMAR_04</Type>
-			<Button>Art/Leaderheads/Tamar_04/roshanak_64px_no_border.dds</Button>
+			<Button>Art/Leaderheads/Tamar_04/roshanak_64px.dds</Button>
 			<NIF>Art/Leaderheads/Tamar_04/nocrwnizzy2.nif</NIF>
 			<KFM>Art/Leaderheads/Tamar_04/Isabella.kfm</KFM>
 			<NoShaderNIF>Art/Leaderheads/Tamar_04/Theodora2.nif</NoShaderNIF>
@@ -969,7 +969,7 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<!-- custom: added a button; note: mansa_musa2.nif and mansa_musa3.nif a different hat but they don't seem to work properly (floating hat when leaderhead's head moves), so these variants are not used) -->
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_JINGU_02</Type>
-			<Button>Art/Leaderheads/Jingu_02/Jingu_02_64px_no_border.dds</Button>
+			<Button>Art/Leaderheads/Jingu_02/Jingu_02_64px.dds</Button>
 			<NIF>Art/Leaderheads/Jingu_02/mansa_musa.nif</NIF>
 			<KFM>Art/Leaderheads/Jingu_02/mansa_musa4.kfm</KFM>
 			<NoShaderNIF>Art/Leaderheads/Jingu_02/mansa_musa_noshader.nif</NoShaderNIF>
@@ -1043,7 +1043,7 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<!-- custom: noticed while replacing it with brandi that the noshadernif is a new usable leader so using it instead, also added a button; as for the nif version found it in as of now the Fury Road mod so using their version of it (looks more reliable or easier to set up and already exists there unlike in the mod this came from where it was hidden under an old folder and unused) -->
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_HATSHEPSUT_01</Type>
-			<Button>Art/Leaderheads/Hatshepsut_01/Hatshepsut_01_64px_no_border.dds</Button>
+			<Button>Art/Leaderheads/Hatshepsut_01/Hatshepsut_01_64px.dds</Button>
 			<NIF>Art/Leaderheads/Hatshepsut_01/hatshepsut_noshader.nif</NIF>
 			<KFM>Art/Leaderheads/Hatshepsut_01/hatshepsut.kfm</KFM>
 			<NoShaderNIF>Art/Leaderheads/Hatshepsut_01/hatshepsut_noshader.nif</NoShaderNIF>
@@ -1111,7 +1111,7 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<!-- custom: Maria 2 reuses Gunnhild assets with elizabeth_noshader.nif, kept in a separate folder for modularity; background (alexander_BG.kfm and related files) taken from Blonde Girl 2 (Claude code Sonnet 4.6); also replaced the green ribbon with a darker more fitting with the vibe sword harness (AI-generated with the help of GPT-5.4-Thinking thanks); also added a button -->
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_MARIA_03</Type>
-			<Button>Art/Leaderheads/Maria_03/Maria_03_64px_no_border.dds</Button>
+			<Button>Art/Leaderheads/Maria_03/Maria_03_64px.dds</Button>
 			<NIF>Art/Leaderheads/Maria_03/elizabeth_noshader.nif</NIF>
 			<KFM>Art/LeaderHeads/Elizabeth/elizabeth.kfm</KFM>
 			<NoShaderNIF>Art/Leaderheads/Maria_03/elizabeth_noshader.nif</NoShaderNIF>
@@ -1186,7 +1186,7 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_GREEK_QUEEN</Type>
-			<Button>Art/LeaderHeads/Greek_Queen/greek_queen_64px_no_border.dds</Button>
+			<Button>Art/LeaderHeads/Greek_Queen/greek_queen_64px.dds</Button>
 			<NIF>Art/LeaderHeads/Greek_Queen/isabella.nif</NIF>
 			<KFM>Art/LeaderHeads/Greek_Queen/isabella.kfm</KFM>
 			<NoShaderNIF>Art/LeaderHeads/Greek_Queen/isabella_noshader.nif</NoShaderNIF>
@@ -1195,7 +1195,7 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<!-- custom: replaced the button since it was larger than 64px which caused display issues in sevopedia Civs' Leaders panel, plus i didn't like this one and wanted to change it too -->
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_FREYDIS_EIRIKSDOTTIR</Type>
-			<Button>Art/LeaderHeads/Freydis_Eiriksdottir/Freydis_Eiriksdottir_64px_no_border.dds</Button>
+			<Button>Art/LeaderHeads/Freydis_Eiriksdottir/Freydis_Eiriksdottir_64px.dds</Button>
 			<NIF>Art/LeaderHeads/Freydis_Eiriksdottir/f_Viking04a.nif</NIF>
 			<KFM>Art/LeaderHeads/Freydis_Eiriksdottir/victoria.kfm</KFM>
 			<NoShaderNIF></NoShaderNIF>
@@ -1254,7 +1254,7 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<!-- custom: replaced the button as i didn't like this one and wanted to change it too -->
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_VELETA</Type>
-			<Button>Art/LeaderHeads/Veleta/veleta_64px_no_border.dds</Button>
+			<Button>Art/LeaderHeads/Veleta/veleta_64px.dds</Button>
 			<NIF>Art/LeaderHeads/Veleta/isabella.nif</NIF>
 			<KFM>Art/LeaderHeads/Veleta/isabella.kfm</KFM>
 			<NoShaderNIF>Art/LeaderHeads/Veleta/isabella_noshader.nif</NoShaderNIF>
@@ -1271,7 +1271,7 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<!-- custom: note: the fix described in https://forums.civfanatics.com/threads/saibotliehs-leaderhead-collection.378346/page-22 by SaibotLieh is not applied here; i tried but didn't work so provided the base files in the thread that remain to be fixed (jewel not colored) and that otherwise seems functional; also added a button -->
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_ISABELLA_11</Type>
-			<Button>Art/LeaderHeads/Isabella_11/Isabella_11_64px_no_border.dds</Button>
+			<Button>Art/LeaderHeads/Isabella_11/Isabella_11_64px.dds</Button>
 			<NIF>Art/LeaderHeads/Isabella_11/nocrwnizzy2.nif</NIF>
 			<KFM>Art/LeaderHeads/Isabella_11/isabella.kfm</KFM>
 			<NoShaderNIF>Art/LeaderHeads/Isabella_11/nocrwnizzy2.nif</NoShaderNIF>
@@ -1364,7 +1364,7 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_DEIRDRE_SKYE</Type>
-			<Button>Art/LeaderHeads/Deirdre_Skye/deirdre_skye_64px_no_border.dds</Button>
+			<Button>Art/LeaderHeads/Deirdre_Skye/deirdre_skye_64px.dds</Button>
 			<NIF>Art/LeaderHeads/Deirdre_Skye/elizabeth.nif</NIF>
 			<KFM>Art/LeaderHeads/Deirdre_Skye/elizabeth.kfm</KFM>
 			<NoShaderNIF>Art/LeaderHeads/Deirdre_Skye/elizabeth.nif</NoShaderNIF>
@@ -1372,7 +1372,7 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_CORAZON_SANTIAGO</Type>
-			<Button>Art/LeaderHeads/Corazon_Santiago/corazon_santiago_64px_no_border.dds</Button>
+			<Button>Art/LeaderHeads/Corazon_Santiago/corazon_santiago_64px.dds</Button>
 			<NIF>Art/LeaderHeads/Corazon_Santiago/Boudica.nif</NIF>
 			<KFM>Art/LeaderHeads/Corazon_Santiago/Boudica.kfm</KFM>
 			<NoShaderNIF>Art/LeaderHeads/Corazon_Santiago/Boudica.nif</NoShaderNIF>
@@ -1380,7 +1380,7 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_MIRIAM_GODWINSON</Type>
-			<Button>Art/LeaderHeads/Miriam_Godwinson/miriam_godwinson_64px_no_border.dds</Button>
+			<Button>Art/LeaderHeads/Miriam_Godwinson/miriam_godwinson_64px.dds</Button>
 			<NIF>Art/LeaderHeads/Miriam_Godwinson/isabella.nif</NIF>
 			<KFM>Art/LeaderHeads/Miriam_Godwinson/isabella.kfm</KFM>
 			<NoShaderNIF>Art/LeaderHeads/Miriam_Godwinson/isabella.nif</NoShaderNIF>
@@ -1388,7 +1388,7 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_MIRIAM_GODWINSON_02</Type>
-			<Button>Art/Leaderheads/Miriam_Godwinson_02/miriam_godwinson_64px_no_border.dds</Button>
+			<Button>Art/Leaderheads/Miriam_Godwinson_02/miriam_godwinson_64px.dds</Button>
 			<NIF>Art/Leaderheads/Miriam_Godwinson_02/isabella.nif</NIF>
 			<KFM>Art/Leaderheads/Miriam_Godwinson_02/isabella.kfm</KFM>
 			<NoShaderNIF>Art/Leaderheads/Miriam_Godwinson_02/isabella.nif</NoShaderNIF>
@@ -1396,7 +1396,7 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_MIRIAM_GODWINSON_03</Type>
-			<Button>Art/Leaderheads/Miriam_Godwinson_03/Miriam_Godwinson_03_64px_no_border.dds</Button>
+			<Button>Art/Leaderheads/Miriam_Godwinson_03/Miriam_Godwinson_03_64px.dds</Button>
 			<NIF>Art/Leaderheads/Miriam_Godwinson_03/isabella.nif</NIF>
 			<KFM>Art/Leaderheads/Miriam_Godwinson_03/isabella.kfm</KFM>
 			<NoShaderNIF>Art/Leaderheads/Miriam_Godwinson_03/isabella.nif</NoShaderNIF>
@@ -1404,7 +1404,7 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_SHEHERAZADE_02</Type>
-			<Button>Art/Leaderheads/Sheherazade_02/Sheherazade_02_64px_no_border.dds</Button>
+			<Button>Art/Leaderheads/Sheherazade_02/Sheherazade_02_64px.dds</Button>
 			<NIF>Art/Leaderheads/Sheherazade_02/isabella.nif</NIF>
 			<KFM>Art/Leaderheads/Sheherazade_02/isabella.kfm</KFM>
 			<NoShaderNIF>Art/Leaderheads/Sheherazade_02/isabella.nif</NoShaderNIF>
@@ -1420,7 +1420,7 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_ELIZABETH_04</Type>
-			<Button>Art/Leaderheads/Elizabeth_04/Elizabeth_04_64px_no_border.dds</Button>
+			<Button>Art/Leaderheads/Elizabeth_04/Elizabeth_04_64px.dds</Button>
 			<NIF>Art/Leaderheads/Elizabeth_04/teuta.nif</NIF>
 			<KFM>Art/Leaderheads/Elizabeth_04/teuta.kfm</KFM>
 			<NoShaderNIF>Art/Leaderheads/Elizabeth_04/teuta_noshader.nif</NoShaderNIF>
@@ -1455,7 +1455,7 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_SALAMASINA_03</Type>
-			<Button>Art/Leaderheads/Salamasina_03/Salamasina_03_64px_no_border.dds</Button>
+			<Button>Art/Leaderheads/Salamasina_03/Salamasina_03_64px.dds</Button>
 			<NIF>Art/Leaderheads/Salamasina_03/hatshepsut.nif</NIF>
 			<KFM>Art/Leaderheads/Salamasina_03/hatshepsut.kfm</KFM>
 			<NoShaderNIF>Art/Leaderheads/Salamasina_03/hatshepsut_noshader.nif</NoShaderNIF>
@@ -1463,7 +1463,7 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_BLONDE_GIRL_02</Type>
-			<Button>Art/Leaderheads/Blonde_Girl_02/Blonde_Girl_02_64px_no_border.dds</Button>
+			<Button>Art/Leaderheads/Blonde_Girl_02/Blonde_Girl_02_64px.dds</Button>
 			<NIF>Art/Leaderheads/Blonde_Girl_02/eli_shaded.nif</NIF>
 			<KFM>Art/Leaderheads/Blonde_Girl_02/elizabeth.kfm</KFM>
 			<NoShaderNIF>Art/Leaderheads/Blonde_Girl_02/eli_noshader.nif</NoShaderNIF>
@@ -1472,7 +1472,7 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<!-- custom: btn_lh_france_joanofarc.dds from MarnzMod 1.8c is included in this leaderhead's folder for exhaustiveness - it has a different background than the current button but is not currently used. See README_References.md. (Claude code Sonnet 4.6) -->
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_JOAN_OF_ARC_04</Type>
-			<Button>Art/Leaderheads/Joan_Of_Arc_04/Joan_Of_Arc_04_64px_no_border.dds</Button>
+			<Button>Art/Leaderheads/Joan_Of_Arc_04/Joan_Of_Arc_04_64px.dds</Button>
 			<NIF>Art/Leaderheads/Joan_Of_Arc_04/joanofarc.nif</NIF>
 			<KFM>Art/Leaderheads/Joan_Of_Arc_04/catherine.kfm</KFM>
 			<NoShaderNIF>Art/Leaderheads/Joan_Of_Arc_04/joanofarc_noshader.nif</NoShaderNIF>
@@ -1488,7 +1488,7 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_ISABELLA_20</Type>
-			<Button>Art/LeaderHeads/Isabella_20/Isabella_20_64px_no_border.dds</Button>
+			<Button>Art/LeaderHeads/Isabella_20/Isabella_20_64px.dds</Button>
 			<NIF>Art/LeaderHeads/Isabella_20/teuta.nif</NIF>
 			<KFM>Art/LeaderHeads/Isabella_20/isabella.kfm</KFM>
 			<NoShaderNIF>Art/LeaderHeads/Isabella_20/teuta.nif</NoShaderNIF>
@@ -1635,7 +1635,7 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_ISABELLA_18</Type>
-			<Button>Art/LeaderHeads/Isabella_18/isabella_18_64px_no_border.dds</Button>
+			<Button>Art/LeaderHeads/Isabella_18/isabella_18_64px.dds</Button>
 			<NIF>Art/LeaderHeads/Isabella_18/isabella.nif</NIF>
 			<KFM>Art/LeaderHeads/Isabella_18/isabella.kfm</KFM>
 			<NoShaderNIF>Art/LeaderHeads/Isabella_18/isabella_noshader.nif</NoShaderNIF>
@@ -1668,7 +1668,7 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_DIDO_13</Type>
-			<Button>Art/LeaderHeads/Dido_13/dido_13_64px_no_border.dds</Button>
+			<Button>Art/LeaderHeads/Dido_13/dido_13_64px.dds</Button>
 			<NIF>Art/LeaderHeads/Dido_13/Dido_Toga.nif</NIF>
 			<KFM>Art/LeaderHeads/Dido_13/isabella.kfm</KFM>
 			<NoShaderNIF>Art/LeaderHeads/Dido_13/Dido_Toga.nif</NoShaderNIF>
@@ -1677,7 +1677,7 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<!-- custom: Nefertiti 3 is a Nefertiti 1 variant using isabella.nif instead of nefertiti.nif (Claude code Sonnet 4.6) -->
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_NEFERTITI_03</Type>
-			<Button>Art/Leaderheads/Nefertiti_03/nefertiti_3_64px_cropped.dds</Button>
+			<Button>Art/Leaderheads/Nefertiti_03/nefertiti_3_64px.dds</Button>
 			<NIF>Art/Leaderheads/Nefertiti_03/isabella.nif</NIF>
 			<KFM>Art/Leaderheads/Nefertiti_03/isabella.kfm</KFM>
 			<NoShaderNIF>Art/Leaderheads/Nefertiti_03/Nefertiti.nif</NoShaderNIF>
@@ -1695,7 +1695,7 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<!-- custom: button replaced because the original used seemingly real-life art, unneeded and not representative of the in-game leaderhead appearance (Claude code Sonnet 4.6) -->
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_ASPASIA</Type>
-			<Button>Art/LeaderHeads/Aspasia/aspasia_64px_no_border.dds</Button>
+			<Button>Art/LeaderHeads/Aspasia/aspasia_64px.dds</Button>
 			<NIF>Art/LeaderHeads/Aspasia/isabella.nif</NIF>
 			<KFM>Art/LeaderHeads/Aspasia/isabella.kfm</KFM>
 			<NoShaderNIF>Art/LeaderHeads/Aspasia/isabella_noshader.nif</NoShaderNIF>
@@ -1779,7 +1779,7 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_VICTORIA_13</Type>
-			<Button>Art/Leaderheads/Victoria_13/victoria_13_64px_no_border.dds</Button>
+			<Button>Art/Leaderheads/Victoria_13/victoria_13_64px.dds</Button>
 			<NIF>Art/Leaderheads/Victoria_13/victoria.nif</NIF>
 			<KFM>Art/Leaderheads/Victoria_13/victoria.kfm</KFM>
 			<NoShaderNIF>Art/Leaderheads/Victoria_13/victoria.nif</NoShaderNIF>
@@ -1787,7 +1787,7 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_MIRANDA_LAWSON_02</Type>
-			<Button>Art/Leaderheads/Miranda_Lawson_02/miranda_02_64px_no_border.dds</Button>
+			<Button>Art/Leaderheads/Miranda_Lawson_02/miranda_02_64px.dds</Button>
 			<NIF>Art/Leaderheads/Miranda_Lawson_02/peter.nif</NIF>
 			<KFM>Art/Leaderheads/Miranda_Lawson_02/peter.kfm</KFM>
 			<NoShaderNIF>Art/Leaderheads/Miranda_Lawson_02/peter.nif</NoShaderNIF>
