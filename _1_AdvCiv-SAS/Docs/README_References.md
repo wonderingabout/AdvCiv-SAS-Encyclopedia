@@ -90,7 +90,7 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 - Women of the Sword 1.02: Aspasia of Miletus, Dido 14 (Trung Trac) (note: .psd was removed in our mod so Leaderhead remains lightweight, available in the original source)
 - A New Dawn (A New Dawn v1.1.rar): Elizabeth 10 (Wilhelmina 02)
 - RFC Aeons 1.3: Victoria 12
-- Kathy's Mod 1.2026: Ana Nzinga 03 ([Michaelle_Jean]), Salamasina 13 ([Shin_Sawbu], [SalmasinaFinal_Inverted].nif), Dido 15 ([jezebel]), Greek Queen 02 ([TeutaII]), Wu Qinghua 02 ([Corazon]) (note: `[Name_With_Underscores]` denotes the folder/filename as-is; display name uses spaces)
+- Kathys Mod 1.2026: Ana Nzinga 03 ([Michaelle_Jean]), Salamasina 13 ([Shin_Sawbu], [SalmasinaFinal_Inverted].nif), Dido 15 ([jezebel]), Greek Queen 02 ([TeutaII]), Wu Qinghua 02 ([Corazon]), Isabella 23 ([agnes]), Victoria 13 ([merkel]), Miranda Lawson 02 ([clinton]), Deirdre Skye 02 ([Skye]) (note: `[Name_With_Underscores]` denotes the folder/filename as-is; display name uses spaces)
 
 #### Female Non-Human (Modpacks)
 
