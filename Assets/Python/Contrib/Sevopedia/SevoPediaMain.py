@@ -100,8 +100,12 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 		self.SAS_SEARCH_PANEL_ID = "PediaMainSearchPanel"
 		self.SAS_SEARCH_LABEL_ID = "PediaMainSearchLabel"
 		self.SAS_CLEAR_SEARCH_ID = "PediaMainSearchClear"
+		self.SAS_SEARCH_KEYS_TOGGLE_ID = "PediaMainSearchKeysToggle"
+		self.SAS_SEARCH_KEY_PREFIX = "PediaMainSearchKey"
 		self.SAS_SEARCH_DEFAULT_TEXT = u"Enter text"
+		self.SAS_SEARCH_KEYS_TEXT = u"KEYS"
 		self.SAS_SEARCH_H = 32
+		self.SAS_SEARCH_KEYBOARD_CHARS = (u"(", u")", u"_", u"/", u"*", u"+", u"-", u"=", u"[", u"]", u"'", u"#", u"&", u"~", u";", u",", u":", u"!", u"?", u".", u"@", u"\\", u"|", u"<", u">")
 		# <!-- custom: End - search bar for the left item list (initially based on how other mod(s) do) (chatgpt 5.2 + claude opus 4.5) -->
 		# <!-- custom: WIDGET_PYTHON magic IDs for custom Sevopedia categories. These allow Builds and Traits to have
 		# their own dedicated pages without requiring new widget types in the DLL. The ID is passed as data1, and the
@@ -113,6 +117,7 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 		self.SAS_PEDIA_PYTHON_MUSIC_ENTRY = 6802
 		self.SAS_PEDIA_PYTHON_MUSIC_PLAY = 6803
 		self.SAS_PEDIA_PYTHON_CHART_LOG = 6804
+		self.SAS_PEDIA_PYTHON_SEARCH_KEY = 6815
 		self.SAS_PEDIA_MOVIE_TYPE_VICTORY = 1
 		self.SAS_PEDIA_MOVIE_TYPE_WONDER = 2
 		self.SAS_PEDIA_MOVIE_TYPE_PROJECT = 3
@@ -267,6 +272,8 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 		# <!-- custom: debounce for search bar to prevent double keypress even when key-up events are interleaved (chatgpt 5.2 + claude opus 4.5) -->
 		# Note: BtS/AdvCiv can fire NOTIFY_CHARACTER twice per press for letters/digits, and the 2nd event can arrive after another key when typing fast.
 		self.SAS_keyDebounceByKey = {}
+		self.SAS_searchKeyboardIds = []
+		self.SAS_bSearchKeyboardVisible = False
 
 		# <!-- custom: map original list indices to displayed rows when filtering so selection/highlight stays correct (chatgpt 5.2 + claude opus 4.5) -->
 		self.SAS_listIdxToRow = None
@@ -389,6 +396,7 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 		self.IS_SAS_SEVOPEDIA_MAIN_FEATURES_GROUP_BY_LAND_WATER = (gc.getDefineINT("SAS_SEVOPEDIA_MAIN_FEATURES_GROUP_BY_LAND_WATER") > 0)
 		self.IS_SAS_SEVOPEDIA_MAIN_CIVS_GROUP_BY_ARTSTYLE = (gc.getDefineINT("SAS_SEVOPEDIA_MAIN_CIVS_GROUP_BY_ARTSTYLE") > 0)
 		self.IS_SAS_SEVOPEDIA_MAIN_LEADERS_GROUP_BY_CIV = (gc.getDefineINT("SAS_SEVOPEDIA_MAIN_LEADERS_GROUP_BY_CIV") > 0)
+		self.IS_SAS_SEVOPEDIA_SEARCH_CLICKABLE_SPECIAL_CHARS_ENABLE = (gc.getDefineINT("SAS_SEVOPEDIA_SEARCH_CLICKABLE_SPECIAL_CHARS_ENABLE") > 0)
 		self.IS_SAS_SEVOPEDIA_LEADER_AI_PERSONALITY_ENABLE = (gc.getDefineINT("SAS_SEVOPEDIA_LEADER_AI_PERSONALITY_ENABLE") > 0)
 		self.IS_SAS_SEVOPEDIA_MUSIC_LEADER_INTRO_PEACE_FIRST_ONLY = (gc.getDefineINT("SAS_SEVOPEDIA_MUSIC_LEADER_INTRO_PEACE_FIRST_ONLY") > 0)
 		self.IS_SAS_SEVOPEDIA_MUSIC_LEADER_PEACE_FIRST_ONLY = (gc.getDefineINT("SAS_SEVOPEDIA_MUSIC_LEADER_PEACE_FIRST_ONLY") > 0)
@@ -409,6 +417,10 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 		self.SAS_safeDeleteWidget(screen, self.SAS_SEARCH_PANEL_ID)
 		self.SAS_safeDeleteWidget(screen, self.SAS_SEARCH_LABEL_ID)
 		self.SAS_safeDeleteWidget(screen, self.SAS_CLEAR_SEARCH_ID)
+		self.SAS_safeDeleteWidget(screen, self.SAS_SEARCH_KEYS_TOGGLE_ID)
+		for szWidget in self.SAS_searchKeyboardIds:
+			self.SAS_safeDeleteWidget(screen, szWidget)
+		self.SAS_searchKeyboardIds = []
 
 	# <!-- custom: clear search state for special pages that delete the item list (chatgpt 5.2 + claude opus 4.5) -->
 	def SAS_prepareSpecialPageDeletingItemList(self, screen):
@@ -457,7 +469,7 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 		screen.addPanel(self.SAS_SEARCH_PANEL_ID, u"", u"", True, True, iX, iY, iW, iH, PanelStyles.PANEL_STYLE_BLUE50)
 
 		if self.SAS_isSearchActive():
-			szText = self.SAS_szSearchString
+			szText = self.SAS_getSearchDisplayText(self.SAS_szSearchString)
 		else:
 			szText = self.SAS_SEARCH_DEFAULT_TEXT
 
@@ -472,7 +484,61 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 			iClearY = self.Y_TOP_PANEL + 16
 			screen.setText(self.SAS_CLEAR_SEARCH_ID, "Background", self.SAS_CLEAR_TEXT, CvUtil.FONT_LEFT_JUSTIFY, iClearX, iClearY, 0, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
 
+		if not self.IS_SAS_SEVOPEDIA_SEARCH_CLICKABLE_SPECIAL_CHARS_ENABLE:
+			self.SAS_bSearchKeyboardVisible = False
+			return
+
+		iKeysToggleX = self.X_EXIT
+		iKeysToggleY = self.Y_TITLE
+		screen.setText(self.SAS_SEARCH_KEYS_TOGGLE_ID, "Background", u"<font=4>" + self.SAS_SEARCH_KEYS_TEXT + u"</font>", CvUtil.FONT_RIGHT_JUSTIFY, iKeysToggleX, iKeysToggleY, 0, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
+
+		if self.SAS_bSearchKeyboardVisible:
+			self.SAS_syncSearchKeyboard(screen)
+
+	# <!-- custom: compact click keyboard for punctuation that Civ4 keyboard events often fail to expose on non-US layouts. (GPT-5.5) -->
+	def SAS_syncSearchKeyboard(self, screen):
+		iX = self.X_TITLE + 100
+		iAvailableW = self.X_EXIT - iX - 36
+		iKeyGap = 6
+		iKeyW = 24
+		if iAvailableW < len(self.SAS_SEARCH_KEYBOARD_CHARS) * (iKeyW + iKeyGap):
+			iKeyGap = 2
+			iKeyW = max(12, iAvailableW / len(self.SAS_SEARCH_KEYBOARD_CHARS) - iKeyGap)
+		iY = self.Y_TOP_PANEL + 18
+		self.SAS_searchKeyboardIds = []
+		for iChar, szChar in enumerate(self.SAS_SEARCH_KEYBOARD_CHARS):
+			szWidget = self.SAS_SEARCH_KEY_PREFIX + str(iChar)
+			self.SAS_searchKeyboardIds.append(szWidget)
+			screen.setText(szWidget, "Background", u"<font=3>" + self.SAS_getSearchKeyDisplayText(szChar) + u"</font>", CvUtil.FONT_CENTER_JUSTIFY, iX + (iKeyW / 2) + iChar * (iKeyW + iKeyGap), iY, 0, FontTypes.SMALL_FONT, WidgetTypes.WIDGET_PYTHON, self.SAS_PEDIA_PYTHON_SEARCH_KEY, iChar)
+
+	# <!-- custom: escape renderer-sensitive search text before passing it through font-tagged UI labels.
+	# Empirically, raw < or > can corrupt the rendered label (e.g. showing /font-like tag fragments), while raw &
+	# can be invisible and prevent following characters from rendering clearly. These raw chars are XML/markup-sensitive
+	# and rarely useful for ordinary XML text-key search, but keep them raw in SAS_szSearchString so clicked/typed input
+	# remains faithful; escape only the display string. (GPT-5.5) -->
+	def SAS_getSearchDisplayText(self, szText):
+		return szText.replace(u"&", u"&amp;").replace(u"<", u"&lt;").replace(u">", u"&gt;")
+
+	def SAS_getSearchKeyDisplayText(self, szText):
+		return self.SAS_getSearchDisplayText(szText)
+
+	def SAS_appendSearchCharacter(self, szChar):
+		if len(szChar) > 0:
+			self.SAS_szSearchString = self.SAS_szSearchString + szChar
+			self.SAS_refreshActiveListView()
+			return 1
+		return 0
+
 	# <!-- custom: convert InputTypes keyboard code to visible character, based on how other mod(s) use ScreenInput.getVisibleCharacter (chatgpt 5.2 + claude opus 4.5) -->
+
+	def SAS_getSearchCharacterKeys(self):
+		return (
+			int(InputTypes.KB_MINUS), int(InputTypes.KB_EQUALS), int(InputTypes.KB_LBRACKET), int(InputTypes.KB_RBRACKET),
+			int(InputTypes.KB_SEMICOLON), int(InputTypes.KB_APOSTROPHE), int(InputTypes.KB_GRAVE), int(InputTypes.KB_BACKSLASH),
+			int(InputTypes.KB_COMMA), int(InputTypes.KB_PERIOD), int(InputTypes.KB_SLASH), int(InputTypes.KB_NUMPADSTAR),
+			int(InputTypes.KB_NUMPADMINUS), int(InputTypes.KB_NUMPADPLUS), int(InputTypes.KB_NUMPADPERIOD), int(InputTypes.KB_NUMPADEQUALS),
+			int(InputTypes.KB_AT), int(InputTypes.KB_UNDERLINE), int(InputTypes.KB_COLON), int(InputTypes.KB_NUMPADCOMMA), int(InputTypes.KB_NUMPADSLASH)
+		)
 
 	# <!-- custom: identify keys that need debounce in the search (chatgpt 5.2 + claude opus 4.5) -->
 	# <!-- custom: debounce alnum and editing/navigation keys for search because BtS can fire duplicate NOTIFY_CHARACTER
@@ -486,6 +552,8 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 			return True
 		# Space
 		if iKey == int(InputTypes.KB_SPACE):
+			return True
+		if iKey in self.SAS_getSearchCharacterKeys():
 			return True
 		# Backspace (and optionally Delete) can also double-fire
 		# No need for KB_DELETE or KB_RETURN since:
@@ -516,12 +584,83 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 		# Numbers 0-9
 		if iKey >= int(InputTypes.KB_0) and iKey <= int(InputTypes.KB_9):
 			iNumberOffset = iKey - int(InputTypes.KB_0)
+			if bShift:
+				return (u")", u"!", u"@", u"#", u"$", u"%", u"^", u"&", u"*", u"(")[iNumberOffset]
 			return unichr(48 + iNumberOffset)
-		
+
 		# Space
 		if iKey == int(InputTypes.KB_SPACE):
 			return u" "
-		
+
+		# <!-- custom: Direct punctuation keys are Civ4/DirectInput physical-key names; on some keyboard layouts the engine
+		# does not expose the intended typed character, so the click keyboard above remains the reliable fallback.
+		# Prefer this low-risk fallback over DLL/input-layer plumbing because punctuation searches are rare in Civ4 item names,
+		# and many markup-sensitive chars are unlikely to appear raw in XML text anyway. (GPT-5.5) -->
+		if iKey == int(InputTypes.KB_MINUS):
+			if bShift:
+				return u"_"
+			return u"-"
+		if iKey == int(InputTypes.KB_EQUALS):
+			if bShift:
+				return u"+"
+			return u"="
+		if iKey == int(InputTypes.KB_LBRACKET):
+			if bShift:
+				return u"{"
+			return u"["
+		if iKey == int(InputTypes.KB_RBRACKET):
+			if bShift:
+				return u"}"
+			return u"]"
+		if iKey == int(InputTypes.KB_SEMICOLON):
+			if bShift:
+				return u":"
+			return u";"
+		if iKey == int(InputTypes.KB_APOSTROPHE):
+			if bShift:
+				return u"\""
+			return u"'"
+		if iKey == int(InputTypes.KB_GRAVE):
+			if bShift:
+				return u"~"
+			return u"`"
+		if iKey == int(InputTypes.KB_BACKSLASH):
+			if bShift:
+				return u"|"
+			return u"\\"
+		if iKey == int(InputTypes.KB_COMMA):
+			if bShift:
+				return u"<"
+			return u","
+		if iKey == int(InputTypes.KB_PERIOD):
+			if bShift:
+				return u">"
+			return u"."
+		if iKey == int(InputTypes.KB_SLASH):
+			if bShift:
+				return u"?"
+			return u"/"
+		if iKey == int(InputTypes.KB_AT):
+			return u"@"
+		if iKey == int(InputTypes.KB_UNDERLINE):
+			return u"_"
+		if iKey == int(InputTypes.KB_COLON):
+			return u":"
+		if iKey == int(InputTypes.KB_NUMPADSTAR):
+			return u"*"
+		if iKey == int(InputTypes.KB_NUMPADMINUS):
+			return u"-"
+		if iKey == int(InputTypes.KB_NUMPADPLUS):
+			return u"+"
+		if iKey == int(InputTypes.KB_NUMPADPERIOD):
+			return u"."
+		if iKey == int(InputTypes.KB_NUMPADEQUALS):
+			return u"="
+		if iKey == int(InputTypes.KB_NUMPADCOMMA):
+			return u","
+		if iKey == int(InputTypes.KB_NUMPADSLASH):
+			return u"/"
+
 		# No visible character for this key
 		return u""
 	# <!-- custom: End - search bar for the left item list (chatgpt 5.2 + claude opus 4.5) -->
@@ -2203,7 +2342,11 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 					self.SAS_keyDebounceByKey = {}
 					self.SAS_refreshActiveListView()
 				return 1
-
+			if inputClass.getFunctionName() == self.SAS_SEARCH_KEYS_TOGGLE_ID:
+				if self.IS_SAS_SEVOPEDIA_SEARCH_CLICKABLE_SPECIAL_CHARS_ENABLE:
+					self.SAS_bSearchKeyboardVisible = not self.SAS_bSearchKeyboardVisible
+					self.SAS_syncSearchPanel()
+				return 1
 		# <!-- custom: keyboard input using InputTypes constants like other mod(s) do (chatgpt 5.2 + claude opus 4.5) -->
 		# <!-- custom: gate fires whenever a list-rendering page has registered itself as the active
 		# refresher, regardless of which tab/mode hosts it. (Claude code Opus 4.7) -->
@@ -2223,9 +2366,7 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 
 						szChar = self.SAS_getVisibleCharacter(inputClass)
 						if len(szChar) > 0:
-							self.SAS_szSearchString = self.SAS_szSearchString + szChar
-							self.SAS_refreshActiveListView()
-							return 1
+							return self.SAS_appendSearchCharacter(szChar)
 
 						# Handle backspace to delete last character
 						if iKey == int(InputTypes.KB_BACKSPACE):
@@ -2324,6 +2465,13 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 				return self.pediaJump(SevoScreenEnums.PEDIA_MUSIC, iData2, True, False)
 			if iData1 == self.SAS_PEDIA_PYTHON_MUSIC_PLAY:
 				self.pediaMusic.playMusic(iData2)
+				return 1
+			# <!-- custom: route search-key clicks through WIDGET_PYTHON/data2 instead of parsing widget-name suffixes.
+			# Empirically, Civ can strip numeric suffixes from generated names and trigger:
+			# ValueError: invalid literal for int(): in SevoPediaMain.handleInput. (GPT-5.5) -->
+			if iData1 == self.SAS_PEDIA_PYTHON_SEARCH_KEY:
+				if self.IS_SAS_SEVOPEDIA_SEARCH_CLICKABLE_SPECIAL_CHARS_ENABLE and iData2 >= 0 and iData2 < len(self.SAS_SEARCH_KEYBOARD_CHARS):
+					return self.SAS_appendSearchCharacter(self.SAS_SEARCH_KEYBOARD_CHARS[iData2])
 				return 1
 			# <!-- custom: chart LOG button is routed through WIDGET_PYTHON/data1 instead of function-name matching because generated widget names can be unstable in Sevopedia; this keeps clicks reliable like Movie/Music actions. (GPT-5.3-Codex) -->
 			if iData1 == self.SAS_PEDIA_PYTHON_CHART_LOG:
