@@ -91,11 +91,13 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 - A New Dawn (A New Dawn v1.1.rar): Elizabeth 10 (Wilhelmina 02)
 - RFC Aeons 1.3: Victoria 12
 - Kathys Mod 1.2026: Ana Nzinga 03 ([Michaelle_Jean]), Salamasina 13 ([Shin_Sawbu] (SalmasinaFinal_Inverted.nif)), Dido 15 ([jezebel]), Greek Queen 02 ([TeutaII]), Wu Qinghua 02 ([Corazon]), Isabella 23 ([agnes]), Victoria 13 ([merkel]), Miranda Lawson 02 ([clinton]), Deirdre Skye 02 ([Skye]), Ulpia Severina 03 ([Manuela_Saenz]), Ulpia Severina 04 ([Manuela_Saenz] (isabella_mod.nif)) (note: `[Name_With_Underscores]` denotes the folder/filename as-is; display name uses spaces)
+- Japanese Mythology v005 (japanese_mythology_v005.zip): Isabella 24 (Izanami), Konohana
 
 #### Female Non-Human (Modpacks)
 
 - Fictionalization beta: Gloriana, Snow Queen
 - Middle-earth: Zelda 02 (Arwen)
+- Japanese Mythology v005 (japanese_mythology_v005.zip) Elf Eliz
 
 #### Skipped (Modpacks)
 
