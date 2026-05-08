@@ -7,7 +7,7 @@ It is now available as AdvCiv-SAS-NIF-Gallery (Female Leaderheads) on [CFC](http
 This mod aims to:
 
 - use it as a NIF gallery mod (non-playable)
-- make browsing much easier with the help of AdvCiv-SAS' sevopedia (search bar, keyboard UP/DOWN navigation, leader animation attitude (furious, annoyed, cautious, pleased, friendly) and action (noanim, greeting, agree, disagree) buttons) 
+- make browsing much easier with the help of AdvCiv-SAS' sevopedia (search bar (with special characters  support (e.g., `[`, `_`, `(`)), keyboard UP/DOWN navigation, leader animation attitude (furious, annoyed, cautious, pleased, friendly) and action (noanim, greeting, agree, disagree) buttons)
 - add further adjustments (e.g., Leader gallery in sevopedia civilization, optionally maximized leader NIF animation in sevopedia leader)
 - aggressively strip almost all assets (so it is lighter and since we don't need them), notably using `minOccurs="0"` for almost all leaderHead XML info, or by adding or modifying to functionally empty base Civ4 XML like [CIV4PlotLSystem.xml](/Assets/XML/Buildings/CIV4PlotLSystem.xml) or [CIV4GameText_Events_BTS.xml](/Assets/XML/Text/CIV4GameText_Events_BTS.xml) (with a focus on heaviest ones using Wiztree to find them), resulting in very compact and lightweight XML mod (suits minimal leaderhead NIF Gallery need). The mod is unintended for normal play, only sevopedia browsing though.
 - fix animations that had errors (e.g., Salasamina_3, Tandi Williams, etc.) or risky file structure design (e.g., Isabella_5 hard requiring folder name to be Isabella which risks conflicting with base BTS one: fixed by reimporting in our NIF-Gallery mod all civ4 files from base civ4 (`Art0.FPK`) so leaderhead is modular)
