@@ -97,7 +97,8 @@ Sound seems strangely louder at first game launch, but then accesing main menu a
 
 - Fictionalization beta: Gloriana, Snow Queen
 - Middle-earth: Zelda 02 (Arwen)
-- Japanese Mythology v005 (japanese_mythology_v005.zip) Elf Eliz
+- Japanese Mythology v005 (japanese_mythology_v005.zip): Elf Eliz 01
+- AtomicGamer_Civ4_Backup (Warhammer Beta .55 mod (Warhammer Beta .55.zip)): Elf Eliz 02
 
 #### Skipped (Modpacks)
 

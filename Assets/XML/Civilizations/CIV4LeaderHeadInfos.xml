@@ -1219,9 +1219,14 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<ArtDefineTag>ART_DEF_LEADER_KONOHANA</ArtDefineTag>
 		</LeaderHeadInfo>
 		<LeaderHeadInfo>
-			<Type>LEADER_ELF_ELIZ</Type>
-			<Description>TXT_KEY_LEADER_ELF_ELIZ</Description>
-			<ArtDefineTag>ART_DEF_LEADER_ELF_ELIZ</ArtDefineTag>
+			<Type>LEADER_ELF_ELIZ_01</Type>
+			<Description>TXT_KEY_LEADER_ELF_ELIZ_01</Description>
+			<ArtDefineTag>ART_DEF_LEADER_ELF_ELIZ_01</ArtDefineTag>
+		</LeaderHeadInfo>
+		<LeaderHeadInfo>
+			<Type>LEADER_ELF_ELIZ_02</Type>
+			<Description>TXT_KEY_LEADER_ELF_ELIZ_02</Description>
+			<ArtDefineTag>ART_DEF_LEADER_ELF_ELIZ_02</ArtDefineTag>
 		</LeaderHeadInfo>
 	</LeaderHeadInfos>
 </Civ4LeaderHeadInfos>

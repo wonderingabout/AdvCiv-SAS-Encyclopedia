@@ -1835,12 +1835,21 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<BackgroundKFM>Art/Leaderheads/Konohana/mao_tse_tung_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
-			<Type>ART_DEF_LEADER_ELF_ELIZ</Type>
-			<Button>Art/Leaderheads/Elf_Eliz/Elf.dds</Button>
-			<NIF>Art/Leaderheads/Elf_Eliz/elizabeth.nif</NIF>
-			<KFM>Art/Leaderheads/Elf_Eliz/elizabeth.kfm</KFM>
-			<NoShaderNIF>Art/Leaderheads/Elf_Eliz/elizabeth_noshader.nif</NoShaderNIF>
-			<BackgroundKFM>Art/Leaderheads/Elf_Eliz/elizabeth_BG.kfm</BackgroundKFM>
+			<Type>ART_DEF_LEADER_ELF_ELIZ_01</Type>
+			<Button>Art/Leaderheads/Elf_Eliz_01/Elf.dds</Button>
+			<NIF>Art/Leaderheads/Elf_Eliz_01/elizabeth.nif</NIF>
+			<KFM>Art/Leaderheads/Elf_Eliz_01/elizabeth.kfm</KFM>
+			<NoShaderNIF>Art/Leaderheads/Elf_Eliz_01/elizabeth_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/Leaderheads/Elf_Eliz_01/elizabeth_BG.kfm</BackgroundKFM>
+		</LeaderheadArtInfo>
+		<!-- custom: note: xml art def copied from ELF_ELIZ_01 because this lh was named "Elizabeth" which made it hard to predict if it was using base civ4 or cusotm lh assets; plus ELF_ELIZ_01 is very similar visually so i inferred they use the same art def; button imported from ELF_ELIZ_01 -->
+		<LeaderheadArtInfo>
+			<Type>ART_DEF_LEADER_ELF_ELIZ_02</Type>
+			<Button>Art/Leaderheads/Elf_Eliz_01/Elf.dds</Button>
+			<NIF>Art/Leaderheads/Elf_Eliz_02/elizabeth.nif</NIF>
+			<KFM>Art/Leaderheads/Elf_Eliz_02/elizabeth.kfm</KFM>
+			<NoShaderNIF>Art/Leaderheads/Elf_Eliz_02/elizabeth_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/Leaderheads/Elf_Eliz_02/elizabeth_BG.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 	</LeaderheadArtInfos>
 </Civ4ArtDefines>

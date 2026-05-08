@@ -917,7 +917,11 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<English>Konohana</English>
 	</TEXT>
 	<TEXT>
-		<Tag>TXT_KEY_LEADER_ELF_ELIZ</Tag>
-		<English>Elf Eliz</English>
+		<Tag>TXT_KEY_LEADER_ELF_ELIZ_01</Tag>
+		<English>Elf Eliz 01</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ELF_ELIZ_02</Tag>
+		<English>Elf Eliz 02</English>
 	</TEXT>
 </Civ4GameText>
