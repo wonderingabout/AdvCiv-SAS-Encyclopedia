@@ -347,14 +347,14 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<NoShaderNIF>Art/Leaderheads/Cleopatra_06/hatshepsut.nif</NoShaderNIF>
 			<BackgroundKFM>Art/Leaderheads/Cleopatra_06/hatshepsut_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
-		<!-- custom: Hatshepsut 3 reuses Cleopatra 6 assets with hatshepsut_noshader.nif, kept in a separate folder for modularity (Claude code Sonnet 4.6) -->
+		<!-- custom: Hatshepsut 3 reuses Cleopatra 6 assets with hatshepsut_noshader.nif. (Claude code Sonnet 4.6) -->
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_HATSHEPSUT_03</Type>
-			<Button>Art/Leaderheads/Hatshepsut_03/Cleopatra.dds</Button>
-			<NIF>Art/Leaderheads/Hatshepsut_03/hatshepsut_noshader.nif</NIF>
-			<KFM>Art/Leaderheads/Hatshepsut_03/hatshepsut.kfm</KFM>
-			<NoShaderNIF>Art/Leaderheads/Hatshepsut_03/hatshepsut.nif</NoShaderNIF>
-			<BackgroundKFM>Art/Leaderheads/Hatshepsut_03/hatshepsut_bg.kfm</BackgroundKFM>
+			<Button>Art/Leaderheads/Cleopatra_06/Cleopatra.dds</Button>
+			<NIF>Art/Leaderheads/Cleopatra_06/hatshepsut_noshader.nif</NIF>
+			<KFM>Art/Leaderheads/Cleopatra_06/hatshepsut.kfm</KFM>
+			<NoShaderNIF>Art/Leaderheads/Cleopatra_06/hatshepsut.nif</NoShaderNIF>
+			<BackgroundKFM>Art/Leaderheads/Cleopatra_06/hatshepsut_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_DIDO_02</Type>
@@ -699,28 +699,28 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_DIDO_07</Type>
-			<Button>Art/Leaderheads/Dido_07/didobutton.dds</Button>
-			<NIF>Art/Leaderheads/Dido_07/Dido_Toga.nif</NIF>
-			<KFM>Art/Leaderheads/Dido_07/isabella.kfm</KFM>
-			<NoShaderNIF>Art/Leaderheads/Dido_07/Dido_Toga_Nonshader.nif</NoShaderNIF>
-			<BackgroundKFM>Art/Leaderheads/Dido_07/Isabella_BG.kfm</BackgroundKFM>
+			<Button>Art/Leaderheads/Dido_07_09/didobutton.dds</Button>
+			<NIF>Art/Leaderheads/Dido_07_09/Dido_Toga.nif</NIF>
+			<KFM>Art/Leaderheads/Dido_07_09/isabella.kfm</KFM>
+			<NoShaderNIF>Art/Leaderheads/Dido_07_09/Dido_Toga_Nonshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/Leaderheads/Dido_07_09/Isabella_BG.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
-		<!-- custom: Dido 8 and 9 are variants of Dido 7 using alternative NIFs from the same source package (dido_izzy.nif and dido_eliz.nif respectively). Kept as separate folders/art defs for modularity rather than depending on the Dido_7 folder. -->
+		<!-- custom: Dido 8 and 9 are variants of Dido 7 using alternative NIFs from the same source package (dido_izzy.nif and dido_eliz.nif respectively). -->
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_DIDO_08</Type>
-			<Button>Art/Leaderheads/Dido_08/didobutton.dds</Button>
-			<NIF>Art/Leaderheads/Dido_08/dido_izzy.nif</NIF>
-			<KFM>Art/Leaderheads/Dido_08/isabella.kfm</KFM>
-			<NoShaderNIF>Art/Leaderheads/Dido_08/Dido_Toga_Nonshader.nif</NoShaderNIF>
-			<BackgroundKFM>Art/Leaderheads/Dido_08/Isabella_BG.kfm</BackgroundKFM>
+			<Button>Art/Leaderheads/Dido_07_09/didobutton.dds</Button>
+			<NIF>Art/Leaderheads/Dido_07_09/dido_izzy.nif</NIF>
+			<KFM>Art/Leaderheads/Dido_07_09/isabella.kfm</KFM>
+			<NoShaderNIF>Art/Leaderheads/Dido_07_09/Dido_Toga_Nonshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/Leaderheads/Dido_07_09/Isabella_BG.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_DIDO_09</Type>
-			<Button>Art/Leaderheads/Dido_09/didobutton.dds</Button>
-			<NIF>Art/Leaderheads/Dido_09/dido_eliz.nif</NIF>
-			<KFM>Art/Leaderheads/Dido_09/isabella.kfm</KFM>
-			<NoShaderNIF>Art/Leaderheads/Dido_09/Dido_Toga_Nonshader.nif</NoShaderNIF>
-			<BackgroundKFM>Art/Leaderheads/Dido_09/Isabella_BG.kfm</BackgroundKFM>
+			<Button>Art/Leaderheads/Dido_07_09/didobutton.dds</Button>
+			<NIF>Art/Leaderheads/Dido_07_09/dido_eliz.nif</NIF>
+			<KFM>Art/Leaderheads/Dido_07_09/isabella.kfm</KFM>
+			<NoShaderNIF>Art/Leaderheads/Dido_07_09/Dido_Toga_Nonshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/Leaderheads/Dido_07_09/Isabella_BG.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_ARIADNE</Type>
@@ -765,20 +765,20 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		<!-- custom: added a button -->
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_EVITA_PERON</Type>
-			<Button>Art/LeaderHeads/Evita_Peron/evita_peron_64px.dds</Button>
-			<NIF>Art/LeaderHeads/Evita_Peron/catherine.nif</NIF>
-			<KFM>Art/LeaderHeads/Evita_Peron/catherine.kfm</KFM>
-			<NoShaderNIF>Art/LeaderHeads/Evita_Peron/catherine_noshader.nif</NoShaderNIF>
-			<BackgroundKFM>Art/LeaderHeads/Evita_Peron/catherine_bg.kfm</BackgroundKFM>
+			<Button>Art/LeaderHeads/Evita_Peron_01_02/evita_peron_64px.dds</Button>
+			<NIF>Art/LeaderHeads/Evita_Peron_01_02/catherine.nif</NIF>
+			<KFM>Art/LeaderHeads/Evita_Peron_01_02/catherine.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Evita_Peron_01_02/catherine_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Evita_Peron_01_02/catherine_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<!-- custom: Evita Peron 2 is a variant of base Evita Peron using catherine_noshader.nif (Claude code Sonnet 4.6) -->
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_EVITA_PERON_02</Type>
-			<Button>Art/Leaderheads/Evita_Peron_02/evita_peron_64px.dds</Button>
-			<NIF>Art/Leaderheads/Evita_Peron_02/catherine_noshader.nif</NIF>
-			<KFM>Art/Leaderheads/Evita_Peron_02/catherine.kfm</KFM>
-			<NoShaderNIF>Art/Leaderheads/Evita_Peron_02/catherine_noshader.nif</NoShaderNIF>
-			<BackgroundKFM>Art/Leaderheads/Evita_Peron_02/catherine_bg.kfm</BackgroundKFM>
+			<Button>Art/Leaderheads/Evita_Peron_01_02/evita_peron_64px.dds</Button>
+			<NIF>Art/Leaderheads/Evita_Peron_01_02/catherine_noshader.nif</NIF>
+			<KFM>Art/Leaderheads/Evita_Peron_01_02/catherine.kfm</KFM>
+			<NoShaderNIF>Art/Leaderheads/Evita_Peron_01_02/catherine_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/Leaderheads/Evita_Peron_01_02/catherine_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<!-- custom: fixed purple details by adding missing texture file Art/Leaderheads/Ana_Nzinga_02/hc_copac_nrml.dds required by AnaNzinga2.nif. (GPT-5.3-Codex) -->
 		<LeaderheadArtInfo>
@@ -1212,35 +1212,35 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_VICTORIA_08</Type>
-			<Button>Art/Leaderheads/Victoria_08/Hasina.dds</Button>
-			<NIF>Art/Leaderheads/Victoria_08/victoria_noshader.nif</NIF>
-			<KFM>Art/Leaderheads/Victoria_08/victoria2.kfm</KFM>
-			<NoShaderNIF>Art/Leaderheads/Victoria_08/victoria_noshader.nif</NoShaderNIF>
-			<BackgroundKFM>Art/Leaderheads/Victoria_08/saladin_bg2.kfm</BackgroundKFM>
+			<Button>Art/Leaderheads/Victoria_08_11/Hasina.dds</Button>
+			<NIF>Art/Leaderheads/Victoria_08_11/victoria_noshader.nif</NIF>
+			<KFM>Art/Leaderheads/Victoria_08_11/victoria2.kfm</KFM>
+			<NoShaderNIF>Art/Leaderheads/Victoria_08_11/victoria_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/Leaderheads/Victoria_08_11/saladin_bg2.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_VICTORIA_09</Type>
-			<Button>Art/Leaderheads/Victoria_09/Hasina.dds</Button>
-			<NIF>Art/Leaderheads/Victoria_09/victoria (2).nif</NIF>
-			<KFM>Art/Leaderheads/Victoria_09/victoria2.kfm</KFM>
-			<NoShaderNIF>Art/Leaderheads/Victoria_09/victoria_noshader.nif</NoShaderNIF>
-			<BackgroundKFM>Art/Leaderheads/Victoria_09/saladin_bg2.kfm</BackgroundKFM>
+			<Button>Art/Leaderheads/Victoria_08_11/Hasina.dds</Button>
+			<NIF>Art/Leaderheads/Victoria_08_11/victoria (2).nif</NIF>
+			<KFM>Art/Leaderheads/Victoria_08_11/victoria2.kfm</KFM>
+			<NoShaderNIF>Art/Leaderheads/Victoria_08_11/victoria_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/Leaderheads/Victoria_08_11/saladin_bg2.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_VICTORIA_10</Type>
-			<Button>Art/LeaderHeads/Victoria_10/Hasina.dds</Button>
-			<NIF>Art/LeaderHeads/Victoria_10/victoria2.nif</NIF>
-			<KFM>Art/LeaderHeads/Victoria_10/victoria2.kfm</KFM>
-			<NoShaderNIF>Art/LeaderHeads/Victoria_10/victoria_noshader.nif</NoShaderNIF>
-			<BackgroundKFM>Art/LeaderHeads/Victoria_10/saladin_bg2.kfm</BackgroundKFM>
+			<Button>Art/LeaderHeads/Victoria_08_11/Hasina.dds</Button>
+			<NIF>Art/LeaderHeads/Victoria_08_11/victoria2.nif</NIF>
+			<KFM>Art/LeaderHeads/Victoria_08_11/victoria2.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Victoria_08_11/victoria_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Victoria_08_11/saladin_bg2.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_VICTORIA_11</Type>
-			<Button>Art/LeaderHeads/Victoria_11/Hasina.dds</Button>
-			<NIF>Art/LeaderHeads/Victoria_11/victoria.nif</NIF>
-			<KFM>Art/LeaderHeads/Victoria_11/victoria2.kfm</KFM>
-			<NoShaderNIF>Art/LeaderHeads/Victoria_11/victoria_noshader.nif</NoShaderNIF>
-			<BackgroundKFM>Art/LeaderHeads/Victoria_11/saladin_bg2.kfm</BackgroundKFM>
+			<Button>Art/LeaderHeads/Victoria_08_11/Hasina.dds</Button>
+			<NIF>Art/LeaderHeads/Victoria_08_11/victoria.nif</NIF>
+			<KFM>Art/LeaderHeads/Victoria_08_11/victoria2.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Victoria_08_11/victoria_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Victoria_08_11/saladin_bg2.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<!-- custom: ART_DEF_LEADER_BOUDICA_02 had the same purple animation errors as BOUDICA_1; fixed by importing base Civ4 Boudica animation files into the Boudica_2/ folder (no overwrite of existing files). Same fix as BOUDICA_1 - see that entry's comment for rationale on why local copies are used vs cross-folder references. (Claude code Sonnet 4.6) -->
 		<LeaderheadArtInfo>
