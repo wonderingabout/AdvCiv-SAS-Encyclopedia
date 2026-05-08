@@ -306,7 +306,7 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<NoShaderNIF>Art/LeaderHeads/Joan_of_Arc/elizabeth_noshader.nif</NoShaderNIF>
 			<BackgroundKFM>Art/LeaderHeads/Joan_of_Arc/elizabeth_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
-		<!-- custom: Joan of Arc 2 reuses Joan of Arc assets with elizabeth_noshader.nif instead of elizabeth.nif, kept in a separate folder for modularity (Claude code Sonnet 4.6); also using alternate background that was included in download in elizabeth_background.rar of Joan_Of_Arc (deleted archive in Joan_Of_Arc_2 since we extracted it and it is not needed) -->
+		<!-- custom: Joan of Arc 2 reuses Joan of Arc assets with elizabeth_noshader.nif instead of elizabeth.nif, kept in a separate folder because both nif and background dds change (Claude code Sonnet 4.6); also using alternate background that was included in download in elizabeth_background.rar of Joan_Of_Arc (deleted archive from Joan of Arc 01 and Joan of Arc 02 since Joan of Arc 02 uses it (alternative background file)) -->
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_JOAN_OF_ARC_02</Type>
 			<Button>Art/Leaderheads/Joan_of_Arc_02/joan.dds</Button>
@@ -374,20 +374,20 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_ELIZABETH_06</Type>
-			<Button>Art/Leaderheads/Elizabeth_06/Galadriel_BT.dds</Button>
-			<NIF>Art/Leaderheads/Elizabeth_06/Galadriel.nif</NIF>
-			<KFM>Art/Leaderheads/Elizabeth_06/Elizabeth.kfm</KFM>
-			<NoShaderNIF>Art/Leaderheads/Elizabeth_06/Galadriel.nif</NoShaderNIF>
-			<BackgroundKFM>Art/Leaderheads/Elizabeth_06/Elizabeth_BG.kfm</BackgroundKFM>
+			<Button>Art/Leaderheads/Elizabeth_06_07/Galadriel_BT.dds</Button>
+			<NIF>Art/Leaderheads/Elizabeth_06_07/Galadriel.nif</NIF>
+			<KFM>Art/Leaderheads/Elizabeth_06_07/Elizabeth.kfm</KFM>
+			<NoShaderNIF>Art/Leaderheads/Elizabeth_06_07/Galadriel.nif</NoShaderNIF>
+			<BackgroundKFM>Art/Leaderheads/Elizabeth_06_07/Elizabeth_BG.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
-		<!-- custom: Elizabeth 4 reuses Galadriel assets with elizabeth.nif, kept in a separate folder for modularity (Claude code Sonnet 4.6) -->
+		<!-- custom: Elizabeth 4 reuses Galadriel assets with elizabeth.nif (Claude code Sonnet 4.6) -->
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_ELIZABETH_07</Type>
 			<Button>,Art/Interface/LeaderHeads/Btn_LH_England_ElizabethI.dds,Art/Interface/Buttons/Actions_Builds_LeaderHeads_Specialists_Atlas.dds,8,10</Button>
-			<NIF>Art/Leaderheads/Elizabeth_07/elizabeth.nif</NIF>
-			<KFM>Art/Leaderheads/Elizabeth_07/Elizabeth.kfm</KFM>
-			<NoShaderNIF>Art/Leaderheads/Elizabeth_07/Galadriel.nif</NoShaderNIF>
-			<BackgroundKFM>Art/Leaderheads/Elizabeth_07/Elizabeth_BG.kfm</BackgroundKFM>
+			<NIF>Art/Leaderheads/Elizabeth_06_07/elizabeth.nif</NIF>
+			<KFM>Art/Leaderheads/Elizabeth_06_07/Elizabeth.kfm</KFM>
+			<NoShaderNIF>Art/Leaderheads/Elizabeth_06_07/Galadriel.nif</NoShaderNIF>
+			<BackgroundKFM>Art/Leaderheads/Elizabeth_06_07/Elizabeth_BG.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_ELIZABETH_05</Type>
@@ -957,7 +957,7 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<NoShaderNIF>Art/LeaderHeads/Quilago/isabella_noshader.nif</NoShaderNIF>
 			<BackgroundKFM>Art/LeaderHeads/Quilago/isabella_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
-		<!-- custom: Quilago 2 reuses Quilago assets with isabella_noshader.nif instead of isabella.nif, kept in a separate folder for modularity; background taken from Hatshepsut 4 (formerly Shin Sawbu 3) to reflect the different style after the NIF change (Claude code Sonnet 4.6) -->
+		<!-- custom: Quilago 2 reuses Quilago assets with isabella_noshader.nif instead of isabella.nif, kept in a separate folder because both nif and background dds change; background taken from Hatshepsut 4 (formerly Shin Sawbu 3) to reflect the different style after the NIF change (Claude code Sonnet 4.6) -->
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_QUILAGO_02</Type>
 			<Button>Art/Leaderheads/Quilago_02/Quilago.dds</Button>
@@ -1108,7 +1108,7 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<NoShaderNIF>Art/LeaderHeads/Gunnhild/elizabeth_noshader.nif</NoShaderNIF>
 			<BackgroundKFM>Art/LeaderHeads/Gunnhild/alexander_BG.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
-		<!-- custom: Maria 2 reuses Gunnhild assets with elizabeth_noshader.nif, kept in a separate folder for modularity; background (alexander_BG.kfm and related files) taken from Blonde Girl 2 (Claude code Sonnet 4.6); also replaced the green ribbon with a darker more fitting with the vibe sword harness (AI-generated with the help of GPT-5.4-Thinking thanks); also added a button -->
+		<!-- custom: Maria 03 reuses Gunnhild assets with elizabeth_noshader.nif; background (alexander_BG.kfm and related files) taken from Blonde Girl 2 (Claude code Sonnet 4.6); also replaced the green ribbon with a darker more fitting with the vibe sword harness (AI-generated with the help of GPT-5.4-Thinking thanks); also added a button -->
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_MARIA_03</Type>
 			<Button>Art/Leaderheads/Maria_03/Maria_03_64px.dds</Button>
@@ -1201,12 +1201,12 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 			<NoShaderNIF></NoShaderNIF>
 			<BackgroundKFM>Art/LeaderHeads/RagnarLodbrok/Ragnar_BG.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
-		<!-- custom: Victoria 7 reuses Freydis_Eiriksdottir assets with victoria.nif instead of f_Viking04a.nif (Claude code Sonnet 4.6) -->
+		<!-- custom: Victoria 07 reuses Freydis_Eiriksdottir assets with victoria.nif instead of f_Viking04a.nif (Claude code Sonnet 4.6) -->
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_VICTORIA_07</Type>
 			<Button>,Art/Interface/LeaderHeads/Btn_LH_England_Victoria.dds,Art/Interface/Buttons/Actions_Builds_LeaderHeads_Specialists_Atlas.dds,6,13</Button>
-			<NIF>Art/Leaderheads/Victoria_07/victoria.nif</NIF>
-			<KFM>Art/Leaderheads/Victoria_07/victoria.kfm</KFM>
+			<NIF>Art/Leaderheads/Freydis_Eiriksdottir/victoria.nif</NIF>
+			<KFM>Art/Leaderheads/Freydis_Eiriksdottir/victoria.kfm</KFM>
 			<NoShaderNIF></NoShaderNIF>
 			<BackgroundKFM>Art/LeaderHeads/RagnarLodbrok/Ragnar_BG.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
@@ -1602,19 +1602,19 @@ Created as part of the AdvCiv-SAS-NIF-Gallery mod
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_ISABELLA_14</Type>
-			<Button>Art/LeaderHeads/Isabella_14/btn_lh_celtic_boudica.dds</Button>
-			<NIF>Art/LeaderHeads/Isabella_14/isabella.nif</NIF>
-			<KFM>Art/LeaderHeads/Isabella_14/isabella.kfm</KFM>
-			<NoShaderNIF>Art/LeaderHeads/Isabella_14/isabella_noshader.nif</NoShaderNIF>
-			<BackgroundKFM>Art/LeaderHeads/Isabella_14/isabella_bg.kfm</BackgroundKFM>
+			<Button>Art/LeaderHeads/Isabella_14_15/btn_lh_celtic_boudica.dds</Button>
+			<NIF>Art/LeaderHeads/Isabella_14_15/isabella.nif</NIF>
+			<KFM>Art/LeaderHeads/Isabella_14_15/isabella.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Isabella_14_15/isabella_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Isabella_14_15/isabella_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_ISABELLA_15</Type>
-			<Button>Art/LeaderHeads/Isabella_15/btn_lh_celtic_boudica.dds</Button>
-			<NIF>Art/LeaderHeads/Isabella_15/isabella_noshader.nif</NIF>
-			<KFM>Art/LeaderHeads/Isabella_15/isabella.kfm</KFM>
-			<NoShaderNIF>Art/LeaderHeads/Isabella_15/isabella_noshader.nif</NoShaderNIF>
-			<BackgroundKFM>Art/LeaderHeads/Isabella_15/isabella_bg.kfm</BackgroundKFM>
+			<Button>Art/LeaderHeads/Isabella_14_15/btn_lh_celtic_boudica.dds</Button>
+			<NIF>Art/LeaderHeads/Isabella_14_15/isabella_noshader.nif</NIF>
+			<KFM>Art/LeaderHeads/Isabella_14_15/isabella.kfm</KFM>
+			<NoShaderNIF>Art/LeaderHeads/Isabella_14_15/isabella_noshader.nif</NoShaderNIF>
+			<BackgroundKFM>Art/LeaderHeads/Isabella_14_15/isabella_bg.kfm</BackgroundKFM>
 		</LeaderheadArtInfo>
 		<LeaderheadArtInfo>
 			<Type>ART_DEF_LEADER_ISABELLA_17</Type>
