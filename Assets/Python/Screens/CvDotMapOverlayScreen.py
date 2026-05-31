@@ -183,7 +183,7 @@ class CvDotMapOverlayScreen:
 		g_DotMap.unhighlightCity()
 		self.selectColor(color)
 		g_DotMap.highlightCity(self.currentPoint, self.currentColor)
-	
+
 	def onLeftMouseDown(self):
 		# Called on left mouse click on the main ui.
 		#
@@ -212,7 +212,7 @@ class CvDotMapOverlayScreen:
 		self.currentPoint = (x, y)
 		g_DotMap.highlightCity(self.currentPoint, self.currentColor)
 		self.resetInterfaceMode()
-	
+
 	def resetInterfaceMode(self):
 		if CyInterface().getInterfaceMode() != InterfaceModeTypes.INTERFACEMODE_PYTHON_PICK_PLOT:
 			CyInterface().setInterfaceMode(InterfaceModeTypes.INTERFACEMODE_PYTHON_PICK_PLOT)

@@ -64,7 +64,7 @@ class CvVictoryScreen:
 		self.UN_RESOLUTION_TAB_ID = "VotingTabWidget"
 		self.UN_MEMBERS_TAB_ID = "MembersTabWidget"
 		self.SPACESHIP_SCREEN_BUTTON = 1234
-		
+
 		# <advc.703>
 		self.RF_SCORE_TAB_ID = "RiseFallTabWidget"
 		# Adopted from CvReligionScreen:
@@ -463,7 +463,6 @@ class CvVictoryScreen:
 		# </advc.703>
 		self.drawTabs()
 
-
 # BUG Additions Start
 	def showMembersScreen(self):
 		if AdvisorOpt.isMembers():
@@ -765,7 +764,7 @@ class CvVictoryScreen:
 
 		fVotePercent = 100.0 * iVoteTotal[iWinner] / iMaxVotes
 		fMargin = 100.0 * (iVoteTotal[iWinner] - iVoteTotal[iLoser]) / iMaxVotes
-		
+
 		if self.VoteType == 1:
 			sSecGen = gc.getVoteSourceInfo(iActiveVote).getSecretaryGeneralText()
 		else:
@@ -886,7 +885,6 @@ class CvVictoryScreen:
 		screen.setTableColumnHeader(szTable, 1, "", self.TABLE2_WIDTH_1)
 		# advc.703: Code moved into subroutine
 		self.appendMemberRows(screen, szTable)
-
 
 	# <advc.703>
 	def showRiseFall(self):
@@ -1016,7 +1014,7 @@ class CvVictoryScreen:
 		screen.addMultilineText("Child" + self.AREA1_ID, chapterScoreText, self.X_RF1_AREA+20, self.Y_RF_AREA+20, self.W_RF_AREA-20, self.H_RF_AREA-20, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
 		screen.addMultilineText("Child" + self.AREA2_ID, riseScoreText, self.X_RF2_AREA+10, self.Y_RF_AREA+20, self.W_RF_AREA-10, self.H_RF_AREA-20, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
 		self.drawTabs()
-	
+
 	def highlight(self, s):
 		return u"<font=2b>" + s + u"</font>"
 	# </advc.703>
@@ -1504,7 +1502,7 @@ class CvVictoryScreen:
 		# <!-- custom: cache active player name and leader button before loop (claude opus 4.5). (GPT-5.2-Codex (summarized)) -->
 		szActivePlayerNameWithColon = activePlayer.getName() + ":"
 		szActivePlayerButton = self.getLeaderButton(self.iActivePlayer)
-		
+
 		for iLoopVC in range(gc.getNumVictoryInfos()):
 			victory = gc.getVictoryInfo(iLoopVC)
 			if gc.getGame().isVictoryValid(iLoopVC):
@@ -1620,7 +1618,6 @@ class CvVictoryScreen:
 						screen.setTableText(szTable, 5, iRow, (u"%.2f%%" % (bestPop * 100 / totalPop)), "", WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
 
 					bEntriesFound = True
-
 
 				# <!-- custom: cache adjusted land percent to avoid duplicate call (claude opus 4.5) -->
 				iAdjustedLandPercent = gc.getGame().getAdjustedLandPercent(iLoopVC)
@@ -1809,7 +1806,7 @@ class CvVictoryScreen:
 									#check if spaceship
 									if (gc.getProjectInfo(i).isSpaceship()):
 										bSpaceshipFound = True
-								
+
 								# add AI space ship info
 								if (iBestProjectTeam != -1):
 									pTeam = gc.getTeam(iBestProjectTeam)
@@ -1855,7 +1852,7 @@ class CvVictoryScreen:
 
 							screen.setTableText(szTable, 2, iRow, szActivePlayerName, szActivePlayerButton, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
 							screen.setTableText(szTable, 3, iRow, str(activePlayer.getTeam().getProjectCount(i)), "", WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
-							
+
 							#check if spaceship
 							if (gc.getProjectInfo(i).isSpaceship()):
 								bSpaceshipFound = True
@@ -1873,12 +1870,12 @@ class CvVictoryScreen:
 
 							bEntriesFound = True
 # BUG Additions End
-						
+
 				#add spaceship button
 				if (bSpaceshipFound):
 					screen.setButtonGFC("SpaceShipButton" + str(iLoopVC), localText.getText("TXT_KEY_GLOBELAYER_STRATEGY_VIEW", ()), "", 0, 0, 15, 10, WidgetTypes.WIDGET_GENERAL, self.SPACESHIP_SCREEN_BUTTON, -1, ButtonStyles.BUTTON_STYLE_STANDARD )
 					screen.attachControlToTableCell("SpaceShipButton" + str(iLoopVC), szTable, iVictoryTitleRow, 1)
-					
+
 					victoryDelay = gc.getTeam(iActiveTeam).getVictoryCountdown(iLoopVC)
 					if((victoryDelay > 0) and (gc.getGame().getGameState() != GameStateTypes.GAMESTATE_EXTENDED)):
 						victoryDate = CyGameTextMgr().getTimeStr(gc.getGame().getGameTurn() + victoryDelay, False)
@@ -1886,7 +1883,7 @@ class CvVictoryScreen:
 						screen.setTableText(szTable, 3, iVictoryTitleRow, victoryDate, "", WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
 						screen.setTableText(szTable, 4, iVictoryTitleRow, localText.getText("TXT_KEY_REPLAY_SCREEN_TURNS", ()) + ":", "", WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
 						screen.setTableText(szTable, 5, iVictoryTitleRow, str(victoryDelay), "", WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
-						
+
 				if (victory.isDiploVote()):
 					for (iVoteBuildingClass, iUNTeam, bUnknown) in aiVoteBuildingClass:
 						iRow = screen.appendTableRow(szTable)
@@ -1913,10 +1910,10 @@ class CvVictoryScreen:
 						else:
 							screen.setTableText(szTable, 2, iRow, localText.getText("TXT_KEY_VICTORY_SCREEN_NOT_BUILT", ()), "", WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
 						bEntriesFound = True
-					
+
 				if (victory.getCityCulture() != CultureLevelTypes.NO_CULTURELEVEL and victory.getNumCultureCities() > 0):
 					ourBestCities = self.getListCultureCities(iActiveTeam, victory)
-					
+
 					# K-Mod - changed to loop through teams rather than players, to match actual victory conditions.
 					iBestCultureTeam = -1
 					bestCityCulture = 0
@@ -1989,7 +1986,7 @@ class CvVictoryScreen:
 						if (i < victory.getNumCultureCities()-1):
 							iRow = screen.appendTableRow(szTable)
 					bEntriesFound = True
-					
+
 				if (bEntriesFound):
 					screen.appendTableRow(szTable)
 					screen.appendTableRow(szTable)
@@ -2006,7 +2003,7 @@ class CvVictoryScreen:
 			for j in range(gc.getMAX_CIV_PLAYERS()): # advc.007: barbs excluded
 				if (gc.getPlayer(j).isAlive()):
 					screen.addPullDownString(self.szDropdownName, gc.getPlayer(j).getName(), j, j, False )
-		
+
 		self.drawTabs()
 
 #	def getListCultureCities(self, iPlayer):

@@ -4,21 +4,18 @@
 #
 # <!-- custom: imported from RFC Dawn of Civilization mod  C:\Program Files (x86)\Steam\steamapps\common\Sid Meier's Civilization IV Beyond the Sword\Beyond the Sword\Mods\RFC Dawn of Civilization\Assets\Python\Pedia\CvPediaFeature.py then adjusted for AdvCiv-SAS; for example renamed placeDetails to placeSpecial for consistency with our other special effect method names in other sevopedia classes -->
 
-
-
 from CvPythonExtensions import *
 import CvUtil
 import ScreenInput
 import SevoScreenEnums
 from SASUtils import getInfoTypeOrFail
+from SASUtils import getInfoTypeOrMinusOne
 
 from _sevopedia_helpers import *
 
 gc = CyGlobalContext()
 ArtFileMgr = CyArtFileMgr()
 localText = CyTranslator()
-
-
 
 def do_pre_load_xml_features_info_required_data_validation():
 	for iFeature in xrange(gc.getNumFeatureInfos()):
@@ -58,10 +55,8 @@ def do_pre_load_xml_features_info_required_data_validation():
 								# If not, raise an error here and advise manual display implementation if desired.
 								raise ValueError(u"[VALUE ERROR] Unexpected iTime difference=%d when existing maxSoFarTime=%d for builds removing feature=%d (%s). Please ensure all builds that remove this feature share the same iTime, or update display logic to show per-build time if desired." %
 									(removeTime, maxSoFarTime, iFeature, gc.getFeatureInfo(iFeature).getType()))
-							
+
 							maxSoFarTime = removeTime
-
-
 
 class SevoPediaFeature:
 	def __init__(self, main):
@@ -146,11 +141,9 @@ class SevoPediaFeature:
 		self.I_FEATURE_FOREST = getInfoTypeOrFail("FEATURE_FOREST")
 		self.I_FEATURE_JUNGLE = getInfoTypeOrFail("FEATURE_JUNGLE")
 
-		self.I_PROMOTION_WOODSMAN1 = getInfoTypeOrFail("PROMOTION_WOODSMAN1")
-		self.I_PROMOTION_WOODSMAN2 = getInfoTypeOrFail("PROMOTION_WOODSMAN2")
-		self.I_PROMOTION_WOODSMAN3 = getInfoTypeOrFail("PROMOTION_WOODSMAN3")
-
-
+		self.I_PROMOTION_WOODSMAN1 = getInfoTypeOrMinusOne("PROMOTION_WOODSMAN1")
+		self.I_PROMOTION_WOODSMAN2 = getInfoTypeOrMinusOne("PROMOTION_WOODSMAN2")
+		self.I_PROMOTION_WOODSMAN3 = getInfoTypeOrMinusOne("PROMOTION_WOODSMAN3")
 
 	def interfaceScreen(self, iFeature):
 		self.iFeature = iFeature
@@ -165,8 +158,6 @@ class SevoPediaFeature:
 		self.placeSpecial()
 		self.placeHistory()
 
-
-
 	def _getRemovalBuildsWithProduction(self):
 		buildIds = []
 		for iBuild in xrange(gc.getNumBuildInfos()):
@@ -178,7 +169,6 @@ class SevoPediaFeature:
 			if buildInfo.getFeatureProduction(self.iFeature) > 0:
 				buildIds.append(iBuild)
 		return buildIds
-
 
 	def placeInfo(self):
 		screen = self.top.getScreen()
@@ -208,8 +198,6 @@ class SevoPediaFeature:
 				szText += (u"%s%d%c  " % (szSign, iYieldChange, gc.getYieldInfo(iYield).getChar()))
 
 		screen.appendListBoxString(panel, szText, WidgetTypes.WIDGET_GENERAL, 0, 0, CvUtil.FONT_LEFT_JUSTIFY)
-
-
 
 	def placeBuildUnits(self):
 		screen = self.top.getScreen()
@@ -299,8 +287,6 @@ class SevoPediaFeature:
 			yPanelCenter = self.Y_UNITS_REMOVE + (self.H_UNITS_REMOVE / 2)
 			screen.addMultilineText(textName, szText, self.X_UNITS_REMOVE + 7, yPanelCenter, self.W_UNITS_REMOVE - 14, self.H_UNITS_REMOVE - 20, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
 
-
-
 	# <!-- custom: code provided with the help of claude ai and chatgpt too -->
 	def placeSpecial(self):
 		screen = self.top.getScreen()
@@ -327,8 +313,6 @@ class SevoPediaFeature:
 		szSpecialText = u"\n".join(baseLines + extraLines).strip()
 		screen.addMultilineText(text, szSpecialText, self.X_SPECIAL + 10, self.Y_SPECIAL + 30, self.W_SPECIAL - 20, self.H_SPECIAL - 40, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
 
-
-
 	def placeTerrain(self):
 		screen = self.top.getScreen()
 		panel = self.top.getNextWidgetName()
@@ -341,8 +325,6 @@ class SevoPediaFeature:
 			TerrainInfo = gc.getTerrainInfo(iTerrain)
 			if info.isTerrain(iTerrain):
 				screen.attachImageButton(panel, "", TerrainInfo.getButton(), GenericButtonSizes.BUTTON_SIZE_CUSTOM, WidgetTypes.WIDGET_PEDIA_JUMP_TO_TERRAIN, iTerrain, 1, False)
-
-
 
 	def placeImprovements(self):
 		screen = self.top.getScreen()
@@ -358,8 +340,6 @@ class SevoPediaFeature:
 			elif ImprovementInfo.getFeatureMakesValid(self.iFeature):
 				screen.attachImageButton(panel, "", ImprovementInfo.getButton(), GenericButtonSizes.BUTTON_SIZE_CUSTOM, WidgetTypes.WIDGET_PEDIA_JUMP_TO_IMPROVEMENT, iImprovement, 1, False)
 
-
-
 	def placeBonusesOnAnyTerrain(self):
 		screen = self.top.getScreen()
 		panel = self.top.getNextWidgetName()
@@ -373,8 +353,6 @@ class SevoPediaFeature:
 				continue
 			if bonusInfo.isFeature(self.iFeature):
 				screen.attachImageButton(panel, "", bonusInfo.getButton(), GenericButtonSizes.BUTTON_SIZE_CUSTOM, WidgetTypes.WIDGET_PEDIA_JUMP_TO_BONUS, iBonus, 1, False)
-
-
 
 	def placeRelevantUnits(self):
 		xPanel = self.X_RELEVANT_UNITS
@@ -447,9 +425,9 @@ class SevoPediaFeature:
 				iFeatureAttack = unitInfo.getFeatureAttackModifier(self.iFeature)
 				iFeatureDefense = unitInfo.getFeatureDefenseModifier(self.iFeature)
 
-				isHasW1 = unitInfo.getFreePromotions(self.I_PROMOTION_WOODSMAN1)
-				isHasW2 = unitInfo.getFreePromotions(self.I_PROMOTION_WOODSMAN2)
-				isHasW3 = unitInfo.getFreePromotions(self.I_PROMOTION_WOODSMAN3)
+				isHasW1 = (self.I_PROMOTION_WOODSMAN1 != -1 and unitInfo.getFreePromotions(self.I_PROMOTION_WOODSMAN1))
+				isHasW2 = (self.I_PROMOTION_WOODSMAN2 != -1 and unitInfo.getFreePromotions(self.I_PROMOTION_WOODSMAN2))
+				isHasW3 = (self.I_PROMOTION_WOODSMAN3 != -1 and unitInfo.getFreePromotions(self.I_PROMOTION_WOODSMAN3))
 
 				if ((iFeatureAttack != 0) or (iFeatureDefense != 0) or isHasW1 or isHasW2 or isHasW3):
 					screen.appendMultiListButton(rowListName, unitInfo.getButton(), SEVOPEDIA_MULTILIST_COLUMN_INDEX_AUTO, WidgetTypes.WIDGET_PEDIA_JUMP_TO_UNIT, iUnit, 1, False)
@@ -498,8 +476,6 @@ class SevoPediaFeature:
 
 					#isButtonFound = True
 					iButtonIndex += 1
-
-
 
 	def placeUnitsImpassable(self):
 		xPanel = self.X_UNITS_IMPASSABLE
@@ -578,8 +554,6 @@ class SevoPediaFeature:
 				if blocked:
 					screen.appendMultiListButton(rowListName, unitInfo.getButton(), SEVOPEDIA_MULTILIST_COLUMN_INDEX_AUTO, WidgetTypes.WIDGET_PEDIA_JUMP_TO_UNIT, iUnit, 1, False)
 
-
-
 	def placeHistory(self):
 		screen = self.top.getScreen()
 		panel = self.top.getNextWidgetName()
@@ -591,7 +565,6 @@ class SevoPediaFeature:
 		szHistory = info.getCivilopedia()
 		screen.addMultilineText(text, szHistory, self.X_HISTORY + 10, self.Y_HISTORY + 30, self.W_HISTORY - 20, self.H_HISTORY - 40, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
 
-
-
 	def handleInput (self, inputClass):
 		return 0
+

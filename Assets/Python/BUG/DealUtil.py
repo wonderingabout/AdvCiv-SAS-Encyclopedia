@@ -32,12 +32,10 @@ import BugDll
 import PlayerUtil
 import TradeUtil
 
-
 ## Constants
 
 GOLD_TRADE_ITEMS = (TradeableItems.TRADE_GOLD, TradeableItems.TRADE_GOLD_PER_TURN)
 VASSAL_TRADE_ITEMS = (TradeableItems.TRADE_VASSAL, TradeableItems.TRADE_SURRENDER)
-
 
 ## Globals
 
@@ -45,7 +43,6 @@ gc = CyGlobalContext()
 
 g_eventManager = None
 g_lastDealCount = 0
-
 
 ## Deal Functions
 
@@ -91,7 +88,6 @@ def findDealsByPlayerAndType(ePlayer, types):
 		for type in matches:
 			found.setdefault(deal.getOtherPlayer(), {})[type] = deal
 	return found
-
 
 ## TradeableItem Functions
 
@@ -139,7 +135,6 @@ def isVassal(eItem):
 def isEndWar(eItem):
 	return eItem == TradeableItems.TRADE_PEACE_TREATY or isVassal(eItem)
 
-
 ## Initialization and Events
 
 def addEvents(eventManager):
@@ -161,7 +156,6 @@ def onGameUpdate(argsList):
 		g_eventManager.fireEvent("DealCanceled", -1, -1, None)
 	else:
 		g_lastDealCount = count
-
 
 ## Wrapper Classes
 
@@ -189,7 +183,7 @@ class Deal(object):
 		return self.deal.isNone()
 	def getInitialGameTurn(self):
 		return self.deal.getInitialGameTurn()
-	
+
 	def isCancelable(self, eByPlayer, bIgnoreWaitingPeriod=False):
 		if BugDll.isPresent():
 			return self.deal.isCancelable(eByPlayer, bIgnoreWaitingPeriod)
@@ -210,7 +204,7 @@ class Deal(object):
 			return self.getInitialGameTurn() + gc.getDefineINT("PEACE_TREATY_LENGTH") - gc.getGame().getGameTurn()
 	def kill(self):
 		self.deal.kill()
-	
+
 	def isPeaceDeal(self):
 		return self.eitherHasType(TradeableItems.TRADE_PEACE_TREATY)
 	def isVassalDeal(self):
@@ -220,7 +214,7 @@ class Deal(object):
 		# 
 		return ((eByPlayer == self.getOtherPlayer() and self.hasAnyType(VASSAL_TRADE_ITEMS)) or
 				(eByPlayer == self.getPlayer() and self.otherHasAnyType(VASSAL_TRADE_ITEMS)))
-	
+
 	def isReversed(self):
 		return False
 	def getPlayer(self):
@@ -235,7 +229,7 @@ class Deal(object):
 		return self.deal.getFirstTrade(index)
 	def getOtherTrade(self, index):
 		return self.deal.getSecondTrade(index)
-	
+
 	def trades(self):
 		for i in range(self.getCount()):
 			yield self.getTrade(i)
@@ -256,7 +250,7 @@ class Deal(object):
 				if type == trade.ItemType:
 					found.append(type)
 		return found
-	
+
 	def __repr__(self):
 		return ("<deal %d [trades %d %s] [trades %d %s]>" % 
 				(self.getID(), 
@@ -284,7 +278,6 @@ class ReversedDeal(Deal):
 		return self.deal.getSecondTrade(index)
 	def getOtherTrade(self, index):
 		return self.deal.getFirstTrade(index)
-
 
 ## Testing
 

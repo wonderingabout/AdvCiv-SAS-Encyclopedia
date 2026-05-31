@@ -15,8 +15,6 @@
 #
 # <!-- custom: Long_Comments_py.txt #4 -->
 
-
-
 from CvPythonExtensions import *
 import CvUtil
 import ScreenInput
@@ -24,13 +22,9 @@ import SevoScreenEnums
 
 from _sevopedia_helpers import *
 
-
-
 gc = CyGlobalContext()
 ArtFileMgr = CyArtFileMgr()
 localText = CyTranslator()
-
-
 
 class SevoPediaBuilding:
 
@@ -122,7 +116,7 @@ class SevoPediaBuilding:
 		self.Y_BUILDING_ANIMATION = self.Y_BUILDING_PANE + self.H_ADJUST_HEIGHT_ANIMATION_TO_MATCH_ADJACENT_PANE
 		self.W_BUILDING_ANIMATION = self.W_TOTAL_EFFECTIVE_BUILDING_PANE
 		self.H_BUILDING_ANIMATION = self.H_BUILDING_PANE + self.SMALL_MARGIN + self.H_REQUIRES + self.SMALL_MARGIN + self.H_FREE_PBBS - self.H_ADJUST_HEIGHT_ANIMATION_TO_MATCH_ADJACENT_PANE
-		
+
 		self.X_ROTATION_BUILDING_ANIMATION = -20
 		self.Z_ROTATION_BUILDING_ANIMATION = 30
 		self.SCALE_ANIMATION = 0.7
@@ -145,8 +139,6 @@ class SevoPediaBuilding:
 		self.W_HISTORY = self.W_BUILDING_ANIMATION
 		self.H_HISTORY = self.top.B_PEDIA_PAGE - self.Y_HISTORY
 
-
-
 	def interfaceScreen(self, iBuilding):
 		self.iBuilding = iBuilding
 
@@ -164,8 +156,6 @@ class SevoPediaBuilding:
 		self.placeCivilizations()
 		self.placeHistory()
 
-
-
 	def placeBuildingPane(self):
 		screen = self.top.getScreen()
 
@@ -173,18 +163,12 @@ class SevoPediaBuilding:
 		screen.addPanel(self.top.getNextWidgetName(), "", "", False, False, self.X_ICON, self.Y_ICON, self.W_ICON, self.H_ICON, PanelStyles.PANEL_STYLE_MAIN)
 		screen.addDDSGFC(self.top.getNextWidgetName(), gc.getBuildingInfo(self.iBuilding).getButton(), self.X_ICON + self.W_ICON/2 - self.ICON_SIZE/2, self.Y_ICON + self.H_ICON/2 - self.ICON_SIZE/2, self.ICON_SIZE, self.ICON_SIZE, WidgetTypes.WIDGET_GENERAL, -1, -1 )
 
-
-
 	def setupStatsPanel(self, screen, panelName, txtKey, panelStyle):
 		screen.addPanel(panelName, localText.getText(txtKey, ()), "", True, True, self.X_STATS_PANE, self.Y_STATS_PANE, self.W_STATS_PANE, self.H_STATS_PANE, panelStyle,)
-
-
 
 	def fillStatsCell(self, screen, label, xLabel, y):
 		labelText = u"<font=4>%s</font>" % label
 		screen.setText(self.top.getNextWidgetName(), "", labelText, CvUtil.FONT_LEFT_JUSTIFY, xLabel, y, 0, FontTypes.SMALL_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
-
-
 
 	def getStatsNextItemCoordinates(self, x, y, rowItemId, columnWidth):
 		anticipatedNextRowId = rowItemId + 1
@@ -200,8 +184,6 @@ class SevoPediaBuilding:
 			y += self.H_STATS_PANE_LINE_HEIGHT
 			rowItemId += 1
 			return x, y, rowItemId
-
-
 
 	# <!-- custom: table code based on placeAIPersonality panel method/function in sevopedialeader we (me and chatgpt) had written and enhanced together and all, modifying/adjusting it for this sevopediabuilding (much) simpler panel (stats pane) need but still important as we don't want to scroll after say 4th element, move to 2nd column rather and resume filling there. -->
 	def placeStats(self):
@@ -236,7 +218,6 @@ class SevoPediaBuilding:
 			self.fillStatsCell(screen, szText2, x, y)
 			x, y, rowItemId = self.getStatsNextItemCoordinates(x, y, rowItemId, columnWidth)
 
-
 		# <!-- custom: 2 Direct Yield Changes (like Food, Production, Gold), and Yield Modifiers (Food +x%, Production +x%, Gold +x%) with power breakdown added thanks to Claude AI and my prompts or tweaks/adjustments or not or yes or and but or not but or and(2) -->
 		for k in range(YieldTypes.NUM_YIELD_TYPES):
 			iYieldChange = buildingInfo.getYieldChange(k)
@@ -257,10 +238,10 @@ class SevoPediaBuilding:
 
 			# Total modifier (regular + power)
 			iTotalYieldModifier = iYieldModifier + iPowerYieldModifier
-			
+
 			if iTotalYieldModifier != 0:
 				szText1 = ""
-				
+
 				# Base modifier part
 				if iYieldModifier != 0:
 					if iYieldModifier > 0:
@@ -268,7 +249,7 @@ class SevoPediaBuilding:
 					else:
 						szSign = ""
 					szText1 = szSign + str(iYieldModifier) + "%"
-				
+
 				# Power modifier part (optional, only if exists)
 				if iPowerYieldModifier != 0:
 					if len(szText1) > 0:
@@ -278,7 +259,7 @@ class SevoPediaBuilding:
 					else:
 						szPowerSign = ""
 					szText1 += szPowerSign + str(iPowerYieldModifier) + "% w/"
-					
+
 					# Add power button
 					buttonSize = 24
 					szButtonText = u"<img=%s size=%s></img>" % (self.powerButtonPath, str(buttonSize))
@@ -305,15 +286,15 @@ class SevoPediaBuilding:
 			iCommerceModifier = buildingInfo.getCommerceModifier(k)
 			iCommerceDoubleTime = buildingInfo.getCommerceChangeDoubleTime(k)
 			iGlobalCommerceModifier = buildingInfo.getGlobalCommerceModifier(k)
-			
+
 			# <!-- custom: placeSpecial (already) handles the full info display (currently not double times though), so we can simply be concise maybe and display the total of "local" (if any (too than in global that i wrote the if any of before)) + global commerce modifier (if any) rather -->
 			# Total modifier (local + global)
 			iTotalModifier = iCommerceModifier + iGlobalCommerceModifier
-			
+
 			# Display if either modifier or double time exists
 			if iTotalModifier != 0 or iCommerceDoubleTime > 0:
 				szText = ""
-				
+
 				# Add modifier percentage
 				if iTotalModifier != 0:
 					if iTotalModifier > 0:
@@ -321,13 +302,13 @@ class SevoPediaBuilding:
 					else:
 						szSign = ""
 					szText += szSign + str(iTotalModifier) + "%"
-				
+
 				# Add double time if present
 				if iCommerceDoubleTime > 0:
 					if len(szText) > 0:
 						szText += ", "
 					szText += "x2(" + str(iCommerceDoubleTime) + "Y)"
-				
+
 				szText2 = u"%c  %s" % (gc.getCommerceInfo(k).getChar(), szText)
 				self.fillStatsCell(screen, szText2, x, y)
 				x, y, rowItemId = self.getStatsNextItemCoordinates(x, y, rowItemId, columnWidth)
@@ -365,15 +346,15 @@ class SevoPediaBuilding:
 			szText2 = u"%c  %s" % (CyGame().getSymbolID(FontSymbols.UNHEALTHY_CHAR), szText)
 			self.fillStatsCell(screen, szText2, x, y)
 			x, y, rowItemId = self.getStatsNextItemCoordinates(x, y, rowItemId, columnWidth)
-		
+
 		# <!-- custom: 6: Great people change with button display of the great people type too, and great people modifier -->
 		if buildingInfo.getGreatPeopleRateChange() != 0:
 			# Create the text with the great person rate change
 			szText = localText.getText("TXT_KEY_PEDIA_GREAT_PEOPLE_CUSTOM", (buildingInfo.getGreatPeopleRateChange(),))
-			
+
 			# Format with the great people character
 			szText2 = u"%c  %s" % (CyGame().getSymbolID(FontSymbols.GREAT_PEOPLE_CHAR), szText)
-			
+
 			# Display the text
 			self.fillStatsCell(screen, szText2, x, y)
 			# <!-- custom: since this is our last usage/placeStats info displayed, we don't get the next coordinates, but instead store current coordinates (of last item displayed) to know where to place our great people button later. -->
@@ -390,7 +371,7 @@ class SevoPediaBuilding:
 
 		if iTotalGreatPeopleModifier != 0:
 			szText1 = ""
-			
+
 			# Base modifier part
 			if iGreatPeopleModifier != 0:
 				if iGreatPeopleModifier > 0:
@@ -398,7 +379,7 @@ class SevoPediaBuilding:
 				else:
 					szSign = ""
 				szText1 = szSign + str(iGreatPeopleModifier) + "%"
-			
+
 			# Global modifier part (if exists and different from base)
 			if iGlobalGreatPeopleModifier != 0:
 				if len(szText1) > 0:
@@ -432,7 +413,7 @@ class SevoPediaBuilding:
 					iGreatPersonUnit = gc.getCivilizationInfo(gc.getPlayer(self.top.iActivePlayer).getCivilizationType()).getCivilizationUnits(greatPersonType)
 				else:
 					iGreatPersonUnit = gc.getUnitClassInfo(greatPersonType).getDefaultUnitIndex()
-				
+
 				if iGreatPersonUnit != -1:
 					greatPersonInfo = gc.getUnitInfo(iGreatPersonUnit)
 					greatPersonButton = greatPersonInfo.getButton()
@@ -445,8 +426,6 @@ class SevoPediaBuilding:
 					buttonY = (self.Y_FLAT_GREAT_PERSON + buttonYOffset) - self.Y_STATS_PANE
 					screen.setImageButtonAt(buttonWidget, panelName, greatPersonButton, buttonX, buttonY, buttonW, buttonH, WidgetTypes.WIDGET_PEDIA_JUMP_TO_UNIT, iGreatPersonUnit, 1)
 
-
-
 	# <!-- custom: additional info by chatgpt thanks: "The self.iBuilding is a unique ID already. But the prerequisites (like isBuildingClassNeededInCity) refer to a class, not a specific building. That's where the helper comes in." + also "The helper get_iDefaultBuilding_current_civ(iBuildingClass) is not for the current building (self.iBuilding). It's used to resolve prerequisite buildings by class — and each building class can have different versions (UUs) for each civ." i don't know if accurate but maybe is, so adding this info here as part of refactoring and wondering if we should use it in required for to which chatgpt also replied thanks but or not but or yes but"In placeRequiredFor: You’re checking: for each building: if building X requires our current building's class: show building X" and "You already have the concrete building (X). No need to resolve anything — you are showing the building that depends on yours, not the class." -->
 	def get_iDefaultBuilding_current_civ(self, i):
 		# Get the default building of this class for the current civilization
@@ -454,8 +433,6 @@ class SevoPediaBuilding:
 			return gc.getCivilizationInfo(gc.getPlayer(self.top.iActivePlayer).getCivilizationType()).getCivilizationBuildings(i)
 		else:
 			return gc.getBuildingClassInfo(i).getDefaultBuildingIndex()
-
-
 
 	def placeRequires(self):
 		xPanel = self.X_REQUIRES
@@ -541,7 +518,7 @@ class SevoPediaBuilding:
 		# Check for project requirements - New code for Manhattan Project and other projects
 		buildingInfo = gc.getBuildingInfo(self.iBuilding)
 		iSpecialBuildingType = buildingInfo.getSpecialBuildingType()
-		
+
 		# Check all projects to see if any enables this special building
 		if iSpecialBuildingType >= 0:
 			bFirst = True
@@ -572,7 +549,7 @@ class SevoPediaBuilding:
 			# Check if this building class is needed in the city
 			if buildingInfo.isBuildingClassNeededInCity(i):
 				iDefaultBuilding = self.get_iDefaultBuilding_current_civ(i)
-				
+
 				# If a valid building exists, display its button
 				if iDefaultBuilding != -1:
 					screen.appendMultiListButton(rowListName, gc.getBuildingInfo(iDefaultBuilding).getButton(), SEVOPEDIA_MULTILIST_COLUMN_INDEX_AUTO, WidgetTypes.WIDGET_PEDIA_JUMP_TO_BUILDING, iDefaultBuilding, 1, False)
@@ -588,10 +565,10 @@ class SevoPediaBuilding:
 		for i in range(gc.getNumBuildingClassInfos()):
 			iNumRequired = 0
 			iNumRequired = buildingInfo.getPrereqNumOfBuildingClass(i)
-			
+
 			if iNumRequired > 0:
 				iDefaultBuilding = self.get_iDefaultBuilding_current_civ(i)
-				
+
 				# If a valid building exists, display its button with number required
 				if iDefaultBuilding != -1:
 					screen.appendMultiListButton(rowListName, gc.getBuildingInfo(iDefaultBuilding).getButton(), SEVOPEDIA_MULTILIST_COLUMN_INDEX_AUTO, WidgetTypes.WIDGET_PEDIA_JUMP_TO_BUILDING, iDefaultBuilding, 1, False)
@@ -609,8 +586,6 @@ class SevoPediaBuilding:
 			szText = localText.getText(txtKeyNoButtonFound, ())
 			yPanelCenter = yPanel + (hPanel / 2)
 			screen.addMultilineText(textName, szText, xPanel + 7, yPanelCenter, wPanel - 14, hPanel - 20, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
-
-
 
 	def placeMovie(self):
 		screen = self.top.getScreen()
@@ -637,7 +612,6 @@ class SevoPediaBuilding:
 			yPanelCenter = self.Y_MOVIE + (self.H_MOVIE / 2)
 			screen.addMultilineText(textName, szText, self.X_MOVIE + 7, yPanelCenter, self.W_MOVIE - 14, self.H_MOVIE - 20, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
 
-
 	# <!-- custom: code provided by gemini ai and adjusted or not for advciv-sas -->  
 	def is_building_prereq_overridden_by_civic(self, iBuildingId):
 		# Checks if the prerequisite for the given building ID can be overridden by any civic.
@@ -659,8 +633,6 @@ class SevoPediaBuilding:
 				return True
 
 		return False
-
-
 
 	def placeRequiredFor(self):
 		# Shows buildings that require this building as a prerequisite
@@ -691,14 +663,14 @@ class SevoPediaBuilding:
 		isButtonFound = False
 		iButtonIndex = 0
 		maxButtonsPerRow = get_multilist_max_buttons_per_row(multiListW, MULTILIST_BUTTON_SIZE)
-		
+
 		# Get the building class of our current building
 		iCurrentBuildingClass = gc.getBuildingInfo(self.iBuilding).getBuildingClassType()
-		
+
 		# Loop through all buildings to check which ones require this building class
 		for iLoopBuilding in range(gc.getNumBuildingInfos()):
 			loopBuildingInfo = gc.getBuildingInfo(iLoopBuilding)
-			
+
 			# Check if this building is needed via BuildingClassNeededs
 			if loopBuildingInfo.isBuildingClassNeededInCity(iCurrentBuildingClass):
 				screen.appendMultiListButton(rowListName, loopBuildingInfo.getButton(), SEVOPEDIA_MULTILIST_COLUMN_INDEX_AUTO, WidgetTypes.WIDGET_PEDIA_JUMP_TO_BUILDING, iLoopBuilding, 1, False)
@@ -709,7 +681,7 @@ class SevoPediaBuilding:
 
 				isButtonFound = True
 				iButtonIndex += 1
-			
+
 			# Check if this building is needed via PrereqBuildingClasses
 			iNumRequired = loopBuildingInfo.getPrereqNumOfBuildingClass(iCurrentBuildingClass)
 			if iNumRequired > 0:
@@ -748,23 +720,21 @@ class SevoPediaBuilding:
 			yPanelCenter = yPanel + (hPanel / 2)
 			screen.addMultilineText(textName, szText, xPanel + 7, yPanelCenter, wPanel - 14, hPanel - 20, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
 
-
-
 	def placeObsoleteWith(self):
 		screen = self.top.getScreen()
 		panelName = self.top.getNextWidgetName()
-		
+
 		# Create panel with proper styling
 		screen.addPanel(panelName, localText.getText("TXT_KEY_PEDIA_OBSOLETE", ()), "", False, True, self.X_OBSOLETE_WITH, self.Y_OBSOLETE_WITH, self.W_OBSOLETE_WITH, self.H_OBSOLETE_WITH, PanelStyles.PANEL_STYLE_BLUE50)
 		# <!-- custom: additionnal left side padding for the button(s) -->
 		screen.attachLabel(panelName, "", "  ")
-		
+
 		# Get the building info
 		buildingInfo = gc.getBuildingInfo(self.iBuilding)
-		
+
 		# Check if the building has an obsolete tech directly <!-- custom: (i assume is about the obsoletetech info in (adjust to your mod path) for example C:\Program Files (x86)\Steam\steamapps\common\Sid Meier's Civilization IV Beyond the Sword\Beyond the Sword\Mods\AdvCiv-SAS\Assets\XML\Buildings\CIV4BuildingInfos.xml) -->
 		iObsoleteTech = buildingInfo.getObsoleteTech()
-	
+
 		# If no direct obsolete tech, check if it's a special building type
 		# <!-- custom: (e.g. the jewish monastery appears as never obsolete from the direct obsolete tech check due to <ObsoleteTech>NONE</ObsoleteTech>, but it does get obsolete at scientific method (now removed) though in <ObsoleteTech>TECH_SCIENTIFIC_METHOD</ObsoleteTech> at (adjust with your mod path if different) for example C:\Program Files (x86)\Steam\steamapps\common\Sid Meier's Civilization IV Beyond the Sword\Beyond the Sword\Mods\AdvCiv-SAS\Assets\XML\Buildings\CIV4SpecialBuildingInfos.xml (now this file has been imported in AdvCiv-SAS as well in case we need to change it and to have all info we want and control it)) -->
 		if iObsoleteTech == -1:
@@ -786,8 +756,6 @@ class SevoPediaBuilding:
 			textName = self.top.getNextWidgetName()
 			szText = localText.getText("TXT_KEY_PEDIA_SAS_NO_BUTTON_FOUND_NEVER", ())
 			screen.addMultilineText(textName, szText, self.X_OBSOLETE_WITH + 7, yPanelCenter, self.W_OBSOLETE_WITH - 14, self.H_OBSOLETE_WITH - 20, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
-
-
 
 	def placeFreePBBS(self):
 		xPanel = self.X_FREE_PBBS
@@ -831,12 +799,12 @@ class SevoPediaBuilding:
 
 			isButtonFound = True
 			iButtonIndex += 1
-		
+
 		# Check if the building grants a free building
 		iFreeBuildingClass = buildingInfo.getFreeBuildingClass()
 		if iFreeBuildingClass != -1:
 			iDefaultBuilding =  self.get_iDefaultBuilding_current_civ(iFreeBuildingClass)
-			
+
 			# If a valid building exists, display its button
 			if iDefaultBuilding != -1:
 				screen.appendMultiListButton(rowListName, gc.getBuildingInfo(iDefaultBuilding).getButton(), SEVOPEDIA_MULTILIST_COLUMN_INDEX_AUTO, WidgetTypes.WIDGET_PEDIA_JUMP_TO_BUILDING, iDefaultBuilding, 1, False)
@@ -850,7 +818,7 @@ class SevoPediaBuilding:
 
 		# Check if the building grants a free bonus
 		iFreeBonus = buildingInfo.getFreeBonus()
-		
+
 		if iFreeBonus != -1:
 			iNumFreeBonuses = buildingInfo.getNumFreeBonuses()
 
@@ -862,7 +830,7 @@ class SevoPediaBuilding:
 
 			isButtonFound = True
 			iButtonIndex += 1
-			
+
 		# Check if the building grants free specialists - simpler approach
 		for iSpecialist in range(gc.getNumSpecialistInfos()):
 			if buildingInfo.getFreeSpecialistCount(iSpecialist) > 0:
@@ -884,26 +852,22 @@ class SevoPediaBuilding:
 			yPanelCenter = yPanel + (hPanel / 2)
 			screen.addMultilineText(textName, szText, xPanel + 7, yPanelCenter, wPanel - 14, hPanel - 20, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
 
-
-
 	def isBuildingUnique(self, iBuildingIndex):
 		# Helper function to determine if a building is civ-specific (unique)
 		#
 		buildingInfo = gc.getBuildingInfo(iBuildingIndex)
 		buildingClassInfo = gc.getBuildingClassInfo(buildingInfo.getBuildingClassType())
-		
+
 		# A building is unique if it's not the default building for its class
 		defaultBuildingForClass = buildingClassInfo.getDefaultBuildingIndex()
 		return iBuildingIndex != defaultBuildingForClass
-
-
 
 	def getBuildingCiv(self, iBuildingIndex):
 		# Helper function to get which civ a unique building belongs to
 		#
 		buildingInfo = gc.getBuildingInfo(iBuildingIndex)
 		buildingClassType = buildingInfo.getBuildingClassType()
-		
+
 		# Check all civs to see which one has this building as their unique version
 		for iCiv in range(gc.getNumCivilizationInfos()):
 			civInfo = gc.getCivilizationInfo(iCiv)
@@ -912,14 +876,12 @@ class SevoPediaBuilding:
 				return iCiv
 		return -1  # Should not happen for unique buildings
 
-
-
 	def buildingClassHasUniqueVersions(self, buildingClassType):
 		# Helper function to check if a building class has any unique versions
 		#
 		buildingClassInfo = gc.getBuildingClassInfo(buildingClassType)
 		defaultBuilding = buildingClassInfo.getDefaultBuildingIndex()
-		
+
 		# Check if any civ has a different building for this class
 		for iCiv in range(gc.getNumCivilizationInfos()):
 			civInfo = gc.getCivilizationInfo(iCiv)
@@ -927,8 +889,6 @@ class SevoPediaBuilding:
 			if civBuildingForClass != defaultBuilding:
 				return True
 		return False
-
-
 
 	def placeFreeWith(self):
 		xPanel = self.X_FREE_WITH
@@ -940,33 +900,33 @@ class SevoPediaBuilding:
 
 		screen = self.top.getScreen()
 		panelName = self.top.getNextWidgetName()
-		
+
 		# Create panel with proper styling
 		screen.addPanel(panelName, localText.getText(txtKeyPanel, ()), "", False, True, xPanel, yPanel, wPanel, hPanel, PanelStyles.PANEL_STYLE_BLUE50)
 		# <!-- custom: additional left side padding for the button(s) -->
 		screen.attachLabel(panelName, "", "  ")
-		
+
 		# Get the current building info
 		currentBuildingInfo = gc.getBuildingInfo(self.iBuilding)
 		currentBuildingClass = currentBuildingInfo.getBuildingClassType()
-		
+
 		# <!-- custom: handle no building found message -->
 		isButtonFound = False
-		
+
 		# Check if current building is civ-specific (unique)
 		currentIsUnique = self.isBuildingUnique(self.iBuilding)
 		if currentIsUnique:
 			currentCiv = self.getBuildingCiv(self.iBuilding)
 		else:
 			currentCiv = -1
-		
+
 		# Check if there are any unique versions of the current building
 		hasUniqueVersions = self.buildingClassHasUniqueVersions(currentBuildingClass)
 
 		# Check all buildings to see which ones provide this building for free
 		for iBuildingLoop in range(gc.getNumBuildingInfos()):
 			buildingInfo = gc.getBuildingInfo(iBuildingLoop)
-			
+
 			# Check if this building provides our current building for free
 			freeBuildingClass = buildingInfo.getFreeBuildingClass()
 			if freeBuildingClass == currentBuildingClass:
@@ -975,10 +935,10 @@ class SevoPediaBuilding:
 					providerCiv = self.getBuildingCiv(iBuildingLoop)
 				else:
 					providerCiv = -1
-				
+
 				# Determine if we should show this provider based on the logic:
 				shouldShow = False
-				
+
 				if currentIsUnique:
 					# Current building is unique - only show providers that this civ can actually use
 					if not providerIsUnique or providerCiv == currentCiv:
@@ -992,7 +952,7 @@ class SevoPediaBuilding:
 					else:
 						# No unique versions exist - show all providers
 						shouldShow = True
-				
+
 				if shouldShow:
 					isButtonFound = True
 					screen.attachImageButton(panelName, "", gc.getBuildingInfo(iBuildingLoop).getButton(), GenericButtonSizes.BUTTON_SIZE_CUSTOM, WidgetTypes.WIDGET_PEDIA_JUMP_TO_BUILDING, iBuildingLoop, -1, False)
@@ -1003,8 +963,6 @@ class SevoPediaBuilding:
 			szText = localText.getText(txtKeyNoButtonFound, ())
 			yPanelCenter = yPanel + (hPanel / 2)
 			screen.addMultilineText(textName, szText, xPanel + 7, yPanelCenter, wPanel - 14, hPanel - 20, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
-
-
 
 	def placeReplace(self):
 		xPanel = self.X_REPLACE
@@ -1055,8 +1013,6 @@ class SevoPediaBuilding:
 			yPanelCenter = yPanel + (hPanel / 2)
 			screen.addMultilineText(textName, szText, xPanel + 7, yPanelCenter, wPanel - 14, hPanel - 20, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
 
-
-
 	def placeCivilizations(self):
 		screen = self.top.getScreen()
 		panelName = self.top.getNextWidgetName()
@@ -1065,7 +1021,7 @@ class SevoPediaBuilding:
 		screen.addPanel(panelName, localText.getText("TXT_KEY_PEDIA_CIVILIZATIONS", ()), "", False, True, self.X_CIVILIZATIONS, self.Y_CIVILIZATIONS, self.W_CIVILIZATIONS, self.H_CIVILIZATIONS, PanelStyles.PANEL_STYLE_BLUE50)
 		# <!-- custom: additionnal left side padding for the button(s) -->
 		screen.attachLabel(panelName, "", "  ")
-		
+
 		# Get building class info
 		iBuildingClass = gc.getBuildingInfo(self.iBuilding).getBuildingClassType()
 		iDefaultBuilding = gc.getBuildingClassInfo(iBuildingClass).getDefaultBuildingIndex()
@@ -1091,8 +1047,6 @@ class SevoPediaBuilding:
 			szText = localText.getText("TXT_KEY_PEDIA_CIVILIZATIONS_NO_BUTTON_FOUND", ())
 			screen.addMultilineText(textName, szText, self.X_CIVILIZATIONS + 7, yPanelCenter, self.W_CIVILIZATIONS - 14, self.H_CIVILIZATIONS - 20, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
 
-
-
 	# <!-- custom: add iconquestprob with the help of claude ai, quite similarly than for the getChopProductionText addition in sevopedia feature) -->
 	def getIConquestProbText(self):
 		buildingInfo = gc.getBuildingInfo(self.iBuilding)
@@ -1100,8 +1054,6 @@ class SevoPediaBuilding:
 		conquestProb = buildingInfo.getConquestProbability()
 
 		return (u"%siConquestProb: %d" % (localText.getText("[ICON_BULLET]", ()), conquestProb))
-
-
 
 	def placeSpecial(self):
 		screen = self.top.getScreen()
@@ -1117,13 +1069,9 @@ class SevoPediaBuilding:
 
 		screen.addMultilineText(listName, szSpecialText, self.X_SPECIAL+5, self.Y_SPECIAL+30, self.W_SPECIAL-10, self.H_SPECIAL-35, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
 
-
-
 	def placeBuildingAnimation(self):
 		screen = self.top.getScreen()	
 		screen.addBuildingGraphicGFC(self.top.getNextWidgetName(), self.iBuilding, self.X_BUILDING_ANIMATION, self.Y_BUILDING_ANIMATION, self.W_BUILDING_ANIMATION, self.H_BUILDING_ANIMATION, WidgetTypes.WIDGET_GENERAL, -1, -1, self.X_ROTATION_BUILDING_ANIMATION, self.Z_ROTATION_BUILDING_ANIMATION, self.SCALE_ANIMATION, True)
-
-
 
 	def placeHistory(self):
 		screen = self.top.getScreen()
@@ -1142,8 +1090,6 @@ class SevoPediaBuilding:
 		szText += gc.getBuildingInfo(self.iBuilding).getCivilopedia()
 		# <!-- custom: but here we also restore/add padding -->
 		screen.addMultilineText(textName, szText, self.X_HISTORY + 7, self.Y_HISTORY + 10 + self.H_ADJUST_Y_AFTER_ANIMATION_NO_HEADER, self.W_HISTORY - 30, self.H_HISTORY - (15 * 2) - 25, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
-
-
 
 	def handleInput (self, inputClass):
 		return 0

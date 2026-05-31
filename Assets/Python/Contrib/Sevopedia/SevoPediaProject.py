@@ -13,8 +13,6 @@
 # (c) 2026 wonderingabout & AI helpers (see Authors in root README.md)
 #
 
-
-
 from CvPythonExtensions import *
 import CvUtil
 import ScreenInput
@@ -26,10 +24,8 @@ gc = CyGlobalContext()
 ArtFileMgr = CyArtFileMgr()
 localText = CyTranslator()
 
-
-
 class SevoPediaProject:
-	
+
 	def __init__(self, main):
 		self.iProject = -1
 		self.top = main
@@ -70,8 +66,6 @@ class SevoPediaProject:
 		self.W_TEXT = self.top.R_PEDIA_PAGE - self.X_PROJECT_PANE
 		self.H_TEXT = self.top.B_PEDIA_PAGE - self.Y_TEXT
 
-
-
 	def interfaceScreen(self, iProject):
 		self.iProject = iProject
 
@@ -82,8 +76,6 @@ class SevoPediaProject:
 		self.placeSpecial()
 		self.placeText()
 
-
-
 	def placeProjectPane(self):
 		screen = self.top.getScreen()
 
@@ -92,8 +84,6 @@ class SevoPediaProject:
 		# screen.addPanel(self.top.getNextWidgetName(), "", "", False, False, self.X_ICON, self.Y_ICON, self.W_ICON, self.H_ICON, PanelStyles.PANEL_STYLE_MAIN)
 		screen.addPanel(self.top.getNextWidgetName(), "", "", False, False, self.X_ICON, self.Y_ICON, self.W_ICON, self.H_ICON, PanelStyles.PANEL_STYLE_EMPTY)
 		screen.addDDSGFC(self.top.getNextWidgetName(), gc.getProjectInfo(self.iProject).getButton(), self.X_ICON + self.W_ICON/2 - self.ICON_SIZE/2, self.Y_ICON + self.H_ICON/2 - self.ICON_SIZE/2, self.ICON_SIZE, self.ICON_SIZE, WidgetTypes.WIDGET_GENERAL, -1, -1)
-
-
 
 	def placeStats(self):
 		screen = self.top.getScreen()
@@ -125,8 +115,6 @@ class SevoPediaProject:
 			# szTextHammerYield = u"<font=4>" + szCost.upper() + u"%c" % gc.getYieldInfo(YieldTypes.YIELD_PRODUCTION).getChar() + u"</font>"
 			szTextHammerYield = u"<font=4>%c %d</font>" % (gc.getYieldInfo(YieldTypes.YIELD_PRODUCTION).getChar(), szCost)
 			screen.appendListBoxString(panelName, szTextHammerYield, WidgetTypes.WIDGET_GENERAL, 0, 0, CvUtil.FONT_LEFT_JUSTIFY)
-
-
 
 	def placeRequires(self):
 		screen = self.top.getScreen()
@@ -163,8 +151,6 @@ class SevoPediaProject:
 			yPanelCenter = self.Y_MOVIE + (self.H_MOVIE / 2)
 			screen.addMultilineText(textName, szText, self.X_MOVIE + 7, yPanelCenter, self.W_MOVIE - 14, self.H_MOVIE - 20, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
 
-
-
 	def placeSpecial(self):
 		screen = self.top.getScreen()
 		panelName = self.top.getNextWidgetName()
@@ -173,8 +159,6 @@ class SevoPediaProject:
 		szSpecialText = CyGameTextMgr().getProjectHelp(self.iProject, True, None)[1:]
 		screen.addMultilineText(listName, szSpecialText, self.X_SPECIAL+5, self.Y_SPECIAL+30, self.W_SPECIAL-10, self.H_SPECIAL-35, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
 
-
-
 	def placeText(self):
 		screen = self.top.getScreen()
 		panelName = self.top.getNextWidgetName()
@@ -182,16 +166,12 @@ class SevoPediaProject:
 		szText = gc.getProjectInfo(self.iProject).getCivilopedia()
 		screen.attachMultilineText(panelName, "Text", szText, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
 
-
-
 	def getProjectType(self, iProject):
 		if (isWorldProject(iProject)):
 			return (3)
 		if (isTeamProject(iProject)):
 			return (2)
 		return (1)
-
-
 
 	def getProjectSortedList(self):
 		listOfAllTypes = []
@@ -211,8 +191,6 @@ class SevoPediaProject:
 			for i in range(len(listSorted)):
 				listOfAllTypes.append(listSorted[i])
 		return listOfAllTypes
-
-
 
 	def handleInput (self, inputClass):
 		return 0

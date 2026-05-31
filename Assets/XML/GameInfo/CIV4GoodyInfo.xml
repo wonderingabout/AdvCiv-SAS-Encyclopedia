@@ -87,7 +87,7 @@
 			<iDamagePrereq>0</iDamagePrereq>
 			<bTech>0</bTech>
 			<bBad>0</bBad>
-			<UnitClass>UNITCLASS_SETTLER</UnitClass>
+			<UnitClass>UNITCLASS_WARRIOR</UnitClass>
 			<BarbarianClass>NONE</BarbarianClass>
 			<iBarbarianUnitProb>0</iBarbarianUnitProb>
 			<iMinBarbarians>0</iMinBarbarians>
@@ -137,12 +137,12 @@
 			<iDamagePrereq>0</iDamagePrereq>
 			<bTech>0</bTech>
 			<bBad>0</bBad>
-			<UnitClass>UNITCLASS_SCOUT</UnitClass>
+			<UnitClass>UNITCLASS_WARRIOR</UnitClass>
 			<!-- advc.314: Together with bBad=0 and iBarbarianUnitProb>0,
 				 this means that the Scout has a chance of being replaced by a
 				 Worker. Set to NONE for BtS behavior (no chance of
 				 replacement). -->
-			<BarbarianClass>UNITCLASS_WORKER</BarbarianClass>
+			<BarbarianClass>UNITCLASS_WARRIOR</BarbarianClass>
 			<!-- advc.314: see GOODY_MAP -->
 			<iBarbarianUnitProb>100</iBarbarianUnitProb>
 			<iMinBarbarians>0</iMinBarbarians>
@@ -162,7 +162,7 @@
 			<iDamagePrereq>0</iDamagePrereq>
 			<bTech>0</bTech>
 			<bBad>0</bBad>
-			<UnitClass>UNITCLASS_WORKER</UnitClass>
+			<UnitClass>UNITCLASS_WARRIOR</UnitClass>
 			<BarbarianClass>NONE</BarbarianClass>
 			<iBarbarianUnitProb>0</iBarbarianUnitProb>
 			<iMinBarbarians>0</iMinBarbarians>
@@ -280,3 +280,4 @@
 		</GoodyInfo>
 	</GoodyInfos>
 </Civ4GoodyInfo>
+

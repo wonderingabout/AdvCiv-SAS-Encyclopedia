@@ -43,12 +43,12 @@ class TechPrefs:
 		self.NUM_AND_PREREQS = gc.getNUM_AND_TECH_PREREQS()
 		self.NUM_OR_PREREQS = gc.getNUM_OR_TECH_PREREQS()
 		# </advc.003c>
-		
+
 		self.mTechs = {}
 		self.lTechsByFlavor = []
 		for iFlavor in range(NUM_FLAVORS):
 			self.lTechsByFlavor.append([])
-		
+
 		# build a list of all techs and a list of techs for each flavor
 		for iTech in range(self.NUM_TECHS):
 			pTechInfo = gc.getTechInfo(iTech)
@@ -59,7 +59,7 @@ class TechPrefs:
 					pTech.setFlavorValue(iFlavor, iFlavorValue)
 					self.lTechsByFlavor[iFlavor].append((-iFlavorValue, iTech, pTech))
 					bHasFlavor = True
-			
+
 			# hook up prereq techs
 			for i in range(self.NUM_AND_PREREQS):
 				pPrereqTech = pTechInfo.getPrereqAndTechs(i)
@@ -69,7 +69,7 @@ class TechPrefs:
 				pPrereqTech = pTechInfo.getPrereqOrTechs(i)
 				if (pPrereqTech != -1):
 					pTech.addOrPrereq(self.getTech(pPrereqTech))
-		
+
 		# sort each flavor's list of techs by decreasing preference: reverse flavor value, tech number
 		# and create a copy that doesn't get trimmed as techs are researched
 		self.lAllTechsByFlavor = {}
@@ -110,7 +110,6 @@ class TechPrefs:
 			if (pTeam.isHasTech(iTech)):
 				self.removeTech(iTech)
 
-
 	def getResearchableTechs(self):
 		# Returns a set of all techs that can be researched now.
 		#
@@ -128,7 +127,6 @@ class TechPrefs:
 			if (pTech not in sTechs and pTech.canResearchWith(sTechs)):
 				sCan.add(pTech)
 		return sCan
-
 
 	def getNextFlavorTech(self, iFlavor):
 		# Returns the next tech in the flavor's list or None.
@@ -198,7 +196,6 @@ class TechPrefs:
 				lTechs.append(pTech)
 		return lTechs
 
-
 	def printFlavorTechs(self, iFlavor):
 		# Prints the techs in the flavor's list.
 		#
@@ -219,9 +216,8 @@ class TechPrefs:
 			if pTech.canResearchWith(sTechs):
 				print pTech
 
-
 class Tech:
-	
+
 	def __init__(self, iTech):
 		self.iTech = iTech
 		self.lFlavorValues = [0] * NUM_FLAVORS
@@ -240,16 +236,15 @@ class Tech:
 
 	def getName(self):
 		return self.getInfo().getDescription()
-	
+
 	def __hash__(self):
 		return hash(self.iTech)
-	
+
 	def __eq__(self, other):
 		return self.iTech == other.iTech
-	
+
 	def __cmp__(self, other):
 		return self.iTech - other.iTech
-
 
 	def setFlavorValue(self, iFlavor, iValue):
 		self.lFlavorValues[iFlavor] = iValue
@@ -262,7 +257,6 @@ class Tech:
 
 	def getFlavorPref(self, iFlavor):
 		return self.lFlavorPref[iFlavor]
-
 
 	def addAndPrereq(self, pTech):
 		if pTech not in self.sAndPrereqs:
@@ -279,7 +273,6 @@ class Tech:
 	def removePrereq(self, pTech):
 		self.sAndPrereqs.discard(pTech)
 		self.sOrPrereqs.discard(pTech)
-
 
 	def getNumTechsNeeded(self):
 		# Returns the minimum number of techs that must be researched to be able to research this tech.
@@ -320,7 +313,6 @@ class Tech:
 		sOrs = self.sOrPrereqs.difference(sTechs)
 		return (len(sOrs) == 0 or len(sOrs) < self.iNumOrPrereqs) and len(sAnds) == 0
 
-
 	def addLeadsTo(self, pTech):
 		self.sLeadsTo.add(pTech)
 
@@ -336,7 +328,6 @@ class Tech:
 			pTech.removeLeadsTo(self)
 		for pTech in self.sLeadsTo:
 			pTech.removePrereq(self)
-
 
 	def __str__(self):
 		str = self.getName()
@@ -370,7 +361,7 @@ class Tech:
 					str += ", "
 				str += pTech.getName()
 		return str
-		
+
 	# <advc.004a> Is this tech a necessary requirement for pForTech, i.e. is there no path to pForTech that doesn't include this tech?
 	# Recursive function that will run OOM if the tech tree has a cycle.
 	def isInevitableReq(self, pForTech):

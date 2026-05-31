@@ -78,7 +78,6 @@ def codeToKey(code):
 def keyToCode(key):
 	return CODES_BY_KEY[key]
 
-
 def stringToKeystroke(key):
 	# Returns a Keystroke created from the given string.
 	#
@@ -126,7 +125,6 @@ def stringToKeystrokes(keys):
 		result.append(stringToKeystroke(key))
 	return result
 
-
 class Keystroke:
 	#
 	# Holds the information necessary to recognize a single keystroke,
@@ -143,7 +141,7 @@ class Keystroke:
 		self.control = control
 		self.shift = shift
 		self.hash = None
-	
+
 	def __str__(self):
 		s = ""
 		if self.alt:
@@ -153,10 +151,10 @@ class Keystroke:
 		if self.shift:
 			s += "SHIFT + "
 		return "%s%s" % (s, codeToKey(self.code))
-	
+
 	def __repr__(self):
 		return "<key %s>" % str(self)
-	
+
 	def __hash__(self):
 		if self.hash is None:
 			self.hash = self.code
@@ -167,19 +165,18 @@ class Keystroke:
 			if self.shift:
 				self.hash ^= SHIFT_HASH
 		return self.hash
-	
+
 	def __eq__(self, other):
 		if not isinstance(other, Keystroke):
 			return NotImplemented
 		return (self.code == other.code and self.alt == other.alt and
 			    self.control == other.control and self.shift == other.shift)
-	
+
 	def __ne__(self, other):
 		if not isinstance(other, Keystroke):
 			return NotImplemented
 		return (self.code != other.code or self.alt != other.alt or
 			    self.control != other.control or self.shift != other.shift)
-
 
 def init():
 	for k, c in InputTypes.__dict__.iteritems():
@@ -193,13 +190,12 @@ def init():
 # initialize when the module is loaded
 init()
 
-
 ## configuration handler
 
 class ShortcutHandler(BugConfig.HandlerWithArgs):
-	
+
 	TAG = "shortcut"
-	
+
 	def __init__(self):
 		BugConfig.HandlerWithArgs.__init__(self, ShortcutHandler.TAG, "key keys module function dll")
 		self.addExcludedAttribute("key")
@@ -207,14 +203,13 @@ class ShortcutHandler(BugConfig.HandlerWithArgs):
 		self.addAttribute("module", True, True)
 		self.addAttribute("function", True)
 		self.addAttribute("dll")
-	
+
 	def handle(self, element, keys, module, function, dll):
 		dll = BugDll.decode(dll)
 		if self.isDllOkay(element, dll):
 			CvEventInterface.getEventManager().addShortcutHandler(keys, BugUtil.getFunction(module, function, *element.args, **element.kwargs))
 		else:
 			BugUtil.info("InputUtil - ignoring <%s> %s, requires dll version %s", element.tag, keys, self.resolveDll(element, dll))
-
 
 # advc: I've added three keyboard shortcuts and need to put the handlers somewhere. Don't want to create a new BUG module just for this. Tbd.: Nicer to do this through Civ4ControlInfos.xml and the DLL. As I've already done it with CONTROL_UNSELECT_ALL (advc.088).
 

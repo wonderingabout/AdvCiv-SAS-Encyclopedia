@@ -6,6 +6,7 @@
 <!-- custom: new world sizes based on the XXL Word (BtS) mod (https://forums.civfanatics.com/resources/xxl-world-bts.6708/)'s approach, with values adjusted for AdvCiv-SAS with the help of GPT-Codex-5.2 and then ChatGPT 5.2 Thinking thanks. -->
 <!-- World Infos -->
 <!-- NOTE: If you remove any of these you need to update Interface/WorldPickerInfos.xml -->
+<!-- custom: note: cannot be removed else sevopedia index seems to have unidentifiable C++ exception -->
 <Civ4WorldInfo xmlns="x-schema:CIV4GameInfoSchema.xml">
 	<WorldInfos>
 		<WorldInfo>

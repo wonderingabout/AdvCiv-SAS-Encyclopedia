@@ -28,7 +28,6 @@ import BugUtil
 BugUtil.fixSets(globals())
 # BUG - Mac Support - end
 
-
 ## Type Constants
 
 NONE = "none"
@@ -47,7 +46,6 @@ LIST = "list"
 SET = "set"
 DICT = "dict"
 
-
 ## Normalizing Types
 
 NORMALIZED_TYPES = {
@@ -65,7 +63,7 @@ NORMALIZED_TYPES = {
 	STRING: STRING,
 	"str": STRING,
 	COLOR: COLOR,
-	
+
 	TUPLE: TUPLE,
 	"vector": TUPLE,
 	LIST: LIST,
@@ -86,7 +84,6 @@ def normalize(type):
 		return NORMALIZED_TYPES[type.lower()]
 	except:
 		raise BugUtil.ConfigError("Invalid type %s", type)
-
 
 ## Defaults
 
@@ -122,7 +119,6 @@ def default(type):
 			return default
 		else:
 			return default()
-
 
 ## Converting Values
 

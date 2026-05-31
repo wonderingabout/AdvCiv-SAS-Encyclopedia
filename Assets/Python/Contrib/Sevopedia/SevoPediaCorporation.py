@@ -13,8 +13,6 @@
 # (c) 2026 wonderingabout & AI helpers (see Authors in root README.md)
 #
 
-
-
 from CvPythonExtensions import *
 import CvUtil
 import ScreenInput
@@ -24,8 +22,6 @@ from _sevopedia_helpers import *
 gc = CyGlobalContext()
 ArtFileMgr = CyArtFileMgr()
 localText = CyTranslator()
-
-
 
 class SevoPediaCorporation:
 
@@ -60,8 +56,6 @@ class SevoPediaCorporation:
 		self.W_TEXT = self.top.R_PEDIA_PAGE - self.X_TEXT
 		self.H_TEXT = self.top.B_PEDIA_PAGE - self.Y_TEXT
 
-
-
 	def interfaceScreen(self, iCorporation):
 		self.iCorporation = iCorporation
 		screen = self.top.getScreen()
@@ -73,8 +67,6 @@ class SevoPediaCorporation:
 		self.placeSpecial()
 		self.placeRequires()
 		self.placeText()
-
-
 
 	def placeRequires(self):
 		screen = self.top.getScreen()
@@ -98,8 +90,6 @@ class SevoPediaCorporation:
 			if bRequired:
 				screen.attachImageButton(panelName, "", gc.getUnitInfo(iUnit).getButton(), GenericButtonSizes.BUTTON_SIZE_CUSTOM, WidgetTypes.WIDGET_PEDIA_JUMP_TO_UNIT, iUnit, 1, False)
 
-
-
 	def placeSpecial(self):
 		screen = self.top.getScreen()
 		panelName = self.top.getNextWidgetName()
@@ -108,16 +98,12 @@ class SevoPediaCorporation:
 		szSpecialText = CyGameTextMgr().parseCorporationInfo(self.iCorporation, True)[1:]
 		screen.addMultilineText(listName, szSpecialText, self.X_SPECIAL+5, self.Y_SPECIAL+30, self.W_SPECIAL-10, self.H_SPECIAL-35, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
 
-
-
 	def placeText(self):
 		screen = self.top.getScreen()
 		panelName = self.top.getNextWidgetName()
 		screen.addPanel(panelName, "", "", True, True, self.X_TEXT, self.Y_TEXT, self.W_TEXT, self.H_TEXT, PanelStyles.PANEL_STYLE_BLUE50)
 		szText = gc.getCorporationInfo(self.iCorporation).getCivilopedia()
 		screen.attachMultilineText(panelName, "Text", szText, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
-
-
 
 	def handleInput (self, inputClass):
 		return 0

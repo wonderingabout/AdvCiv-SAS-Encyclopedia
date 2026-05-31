@@ -148,7 +148,6 @@ def savemap(argsList=None):
 			if(pPlot.isWOfRiver()):
 				riverns[pIndex] = int(pPlot.getRiverNSDirection())
 
-
 	# write mapscript
 	# <advc.savem>
 	mapScriptName = str(map.getMapScriptName())
@@ -422,9 +421,9 @@ def savemap(argsList=None):
 	f.write('def addGoodies():\n')
 	f.write('\tif CyMap().getCustomMapOption(2) == 0:\n')
 	f.write('\t\tfor plotIdx in improvements:\n')
-	f.write('\t\t\tif(improvements[plotIdx] == gc.getInfoTypeForString("IMPROVEMENT_GOODY_HUT")):\n')
+	f.write('\t\t\tif(improvements[plotIdx] == gc.getInfoTypeForString("IMPROVEMENT_FARM")):\n')
 	f.write('\t\t\t\tpPlot = CyMap().plotByIndex(plotIdx)\n')
-	f.write('\t\t\t\tpPlot.setImprovementType(gc.getInfoTypeForString("IMPROVEMENT_GOODY_HUT"))\n')
+	f.write('\t\t\t\tpPlot.setImprovementType(gc.getInfoTypeForString("IMPROVEMENT_FARM"))\n')
 	f.write('\telse:\n')
 	f.write('\t\tCyPythonMgr().allowDefaultImpl()\n')
 	f.write('\treturn None\n')

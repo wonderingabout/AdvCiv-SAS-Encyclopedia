@@ -18,19 +18,15 @@ class SevoPediaIndex:
 
 	def __init__(self, main):
 		self.top = main
-		
+
 		self.LIST_BUTTON_SIZE = 24
 		self.SAS_indexSetLayout(False)
-		
+
 		self.index = None
 		self.letterTextIDs = None
-		self.SAS_INDEX_SEARCH_PANEL_ID = "PediaIndexSearchPanel"
-		self.SAS_INDEX_SEARCH_LABEL_ID = "PediaIndexSearchLabel"
-		self.SAS_INDEX_SEARCH_CLEAR_ID = "PediaIndexSearchClear"
-		self.SAS_INDEX_SEARCH_DEFAULT_TEXT = u"Type to filter..."
-		self.SAS_INDEX_SEARCH_H = 32
-		self.SAS_szIndexSearchString = u""
-		self.SAS_indexKeyDebounceByKey = {}
+		# <!-- custom: filter reads SevoPediaMain.SAS_szSearchString; the shared top-header search bar
+		# is drawn by SevoPediaMain.SAS_syncSearchPanel and refreshed via SAS_refreshActiveListView.
+		# This page owns no search state of its own. (Claude code Opus 4.7) -->
 		self.SAS_indexWidgetNames = []
 
 	def SAS_indexSetLayout(self, bCategory):
@@ -44,135 +40,85 @@ class SevoPediaIndex:
 			self.Y_INDEX = self.top.Y_CATEGORIES
 			self.W_INDEX = self.top.W_SCREEN - 2 * self.top.X_CATEGORIES
 			self.H_INDEX = self.top.H_CATEGORIES
-		
+
 		self.X_LETTER = self.X_INDEX + 130  # position of first letter button
 		self.Y_LETTER = self.Y_INDEX
 		self.W_LETTER = 20
+
+	def SAS_asUnicode(self, value, context):
+		if isinstance(value, unicode):
+			return value
+		if isinstance(value, str):
+			try:
+				return value.decode("utf-8")
+			except:
+				try:
+					return value.decode("cp1252")
+				except:
+					raise Exception("SevoPediaIndex: cannot decode '%s': %r" % (context, value))
+		return unicode(value)
 
 	def interfaceScreen(self, bCategory=False):
 		self.SAS_indexSetLayout(bCategory)
 		self.buildIndex()
 		self.placeIndex()
-	
-	def SAS_indexDeleteSearchWidgets(self):
-		screen = self.top.getScreen()
-		self.top.SAS_safeDeleteWidget(screen, self.SAS_INDEX_SEARCH_PANEL_ID)
-		self.top.SAS_safeDeleteWidget(screen, self.SAS_INDEX_SEARCH_LABEL_ID)
-		self.top.SAS_safeDeleteWidget(screen, self.SAS_INDEX_SEARCH_CLEAR_ID)
-	
-	def SAS_indexIsSearchActive(self):
-		return (self.SAS_szIndexSearchString is not None and len(self.SAS_szIndexSearchString.strip()) > 0)
-	
-	def SAS_indexSyncSearchPanel(self):
-		screen = self.top.getScreen()
-		
-		self.SAS_indexDeleteSearchWidgets()
-		
-		iX = self.X_INDEX
-		iY = self.Y_INDEX
-		iW = self.W_INDEX
-		iH = self.SAS_INDEX_SEARCH_H
-		
-		screen.addPanel(self.SAS_INDEX_SEARCH_PANEL_ID, u"", u"", True, True, iX, iY, iW, iH, PanelStyles.PANEL_STYLE_BLUE50)
-		
-		if self.SAS_indexIsSearchActive():
-			szText = self.SAS_szIndexSearchString
-		else:
-			szText = self.SAS_INDEX_SEARCH_DEFAULT_TEXT
-		
-		screen.setLabel(self.SAS_INDEX_SEARCH_LABEL_ID, self.SAS_INDEX_SEARCH_PANEL_ID,
-				u"<font=3>%s</font>" % szText,
-				CvUtil.FONT_LEFT_JUSTIFY, iX + 6, iY + 6, 0,
-				FontTypes.SMALL_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
-		
-		if self.SAS_indexIsSearchActive():
-			screen.setLabel(self.SAS_INDEX_SEARCH_CLEAR_ID, self.SAS_INDEX_SEARCH_PANEL_ID,
-					u"<font=3>x</font>",
-					CvUtil.FONT_RIGHT_JUSTIFY, iX + iW - 6, iY + 6, 0,
-					FontTypes.SMALL_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
 
 	def buildIndex(self):
 		if self.index:
 			return
-		
+
 		techList = self.top.getTechList()
 		unitList = self.top.getUnitList()
 		unitCombatList = self.top.getUnitCategoryList()
 		promotionList = self.top.getPromotionList()
-		
+
 		buildingList = self.top.getBuildingList()
 		nationalWonderList = self.top.getNationalWonderList()
 		worldWonderList = self.top.getWorldWonderList()
 		projectList = self.top.getProjectList()
 		specialistList = self.top.getSpecialistList()
-		
+
 		terrainList = self.top.getTerrainList()
 		featureList = self.top.getFeatureList()
 		bonusList = self.top.getBonusList()
 		improvementList = self.top.getImprovementList()
-		
+
 		civList = self.top.getCivilizationList()
 		leaderList = self.top.getLeaderList()
 		traitList = self.top.getTraitList()
-		
+
 		civicList = self.top.getCivicList()
 		religionList = self.top.getReligionList()
 		corporationList = self.top.getCorporationList()
-		
+
 		conceptList = self.top.getConceptList()
 		newConceptList = self.top.getNewConceptList()
 		# <!-- custom: add Builds to index, inspired by Middle-earth mod's PlatyPedia approach (Claude Opus 4.5) -->
 		buildList = self.top.getBuildList()
-		
+
+		# <!-- custom: Note: keep Index list/cell handling local and direct instead of sharing Main's per-category widget metadata. Index is one flattened table while Main drives many independent pedia pages, so sharing would push Index-only rules into Main code for no real reuse win. (GPT-5.5) -->
+		# <!-- custom: Dropped the legacy TXT_KEY_* prefix-strip and "The X" comma-flip sort-key cleanup here (sorted the same items differently in Index vs the type-specific pedia pages, hurt diagnosis of missing translations, needless per-entry build-time cost in any locale - and especially wasteful in non-English ones where "The X" never matches anyway, and needless code complexity). See KI#133 for full rationale. (Claude code Opus 4.7) -->
 		list=[]
 		for item in techList:
-			if (item[0][0:4]=="The "):
-				list.append([item[0][4:]+","+item[0][0:3],"Tech",item])
-			else:
-				list.append([item[0],"Tech",item])
+			list.append([item[0],"Tech",item])
 		for item in unitList:
-			if (item[0][:13]=="TXT_KEY_UNIT_"):
-				list.append([item[0][13:].capitalize(),"Unit",item])
-			else:
-				list.append([item[0],"Unit",item])
+			list.append([item[0],"Unit",item])
 		for item in unitCombatList:
 			list.append([item[0],"UnitCombat",item])
 		for item in promotionList:
-			if (item[0][:18]=="TXT_KEY_PROMOTION_"):
-				list.append([item[0][18:].capitalize(),"Promo",item])
-			else:
-				list.append([item[0],"Promo",item])
-		
+			list.append([item[0],"Promo",item])
+
 		for item in buildingList:
-			if (item[0][:17]=="TXT_KEY_BUILDING_"):
-				list.append([item[0][17:].capitalize(),"Building",item])
-			else:
-				list.append([item[0],"Building",item])
+			list.append([item[0],"Building",item])
 		for item in nationalWonderList:
-			if (item[0][0:4]=="The "):
-				list.append([item[0][4:]+","+item[0][0:3],"Wonder",item])
-			elif (item[0][:17]=="TXT_KEY_BUILDING_"):
-				list.append([item[0][17:].capitalize(),"Wonder",item])
-			else:
-				list.append([item[0],"Wonder",item])
+			list.append([item[0],"Wonder",item])
 		for item in worldWonderList:
-			if (item[0][0:4]=="The "):
-				list.append([item[0][4:]+","+item[0][0:3],"Wonder",item])
-			elif (item[0][:17]=="TXT_KEY_BUILDING_"):
-				list.append([item[0][17:].capitalize(),"Wonder",item])
-			else:
-				list.append([item[0],"Wonder",item])
+			list.append([item[0],"Wonder",item])
 		for item in projectList:
-			if (item[0][0:4]=="The "):
-				list.append([item[0][4:]+","+item[0][0:3],"Project",item])
-			else:
-				list.append([item[0],"Project",item])
+			list.append([item[0],"Project",item])
 		for item in specialistList:
-			if (item[0][:19]=="TXT_KEY_SPECIALIST_"):
-				list.append([item[0][19:].capitalize(),"Specialist",item])
-			else:
-				list.append([item[0],"Specialist",item])
-		
+			list.append([item[0],"Specialist",item])
+
 		for item in terrainList:
 			list.append([item[0],"Terrain",item])
 		for item in featureList:
@@ -181,22 +127,30 @@ class SevoPediaIndex:
 			list.append([item[0],"Bonus",item])
 		for item in improvementList:
 			list.append([item[0],"Improv",item])
-		
+
 		for item in civList:
 			list.append([item[0],"Civ",item])
+
 		for item in leaderList:
+			# <!-- custom: AdvCiv-SAS KI#111 - fail loudly on non-ascii leader names so we can identify the bad entry.
+			# We documented this in AdvCiv-SAS (not NIF Gallery) even though the symptom matches; this is where we need the
+			# explicit error to trace the root cause since AdvCiv-SAS did not show it yet. (GPT-5.2-Codex) -->
+			name = item[0]
+			if not isinstance(name, unicode):
+				try:
+					name.decode('ascii')
+				except UnicodeDecodeError:
+					raise Exception("SevoPediaIndex: non-ascii leader name in leaderList: %r (item=%r). Fix leader text or path case; see KI#111." % (name, item))
 			list.append([item[0],"Leader",item])
+		# <!-- custom: traitList entries have a 2-char leading icon prefix unrelated to TXT_KEY/"The"; keep this strip. (Claude code Opus 4.7 + GPT-5.5) -->
 		for item in traitList:
 			list.append([item[0][2:],"Trait",item])
-		
+
 		for item in religionList:
 			list.append([item[0],"Religion",item])
 		for item in civicList:
-			if (item[0][:14]=="TXT_KEY_CIVIC_"):
-				list.append([item[0][14:].capitalize(),"Civic",item])
-			else:
-				list.append([item[0],"Civic",item])
-		
+			list.append([item[0],"Civic",item])
+
 		for item in conceptList:
 			list.append([item[0],"Concept",item])
 		for item in newConceptList:
@@ -204,14 +158,18 @@ class SevoPediaIndex:
 		# <!-- custom: add Builds to index (Claude Opus 4.5) -->
 		for item in buildList:
 			list.append([item[0],"Build",item])
-		
+
+		# <!-- custom: tentative UnicodeDecodeError fix: normalize index labels to unicode before sorting/filtering so Python 2.4 does not implicitly ascii-decode non-ASCII entries; keep strict context in errors if decoding still fails. (GPT-5.3-Codex) -->
+		for iEntry in xrange(len(list)):
+			list[iEntry][0] = self.SAS_asUnicode(list[iEntry][0], list[iEntry][1])
+
 		list.sort()
 		self.index = list
-		
+
 	def placeIndex(self):
 		screen = self.top.getScreen()
 		CONCEPT_CHAR = gc.getYieldInfo(YieldTypes.YIELD_COMMERCE).getChar()
-		
+
 		if self.SAS_indexWidgetNames:
 			for szWidget in self.SAS_indexWidgetNames:
 				try:
@@ -219,16 +177,26 @@ class SevoPediaIndex:
 				except:
 					pass
 			self.SAS_indexWidgetNames = []
-		
-		self.SAS_indexSyncSearchPanel()
-		
+
+		# <!-- custom: draw the shared top-header search bar from SevoPediaMain, and register this
+		# method as the active refresher so Main's search handlers can invoke it on each keystroke
+		# without needing any category-specific branching. (Claude code Opus 4.7) -->
+		self.top.SAS_syncSearchPanel()
+		self.top.SAS_activeListRefresher = self.placeIndex
+		# <!-- custom: register Index's own arrow-key navigator and reset the cell list / cursor. UP/DOWN steps cell-by-cell in reading order (left->right, top->bottom) by re-rendering the previous and current cells with text highlight; the widget has no per-cell focus API. (Claude code Opus 4.7 + GPT-5.5) -->
+		self.top.SAS_activeKeyNavigator = self.SAS_navigateIndexTable
+		self.SAS_indexCells = []
+		self.SAS_indexCursorPos = -1
+
 		nColumns = 3
 		self.tableName = self.top.getNextWidgetName()
 		self.SAS_rowToBuild = {}
 		self.SAS_rowToTrait = {}  # <!-- custom: row-to-trait mapping for WIDGET_PYTHON trait handling. (Claude Opus 4.5) -->
 		self.iTableWidgetId = int(self.tableName.replace(self.top.WIDGET_ID, ""))
-		iTableY = self.Y_INDEX + self.SAS_INDEX_SEARCH_H + 4
-		iTableH = self.H_INDEX - (iTableY - self.Y_INDEX)
+		# <!-- custom: search bar lives in the top header, so the Index table uses the full Y_INDEX
+		# area below it. (Claude code Opus 4.7) -->
+		iTableY = self.Y_INDEX
+		iTableH = self.H_INDEX
 		# <!-- custom: For Build entries, table selection is the only reliable click signal, so keep the table selectable and capture
 		# row->Build mapping in handleInput. We previously tried overlay buttons, but they ignored table scrolling and desynced from rows.
 		# Also, if the table doesn't have focus on first open, NOTIFY_CHARACTER goes nowhere and the search bar appears "dead" until
@@ -240,14 +208,15 @@ class SevoPediaIndex:
 		self.SAS_indexWidgetNames.append(self.tableName)
 		for i in range(nColumns):
 			screen.setTableColumnHeader(self.tableName, i, "", (self.W_INDEX - 10) / nColumns)
-		
+
 		iRow = -1
 		iColumn = 0
 		sLetter = "#"
 		iX = self.X_LETTER
-		iLetterY = self.Y_INDEX + self.SAS_INDEX_SEARCH_H + 4
+		iLetterY = self.Y_INDEX
 		self.letterTextIDs = {}
-		szFilter = self.SAS_szIndexSearchString.strip().lower()
+		# <!-- custom: note: while adding leaderhead art_def in AdvCiv-SAS-NIF-Gallery mod we saw the error "UnicodeDecodeError: 'ascii' codec can't decode byte 0xc8 in position 0" and in Sevopedia Leader, fixed by respecting path case sensitivity (e.g. "Art/LeaderHeads"). So reverted a previous patch that would workaround that: prefer to fail loudly instead and fix path or asset cause directly rather. See KI#111. (GPT-5.3-Codex) -->
+		szFilter = self.top.SAS_szSearchString.strip().lower()
 		bFilter = (len(szFilter) > 0)
 		for name, type, item in self.index:
 			if item[1] < 0:
@@ -277,114 +246,120 @@ class SevoPediaIndex:
 					screen.appendTableRow(self.tableName)
 					iRow += 1
 					iColumn = 0
-			
-			# <!-- custom: refactor, since sText was defined in existing code, reuse it instead of hardcoding it again at each call if i may say and am not mistaken, this also fixes ruff warning and according to chatgpt this is unused as well and safe to remove as well so adding it again; similarly removed unused lines `sButton = ""` and `eWidget = None` and as for lines `iData1 = item[1]` and `iData2 = 1` also using them as variables similarly instead of hardcoding them each time -->
+
+			# <!-- custom: refactor, since sText was defined in existing code, it seems we can reuse it instead of hardcoding it again at each call; this also fixes ruff warning and according to chatgpt; similarly removed unused lines `sButton = ""` and `eWidget = None` and as for lines `iData1 = item[1]` and `iData2 = 1` also using them as variables similarly instead of hardcoding them each time (assuming they are not actually useful/executed instructions) -->
 			sText = u"<font=3>" + item[0] + u"</font>"
 			iData1 = item[1]
 			iData2 = 1
+			# <!-- custom: setTableText calls now go through _SAS_indexPlaceCell so cell args are also recorded for arrow-key cursor re-render. (Claude code Opus 4.7) -->
 			if (type == "Tech"):
-				screen.setTableText(self.tableName, iColumn, iRow, sText, gc.getTechInfo(iData1).getButton(), WidgetTypes.WIDGET_PEDIA_JUMP_TO_TECH, iData1, iData2, CvUtil.FONT_LEFT_JUSTIFY)
+				self._SAS_indexPlaceCell(screen, iRow, iColumn, sText, gc.getTechInfo(iData1).getButton(), WidgetTypes.WIDGET_PEDIA_JUMP_TO_TECH, iData1, iData2)
 			elif (type == "Unit"):
-				screen.setTableText(self.tableName, iColumn, iRow, sText, gc.getUnitInfo(iData1).getButton(), WidgetTypes.WIDGET_PEDIA_JUMP_TO_UNIT, iData1, iData2, CvUtil.FONT_LEFT_JUSTIFY)
+				self._SAS_indexPlaceCell(screen, iRow, iColumn, sText, gc.getUnitInfo(iData1).getButton(), WidgetTypes.WIDGET_PEDIA_JUMP_TO_UNIT, iData1, iData2)
 			elif (type == "UnitCombat"):
-				screen.setTableText(self.tableName, iColumn, iRow, sText, gc.getUnitCombatInfo(iData1).getButton(), WidgetTypes.WIDGET_PEDIA_JUMP_TO_UNIT_COMBAT, iData1, iData2, CvUtil.FONT_LEFT_JUSTIFY)
+				self._SAS_indexPlaceCell(screen, iRow, iColumn, sText, gc.getUnitCombatInfo(iData1).getButton(), WidgetTypes.WIDGET_PEDIA_JUMP_TO_UNIT_COMBAT, iData1, iData2)
 			elif (type == "Promo"):
-				screen.setTableText(self.tableName, iColumn, iRow, sText, gc.getPromotionInfo(iData1).getButton(), WidgetTypes.WIDGET_PEDIA_JUMP_TO_PROMOTION, iData1, iData2, CvUtil.FONT_LEFT_JUSTIFY)
-			
+				self._SAS_indexPlaceCell(screen, iRow, iColumn, sText, gc.getPromotionInfo(iData1).getButton(), WidgetTypes.WIDGET_PEDIA_JUMP_TO_PROMOTION, iData1, iData2)
+
 			elif (type == "Building"):
-				screen.setTableText(self.tableName, iColumn, iRow, sText, gc.getBuildingInfo(iData1).getButton(), WidgetTypes.WIDGET_PEDIA_JUMP_TO_BUILDING, iData1, iData2, CvUtil.FONT_LEFT_JUSTIFY)
+				self._SAS_indexPlaceCell(screen, iRow, iColumn, sText, gc.getBuildingInfo(iData1).getButton(), WidgetTypes.WIDGET_PEDIA_JUMP_TO_BUILDING, iData1, iData2)
 			elif (type == "Wonder"):
-				screen.setTableText(self.tableName, iColumn, iRow, sText, gc.getBuildingInfo(iData1).getButton(), WidgetTypes.WIDGET_PEDIA_JUMP_TO_BUILDING, iData1, iData2, CvUtil.FONT_LEFT_JUSTIFY)
+				self._SAS_indexPlaceCell(screen, iRow, iColumn, sText, gc.getBuildingInfo(iData1).getButton(), WidgetTypes.WIDGET_PEDIA_JUMP_TO_BUILDING, iData1, iData2)
 			elif (type == "Project"):
-				screen.setTableText(self.tableName, iColumn, iRow, sText, gc.getProjectInfo(iData1).getButton(), WidgetTypes.WIDGET_PEDIA_JUMP_TO_PROJECT, iData1, iData2, CvUtil.FONT_LEFT_JUSTIFY)
+				self._SAS_indexPlaceCell(screen, iRow, iColumn, sText, gc.getProjectInfo(iData1).getButton(), WidgetTypes.WIDGET_PEDIA_JUMP_TO_PROJECT, iData1, iData2)
 			elif (type == "Specialist"):
-				screen.setTableText(self.tableName, iColumn, iRow, sText, gc.getSpecialistInfo(iData1).getButton(), WidgetTypes.WIDGET_PEDIA_JUMP_TO_SPECIALIST, iData1, iData2, CvUtil.FONT_LEFT_JUSTIFY)
-			
+				self._SAS_indexPlaceCell(screen, iRow, iColumn, sText, gc.getSpecialistInfo(iData1).getButton(), WidgetTypes.WIDGET_PEDIA_JUMP_TO_SPECIALIST, iData1, iData2)
+
 			elif (type == "Terrain"):
-				screen.setTableText(self.tableName, iColumn, iRow, sText, gc.getTerrainInfo(iData1).getButton(), WidgetTypes.WIDGET_PEDIA_JUMP_TO_TERRAIN, iData1, iData2, CvUtil.FONT_LEFT_JUSTIFY)
+				self._SAS_indexPlaceCell(screen, iRow, iColumn, sText, gc.getTerrainInfo(iData1).getButton(), WidgetTypes.WIDGET_PEDIA_JUMP_TO_TERRAIN, iData1, iData2)
 			elif (type == "Feature"):
-				screen.setTableText(self.tableName, iColumn, iRow, sText, gc.getFeatureInfo(iData1).getButton(), WidgetTypes.WIDGET_PEDIA_JUMP_TO_FEATURE, iData1, iData2, CvUtil.FONT_LEFT_JUSTIFY)
+				self._SAS_indexPlaceCell(screen, iRow, iColumn, sText, gc.getFeatureInfo(iData1).getButton(), WidgetTypes.WIDGET_PEDIA_JUMP_TO_FEATURE, iData1, iData2)
 			elif (type == "Bonus"):
-				screen.setTableText(self.tableName, iColumn, iRow, sText, gc.getBonusInfo(iData1).getButton(), WidgetTypes.WIDGET_PEDIA_JUMP_TO_BONUS, iData1, iData2, CvUtil.FONT_LEFT_JUSTIFY)
+				self._SAS_indexPlaceCell(screen, iRow, iColumn, sText, gc.getBonusInfo(iData1).getButton(), WidgetTypes.WIDGET_PEDIA_JUMP_TO_BONUS, iData1, iData2)
 			elif (type == "Improv"):
-				screen.setTableText(self.tableName, iColumn, iRow, sText, gc.getImprovementInfo(iData1).getButton(), WidgetTypes.WIDGET_PEDIA_JUMP_TO_IMPROVEMENT, iData1, iData2, CvUtil.FONT_LEFT_JUSTIFY)
+				self._SAS_indexPlaceCell(screen, iRow, iColumn, sText, gc.getImprovementInfo(iData1).getButton(), WidgetTypes.WIDGET_PEDIA_JUMP_TO_IMPROVEMENT, iData1, iData2)
 			# <!-- custom: Build rows use the normal table cell (icon + text) and rely on table selection to trigger pediaJump.
 			# This avoids overlay widgets that don't scroll with the table. Credit: Claude Opus 4.5 + GPT-5.2-Codex. (GPT-5.2-Codex (summarized)) -->
 			elif (type == "Build"):
-				screen.setTableText(self.tableName, iColumn, iRow, sText, gc.getBuildInfo(iData1).getButton(), WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
+				self._SAS_indexPlaceCell(screen, iRow, iColumn, sText, gc.getBuildInfo(iData1).getButton(), WidgetTypes.WIDGET_GENERAL, -1, -1)
 				self.SAS_rowToBuild[iRow] = iData1
-			
+
 			elif (type == "Civ"):
-				screen.setTableText(self.tableName, iColumn, iRow, sText, gc.getCivilizationInfo(iData1).getButton(), WidgetTypes.WIDGET_PEDIA_JUMP_TO_CIV, iData1, iData2, CvUtil.FONT_LEFT_JUSTIFY)
+				self._SAS_indexPlaceCell(screen, iRow, iColumn, sText, gc.getCivilizationInfo(iData1).getButton(), WidgetTypes.WIDGET_PEDIA_JUMP_TO_CIV, iData1, iData2)
 			elif (type == "Leader"):
-				screen.setTableText(self.tableName, iColumn, iRow, sText, gc.getLeaderHeadInfo(iData1).getButton(), WidgetTypes.WIDGET_PEDIA_JUMP_TO_LEADER, iData1, iData2, CvUtil.FONT_LEFT_JUSTIFY)
+				self._SAS_indexPlaceCell(screen, iRow, iColumn, sText, gc.getLeaderHeadInfo(iData1).getButton(), WidgetTypes.WIDGET_PEDIA_JUMP_TO_LEADER, iData1, iData2)
 			# <!-- custom: Trait rows use WIDGET_GENERAL and row-to-trait mapping like Builds. (Claude Opus 4.5) -->
 			elif (type == "Trait"):
-				screen.setTableText(self.tableName, iColumn, iRow, sText, gc.getTraitInfo(iData1).getButton(), WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
+				self._SAS_indexPlaceCell(screen, iRow, iColumn, sText, gc.getTraitInfo(iData1).getButton(), WidgetTypes.WIDGET_GENERAL, -1, -1)
 				self.SAS_rowToTrait[iRow] = iData1
-			
+
 			elif (type == "Civic"):
-				screen.setTableText(self.tableName, iColumn, iRow, sText, gc.getCivicInfo(iData1).getButton(), WidgetTypes.WIDGET_PEDIA_JUMP_TO_CIVIC, iData1, iData2, CvUtil.FONT_LEFT_JUSTIFY)
+				self._SAS_indexPlaceCell(screen, iRow, iColumn, sText, gc.getCivicInfo(iData1).getButton(), WidgetTypes.WIDGET_PEDIA_JUMP_TO_CIVIC, iData1, iData2)
 			elif (type == "Religion"):
-				screen.setTableText(self.tableName, iColumn, iRow, sText, gc.getReligionInfo(iData1).getButton(), WidgetTypes.WIDGET_PEDIA_JUMP_TO_RELIGION, iData1, iData2, CvUtil.FONT_LEFT_JUSTIFY)
+				self._SAS_indexPlaceCell(screen, iRow, iColumn, sText, gc.getReligionInfo(iData1).getButton(), WidgetTypes.WIDGET_PEDIA_JUMP_TO_RELIGION, iData1, iData2)
 			# <!-- custom: base AdvCiv bugfix GPT-5.2-Codex found thanks, was gc.getReligionInfo(iData1).getButton() -->
 			elif (type == "Corporation"):
-				screen.setTableText(self.tableName, iColumn, iRow, sText, gc.getCorporationInfo(iData1).getButton(), WidgetTypes.WIDGET_PEDIA_JUMP_TO_CORPORATION, iData1, iData2, CvUtil.FONT_LEFT_JUSTIFY)
-			
+				self._SAS_indexPlaceCell(screen, iRow, iColumn, sText, gc.getCorporationInfo(iData1).getButton(), WidgetTypes.WIDGET_PEDIA_JUMP_TO_CORPORATION, iData1, iData2)
+
 			elif (type == "Concept"):
-				screen.setTableText(self.tableName, iColumn, iRow, u"<font=3>%c %s</font>" % (CONCEPT_CHAR, item[0]), gc.getConceptInfo(iData1).getButton(), WidgetTypes.WIDGET_PEDIA_DESCRIPTION, CivilopediaPageTypes.CIVILOPEDIA_PAGE_CONCEPT, iData1, CvUtil.FONT_LEFT_JUSTIFY)
+				self._SAS_indexPlaceCell(screen, iRow, iColumn, u"<font=3>%c %s</font>" % (CONCEPT_CHAR, item[0]), gc.getConceptInfo(iData1).getButton(), WidgetTypes.WIDGET_PEDIA_DESCRIPTION, CivilopediaPageTypes.CIVILOPEDIA_PAGE_CONCEPT, iData1)
 			elif (type == "NewConcept"):
-				screen.setTableText(self.tableName, iColumn, iRow, u"<font=3>%c %s</font>" % (CONCEPT_CHAR, item[0]), gc.getConceptInfo(iData1).getButton(), WidgetTypes.WIDGET_PEDIA_DESCRIPTION, CivilopediaPageTypes.CIVILOPEDIA_PAGE_CONCEPT_NEW, iData1, CvUtil.FONT_LEFT_JUSTIFY)
-		
+				# <!-- custom: AttributeError root cause note: after removing most Concept/NewConcept infos, this branch must use gc.getNewConceptInfo(iData1); using gc.getConceptInfo(iData1) can return None/wrong entry and then getButton crashes. (GPT-5.3-Codex) -->
+				self._SAS_indexPlaceCell(screen, iRow, iColumn, u"<font=3>%c %s</font>" % (CONCEPT_CHAR, item[0]), gc.getNewConceptInfo(iData1).getButton(), WidgetTypes.WIDGET_PEDIA_DESCRIPTION, CivilopediaPageTypes.CIVILOPEDIA_PAGE_CONCEPT_NEW, iData1)
+
 		self.iLastRow = iRow
+
+	# <!-- custom: helper used during placeIndex so every cell's args are remembered for arrow-key re-render. Keeps the placement loop one-line-per-type while ensuring SAS_indexCells stays in sync with what's actually drawn. (Claude code Opus 4.7) -->
+	def _SAS_indexPlaceCell(self, screen, iRow, iColumn, sText, sButton, eWidget, iData1, iData2):
+		screen.setTableText(self.tableName, iColumn, iRow, sText, sButton, eWidget, iData1, iData2, CvUtil.FONT_LEFT_JUSTIFY)
+		self.SAS_indexCells.append((iRow, iColumn, sText, sButton, eWidget, iData1, iData2))
+
+	# <!-- custom: cell-by-cell UP/DOWN navigation in reading order across the 3-column table. The widget has no per-cell highlight API, so the "cursor" is drawn by re-rendering the previous and current cells via setTableText with COLOR_HIGHLIGHT_TEXT (the same color the items list uses elsewhere). selectRow is called too, and the table is refocused first so its built-in row-selection visual can paint if the search bar had stolen focus. (Claude code Opus 4.7) -->
+	def SAS_navigateIndexTable(self, iDirection):
+		if not self.SAS_indexCells:
+			return False
+		iLast = len(self.SAS_indexCells) - 1
+		if self.SAS_indexCursorPos < 0:
+			if iDirection > 0:
+				iNewPos = 0
+			else:
+				iNewPos = iLast
+		else:
+			iNewPos = self.SAS_indexCursorPos + iDirection
+			if iNewPos < 0:
+				iNewPos = 0
+			elif iNewPos > iLast:
+				iNewPos = iLast
+		if iNewPos == self.SAS_indexCursorPos:
+			return False
+		screen = self.top.getScreen()
+		new = self.SAS_indexCells[iNewPos]
+		# <!-- custom: row-level visual = native blue via selectRow (deselect-prev-then-select-new, same call pattern SevoPediaMain.placeItems uses; this is the only call sequence that empirically paints addTableControlGFC selections in this widget). Cell-level visual = re-render previous cell with its original text and current cell wrapped in COLOR_HIGHLIGHT_TEXT, since selectRow has no per-cell granularity. Refocus the table first because the search bar steals focus on typing. (Claude code Opus 4.7 + GPT-5.5) -->
+		screen.setFocus(self.tableName)
+		screen.enableSelect(self.tableName, True)
+		if self.SAS_indexCursorPos >= 0:
+			prev = self.SAS_indexCells[self.SAS_indexCursorPos]
+			screen.selectRow(self.tableName, prev[0], False)
+			# Re-render the previous cell with its original (uncolored) text.
+			screen.setTableText(self.tableName, prev[1], prev[0], prev[2], prev[3], prev[4], prev[5], prev[6], CvUtil.FONT_LEFT_JUSTIFY)
+		screen.selectRow(self.tableName, new[0], True)
+		# Re-render the new cell wrapped in COLOR_HIGHLIGHT_TEXT to mark which of the row's cells is "current".
+		sHighlighted = localText.changeTextColor(new[2], self.top.COLOR_HIGHLIGHT_TEXT)
+		screen.setTableText(self.tableName, new[1], new[0], sHighlighted, new[3], new[4], new[5], new[6], CvUtil.FONT_LEFT_JUSTIFY)
+		self.SAS_indexCursorPos = iNewPos
+		return True
 
 	def handleInput (self, inputClass):
 		BugUtil.debugInput(inputClass)
-		if inputClass.getNotifyCode() == NotifyCode.NOTIFY_CLICKED:
-			if inputClass.getFunctionName() == self.SAS_INDEX_SEARCH_CLEAR_ID:
-				if self.SAS_indexIsSearchActive():
-					self.SAS_szIndexSearchString = u""
-					self.SAS_indexKeyDebounceByKey = {}
-					self.placeIndex()
-				return 1
-		
-		if inputClass.getNotifyCode() == NotifyCode.NOTIFY_CHARACTER:
-			screen = self.top.getScreen()
-			if screen.isActive():
-				if (not inputClass.isAltKeyDown()) and (not inputClass.isCtrlKeyDown()):
-					iKey = inputClass.getData()
-					
-					if self.top.SAS_shouldDebounceKey(iKey):
-						if self.SAS_indexKeyDebounceByKey.get(iKey, 0):
-							self.SAS_indexKeyDebounceByKey[iKey] = 0
-							return 1
-						self.SAS_indexKeyDebounceByKey[iKey] = 1
-					
-					szChar = self.top.SAS_getVisibleCharacter(inputClass)
-					if len(szChar) > 0:
-						self.SAS_szIndexSearchString = self.SAS_szIndexSearchString + szChar
-						self.placeIndex()
-						return 1
-					
-					if iKey == int(InputTypes.KB_BACKSPACE):
-						if len(self.SAS_szIndexSearchString) > 0:
-							self.SAS_szIndexSearchString = self.SAS_szIndexSearchString[:-1]
-							self.placeIndex()
-							return 1
-					elif iKey == int(InputTypes.KB_ESCAPE):
-						if self.SAS_indexIsSearchActive():
-							self.SAS_szIndexSearchString = u""
-							self.SAS_indexKeyDebounceByKey = {}
-							self.placeIndex()
-							return 1
-		
-		if (inputClass.getNotifyCode() == NotifyCode.NOTIFY_CLICKED 
+		# <!-- custom: search typing + CLEAR live in SevoPediaMain.handleInput; this method only
+		# handles letter buttons and table-row clicks specific to the Index page. (Claude code Opus 4.7) -->
+		if (inputClass.getNotifyCode() == NotifyCode.NOTIFY_CLICKED
 				and inputClass.getFunctionName() + str(inputClass.getID()) in self.letterTextIDs):
 			screen = self.top.getScreen()
 			screen.selectRow(self.tableName, self.iLastRow, True)
 			screen.selectRow(self.tableName, inputClass.getData1(), True)
 			return 1
-		
+
 		if (inputClass.getNotifyCode() == NotifyCode.NOTIFY_LISTBOX_ITEM_SELECTED
 				or inputClass.getNotifyCode() == NotifyCode.NOTIFY_CLICKED):
 			if inputClass.getFunctionName() == self.top.WIDGET_ID and inputClass.getID() == self.iTableWidgetId:

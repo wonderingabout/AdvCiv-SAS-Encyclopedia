@@ -239,7 +239,7 @@
 				</FootstepSound>
 			</FootstepSounds>
 			<WorldSoundscapeAudioScript>ASSS_JUNGLE_SELECT_AMB</WorldSoundscapeAudioScript>
-			<EffectType>EFFECT_BIRDSCATTER</EffectType>
+			<EffectType>EFFECT_FOOTSTEP_ON</EffectType>
 			<iEffectProbability>15</iEffectProbability>
 			<iAdvancedStartRemoveCost>40</iAdvancedStartRemoveCost>
 		</FeatureInfo>
@@ -599,7 +599,7 @@
 				</FootstepSound>
 			</FootstepSounds>
 			<WorldSoundscapeAudioScript>ASSS_FOREST_SELECT_AMB</WorldSoundscapeAudioScript>
-			<EffectType>EFFECT_BIRDSCATTER</EffectType>
+			<EffectType>EFFECT_FOOTSTEP_ON</EffectType>
 			<iEffectProbability>15</iEffectProbability>
 			<iAdvancedStartRemoveCost>0</iAdvancedStartRemoveCost>
 		</FeatureInfo>

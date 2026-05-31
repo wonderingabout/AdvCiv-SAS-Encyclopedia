@@ -13,8 +13,6 @@
 # (c) 2026 wonderingabout & AI helpers (see Authors in root README.md)
 #
 
-
-
 from CvPythonExtensions import *
 import CvUtil
 import ScreenInput
@@ -25,8 +23,6 @@ from _sevopedia_helpers import *
 gc = CyGlobalContext()
 ArtFileMgr = CyArtFileMgr()
 localText = CyTranslator()
-
-
 
 class SevoPediaPromotion:
 
@@ -78,8 +74,6 @@ class SevoPediaPromotion:
 		self.W_UNIT_COMBATS = self.W_SPECIAL
 		self.H_UNIT_COMBATS = self.H_SPECIAL
 
-
-
 	def interfaceScreen(self, iPromotion):
 		self.iPromotion = iPromotion
 
@@ -91,8 +85,6 @@ class SevoPediaPromotion:
 		self.placeSpecial()
 		self.placeUnitCombats()
 
-
-
 	def placePromotionPane(self):
 		screen = self.top.getScreen()
 
@@ -101,8 +93,6 @@ class SevoPediaPromotion:
 		#screen.addPanel(self.top.getNextWidgetName(), "", "", False, False, self.X_ICON, self.Y_ICON, self.W_ICON, self.H_ICON, PanelStyles.PANEL_STYLE_MAIN)
 		screen.addPanel(self.top.getNextWidgetName(), "", "", False, False, self.X_ICON, self.Y_ICON, self.W_ICON, self.H_ICON, PanelStyles.PANEL_STYLE_EMPTY)
 		screen.addDDSGFC(self.top.getNextWidgetName(), gc.getPromotionInfo(self.iPromotion).getButton(), self.X_ICON + self.W_ICON/2 - self.ICON_SIZE/2, self.Y_ICON + self.H_ICON/2 - self.ICON_SIZE/2, self.ICON_SIZE, self.ICON_SIZE, WidgetTypes.WIDGET_GENERAL, -1, -1)
-
-
 
 	def placeRequires(self):
 		screen = self.top.getScreen()
@@ -139,8 +129,6 @@ class SevoPediaPromotion:
 		if (eReligion > -1):
 			screen.attachImageButton(panelName, "", gc.getReligionInfo(eReligion).getButton(), GenericButtonSizes.BUTTON_SIZE_CUSTOM, WidgetTypes.WIDGET_PEDIA_JUMP_TO_RELIGION, eReligion, 1, False)
 
-
-
 	def placeLeadsTo(self):
 		screen = self.top.getScreen()
 		panelName = self.top.getNextWidgetName()
@@ -149,8 +137,6 @@ class SevoPediaPromotion:
 		for j in range(gc.getNumPromotionInfos()):
 			if (gc.getPromotionInfo(j).getPrereqPromotion() == self.iPromotion or gc.getPromotionInfo(j).getPrereqOrPromotion1() == self.iPromotion or gc.getPromotionInfo(j).getPrereqOrPromotion2() == self.iPromotion):
 				screen.attachImageButton(panelName, "", gc.getPromotionInfo(j).getButton(), GenericButtonSizes.BUTTON_SIZE_CUSTOM, WidgetTypes.WIDGET_PEDIA_JUMP_TO_PROMOTION, j, 1, False)
-
-
 
 	def placeFreePromotionsUnits(self):
 		xPanel = self.X_FREE_PROMOTIONS_UNITS
@@ -184,7 +170,7 @@ class SevoPediaPromotion:
 		# Loop through all units to find those with this promotion
 		for iUnit in xrange(gc.getNumUnitInfos()):
 			unitInfo = gc.getUnitInfo(iUnit)
-			
+
 			# Check if this unit has the current promotion as a free promotion
 			if unitInfo.getFreePromotions(self.iPromotion):
 				screen.appendMultiListButton(rowListName, unitInfo.getButton(), SEVOPEDIA_MULTILIST_COLUMN_INDEX_AUTO, WidgetTypes.WIDGET_PEDIA_JUMP_TO_UNIT, iUnit, 1, False)
@@ -198,8 +184,6 @@ class SevoPediaPromotion:
 			szText = localText.getText(txtKeyNoButtonFound, ())
 			yPanelCenter = yPanel + (hPanel / 2)
 			screen.addMultilineText(textName, szText, xPanel + 7, yPanelCenter, wPanel - 14, hPanel - 20, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
-
-
 
 	def placeFreePromotionBuilding(self):
 		xPanel = self.X_FREE_PROMOTION_BUILDINGS
@@ -233,7 +217,7 @@ class SevoPediaPromotion:
 		# Loop through all buildings to find those that grant this promotion
 		for iBuilding in range(gc.getNumBuildingInfos()):
 			buildingInfo = gc.getBuildingInfo(iBuilding)
-			
+
 			# Check if this building grants the current promotion
 			if buildingInfo.getFreePromotion() == self.iPromotion:
 				screen.appendMultiListButton(rowListName, buildingInfo.getButton(), SEVOPEDIA_MULTILIST_COLUMN_INDEX_AUTO, WidgetTypes.WIDGET_PEDIA_JUMP_TO_BUILDING, iBuilding, 1, False)
@@ -248,8 +232,6 @@ class SevoPediaPromotion:
 			yPanelCenter = yPanel + (hPanel / 2)
 			screen.addMultilineText(textName, szText, xPanel + 7, yPanelCenter, wPanel - 14, hPanel - 20, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
 
-
-
 	def placeSpecial(self):
 		screen = self.top.getScreen()
 		panelName = self.top.getNextWidgetName()
@@ -257,8 +239,6 @@ class SevoPediaPromotion:
 		listName = self.top.getNextWidgetName()
 		szSpecialText = CyGameTextMgr().getPromotionHelp(self.iPromotion, True)[1:]
 		screen.addMultilineText(listName, szSpecialText, self.X_SPECIAL+5, self.Y_SPECIAL+30, self.W_SPECIAL-10, self.H_SPECIAL-35, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
-
-
 
 	def placeUnitCombats(self):
 		screen = self.top.getScreen()
@@ -274,8 +254,6 @@ class SevoPediaPromotion:
 				screen.appendTableRow(szTable)
 				screen.setTableText(szTable, 0, i, u"<font=2>" + gc.getUnitCombatInfo(iI).getDescription() + u"</font>", gc.getUnitCombatInfo(iI).getButton(), WidgetTypes.WIDGET_PEDIA_JUMP_TO_UNIT_COMBAT, iI, -1, CvUtil.FONT_LEFT_JUSTIFY)
 				i += 1
-
-
 
 	def handleInput (self, inputClass):
 		return 0

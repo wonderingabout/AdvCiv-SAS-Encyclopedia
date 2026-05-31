@@ -54,7 +54,7 @@ class AIAutoPlay :
 
 		# Keep game from showing messages about handling these popups
 		CvUtil.SilentEvents.extend([7050,7052])
-		
+
 		if( self.blockPopups ) :
 			print "Removing some event handlers"
 			try :
@@ -63,7 +63,7 @@ class AIAutoPlay :
 			except ValueError :
 				print "Failed to remove 'onCityBuilt', perhaps not registered"
 				self.customEM.setEventHandler( "cityBuilt", self.onCityBuilt )
-			
+
 			try :
 				self.customEM.removeEventHandler( "BeginGameTurn", customEM.onBeginGameTurn )
 				self.customEM.addEventHandler( "BeginGameTurn", self.onBeginGameTurn )
@@ -71,10 +71,9 @@ class AIAutoPlay :
 				print "Failed to remove 'onBeginGameTurn', perhaps not registered"
 				self.customEM.setEventHandler( "BeginGameTurn", self.onBeginGameTurn )
 
-
 	def removeEventHandlers( self ) :
 		print "Removing event handlers from AIAutoPlay"
-		
+
 		self.customEM.removeEventHandler( "kbdEvent", self.onKbdEvent )
 		# advc: Disable unused handlers
 		#self.customEM.removeEventHandler( "EndGameTurn", self.onEndGameTurn )
@@ -87,14 +86,14 @@ class AIAutoPlay :
 
 		self.customEM.setPopupHandler( 7050, ["toAIChooserPopup",self.blankHandler,self.blankHandler] )
 		self.customEM.setPopupHandler( 7052, ["pickHumanPopup",self.blankHandler,self.blankHandler] )
-		
+
 		if( self.blockPopups ) :
 			self.customEM.removeEventHandler( "cityBuilt", self.onCityBuilt )
 			self.customEM.addEventHandler( "cityBuilt", self.customEM.onCityBuilt )
-			
+
 			self.customEM.removeEventHandler( "BeginGameTurn", self.onBeginGameTurn )
 			self.customEM.addEventHandler( "BeginGameTurn", self.customEM.onBeginGameTurn )
-	
+
 	def blankHandler( self, playerID, netUserData, popupReturn ) :
 		# Dummy handler to take the second event for popup
 		return
@@ -134,7 +133,7 @@ class AIAutoPlay :
 
 		# CvUtil.pyPrint("You now control the %s"%(newPlayer.getCivilizationDescription(0)))
 		# CyInterface().addImmediateMessage("You now control the %s"%(newPlayer.getCivilizationDescription(0)),"")
-		
+
 		ChangePlayer.changeHuman( newHumanIdx, toKillPlayer.getID() )
 
 		if( toKillPlayer.getNumCities() == 0 ) :
@@ -155,7 +154,7 @@ class AIAutoPlay :
 			#self.checkPlayer()
 			#game.setAIAutoPlay(0)
 			return # </advc.127>
-		
+
 		elif( self.bSaveAllDeaths ) :
 			if( game.getAIAutoPlay() == 0 and not gc.getActivePlayer().isAlive() and iPlayer > game.getActivePlayer() ) :
 				self.checkPlayer()
@@ -199,7 +198,7 @@ class AIAutoPlay :
 			self.checkPlayer() # advc.127: Un-commented this line.
 
 	def checkPlayer( self ) :
-		
+
 		pPlayer = gc.getActivePlayer()
 		# advc.127: Unit check added to avoid multiple popups. Note however: Normally, CvPlayer::verifyAlive automatically transfers human control to a different player when the active player is defeated. The popup here remains only as a fallback. Also added not-human check - should obviously only affect AI Auto Play. Don't know if and how that was working previously.
 		if not pPlayer.isAlive() and pPlayer.getNumUnits() <= 0 and not pPlayer.isHuman():
@@ -233,7 +232,7 @@ class AIAutoPlay :
 		CvUtil.pyPrint('CDP: Setting autoplay to 0')
 		# advc.127 (comment): Re-enables humans
 		game.setAIAutoPlay(0)
-		
+
 		if( not pPlayer.isHuman() ) :
 			CvUtil.pyPrint('Returning human player to control of %s'%(pPlayer.getCivilizationDescription(0)))
 			game.setActivePlayer( pPlayer.getID(), False )
@@ -241,7 +240,6 @@ class AIAutoPlay :
 
 		#for idx in range(0,gc.getMAX_CIV_TEAMS()) :
 		#	pPlayer.setEspionageSpendingWeightAgainstTeam(idx, pPlayer.getEspionageSpendingWeightAgainstTeam(idx)/10)
-
 
 	def onKbdEvent( self, argsList ) :
 		'keypress handler'
@@ -278,7 +276,6 @@ class AIAutoPlay :
 		if theKey == int(InputTypes.KB_O):
 			doRefortify( game.getActivePlayer() )
 
-
 	def onBeginGameTurn( self, argsList):
 		'Called at the beginning of the end of each turn'
 		iGameTurn = argsList[0]
@@ -301,7 +298,6 @@ class AIAutoPlay :
 				CvUtil.pyPrint('City Built Event: %s' %(city.getName()))
 			except :
 				CvUtil.pyPrint('City Built Event: Error processing city name' )
-
 
 	def toAIChooser( self ) :
 		'Chooser window for when user switches to AI auto play'
@@ -372,11 +368,11 @@ class AIAutoPlay :
 	# </BM1>
 
 ########################## Utility functions ###########################################
-			
+
 def doRefortify( iPlayer ) :
 	#pyPlayer = PyPlayer( iPlayer )
 	pPlayer = gc.getPlayer(iPlayer)
-	
+
 	CvUtil.pyPrint( "Refortifying units for player %d"%(iPlayer))
 
 	for groupID in range(0,pPlayer.getNumSelectionGroups()) :

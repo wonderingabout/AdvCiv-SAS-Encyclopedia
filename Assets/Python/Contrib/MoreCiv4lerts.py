@@ -40,7 +40,7 @@ class MoreCiv4lerts:
 		# </advc.135b>
 
 class AbstractMoreCiv4lertsEvent(object):
-	
+
 	def __init__(self, eventManager, iPlayer, *args, **kwargs):
 			super( AbstractMoreCiv4lertsEvent, self).__init__(*args, **kwargs)
 			# advc.135b: Added attribute iOwner
@@ -84,14 +84,14 @@ class MoreCiv4lertsEvent( AbstractMoreCiv4lertsEvent):
 		eventManager.addEventHandler("cityBuilt", self.OnCityBuilt)
 		eventManager.addEventHandler("cityRazed", self.OnCityRazed)
 		eventManager.addEventHandler("cityLost", self.OnCityLost)
-		
+
 		eventManager.addEventHandler("GameStart", self.reset)
 		eventManager.addEventHandler("OnLoad", self.reset)
 
 		self.eventMgr = eventManager
 		self.options = BugCore.game.MoreCiv4lerts
 		self.reset()
-	
+
 	def reset(self, argsList=None):
 		# <advc.106c><advc.135b>
 		# Should perhaps just call checkForAlerts with
@@ -142,10 +142,10 @@ class MoreCiv4lertsEvent( AbstractMoreCiv4lertsEvent):
 
 	def getCheckForTechs(self):
 		return self.options.isShowTechTradeAlert()
-	
+
 	def getCheckForBonuses(self):
 		return self.options.isShowBonusTradeAlert()
-	
+
 	def getCheckForMap(self):
 		return self.options.isShowMapTradeAlert()
 
@@ -157,13 +157,13 @@ class MoreCiv4lertsEvent( AbstractMoreCiv4lertsEvent):
 
 	def getCheckForPermanentAlliance(self):
 		return self.options.isShowPermanentAllianceTradeAlert()
-	
+
 	def getCheckForVassal(self):
 		return self.options.isShowVassalTradeAlert()
-	
+
 	def getCheckForSurrender(self):
 		return self.options.isShowSurrenderTradeAlert()
-	
+
 	def getCheckForPeace(self):
 		return False # advc.210
 		#return self.options.isShowPeaceTradeAlert()
@@ -171,7 +171,7 @@ class MoreCiv4lertsEvent( AbstractMoreCiv4lertsEvent):
 	def getCheckForDomVictory(self):
 		return False # advc.210
 		#return self.getCheckForDomPopVictory() or self.getCheckForDomLandVictory()
-	
+
 	def getCheckForForeignCities(self):
 		return False # advc.210c
 		#return self.options.isShowCityFoundedAlert()
@@ -302,7 +302,7 @@ class MoreCiv4lertsEvent( AbstractMoreCiv4lertsEvent):
 
 		# Check Domination Limit
 		if (self.getCheckForDomVictory() and gc.getGame().isVictoryValid(DomVictory)):
-			
+
 			# Population Limit
 			if (self.getCheckForDomPopVictory()):
 				VictoryPopPercent = 0.0
@@ -372,7 +372,7 @@ class MoreCiv4lertsEvent( AbstractMoreCiv4lertsEvent):
 				pass #end land limit if
 		else:
 			pass #end dom limt if
-	
+
 		#save turn num
 		if (self.getCheckForDomVictory()):
 			self.lastDomLimitMsgTurn = currentTurn
@@ -391,7 +391,7 @@ class MoreCiv4lertsEvent( AbstractMoreCiv4lertsEvent):
 					previousTechs = self.PrevAvailTechTrades[iLoopPlayer]
 				else:
 					previousTechs = set()
-					
+
 				#Determine new techs
 				newTechs = currentTechs.difference(previousTechs).intersection(researchTechs)
 				if (newTechs):
@@ -399,7 +399,7 @@ class MoreCiv4lertsEvent( AbstractMoreCiv4lertsEvent):
 					message = localText.getText("TXT_KEY_MORECIV4LERTS_NEW_TECH_AVAIL",	
 												(gc.getPlayer(iLoopPlayer).getName(), szNewTechs))
 					self._addMessageNoIcon(iActivePlayer, message)
-				
+
 				#Determine removed techs
 				removedTechs = previousTechs.difference(currentTechs).intersection(researchTechs)
 				if (removedTechs):
@@ -407,7 +407,7 @@ class MoreCiv4lertsEvent( AbstractMoreCiv4lertsEvent):
 					message = localText.getText("TXT_KEY_MORECIV4LERTS_TECH_NOT_AVAIL",	
 												(gc.getPlayer(iLoopPlayer).getName(), szRemovedTechs))
 					self._addMessageNoIcon(iActivePlayer, message)
-				
+
 			else:
 				pass #end activePlayer loop
 
@@ -416,7 +416,7 @@ class MoreCiv4lertsEvent( AbstractMoreCiv4lertsEvent):
 
 		else:
 			pass #end new trades if
-		
+
 		# bonus trades
 		if (BeginTurn and self.getCheckForBonuses()):
 			desiredBonuses = TradeUtil.getDesiredBonuses(activePlayer)
@@ -428,7 +428,7 @@ class MoreCiv4lertsEvent( AbstractMoreCiv4lertsEvent):
 					previousTrades = self.PrevAvailBonusTrades[iLoopPlayer]
 				else:
 					previousTrades = set()
-					
+
 				#Determine new bonuses
 				newTrades = currentTrades.difference(previousTrades).intersection(desiredBonuses)
 				if (newTrades):
@@ -438,7 +438,7 @@ class MoreCiv4lertsEvent( AbstractMoreCiv4lertsEvent):
 					self._addMessageNoIcon(iActivePlayer, message)
 					# advc.106: Moved here to avoid messages about "flickering" offers
 					self.PrevAvailBonusTrades = tradesByPlayer
-				
+
 				#Determine removed bonuses
 				# <advc.106> This is rarely relevant (resources being no
 				# longer available).
@@ -453,7 +453,7 @@ class MoreCiv4lertsEvent( AbstractMoreCiv4lertsEvent):
 			#save curr trades for next time
 			# self.PrevAvailBonusTrades = tradesByPlayer # advc.106: moved up
 			self.checkForExports(activePlayer) # advc.210e
-		
+
 		if (BeginTurn and self.getCheckForMap()):
 			currentTrades = self.getMapTrades(activePlayer, activeTeam)
 			newTrades = currentTrades.difference(self.PrevAvailMapTrades)
@@ -462,7 +462,7 @@ class MoreCiv4lertsEvent( AbstractMoreCiv4lertsEvent):
 				players = self.buildPlayerString(newTrades)
 				message = localText.getText("TXT_KEY_MORECIV4LERTS_MAP", (players,))
 				self._addMessageNoIcon(iActivePlayer, message)
-		
+
 		if (BeginTurn and self.getCheckForOpenBorders()):
 			currentTrades = self.getOpenBordersTrades(activePlayer, activeTeam)
 			newTrades = currentTrades.difference(self.PrevAvailOpenBordersTrades)
@@ -471,7 +471,7 @@ class MoreCiv4lertsEvent( AbstractMoreCiv4lertsEvent):
 				players = self.buildPlayerString(newTrades)
 				message = localText.getText("TXT_KEY_MORECIV4LERTS_OPEN_BORDERS", (players,))
 				self._addMessageNoIcon(iActivePlayer, message)
-		
+
 		if (BeginTurn and self.getCheckForDefensivePact()):
 			currentTrades = self.getDefensivePactTrades(activePlayer, activeTeam)
 			newTrades = currentTrades.difference(self.PrevAvailDefensivePactTrades)
@@ -480,7 +480,7 @@ class MoreCiv4lertsEvent( AbstractMoreCiv4lertsEvent):
 				players = self.buildPlayerString(newTrades)
 				message = localText.getText("TXT_KEY_MORECIV4LERTS_DEFENSIVE_PACT", (players,))
 				self._addMessageNoIcon(iActivePlayer, message)
-		
+
 		if (BeginTurn and self.getCheckForPermanentAlliance()):
 			currentTrades = self.getPermanentAllianceTrades(activePlayer, activeTeam)
 			newTrades = currentTrades.difference(self.PrevAvailPermanentAllianceTrades)
@@ -489,7 +489,7 @@ class MoreCiv4lertsEvent( AbstractMoreCiv4lertsEvent):
 				players = self.buildPlayerString(newTrades)
 				message = localText.getText("TXT_KEY_MORECIV4LERTS_PERMANENT_ALLIANCE", (players,))
 				self._addMessageNoIcon(iActivePlayer, message)
-		
+
 		if (BeginTurn and self.getCheckForVassal()):
 			currentTrades = self.getVassalTrades(activePlayer, activeTeam)
 			newTrades = currentTrades.difference(self.PrevAvailVassalTrades)
@@ -498,7 +498,7 @@ class MoreCiv4lertsEvent( AbstractMoreCiv4lertsEvent):
 				players = self.buildPlayerString(newTrades)
 				message = localText.getText("TXT_KEY_MORECIV4LERTS_VASSAL", (players,))
 				self._addMessageNoIcon(iActivePlayer, message)
-		
+
 		if (BeginTurn and self.getCheckForSurrender()):
 			currentTrades = self.getSurrenderTrades(activePlayer, activeTeam)
 			newTrades = currentTrades.difference(self.PrevAvailSurrenderTrades)
@@ -516,7 +516,7 @@ class MoreCiv4lertsEvent( AbstractMoreCiv4lertsEvent):
 				players = self.buildPlayerString(newTrades)
 				message = localText.getText("TXT_KEY_MORECIV4LERTS_PEACE_TREATY", (players,))
 				self._addMessageNoIcon(iActivePlayer, message)
-	
+
 	# <advc.210e> Based on 'bonus trades' code
 	def checkForExports(self, player):
 		tradesByPlayer = self.getBonusSales(player)
@@ -663,16 +663,16 @@ class MoreCiv4lertsEvent( AbstractMoreCiv4lertsEvent):
 				if (loopPlayer.getTradeDenial(iPlayerID, tradeData) == DenialTypes.NO_DENIAL and loopPlayer.AI_isWillingToTalk(iPlayerID)): 
 					currentTrades.add(loopPlayer.getID())
 		return currentTrades
-	
+
 	def buildTechString(self, techs):
 		return self.buildItemString(techs, gc.getTechInfo, CvTechInfo.getDescription)
-	
+
 	def buildBonusString(self, bonuses):
 		return self.buildItemString(bonuses, gc.getBonusInfo, CvBonusInfo.getDescription)
 
 	def buildPlayerString(self, players):
 		return self.buildItemString(players, gc.getPlayer, CyPlayer.getName)
-	
+
 	def buildItemString(self, items, getItemFunc, getNameFunc):
 		names = [getNameFunc(getItemFunc(eItem)) for eItem in items]
 		names.sort()

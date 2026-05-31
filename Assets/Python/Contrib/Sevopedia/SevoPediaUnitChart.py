@@ -9,25 +9,22 @@
 # https://github.com/f1rpo/AdvCiv/blob/master/Assets/Python/Contrib/Sevopedia/SevoPediaUnitChart.py
 # and modified or not for AdvCiv-SAS -->
 
-
-
 from CvPythonExtensions import *
 import CvUtil
-from SASUtils import getInfoTypeOrFail
+from SASUtils import getInfoTypeOrMinusOne
 
 from _sevopedia_helpers import *
 
 gc = CyGlobalContext()
 localText = CyTranslator()
 
-
-
 class SevoPediaUnitChart:
 	def __init__(self, main):
 		self.iGroup = -1
 		self.top = main
-		self.I_UNITCOMBAT_AIR_BOMBER = getInfoTypeOrFail("UNITCOMBAT_AIR_BOMBER")
-		self.I_UNITCOMBAT_AIR_FIGHTER = getInfoTypeOrFail("UNITCOMBAT_AIR_FIGHTER")
+		# <!-- custom: optional for stripped NIF-gallery XML builds where air unitcombat classes are removed. Keep UI alive instead of failing at init. (GPT-5.3-Codex) -->
+		self.I_UNITCOMBAT_AIR_BOMBER = getInfoTypeOrMinusOne("UNITCOMBAT_AIR_BOMBER")
+		self.I_UNITCOMBAT_AIR_FIGHTER = getInfoTypeOrMinusOne("UNITCOMBAT_AIR_FIGHTER")
 
 		self.X_TABLE = self.top.X_PEDIA_PAGE
 		self.Y_TABLE = self.top.Y_PEDIA_PAGE
@@ -38,17 +35,13 @@ class SevoPediaUnitChart:
 		self.W_NAME = 270
 		# <!-- custom: 129 is enough, but add a bit more margin to avoid truncation if digits are wider. (GPT-5.2-Codex (summarized)) -->
 		self.W_NUM = 130
-		
+
 		self.W_TABLE = ((self.N_COLUMNS - 2 - 1) * self.W_NUM) + (2 * self.MARGIN)
-
-
 
 	def interfaceScreen(self, iGroup):
 		self.iGroup = iGroup
 
 		self.placeUnitTable()
-
-
 
 	# <!-- custom: i did not know about this ChatGPT told me about this or made me understand it and solve it, so adding this explanation in case it helps others or me:
 	# in python, here for placeUnitTable function, when we call it using self.placeUnitTable(), self is passed automatically as an argument so no need to write it (else there would be 2 arguments) at function.
@@ -64,7 +57,7 @@ class SevoPediaUnitChart:
 			self.N_COLUMNS = 8
 		else:
 			self.N_COLUMNS = 10
-		
+
 		self.W_TABLE = (self.W_NAME + ((self.N_COLUMNS - 1) * self.W_NUM)) + (2 * self.MARGIN)
 
 		# <!-- custom: blue is more readable than standard i find, imported from base AdvCiv and modified with a similar kind of purpose -->
@@ -114,7 +107,7 @@ class SevoPediaUnitChart:
 			szAirEvasion = u"Air Evasion"
 			szAirIntercept = u"Air Intercept"
 			szAirRange = u"Air Range"
-			
+
 			szAirEvasionText = u"<font=2>     " + szAirEvasion + u"</font>"
 			szAirInterceptText = u"<font=2>    " + szAirIntercept + u"</font>"
 			szAirRangeText = u"<font=2>      " + szAirRange + u"</font>"
@@ -174,13 +167,9 @@ class SevoPediaUnitChart:
 					self.placeTableWithdraw(screen, table, 6, iRow, UnitInfo)
 					self.placeTableCost(screen, table, 7, iRow, UnitInfo)
 
-
-
 	def placeTableName(self, screen, table, iCol, iRow, UnitInfo, iUnit):
 		# Name
 		screen.setTableText(table, iCol, iRow, u"<font=3>" + UnitInfo.getDescription() + u"</font>", UnitInfo.getButton(), WidgetTypes.WIDGET_PEDIA_JUMP_TO_UNIT, iUnit, 1, CvUtil.FONT_LEFT_JUSTIFY)
-
-
 
 	def placeTableCombat(self, screen, table, iCol, iRow, UnitInfo):
 		# Combat Strength
@@ -191,15 +180,11 @@ class SevoPediaUnitChart:
 
 		screen.setTableInt(table, iCol, iRow, u"<font=3>" + szCombatNum + u"</font>", "", WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_CENTER_JUSTIFY)
 
-
-
 	def placeTableMovement(self, screen, table, iCol, iRow, UnitInfo):
 		# Movement
 		szMovesNum = u"%d" % UnitInfo.getMoves()
 
 		screen.setTableInt(table, iCol, iRow, u"<font=3>" + szMovesNum + u"</font>", "", WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_CENTER_JUSTIFY)
-
-
 
 	def placeTableFirstStrike(self, screen, table, iCol, iRow, UnitInfo):
 		# First Strikes
@@ -210,8 +195,6 @@ class SevoPediaUnitChart:
 			szFirstStrikesNum = u""
 
 		screen.setTableInt(table, iCol, iRow, u"<font=3>" + szFirstStrikesNum + u"</font>", "", WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_CENTER_JUSTIFY)
-
-
 
 	def placeTableBombard(self, screen, table, iCol, iRow, UnitInfo):
 		# Bombard
@@ -224,8 +207,6 @@ class SevoPediaUnitChart:
 
 		screen.setTableInt(table, iCol, iRow, u"<font=3>" + szBombardRate + u"</font>", "", WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_CENTER_JUSTIFY)
 
-
-
 	def placeTableCollateral(self, screen, table, iCol, iRow, UnitInfo):
 		# Collateral
 		if UnitInfo.getCollateralDamage() > 0 or UnitInfo.getCollateralDamageLimit():
@@ -234,8 +215,6 @@ class SevoPediaUnitChart:
 			szCollateralRate = u""
 
 		screen.setTableInt(table, iCol, iRow, u"<font=3>" + szCollateralRate + u"</font>", "", WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_CENTER_JUSTIFY)
-
-
 
 	def placeTableWithdraw(self, screen, table, iCol, iRow, UnitInfo):
 		# Withdrawal
@@ -246,8 +225,6 @@ class SevoPediaUnitChart:
 
 		screen.setTableInt(table, iCol, iRow, u"<font=3>" + szWithdrawalRate + u"</font>", "", WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_CENTER_JUSTIFY)
 
-
-
 	def placeTableAirEvasion(self, screen, table, iCol, iRow, UnitInfo):
 		# Air Evasion
 		if UnitInfo.getEvasionProbability() > 0:
@@ -256,8 +233,6 @@ class SevoPediaUnitChart:
 			szAirEvasionRate = u""
 
 		screen.setTableInt(table, iCol, iRow, u"<font=3>" + szAirEvasionRate + u"</font>", "", WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_CENTER_JUSTIFY)
-
-
 
 	def placeTableAirInterception(self, screen, table, iCol, iRow, UnitInfo):
 		# Air Interception
@@ -268,8 +243,6 @@ class SevoPediaUnitChart:
 
 		screen.setTableInt(table, iCol, iRow, u"<font=3>" + szAirInterceptionRate + u"</font>", "", WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_CENTER_JUSTIFY)
 
-
-
 	def placeTableAirRange(self, screen, table, iCol, iRow, UnitInfo):
 		# Air Range
 		if UnitInfo.getAirRange() > 0:
@@ -279,8 +252,6 @@ class SevoPediaUnitChart:
 
 		screen.setTableInt(table, iCol, iRow, u"<font=3>" + szAirRangeNum + u"</font>", "", WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_CENTER_JUSTIFY)
 
-
-
 	def placeTableCost(self, screen, table, iCol, iRow, UnitInfo):
 		# Cost
 		if UnitInfo.getProductionCost() < 0:
@@ -289,8 +260,6 @@ class SevoPediaUnitChart:
 			szCostNum = u"%d" % UnitInfo.getProductionCost()
 
 		screen.setTableInt(table, iCol, iRow, u"<font=3>" + szCostNum + u"</font>", "", WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_CENTER_JUSTIFY)
-
-
 
 	def handleInput (self, inputClass):
 		return 0

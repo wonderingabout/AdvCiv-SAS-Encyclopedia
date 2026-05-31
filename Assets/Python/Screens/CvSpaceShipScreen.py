@@ -42,7 +42,7 @@ class CvSpaceShipScreen:
 		self.H_LAUNCH = 60
 		self.X_LAUNCH = self.X_SCREEN - self.PADDING - self.W_LAUNCH
 		self.Y_LAUNCH = self.Y_SCREEN + self.H_SCREEN - self.H_LAUNCH - self.PADDING
-	
+
 		self.X_LAUNCH_LABEL1 = self.X_SCREEN + self.PADDING
 		self.Y_LAUNCH_LABEL1 = self.Y_LAUNCH + 8
 		self.X_LAUNCH_LABEL2 = self.X_LAUNCH_LABEL1
@@ -204,8 +204,6 @@ class CvSpaceShipScreen:
 				screen.setLabel("LaunchLabel1", "SpaceShipMainPanel", "<color=255,255,0><font=3b>" + localText.getText("TXT_KEY_SPACESHIP_CHANCE_OF_SUCCESS", (gc.getTeam(gc.getGame().getActiveTeam()).getLaunchSuccessRate(self.spaceVictory), )) + "</font></color>", CvUtil.FONT_LEFT_JUSTIFY, self.X_LAUNCH_LABEL1, self.Y_LAUNCH_LABEL1, 0, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
 				screen.setLabel("LaunchLabel2", "SpaceShipMainPanel", "<color=255,255,0><font=3b>" + localText.getText("TXT_KEY_SPACE_SHIP_SCREEN_TRAVEL_TIME_LABEL", (delay,)) + "</font></color>", CvUtil.FONT_LEFT_JUSTIFY, self.X_LAUNCH_LABEL2, self.Y_LAUNCH_LABEL2, 0, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
 				screen.setButtonGFC("LaunchButton", localText.getText("TXT_KEY_SPACE_SHIP_SCREEN_LAUNCH_BUTTON", ()), "", self.X_LAUNCH, self.Y_LAUNCH, self.W_LAUNCH, self.H_LAUNCH, WidgetTypes.WIDGET_GENERAL, self.LAUNCH_BUTTON, -1, ButtonStyles.BUTTON_STYLE_STANDARD )
-
-
 
 		#exit button
 		screen.setButtonGFC("ExitButton", localText.getText("TXT_KEY_PEDIA_SCREEN_EXIT", ()), "", self.X_EXIT, self.Y_EXIT, self.W_EXIT, self.H_EXIT, WidgetTypes.WIDGET_CLOSE_SCREEN, -1, -1, ButtonStyles.BUTTON_STYLE_STANDARD )

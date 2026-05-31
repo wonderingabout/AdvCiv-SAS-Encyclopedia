@@ -500,7 +500,7 @@ void CvCityAI::AI_chooseProduction()
 
 	// <!-- custom: performance optimizations -->
 	CvPlot const& kPlot = getPlot();
-	
+
 	if (isProduction())
 	{
 		if (getProduction() > 0)
@@ -3677,7 +3677,7 @@ UnitTypes CvCityAI::AI_bestUnit(bool bAsync, AdvisorTypes eIgnoreAdvisor, UnitAI
 				aiUnitAIVal[UNITAI_ESCORT_SEA] = 0;
 				aiUnitAIVal[UNITAI_EXPLORE_SEA] = 0;
 				aiUnitAIVal[UNITAI_ASSAULT_SEA] = 0;
-				
+
 				// // <!-- custom: don't waste time or hammer with this, focus on effective offense -->
 				// aiUnitAIVal[UNITAI_PIRATE_SEA] = 0;
 
@@ -3797,7 +3797,7 @@ UnitTypes CvCityAI::AI_bestUnit(bool bAsync, AdvisorTypes eIgnoreAdvisor, UnitAI
 				aiUnitAIVal[UNITAI_ESCORT_SEA] = 0;
 				aiUnitAIVal[UNITAI_EXPLORE_SEA] = 0;
 				aiUnitAIVal[UNITAI_ASSAULT_SEA] = 0;
-				
+
 				// <!-- custom: not the focus or most likely way to affect our enemy on a land heavy map war, so better be more efficient/effective and avoid it -->
 				aiUnitAIVal[UNITAI_SPY_SEA] = 0;
 
@@ -6183,7 +6183,7 @@ int CvCityAI::AI_buildingValue(BuildingTypes eBuilding, int iFocusFlags,
 
 	if (kBuilding.isCapital())
 		return 0;
-	
+
 	// <advc.014>
 	if(GET_TEAM(eOwner).isCapitulated() && bWorldWonder &&
 		kBuilding.getHolyCity() == NO_RELIGION)
@@ -6515,7 +6515,7 @@ int CvCityAI::AI_buildingValue(BuildingTypes eBuilding, int iFocusFlags,
 			// K-Mod. (original code deleted)
 			int iSpecialistsValue = 0;
 			//int iUnusedSpecialists = 0;
-			
+
 			int iAvailableWorkers = iFoodDifference / 2;
 			if (eDefaultSpecialist != NO_SPECIALIST)
 				iAvailableWorkers += getSpecialistCount(eDefaultSpecialist);
@@ -8358,7 +8358,7 @@ int CvCityAI::AI_defensiveBuildingValue(BuildingTypes eBuilding,
 {
 	// <!-- custom: performance optimization: cache repetitive calls -->
 	CvGame const& kGame = GC.getGame();
-	
+
 	// <!-- custom: cache to kTeam for perf opt if i'm not mistaken. See note at CvCityAI::AI_buildingValue. -->
 	CvPlayerAI const& kOwner = GET_PLAYER(getOwner());
 	CvTeamAI const& kTeam = GET_TEAM(kOwner.getTeam()); // kekm.16
@@ -14387,7 +14387,7 @@ int CvCityAI::AI_yieldValue(int* piYields, int* piCommerceYields, bool bRemove,
 								GC.getGame().getProductionPerPopulation(eHurry)
 								// Don't use modifiers weights, because slavery usage is erratic.
 								/* *iBaseProductionModifier / 100*/);
-						
+
 					}
 				}
 				FAssert(iProductionPerPop > 0);
@@ -14779,7 +14779,7 @@ int CvCityAI::AI_jobChangeValue(std::pair<bool, int> new_job, std::pair<bool, in
 				}
 			}
 		}
-		
+
 		// <!-- custom: for barbarians, do not allow any other specialist than the scientist, they would die or if not really don't need the other types for efficiency as well, keeping the scientist for versatility and utility, and in case we make some changes later where they last a big longer as a result; note: for performance optimization, put this check last so all other conditions apply to other non-barbarian AI players first without checking this uneededly and if this is a word xd, as well as to barbarians as well, then only if not check barbarians specifically for remaining conditions -->
 		// Barbarian rule: allow only Scientist as a specialist target.
 		// Applies to both hires (plot->spec) and switches (spec->spec). Removals (spec->plot) unaffected.
@@ -14794,7 +14794,7 @@ int CvCityAI::AI_jobChangeValue(std::pair<bool, int> new_job, std::pair<bool, in
 			}
 		} 
 	}
-	
+
 	int iTotalValue = 0;
 
 	// Calculate and evaluate direct changes in yields
@@ -15547,7 +15547,7 @@ void CvCityAI::AI_bestPlotBuild(CvPlot const& kPlot, int* piBestValue, BuildType
 		iClearValue_wYield -= kFeature.getYieldChange(YIELD_COMMERCE) *
 				40 * iCommercePriority / 100;
 	}
-	
+
 	BuildTypes eBestBuild = NO_BUILD;
 	int iBestValue = 0;
 
@@ -16126,7 +16126,7 @@ void CvCityAI::AI_barbChooseProduction()
 
 	// <!-- custom: performance optimizations -->
 	CvPlot const& kPlot = getPlot();
-	
+
 	CvArea const* pWaterArea = waterArea(true);
 	bool bMaybeWaterArea = false;
 	bool bWaterDanger = false;
@@ -17017,7 +17017,7 @@ int CvCityAI::AI_calculatePlayerCloseness(int iMaxDistance, PlayerTypes ePlayer,
 
 	int iCloseness = 0;
 	CvPlayer const& kPlayer = GET_PLAYER(ePlayer);
-	
+
 	int iValue = 0;
 	int iBestValue = 0;
 	CvMap const& kMap = GC.getMap();

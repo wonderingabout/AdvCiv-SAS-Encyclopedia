@@ -13,8 +13,6 @@
 # Created as part of AdvCiv-SAS improvements
 # (c) 2026 wonderingabout & AI helpers (see Authors in root README.md)
 
-
-
 from CvPythonExtensions import *
 
 import CvUtil
@@ -59,8 +57,6 @@ from _sevopedia_helpers import *
 import _sevopedia_main_groupings as SAS_MainGroupings
 import SASDefineGuard
 
-
-
 gc = CyGlobalContext()
 ArtFileMgr = CyArtFileMgr()
 localText = CyTranslator()
@@ -69,14 +65,12 @@ AdvisorOpt = BugCore.game.Advisors
 
 g_TraitUtilInitDone = False
 
-
-
 class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 
 	def __init__(self):
 		self.PEDIA_MAIN_SCREEN	= "PediaMainScreen"
 		self.INTERFACE_ART_INFO	= "SCREEN_BG_OPAQUE"
-		
+
 		self.TAB_TOC   = "Contents"
 		self.TAB_INDEX = "Index"
 		self.SAS_USE_BOTTOM_TABS = False
@@ -90,18 +84,23 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 		self.INDEX_ID		= "PediaMainIndex"
 		self.BACK_ID		= "PediaMainBack"
 		self.NEXT_ID		= "PediaMainForward"
+		self.SAS_CLEAR_ID = "PediaMainClear"
 		self.EXIT_ID		= "PediaMainExit"
 		self.CATEGORY_LIST_ID	= "PediaMainCategoryList"
 		self.ITEM_LIST_ID	= "PediaMainItemList"
 		self.UPGRADES_GRAPH_ID	= "PediaMainUpgradesGraph"
 
-		# <!-- custom: type-to-filter search bar for the left item list (in the same style as done in other mod(s)) (chatgpt 5.2 + claude opus 4.5) -->
+		# <!-- custom: search bar for the left item list (initially based on how other mod(s) do) (chatgpt 5.2 + claude opus 4.5) -->
 		self.SAS_SEARCH_PANEL_ID = "PediaMainSearchPanel"
 		self.SAS_SEARCH_LABEL_ID = "PediaMainSearchLabel"
-		self.SAS_SEARCH_CLEAR_ID = "PediaMainSearchClear"
-		self.SAS_SEARCH_DEFAULT_TEXT = u"Type to filter..."
+		self.SAS_CLEAR_SEARCH_ID = "PediaMainSearchClear"
+		self.SAS_SEARCH_KEYS_TOGGLE_ID = "PediaMainSearchKeysToggle"
+		self.SAS_SEARCH_KEY_PREFIX = "PediaMainSearchKey"
+		self.SAS_SEARCH_DEFAULT_TEXT = u"Enter text"
+		self.SAS_SEARCH_KEYS_TEXT = u"KEYS"
 		self.SAS_SEARCH_H = 32
-		# <!-- custom: End - type-to-filter search bar for the left item list (in the same style as done in other mod(s)) (chatgpt 5.2 + claude opus 4.5) -->
+		self.SAS_SEARCH_KEYBOARD_CHARS = (u"(", u")", u"_", u"/", u"*", u"+", u"-", u"=", u"[", u"]", u"'", u"#", u"&", u"~", u";", u",", u":", u"!", u"?", u".", u"@", u"\\", u"|", u"<", u">")
+		# <!-- custom: End - search bar for the left item list (initially based on how other mod(s) do) (chatgpt 5.2 + claude opus 4.5) -->
 		# <!-- custom: WIDGET_PYTHON magic IDs for custom Sevopedia categories. These allow Builds and Traits to have
 		# their own dedicated pages without requiring new widget types in the DLL. The ID is passed as data1, and the
 		# actual item ID (build/trait index) as data2. Handled in placeItems(), handleInput(), and SevoPediaIndex. -->
@@ -112,6 +111,7 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 		self.SAS_PEDIA_PYTHON_MUSIC_ENTRY = 6802
 		self.SAS_PEDIA_PYTHON_MUSIC_PLAY = 6803
 		self.SAS_PEDIA_PYTHON_CHART_LOG = 6804
+		self.SAS_PEDIA_PYTHON_SEARCH_KEY = 6815
 		self.SAS_PEDIA_MOVIE_TYPE_VICTORY = 1
 		self.SAS_PEDIA_MOVIE_TYPE_WONDER = 2
 		self.SAS_PEDIA_MOVIE_TYPE_PROJECT = 3
@@ -209,6 +209,9 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 		self.Y_BACK = Y_FOOTER_CONTROLS
 		self.X_NEXT = 133 + (self.W_SCREEN // 2) # advc.004y: was 645
 		self.Y_NEXT = Y_FOOTER_CONTROLS
+		# <!-- custom: place Clear near the Legend footer link, opposite Exit and visually separate from Back/Next. (GPT-5.5) -->
+		self.SAS_X_CLEAR = self.X_TOC + 120
+		self.SAS_Y_CLEAR = Y_FOOTER_CONTROLS
 		self.X_EXIT = self.W_SCREEN - 30 # advc.004y: was 994
 		self.Y_EXIT = Y_FOOTER_CONTROLS
 
@@ -250,18 +253,28 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 		self.SAS_musicScript3DTracks = None
 		self.SAS_firstCivScript3DMusicKey = None
 
-		# <!-- custom: type-to-filter search bar state variables (chatgpt 5.2 + claude opus 4.5) -->
+		# <!-- custom: search bar state variables (chatgpt 5.2 + claude opus 4.5) -->
 		self.SAS_szSearchString = u""
 		self.SAS_lastItemsWidget = None
 		self.SAS_lastItemsInfo = None
+		# <!-- custom: only one Sevopedia page renders at a time, so a single callable is enough to
+		# remember what to re-render after a search keystroke. Each list page sets this when drawn:
+		# placeItems for regular listbox categories, SevoPediaIndex.placeIndex for the Index 3-column
+		# table. Search handlers just invoke whichever is registered, no per-category branching. (Claude code Opus 4.7) -->
+		self.SAS_activeListRefresher = None
+		# <!-- custom: each searchable page also registers its UP/DOWN arrow navigator here. Normal one-column pages register SAS_navigateItemList; Index registers its own table-aware navigator. Avoids special-casing isIndexShowing() in handleInput. (Claude code Opus 4.7) -->
+		self.SAS_activeKeyNavigator = None
 
-		# <!-- custom: debounce for type-to-filter to prevent double keypress even when key-up events are interleaved (chatgpt 5.2 + claude opus 4.5) -->
+		# <!-- custom: debounce for search bar to prevent double keypress even when key-up events are interleaved (chatgpt 5.2 + claude opus 4.5) -->
 		# Note: BtS/AdvCiv can fire NOTIFY_CHARACTER twice per press for letters/digits, and the 2nd event can arrive after another key when typing fast.
 		self.SAS_keyDebounceByKey = {}
+		self.SAS_navigationKeyDebounceByKey = {}
+		self.SAS_searchKeyboardIds = []
+		self.SAS_bSearchKeyboardVisible = False
 
 		# <!-- custom: map original list indices to displayed rows when filtering so selection/highlight stays correct (chatgpt 5.2 + claude opus 4.5) -->
 		self.SAS_listIdxToRow = None
-		# <!-- custom: End - type-to-filter search bar for the left item list (in the same style as done in other mod(s)) (chatgpt 5.2 + claude opus 4.5) -->
+		# <!-- custom: End - search bar for the left item list (chatgpt 5.2 + claude opus 4.5) -->
 
 		# <!-- custom: cache selectable (non-header) indices for arrow navigation (chatgpt 5.2 + claude opus 4.5) -->
 		self.SAS_selectableListIdx = []
@@ -371,64 +384,87 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 		self.IS_SAS_SEVOPEDIA_MAIN_RELIGIONS_GROUP_BY_ERA = (gc.getDefineINT("SAS_SEVOPEDIA_MAIN_RELIGIONS_GROUP_BY_ERA") > 0)
 		self.IS_SAS_SEVOPEDIA_MAIN_PROJECTS_GROUP_BY_ERA = (gc.getDefineINT("SAS_SEVOPEDIA_MAIN_PROJECTS_GROUP_BY_ERA") > 0)
 		self.SAS_SEVOPEDIA_MUSIC_ITEMS_WIDTH = gc.getDefineINT("SAS_SEVOPEDIA_MUSIC_ITEMS_WIDTH")
+		self.SAS_SEVOPEDIA_LEADER_ITEMS_WIDTH = gc.getDefineINT("SAS_SEVOPEDIA_LEADER_ITEMS_WIDTH")
 		self.IS_SAS_SEVOPEDIA_MAIN_SPECIALISTS_GROUP_BY_TYPE = (gc.getDefineINT("SAS_SEVOPEDIA_MAIN_SPECIALISTS_GROUP_BY_TYPE") > 0)
 		self.IS_SAS_SEVOPEDIA_MAIN_BONUSES_GROUP_BY_IMPROVEMENT = (gc.getDefineINT("SAS_SEVOPEDIA_MAIN_BONUSES_GROUP_BY_IMPROVEMENT") > 0)
 		self.IS_SAS_SEVOPEDIA_MAIN_IMPROVEMENTS_GROUP_BY_TERRAIN = (gc.getDefineINT("SAS_SEVOPEDIA_MAIN_IMPROVEMENTS_GROUP_BY_TERRAIN") > 0)
 		self.IS_SAS_SEVOPEDIA_MAIN_BUILDS_GROUP_BY_TYPE = (gc.getDefineINT("SAS_SEVOPEDIA_MAIN_BUILDS_GROUP_BY_TYPE") > 0)
 		self.IS_SAS_SEVOPEDIA_MAIN_TERRAINS_GROUP_BY_LAND_WATER = (gc.getDefineINT("SAS_SEVOPEDIA_MAIN_TERRAINS_GROUP_BY_LAND_WATER") > 0)
 		self.IS_SAS_SEVOPEDIA_MAIN_FEATURES_GROUP_BY_LAND_WATER = (gc.getDefineINT("SAS_SEVOPEDIA_MAIN_FEATURES_GROUP_BY_LAND_WATER") > 0)
+		self.IS_SAS_SEVOPEDIA_MAIN_CIVS_GROUP_BY_ARTSTYLE = (gc.getDefineINT("SAS_SEVOPEDIA_MAIN_CIVS_GROUP_BY_ARTSTYLE") > 0)
+		self.IS_SAS_SEVOPEDIA_MAIN_LEADERS_GROUP_BY_CIV = (gc.getDefineINT("SAS_SEVOPEDIA_MAIN_LEADERS_GROUP_BY_CIV") > 0)
+		self.IS_SAS_SEVOPEDIA_SEARCH_CLICKABLE_SPECIAL_CHARS_ENABLE = (gc.getDefineINT("SAS_SEVOPEDIA_SEARCH_CLICKABLE_SPECIAL_CHARS_ENABLE") > 0)
+		self.IS_SAS_SEVOPEDIA_LEADER_AI_PERSONALITY_ENABLE = (gc.getDefineINT("SAS_SEVOPEDIA_LEADER_AI_PERSONALITY_ENABLE") > 0)
 		self.IS_SAS_SEVOPEDIA_MUSIC_LEADER_INTRO_PEACE_FIRST_ONLY = (gc.getDefineINT("SAS_SEVOPEDIA_MUSIC_LEADER_INTRO_PEACE_FIRST_ONLY") > 0)
 		self.IS_SAS_SEVOPEDIA_MUSIC_LEADER_PEACE_FIRST_ONLY = (gc.getDefineINT("SAS_SEVOPEDIA_MUSIC_LEADER_PEACE_FIRST_ONLY") > 0)
 		self.IS_SAS_SEVOPEDIA_MUSIC_LEADER_INTRO_WAR_FIRST_LEADER_ONLY = (gc.getDefineINT("SAS_SEVOPEDIA_MUSIC_LEADER_INTRO_WAR_FIRST_LEADER_ONLY") > 0)
 		self.IS_SAS_SEVOPEDIA_MUSIC_LEADER_WAR_FIRST_LEADER_ONLY = (gc.getDefineINT("SAS_SEVOPEDIA_MUSIC_LEADER_WAR_FIRST_LEADER_ONLY") > 0)
 
-
-
-	# <!-- custom: type-to-filter search bar helper methods (chatgpt 5.2 + claude opus 4.5) -->
+	# <!-- custom: search bar helper methods (chatgpt 5.2 + claude opus 4.5) -->
 	def SAS_safeDeleteWidget(self, screen, szWidget):
 		try:
 			screen.deleteWidget(szWidget)
 		except:
 			pass
 
-	# <!-- custom: type-to-filter search bar helper methods (chatgpt 5.2 + claude opus 4.5) -->
+	# <!-- custom: search bar helper methods (chatgpt 5.2 + claude opus 4.5) -->
 	def SAS_deleteSearchWidgets(self, screen):
 		self.SAS_safeDeleteWidget(screen, self.SAS_SEARCH_PANEL_ID)
 		self.SAS_safeDeleteWidget(screen, self.SAS_SEARCH_LABEL_ID)
-		self.SAS_safeDeleteWidget(screen, self.SAS_SEARCH_CLEAR_ID)
+		self.SAS_safeDeleteWidget(screen, self.SAS_CLEAR_SEARCH_ID)
+		self.SAS_safeDeleteWidget(screen, self.SAS_SEARCH_KEYS_TOGGLE_ID)
+		for szWidget in self.SAS_searchKeyboardIds:
+			self.SAS_safeDeleteWidget(screen, szWidget)
+		self.SAS_searchKeyboardIds = []
 
 	# <!-- custom: clear search state for special pages that delete the item list (chatgpt 5.2 + claude opus 4.5) -->
 	def SAS_prepareSpecialPageDeletingItemList(self, screen):
-		# <!-- custom: type-to-filter search bar for the left item list (in the same style as done in other mod(s)) (chatgpt 5.2 + claude opus 4.5) -->
+		# <!-- custom: search bar for the left item list (chatgpt 5.2 + claude opus 4.5) -->
 		# <!-- custom: clear search state for special pages that delete the item list (chatgpt 5.2 + claude opus 4.5) -->
 		self.SAS_szSearchString = u""
 		self.SAS_lastItemsWidget = None
 		self.SAS_lastItemsInfo = None
 		self.SAS_deleteSearchWidgets(screen)
-		# <!-- custom: End - type-to-filter search bar for the left item list (in the same style as done in other mod(s)) (chatgpt 5.2 + claude opus 4.5) -->
+		# <!-- custom: End - search bar for the left item list (chatgpt 5.2 + claude opus 4.5) -->
 
 		screen.deleteWidget(self.ITEM_LIST_ID)
 
-	# <!-- custom: type-to-filter search bar helper methods (chatgpt 5.2 + claude opus 4.5) -->
+	# <!-- custom: search bar helper methods (chatgpt 5.2 + claude opus 4.5) -->
 	def SAS_isSearchActive(self):
 		return (self.SAS_szSearchString is not None and len(self.SAS_szSearchString.strip()) > 0)
 
-	# <!-- custom: type-to-filter search bar sync panel (chatgpt 5.2 + claude opus 4.5) -->
+	# <!-- custom: invoke the registered refresher; see SAS_activeListRefresher comment in __init__. (Claude code Opus 4.7) -->
+	def SAS_refreshActiveListView(self):
+		if self.SAS_activeListRefresher is not None:
+			self.SAS_activeListRefresher()
+
+	def _SAS_refreshLastItems(self):
+		if self.SAS_lastItemsWidget is not None:
+			self.placeItems(self.SAS_lastItemsWidget, self.SAS_lastItemsInfo)
+
+	# <!-- custom: search bar sync panel (chatgpt 5.2 + claude opus 4.5) -->
 	def SAS_syncSearchPanel(self):
 		screen = self.getScreen()
 
 		# Recreate each time: simple + safe (mirrors the approach used in other mod(s)).
 		self.SAS_deleteSearchWidgets(screen)
 
+		# <!-- custom: search bar sits in the top header, X aligned with the items column. Right edge
+		# stops `iSafetyToTitle` pixels short of the central "Sevopedia" title to leave room for the
+		# CLEAR button and avoid visually colliding with the title. CLEAR is rendered OUTSIDE the
+		# panel as a screen-level setText widget; a setLabel inside the search panel parent does
+		# not reach handleInput in this engine, so the click never fires. (Claude code Opus 4.7) -->
+		iSafetyToTitle = 200
+		iClearGap = 8
 		iX = self.X_ITEMS
-		iY = self.Y_ITEMS
-		iW = self.W_ITEMS
 		iH = self.SAS_SEARCH_H
+		iY = self.Y_TOP_PANEL + (self.H_TOP_PANEL - iH) / 2
+		iW = self.X_TITLE - iSafetyToTitle - iX
 
 		screen.addPanel(self.SAS_SEARCH_PANEL_ID, u"", u"", True, True, iX, iY, iW, iH, PanelStyles.PANEL_STYLE_BLUE50)
 
 		if self.SAS_isSearchActive():
-			szText = self.SAS_szSearchString
+			szText = self.SAS_getSearchDisplayText(self.SAS_szSearchString)
 		else:
 			szText = self.SAS_SEARCH_DEFAULT_TEXT
 
@@ -437,17 +473,70 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 				CvUtil.FONT_LEFT_JUSTIFY, iX + 6, iY + 6, 0,
 				FontTypes.SMALL_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
 
-		# Show a clear button only when active.
+		# Show the CLEAR button (outside the panel, screen-level) only when search is active.
 		if self.SAS_isSearchActive():
-			screen.setLabel(self.SAS_SEARCH_CLEAR_ID, self.SAS_SEARCH_PANEL_ID,
-					u"<font=3>x</font>",
-					CvUtil.FONT_RIGHT_JUSTIFY, iX + iW - 6, iY + 6, 0,
-					FontTypes.SMALL_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
+			iClearX = iX + iW + iClearGap
+			iClearY = self.Y_TOP_PANEL + 16
+			screen.setText(self.SAS_CLEAR_SEARCH_ID, "Background", self.SAS_CLEAR_TEXT, CvUtil.FONT_LEFT_JUSTIFY, iClearX, iClearY, 0, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
+
+		if not self.IS_SAS_SEVOPEDIA_SEARCH_CLICKABLE_SPECIAL_CHARS_ENABLE:
+			self.SAS_bSearchKeyboardVisible = False
+			return
+
+		iKeysToggleX = self.X_EXIT
+		iKeysToggleY = self.Y_TITLE
+		screen.setText(self.SAS_SEARCH_KEYS_TOGGLE_ID, "Background", u"<font=4>" + self.SAS_SEARCH_KEYS_TEXT + u"</font>", CvUtil.FONT_RIGHT_JUSTIFY, iKeysToggleX, iKeysToggleY, 0, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
+
+		if self.SAS_bSearchKeyboardVisible:
+			self.SAS_syncSearchKeyboard(screen)
+
+	# <!-- custom: compact click keyboard for punctuation that Civ4 keyboard events often fail to expose on non-US layouts. (GPT-5.5) -->
+	def SAS_syncSearchKeyboard(self, screen):
+		iX = self.X_TITLE + 100
+		iAvailableW = self.X_EXIT - iX - 36
+		iKeyGap = 6
+		iKeyW = 24
+		if iAvailableW < len(self.SAS_SEARCH_KEYBOARD_CHARS) * (iKeyW + iKeyGap):
+			iKeyGap = 2
+			iKeyW = max(12, iAvailableW / len(self.SAS_SEARCH_KEYBOARD_CHARS) - iKeyGap)
+		iY = self.Y_TOP_PANEL + 18
+		self.SAS_searchKeyboardIds = []
+		for iChar, szChar in enumerate(self.SAS_SEARCH_KEYBOARD_CHARS):
+			szWidget = self.SAS_SEARCH_KEY_PREFIX + str(iChar)
+			self.SAS_searchKeyboardIds.append(szWidget)
+			screen.setText(szWidget, "Background", u"<font=3>" + self.SAS_getSearchKeyDisplayText(szChar) + u"</font>", CvUtil.FONT_CENTER_JUSTIFY, iX + (iKeyW / 2) + iChar * (iKeyW + iKeyGap), iY, 0, FontTypes.SMALL_FONT, WidgetTypes.WIDGET_PYTHON, self.SAS_PEDIA_PYTHON_SEARCH_KEY, iChar)
+
+	# <!-- custom: escape renderer-sensitive search text before passing it through font-tagged UI labels.
+	# Empirically, raw < or > can corrupt the rendered label (e.g. showing /font-like tag fragments), while raw &
+	# can be invisible and prevent following characters from rendering clearly. These raw chars are XML/markup-sensitive
+	# and rarely useful for ordinary XML text-key search, but keep them raw in SAS_szSearchString so clicked/typed input
+	# remains faithful; escape only the display string. (GPT-5.5) -->
+	def SAS_getSearchDisplayText(self, szText):
+		return szText.replace(u"&", u"&amp;").replace(u"<", u"&lt;").replace(u">", u"&gt;")
+
+	def SAS_getSearchKeyDisplayText(self, szText):
+		return self.SAS_getSearchDisplayText(szText)
+
+	def SAS_appendSearchCharacter(self, szChar):
+		if len(szChar) > 0:
+			self.SAS_szSearchString = self.SAS_szSearchString + szChar
+			self.SAS_refreshActiveListView()
+			return 1
+		return 0
 
 	# <!-- custom: convert InputTypes keyboard code to visible character, based on how other mod(s) use ScreenInput.getVisibleCharacter (chatgpt 5.2 + claude opus 4.5) -->
 
-	# <!-- custom: identify keys that need debounce in the type-to-filter search (chatgpt 5.2 + claude opus 4.5) -->
-	# <!-- custom: debounce alnum and editing/navigation keys for type-to-filter because BtS can fire duplicate NOTIFY_CHARACTER
+	def SAS_getSearchCharacterKeys(self):
+		return (
+			int(InputTypes.KB_MINUS), int(InputTypes.KB_EQUALS), int(InputTypes.KB_LBRACKET), int(InputTypes.KB_RBRACKET),
+			int(InputTypes.KB_SEMICOLON), int(InputTypes.KB_APOSTROPHE), int(InputTypes.KB_GRAVE), int(InputTypes.KB_BACKSLASH),
+			int(InputTypes.KB_COMMA), int(InputTypes.KB_PERIOD), int(InputTypes.KB_SLASH), int(InputTypes.KB_NUMPADSTAR),
+			int(InputTypes.KB_NUMPADMINUS), int(InputTypes.KB_NUMPADPLUS), int(InputTypes.KB_NUMPADPERIOD), int(InputTypes.KB_NUMPADEQUALS),
+			int(InputTypes.KB_AT), int(InputTypes.KB_UNDERLINE), int(InputTypes.KB_COLON), int(InputTypes.KB_NUMPADCOMMA), int(InputTypes.KB_NUMPADSLASH)
+		)
+
+	# <!-- custom: identify keys that need debounce in the search (chatgpt 5.2 + claude opus 4.5) -->
+	# <!-- custom: debounce alnum and editing/navigation keys for search because BtS can fire duplicate NOTIFY_CHARACTER
 	# events on list widgets; this includes Space so queries like "la t" don't become "la  t". (GPT-5.3-Codex) -->
 	def SAS_shouldDebounceKey(self, iKey):
 		# Letters A-Z
@@ -458,6 +547,8 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 			return True
 		# Space
 		if iKey == int(InputTypes.KB_SPACE):
+			return True
+		if iKey in self.SAS_getSearchCharacterKeys():
 			return True
 		# Backspace (and optionally Delete) can also double-fire
 		# No need for KB_DELETE or KB_RETURN since:
@@ -470,13 +561,31 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 		if iKey == int(InputTypes.KB_UP) or iKey == int(InputTypes.KB_DOWN):
 			return True
 		# <!-- custom: End - Based on C2C mod's implementation thanks: add navigation of the item list with the UP/DOWN arrow keys. Code adjusted for AdvCiv-SAS with the help of chatgpt 5.2 and claude opus 4.5. -->
+		# <!-- custom: Left/Right are handled earlier in handleInput with SAS_navigationKeyDebounceByKey, so they stay separate from the search/list debounce state that category redraws reset. (Claude code Opus 4.7 + GPT-5.5) -->
 
+		return False
+
+	def SAS_shouldIgnoreDebouncedKey(self, iKey):
+		if not self.SAS_shouldDebounceKey(iKey):
+			return False
+		if self.SAS_keyDebounceByKey.get(iKey, 0):
+			self.SAS_keyDebounceByKey[iKey] = 0
+			return True
+		self.SAS_keyDebounceByKey[iKey] = 1
+		return False
+
+	# <!-- custom: Left/Right Back/Next worked one item at a time within the same category, but crossing back to another category jumped twice from one keypress. Category redraws reset search debounce state; keeping navigation debounce separate fixed this. (GPT-5.5) -->
+	def SAS_shouldIgnoreDebouncedNavigationKey(self, iKey):
+		if self.SAS_navigationKeyDebounceByKey.get(iKey, 0):
+			self.SAS_navigationKeyDebounceByKey[iKey] = 0
+			return True
+		self.SAS_navigationKeyDebounceByKey[iKey] = 1
 		return False
 
 	def SAS_getVisibleCharacter(self, inputClass):
 		iKey = inputClass.getData()
 		bShift = inputClass.isShiftKeyDown()
-		
+
 		# Letters A-Z
 		if iKey >= int(InputTypes.KB_A) and iKey <= int(InputTypes.KB_Z):
 			iLetterOffset = iKey - int(InputTypes.KB_A)
@@ -484,19 +593,90 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 				return unichr(65 + iLetterOffset)  # Uppercase A-Z
 			else:
 				return unichr(97 + iLetterOffset)  # Lowercase a-z
-		
+
 		# Numbers 0-9
 		if iKey >= int(InputTypes.KB_0) and iKey <= int(InputTypes.KB_9):
 			iNumberOffset = iKey - int(InputTypes.KB_0)
+			if bShift:
+				return (u")", u"!", u"@", u"#", u"$", u"%", u"^", u"&", u"*", u"(")[iNumberOffset]
 			return unichr(48 + iNumberOffset)
-		
+
 		# Space
 		if iKey == int(InputTypes.KB_SPACE):
 			return u" "
-		
+
+		# <!-- custom: Direct punctuation keys are Civ4/DirectInput physical-key names; on some keyboard layouts the engine
+		# does not expose the intended typed character, so the click keyboard above remains the reliable fallback.
+		# Prefer this low-risk fallback over DLL/input-layer plumbing because punctuation searches are rare in Civ4 item names,
+		# and many markup-sensitive chars are unlikely to appear raw in XML text anyway. (GPT-5.5) -->
+		if iKey == int(InputTypes.KB_MINUS):
+			if bShift:
+				return u"_"
+			return u"-"
+		if iKey == int(InputTypes.KB_EQUALS):
+			if bShift:
+				return u"+"
+			return u"="
+		if iKey == int(InputTypes.KB_LBRACKET):
+			if bShift:
+				return u"{"
+			return u"["
+		if iKey == int(InputTypes.KB_RBRACKET):
+			if bShift:
+				return u"}"
+			return u"]"
+		if iKey == int(InputTypes.KB_SEMICOLON):
+			if bShift:
+				return u":"
+			return u";"
+		if iKey == int(InputTypes.KB_APOSTROPHE):
+			if bShift:
+				return u"\""
+			return u"'"
+		if iKey == int(InputTypes.KB_GRAVE):
+			if bShift:
+				return u"~"
+			return u"`"
+		if iKey == int(InputTypes.KB_BACKSLASH):
+			if bShift:
+				return u"|"
+			return u"\\"
+		if iKey == int(InputTypes.KB_COMMA):
+			if bShift:
+				return u"<"
+			return u","
+		if iKey == int(InputTypes.KB_PERIOD):
+			if bShift:
+				return u">"
+			return u"."
+		if iKey == int(InputTypes.KB_SLASH):
+			if bShift:
+				return u"?"
+			return u"/"
+		if iKey == int(InputTypes.KB_AT):
+			return u"@"
+		if iKey == int(InputTypes.KB_UNDERLINE):
+			return u"_"
+		if iKey == int(InputTypes.KB_COLON):
+			return u":"
+		if iKey == int(InputTypes.KB_NUMPADSTAR):
+			return u"*"
+		if iKey == int(InputTypes.KB_NUMPADMINUS):
+			return u"-"
+		if iKey == int(InputTypes.KB_NUMPADPLUS):
+			return u"+"
+		if iKey == int(InputTypes.KB_NUMPADPERIOD):
+			return u"."
+		if iKey == int(InputTypes.KB_NUMPADEQUALS):
+			return u"="
+		if iKey == int(InputTypes.KB_NUMPADCOMMA):
+			return u","
+		if iKey == int(InputTypes.KB_NUMPADSLASH):
+			return u"/"
+
 		# No visible character for this key
 		return u""
-	# <!-- custom: End - type-to-filter search bar for the left item list (in the same style as done in other mod(s)) (chatgpt 5.2 + claude opus 4.5) -->
+	# <!-- custom: End - search bar for the left item list (chatgpt 5.2 + claude opus 4.5) -->
 
 	# <!-- custom: Based on C2C mod's implementation thanks: add navigation of the item list with the UP/DOWN arrow keys. Code adjusted for AdvCiv-SAS with the help of chatgpt 5.2 and claude opus 4.5. -->
 	# Navigate the item list by iDirection rows (-1 = up, +1 = down). Skips headers/spacers (item[1] == -1) and respects filtering.
@@ -505,7 +685,7 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 			return False
 		if not self.list or len(self.list) == 0:
 			return False
-		
+
 		# Prefer cached selectable indices (built in placeItems)
 		listSelectableRows = getattr(self, "SAS_selectableListIdx", None)
 		if not listSelectableRows:
@@ -527,7 +707,7 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 		dPos = getattr(self, "SAS_itemToSelectablePos", None)
 		if dPos is not None:
 			iCurrentPos = dPos.get(self.iItem, -1)
-		
+
 		# Calculate new position
 		if iCurrentPos == -1:
 			# No item selected, select first or last based on direction
@@ -542,18 +722,17 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 				iNewPos = 0
 			elif iNewPos >= len(listSelectableRows):
 				iNewPos = len(listSelectableRows) - 1
-		
+
 		# Get the item at new position and jump to it
 		iNewListIdx = listSelectableRows[iNewPos]
 		iNewItem = self.list[iNewListIdx][1]
-		
+
 		if iNewItem != self.iItem:
 			self.pediaJump(self.iCategory, iNewItem, False, False)
 			return True
-		
+
 		return False
 	# <!-- custom: End - Based on C2C mod's implementation thanks: add navigation of the item list with the UP/DOWN arrow keys. Code adjusted for AdvCiv-SAS with the help of chatgpt 5.2 and claude opus 4.5. -->
-
 
 	def getScreen(self):
 		return CyGInterfaceScreen(self.PEDIA_MAIN_SCREEN, SevoScreenEnums.PEDIA_MAIN)
@@ -577,16 +756,15 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 		if self.SAS_lastPediaJump is not None:
 			current = self.SAS_lastPediaJump
 		elif self.pediaHistory:
-			current = self.pediaHistory.pop()
+			current = self.pediaHistory[-1]
 		else:
 			# <!-- custom: default to the first row in SAS_CATEGORY_DEFS, so the opening category always
 			# matches the current category order instead of being hardcoded to Techs. (GPT-5.2-Codex) -->
 			current = (SevoScreenEnums.PEDIA_MAIN, self.SAS_CATEGORY_DEFS[0][0])
-		self.pediaFuture = []
-		self.pediaHistory = []
+		# <!-- custom: keep Back/Next history across closing and reopening Sevopedia during the same game session.
+		# This lets players inspect several entries (e.g. Leader AIP pages), exit to the map, reopen Sevopedia,
+		# and still use Back/Next instead of rebuilding the same navigation chain. See KI#125. (GPT-5.5) -->
 		self.pediaJump(current[0], current[1], False, True)
-
-
 
 	def pediaJump(self, iCategory, iItem, bRemoveFwdList, bIsLink):
 		# <!-- custom: note: fixed a (seemingly base advciv) bug in in CvDLLWidgetData.cpp where iItem was -1 for obsolete bonuses redirecting from tech advisor, unlike obsolete buildings which didn't have the issue weirdly/strangely, with chatgpt's help and thanks to my prompt too and observation of the issue and or such but also chatgpt's help in guiding me bit too; i had put a workaround here to use a placeholder for iItem but no needed anymore now that this is fixed so reverted everything as base advciv code was minus this extra code comment, see also code comment at WIDGET_HELP_BONUS_REVEAL in CvDLLWidgetData.cpp or known issue number 22 as of now in known issues of advciv-sas readme for details as well. -->
@@ -606,6 +784,9 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 		if not screen.isActive():
 			self.createScreen(screen)
 
+		# <!-- custom: fix Sevopedia category-open UX: many categories land on a blank header/spacer page first
+		# (item id -1), which slows navigation; auto-jump to first real item on fresh category clicks only.
+		# Also avoid auto-jump for no-item categories. See KI#119. (GPT-5.3-Codex) -->
 		if (iCategory == SevoScreenEnums.PEDIA_MAIN):
 			BugUtil.debug("Main link %d" % iItem)
 			self.SAS_lastPediaJump = (iCategory, iItem)
@@ -613,7 +794,15 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 			iListIndex = self.SAS_categoryEnumToIndex.get(iItem, -1)
 			if iListIndex != -1:
 				screen.setSelectedListBoxStringGFC(self.CATEGORY_LIST_ID, iListIndex)
-			#self.iCategory = iItem
+			if bRemoveFwdList and self.SAS_lastItemsWidget is not None:
+				iFirstItem = self.SAS_getFirstSelectableItemIdFromCurrentList()
+				if iFirstItem != -1:
+					# <!-- custom: drop the transient category node from history when auto-redirecting to the
+					# first real item; this avoids needless BACK/NEXT steps that pollute pedia navigation.
+					# Keep category history when no redirect occurs (e.g., no-item category). See KI#119. (GPT-5.3-Codex) -->
+					if self.pediaHistory and self.pediaHistory[-1] == (SevoScreenEnums.PEDIA_MAIN, iItem):
+						self.pediaHistory.pop()
+					return self.pediaJump(iItem, iFirstItem, bRemoveFwdList, False)
 			return
 
 		if (iCategory == SevoScreenEnums.PEDIA_BUILDINGS):
@@ -651,6 +840,12 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 		self.deleteAllWidgets()
 		func = self.mapScreenFunctions.get(iCategory)
 		func.interfaceScreen(iItem)
+		# <!-- custom: fix first-visit Sevopedia category keyboard navigation within the same open Sevopedia session:
+		# the first click on Specialists left UP/DOWN inactive, but after clicking Bonuses and then Specialists again,
+		# UP/DOWN worked in Specialists. Tested: first Specialists open now has working UP/DOWN. Additional sanity checks,
+		# not confirmed original failures: first direct open to expanded panels works, and first direct open to the Leaders
+		# category animation panel works. (GPT-5.5) -->
+		self.SAS_refocusItemListForKeyboardNavigation()
 
 	def determineNewConceptSubCategory(self, iItem):
 		info = gc.getNewConceptInfo(iItem)
@@ -661,25 +856,46 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 			return SevoScreenEnums.PEDIA_SHORTCUTS
 		return SevoScreenEnums.PEDIA_BTS_CONCEPTS
 
+	def SAS_getFirstSelectableItemIdFromCurrentList(self):
+		if not hasattr(self, "list"):
+			return -1
+		for item in self.list:
+			if len(item) > 1 and item[1] != -1:
+				return item[1]
+		return -1
+
+	def SAS_refocusItemListForKeyboardNavigation(self):
+		if self.SAS_lastItemsWidget is None:
+			return
+		try:
+			self.getScreen().setFocus(self.ITEM_LIST_ID)
+		except:
+			pass
+
 	def isContentsShowing(self):
 		return self.tab == self.TAB_TOC
-	
+
 	def showContents(self, bForce=False, iCategory=None):
 		if iCategory is None:
 			iCategory = self.SAS_CATEGORY_DEFS[0][0]
-		self.pediaIndex.SAS_indexDeleteSearchWidgets()
 		self.deleteAllWidgets()
 		if iCategory == SevoScreenEnums.PEDIA_MUSIC:
 			iMusicItemsWidth = self.SAS_SEVOPEDIA_MUSIC_ITEMS_WIDTH
 			if iMusicItemsWidth <= 0:
 				iMusicItemsWidth = self.SAS_W_ITEMS_BASE
 			self.SAS_setItemsWidth(iMusicItemsWidth)
+		elif iCategory == SevoScreenEnums.PEDIA_LEADERS:
+			iLeaderItemsWidth = self.SAS_SEVOPEDIA_LEADER_ITEMS_WIDTH
+			if iLeaderItemsWidth <= 0:
+				iLeaderItemsWidth = self.SAS_W_ITEMS_BASE
+			self.SAS_setItemsWidth(iLeaderItemsWidth)
 		else:
 			self.SAS_setItemsWidth(self.SAS_W_ITEMS_BASE)
+		screen = self.getScreen()
+		self.SAS_setFooterNavigationTexts(screen, iCategory)
 		if not self.isContentsShowing():
 			BugUtil.debug("Drawing category list")
 			self.placeCategories(iCategory)
-			screen = self.getScreen()
 			if not self.SAS_USE_BOTTOM_TABS:
 				self.SAS_safeDeleteWidget(screen, self.TOC_ID)
 				self.SAS_safeDeleteWidget(screen, self.INDEX_ID)
@@ -688,18 +904,24 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 				screen.setText(self.INDEX_ID, "Background", self.INDEX_TEXT, CvUtil.FONT_LEFT_JUSTIFY, self.X_INDEX, self.Y_INDEX, 0, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_GENERAL,      -1, -1)
 			screen.show(self.BACK_ID)
 			screen.show(self.NEXT_ID)
+			screen.show(self.SAS_CLEAR_ID)
 
 		if not self.isContentsShowing() or self.iCategory != iCategory or bForce:
 			BugUtil.debug("Drawing item list %d" % iCategory)
-			# <!-- custom: type-to-filter search bar for the left item list (in the same style as done in other mod(s)) (chatgpt 5.2 + claude opus 4.5) -->
+			# <!-- custom: search bar for the left item list (chatgpt 5.2 + claude opus 4.5) -->
+			# <!-- custom: reset search state on every category change. Players almost always want to
+			# look up something different on the next visit, so we drop the query rather than restoring
+			# it. (Claude code Opus 4.7) -->
 			# <!-- custom: reset search state when changing category (chatgpt 5.2 + claude opus 4.5) -->
 			self.SAS_lastItemsWidget = None
 			self.SAS_lastItemsInfo = None
+			self.SAS_activeListRefresher = None
+			self.SAS_activeKeyNavigator = None
 			if (not self.isContentsShowing()) or (self.iCategory != iCategory):
 				self.SAS_szSearchString = u""
 				# <!-- custom: reset debounce state when search is reset (chatgpt 5.2 + claude opus 4.5) -->
 				self.SAS_keyDebounceByKey = {}
-			# <!-- custom: End - type-to-filter search bar for the left item list (in the same style as done in other mod(s)) (chatgpt 5.2 + claude opus 4.5) -->
+			# <!-- custom: End - search bar for the left item list (chatgpt 5.2 + claude opus 4.5) -->
 			self.mapListGenerators.get(iCategory)()
 			self.iCategory = iCategory
 			self.iItem = -1
@@ -720,7 +942,7 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 
 	def isIndexShowing(self):
 		return self.tab == self.TAB_INDEX
-	
+
 	def showIndex(self):
 		if not self.SAS_USE_BOTTOM_TABS:
 			return
@@ -733,26 +955,35 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 		screen.setText(self.INDEX_ID, "Background", self.INDEX_ACTIVE_TEXT, CvUtil.FONT_LEFT_JUSTIFY, self.X_INDEX, self.Y_INDEX, 0, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_GENERAL,      -1, -1)
 		screen.hide(self.BACK_ID)
 		screen.hide(self.NEXT_ID)
+		screen.hide(self.SAS_CLEAR_ID)
 		self.pediaIndex.interfaceScreen()
 		self.tab = self.TAB_INDEX
-	
+
 	def placeIndexCategory(self):
 		screen = self.getScreen()
 		self.SAS_lastItemsWidget = None
 		self.SAS_lastItemsInfo = None
+		self.SAS_activeListRefresher = None
+		self.SAS_activeKeyNavigator = None
 		self.SAS_szSearchString = u""
 		self.SAS_keyDebounceByKey = {}
 		self.SAS_deleteSearchWidgets(screen)
 		self.SAS_safeDeleteWidget(screen, self.ITEM_LIST_ID)
 		self.pediaIndex.interfaceScreen(True)
-	
+
 	def setPediaCommonWidgets(self):
 		# advc.004y: was TXT_KEY_SEVOPEDIA_TITLE
 		self.HEAD_TEXT = u"<font=4b>" + localText.getText("TXT_KEY_CIVILOPEDIA_TITLE",      ())         + u"</font>"
 		self.BACK_TEXT = u"<font=4>"  + localText.getText("TXT_KEY_PEDIA_SCREEN_BACK",    ()).upper() + u"</font>"
 		self.NEXT_TEXT = u"<font=4>"  + localText.getText("TXT_KEY_PEDIA_SCREEN_FORWARD", ()).upper() + u"</font>"
+		self.SAS_CLEAR_TEXT = u"<font=4>" + localText.getText("TXT_KEY_PEDIA_SAS_CLEAR", ()).upper() + u"</font>"
 		self.EXIT_TEXT = u"<font=4>"  + localText.getText("TXT_KEY_PEDIA_SCREEN_EXIT",    ()).upper() + u"</font>"
-		
+		# <!-- custom: build grey labels for global footer controls that stay visible but may be inactive. See KI#126. (GPT-5.5) -->
+		eLightGrey = gc.getInfoTypeForString("COLOR_LIGHT_GREY")
+		self.BACK_TEXT_DISABLED      = u"<font=4>" + localText.changeTextColor(localText.getText("TXT_KEY_PEDIA_SCREEN_BACK",    ()).upper(), eLightGrey) + u"</font>"
+		self.NEXT_TEXT_DISABLED      = u"<font=4>" + localText.changeTextColor(localText.getText("TXT_KEY_PEDIA_SCREEN_FORWARD", ()).upper(), eLightGrey) + u"</font>"
+		self.SAS_CLEAR_TEXT_DISABLED = u"<font=4>" + localText.changeTextColor(localText.getText("TXT_KEY_PEDIA_SAS_CLEAR",     ()).upper(), eLightGrey) + u"</font>"
+
 		self.TOC_TEXT = u"<font=4>"  + localText.getText("TXT_KEY_PEDIA_SCREEN_CONTENTS", ()).upper() + u"</font>"
 		self.INDEX_TEXT = u"<font=4>"  + localText.getText("TXT_KEY_PEDIA_SCREEN_INDEX",  ()).upper() + u"</font>"
 		eYellow = gc.getInfoTypeForString("COLOR_YELLOW")
@@ -820,11 +1051,10 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 		screen.setDimensions(X_SCREEN, Y_SCREEN, self.W_SCREEN, self.H_SCREEN)
 
 		screen.setText(self.HEAD_ID, "Background", self.HEAD_TEXT, CvUtil.FONT_CENTER_JUSTIFY, self.X_TITLE, self.Y_TITLE, 0, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_GENERAL,      -1, -1)
-		screen.setText(self.BACK_ID, "Background", self.BACK_TEXT, CvUtil.FONT_LEFT_JUSTIFY,   self.X_BACK,  self.Y_BACK,  0, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_PEDIA_BACK,    1, -1)
-		screen.setText(self.NEXT_ID, "Background", self.NEXT_TEXT, CvUtil.FONT_LEFT_JUSTIFY,   self.X_NEXT,  self.Y_NEXT,  0, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_PEDIA_FORWARD, 1, -1)
-		screen.setText(self.EXIT_ID, "Background", self.EXIT_TEXT, CvUtil.FONT_RIGHT_JUSTIFY,  self.X_EXIT,  self.Y_EXIT,  0, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_CLOSE_SCREEN, -1, -1)
-
-
+		screen.setText(self.BACK_ID,     "Background", self.BACK_TEXT,      CvUtil.FONT_LEFT_JUSTIFY,  self.X_BACK,      self.Y_BACK,      0, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_PEDIA_BACK,    1, -1)
+		screen.setText(self.NEXT_ID,     "Background", self.NEXT_TEXT,      CvUtil.FONT_LEFT_JUSTIFY,  self.X_NEXT,      self.Y_NEXT,      0, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_PEDIA_FORWARD, 1, -1)
+		screen.setText(self.SAS_CLEAR_ID,"Background", self.SAS_CLEAR_TEXT, CvUtil.FONT_LEFT_JUSTIFY,  self.SAS_X_CLEAR, self.SAS_Y_CLEAR, 0, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_GENERAL,      -1, -1)
+		screen.setText(self.EXIT_ID,     "Background", self.EXIT_TEXT,      CvUtil.FONT_RIGHT_JUSTIFY, self.X_EXIT,      self.Y_EXIT,      0, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_CLOSE_SCREEN, -1, -1)
 
 	def placeCategories(self, iCategory=None):
 		screen = self.getScreen()
@@ -855,7 +1085,6 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 			screen.appendListBoxStringNoUpdate(self.CATEGORY_LIST_ID, szHeading, WidgetTypes.WIDGET_PEDIA_MAIN, category[2], 0, CvUtil.FONT_LEFT_JUSTIFY)
 		screen.updateListBox(self.CATEGORY_LIST_ID)
 
-
 	def placeTechs(self):
 		self.list = self.getTechList()
 		self.placeItems(WidgetTypes.WIDGET_PEDIA_JUMP_TO_TECH, gc.getTechInfo)
@@ -870,7 +1099,6 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 	def SAS_getTechsGroupedByEra(self):
 		return SAS_MainGroupings.SAS_getTechsGroupedByEra(self.isSortLists())
 
-
 	def getTechList(self):
 		if self.SAS_cacheTechsTuple is None:
 			if self.IS_SAS_SEVOPEDIA_MAIN_TECHS_GROUP_BY_ERA:
@@ -879,7 +1107,6 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 				# <!-- custom: base advciv's formula, only difference is we cache it now -->
 				self.SAS_cacheTechsTuple = tuple(self.getSortedList(gc.getNumTechInfos(), gc.getTechInfo))
 		return self.SAS_cacheTechsTuple
-
 
 	def placeUnits(self):
 		self.list = self.getUnitList()
@@ -891,7 +1118,6 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 	def SAS_getUnitsGroupedByEra_fromBaseList(self, baseList):
 		return SAS_MainGroupings.SAS_getUnitsGroupedByEra_fromBaseList(baseList, False, self.SAS_getUnitAvailabilityEra)
 
-
 	# <!-- custom: similarly, in sevopedia units, group units by era (based on prereq tech) instead of one long list. Code added with the help of chatgpt 5.2 thanks -->
 	def getUnitList(self):
 		if self.SAS_cacheUnitsTuple is None:
@@ -901,7 +1127,6 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 			else:
 				self.SAS_cacheUnitsTuple = tuple(baseList)
 		return self.SAS_cacheUnitsTuple
-
 
 	def placeUnitUpgrades(self):
 		screen = self.getScreen()
@@ -940,22 +1165,19 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 		self.SAS_prepareSpecialPageDeletingItemList(screen)
 		self.pediaEraChart.interfaceScreen()
 
-
 	def placeUnitCategories(self):
 		self.list = self.getUnitCategoryList()
 		self.placeItems(WidgetTypes.WIDGET_PEDIA_JUMP_TO_UNIT_COMBAT, gc.getUnitCombatInfo)
-	
+
 	def getUnitCategoryList(self):
 		return self.getSortedList(gc.getNumUnitCombatInfos(), gc.getUnitCombatInfo)
-
 
 	def placePromotions(self):
 		self.list = self.getPromotionList()
 		self.placeItems(WidgetTypes.WIDGET_PEDIA_JUMP_TO_PROMOTION, gc.getPromotionInfo)
-	
+
 	def getPromotionList(self):
 		return self.getSortedList(gc.getNumPromotionInfos(), gc.getPromotionInfo)
-
 
 	def placePromotionTree(self):
 		screen = self.getScreen()
@@ -973,7 +1195,6 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 		upgradesGraph = UnitUpgradesGraph.PromotionsGraph(self)
 		upgradesGraph.getGraph()
 		upgradesGraph.drawGraph()
-
 
 	def placeBuildings(self):
 		self.list = self.getBuildingList()
@@ -1014,11 +1235,10 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 				self.SAS_cacheRegularBuildingsTuple = tuple(baseList)
 		return self.SAS_cacheRegularBuildingsTuple
 
-
 	def placeNationalWonders(self):
 		self.list = self.getNationalWonderList()
 		self.placeItems(WidgetTypes.WIDGET_PEDIA_JUMP_TO_BUILDING, gc.getBuildingInfo)
-	
+
 	# <!-- custom: also group them by era (tech prereq) with the help of chatgpt 5.2 thanks -->
 	def getNationalWonderList(self):
 		if self.IS_SAS_SEVOPEDIA_MAIN_BUILDINGS_GROUP_BY_ERA:
@@ -1030,7 +1250,6 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 			if self.SAS_cacheNationalWondersTuple is None:
 				self.SAS_cacheNationalWondersTuple = tuple(self.getBuildingSortedList(1))
 			return self.SAS_cacheNationalWondersTuple
-
 
 	def placeWorldWonders(self):
 		self.list = self.getWorldWonderList()
@@ -1048,7 +1267,6 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 				self.SAS_cacheWorldWondersTuple = tuple(self.getBuildingSortedList(2))
 			return self.SAS_cacheWorldWondersTuple
 
-
 	def placeProjects(self):
 		self.list = self.getProjectList()
 		self.placeItems(WidgetTypes.WIDGET_PEDIA_JUMP_TO_PROJECT, gc.getProjectInfo)
@@ -1065,7 +1283,6 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 
 		return -1  # "No Tech Prerequisite" bucket
 
-
 	# Helper we can reuse for project lists, with the help of chatgpt 5.2 thanks.
 	def SAS_getProjectsGroupedByEra_fromBaseList(self, baseList):
 		return SAS_MainGroupings.SAS_getProjectsGroupedByEra_fromBaseList(baseList, False, self.SAS_getProjectAvailabilityEra)
@@ -1080,7 +1297,6 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 				self.SAS_cacheProjectsTuple = tuple(baseList)
 		return self.SAS_cacheProjectsTuple
 
-
 	def placeSpecialists(self):
 		self.list = self.getSpecialistList()
 		self.placeItems(WidgetTypes.WIDGET_PEDIA_JUMP_TO_SPECIALIST, gc.getSpecialistInfo)
@@ -1088,7 +1304,6 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 	# Helper to group specialists by type (e.g. Engineer vs Great Engineer). Great specialists are identified by "GREAT_" in SpecialistInfo.getType(), matching RFC DoC's convention.
 	def SAS_getSpecialistsGroupedByType(self):
 		return SAS_MainGroupings.SAS_getSpecialistsGroupedByType(self.isSortLists())
-
 
 	def getSpecialistList(self):
 		if self.SAS_cacheSpecialistsTuple is None:
@@ -1098,7 +1313,6 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 				self.SAS_cacheSpecialistsTuple = tuple(self.getSortedList(gc.getNumSpecialistInfos(), gc.getSpecialistInfo))
 		return self.SAS_cacheSpecialistsTuple
 
-
 	def placeTerrains(self):
 		self.list = self.getTerrainList()
 		self.placeItems(WidgetTypes.WIDGET_PEDIA_JUMP_TO_TERRAIN, gc.getTerrainInfo)
@@ -1106,7 +1320,6 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 	def SAS_getTerrainsGroupedByLandWater_fromBaseList(self, baseList):
 		return SAS_MainGroupings.SAS_getTerrainsGroupedByLandWater_fromBaseList(
 			baseList, False, self.SAS_SEVOPEDIA_TERRAIN_GRAPHICAL_ONLY_HIGH_IDS)
-
 
 	def getTerrainList(self):
 		if self.SAS_cacheTerrainsTuple is None:
@@ -1133,7 +1346,6 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 		return SAS_MainGroupings.SAS_getFeaturesGroupedByLandWater_fromBaseList(
 			baseList, False, self.SAS_SEVOPEDIA_TERRAIN_GRAPHICAL_ONLY_HIGH_IDS)
 
-
 	def getFeatureList(self):
 		if self.SAS_cacheFeaturesTuple is None:
 			baseList = self.getSortedList(gc.getNumFeatureInfos(), gc.getFeatureInfo)
@@ -1142,7 +1354,6 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 			else:
 				self.SAS_cacheFeaturesTuple = tuple(baseList)
 		return self.SAS_cacheFeaturesTuple
-
 
 	def placeBonuses(self):
 		self.list = self.getBonusList()
@@ -1155,7 +1366,6 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 		return SAS_MainGroupings.SAS_getBonusesGroupedByImprovement_fromBaseList(
 			baseList, False)
 
-
 	def getBonusList(self):
 		if self.SAS_cacheBonusesTuple is None:
 			baseList = self.getSortedList(gc.getNumBonusInfos(), gc.getBonusInfo)
@@ -1164,7 +1374,6 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 			else:
 				self.SAS_cacheBonusesTuple = tuple(baseList)
 		return self.SAS_cacheBonusesTuple
-
 
 	def placeImprovements(self):
 		self.list = self.getImprovementList()
@@ -1178,14 +1387,12 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 	def SAS_isBonusCapableImprovement(self, iImprovement):
 		return SAS_MainGroupings.SAS_isBonusCapableImprovement(iImprovement)
 
-
 	def SAS_isFoodYieldImprovement(self, iImprovement):
 		return SAS_MainGroupings.SAS_isFoodYieldImprovement(iImprovement)
 
 	def SAS_getImprovementsGroupedByTerrain_fromBaseList(self, baseList):
 		return SAS_MainGroupings.SAS_getImprovementsGroupedByTerrain_fromBaseList(
 			baseList, False)
-
 
 	def getImprovementList(self):
 		if self.SAS_cacheImprovementsTuple is None:
@@ -1220,7 +1427,6 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 		return SAS_MainGroupings.SAS_getBuildsGroupedByType_fromBaseList(
 			baseList, False)
 
-
 	def getBuildList(self):
 		if self.SAS_cacheBuildsTuple is None:
 			baseList = self.getSortedList(gc.getNumBuildInfos(), gc.getBuildInfo)
@@ -1230,11 +1436,10 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 				self.SAS_cacheBuildsTuple = tuple(baseList)
 		return self.SAS_cacheBuildsTuple
 
-
 	def placeCivs(self):
 		self.list = self.getCivilizationList()
 		self.placeItems(WidgetTypes.WIDGET_PEDIA_JUMP_TO_CIV, gc.getCivilizationInfo)
-	
+
 	def getCivilizationList(self):
 		civList = self.getSortedList(gc.getNumCivilizationInfos(), gc.getCivilizationInfo)
 		# <advc.004y> Filter out minor civ, but not Barbarians (which do have
@@ -1252,28 +1457,34 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 			#	info.isCivilizationFreeBuildingClass(iCapitalBuildingClass)):
 			#		continue
 			r.append((descr,i))
-		return r # </advc.004y>
 
+		if self.IS_SAS_SEVOPEDIA_MAIN_CIVS_GROUP_BY_ARTSTYLE:
+			return SAS_MainGroupings.SAS_getCivilizationsGroupedByArtStyle(self.isSortLists())
+
+		return r # </advc.004y>
 
 	def placeLeaders(self):
 		self.list = self.getLeaderList()
 		self.placeItems(WidgetTypes.WIDGET_PEDIA_JUMP_TO_LEADER, gc.getLeaderHeadInfo)
 
 		# <!-- custom: prebuild the sevopedia leader cache only when=after we click on leaders button, so that if we open sevopedia and never access the leaders page, we don't compute needlessly a cached leader that is quite expensive or even if not too much needless and not optimal i think. After asking chatgpt, it advised me to do this here; note: place it after the list is computed so it doesn't appear to hang (in case it does, didn't test or look in detail) sometime on Leaders click before the items are placed: cache after leader items are place to avoid that, then the user has some time to click to desired leader, use that time to cache smoothly maybe and silently maybe -->
-		if not self.IS_SEVOPEDIALEADER_CACHE_PREBUILT:
+		if self.IS_SAS_SEVOPEDIA_LEADER_AI_PERSONALITY_ENABLE and (not self.IS_SEVOPEDIALEADER_CACHE_PREBUILT):
+			# <!-- custom: when AI personality is disabled by define, skip cache precompute entirely to avoid needless work. (GPT-5.3-Codex) -->
 			SevoPediaLeader.LEADERS_INFO_CACHED, SevoPediaLeader.AI_RIGHT_CATEGORIES, SevoPediaLeader.AI_MIDDLE_CATEGORIES, SevoPediaLeader.AI_LEFT_CATEGORIES = SevoPediaLeader.getPrecomputedCacheOnceOnlyFromSevopediaMainInSevopediaLeaderForEntireSession()
 			# <!-- custom: do not rebuild if built once already, for the entire session keep the same cache, even if we exit sevopedia, store data in memory or wherever it is stored, but do not build it until we click on leaders category the first time, not at module load (so a bit later than module load and not automatic but conditional in this case), but still before any leader is selected  -->
 			self.IS_SEVOPEDIALEADER_CACHE_PREBUILT = True
 			print("Sevopedia Leader cache prebuilt from Sevopedia Main. This should appear only once even if we exit sevopedia entirely, as long as we are during the same gaming session (i.e. game was not exited) (for info, in SevopediaMain, self.IS_SEVOPEDIALEADER_CACHE_PREBUILT=%s)." % str(self.IS_SEVOPEDIALEADER_CACHE_PREBUILT))
-	
+
 	def getLeaderList(self):
+		if self.IS_SAS_SEVOPEDIA_MAIN_LEADERS_GROUP_BY_CIV:
+			return SAS_MainGroupings.SAS_getLeadersGroupedByCivilization(self.isSortLists())
+
 		# <advc.004y>
 		r = self.getSortedList(gc.getNumLeaderHeadInfos(), gc.getLeaderHeadInfo)
 		# Barbs should be in position 0, but use WonderConstructRand to confirm.
 		if len(r) > 0 and gc.getLeaderHeadInfo(r[0][1]).getWonderConstructRand() <= 0:
 			r.pop(0)
 		return r # </advc.004y>
-
 
 	# <!-- custom: Sevopedia Traits rework - Previously traits used a hacky CONCEPT_TRAIT_* wrapper approach where
 	# trait entries were stored as NewConcept entries and required extracting the actual TraitInfo via string parsing.
@@ -1332,7 +1543,6 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 	def SAS_getCivicsGroupedByCivicOption(self):
 		return SAS_MainGroupings.SAS_getCivicsGroupedByCivicOption(self.isSortLists())
 
-
 	def getCivicList(self):
 		if self.SAS_cacheCivicsTuple is None:
 			if self.IS_SAS_SEVOPEDIA_MAIN_CIVICS_GROUP_BY_CIVIC_TYPES:
@@ -1340,7 +1550,6 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 			else:
 				self.SAS_cacheCivicsTuple = tuple(self.getSortedList(gc.getNumCivicInfos(), gc.getCivicInfo))
 		return self.SAS_cacheCivicsTuple
-
 
 	def placeReligions(self):
 		self.list = self.getReligionList()
@@ -1372,7 +1581,6 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 				self.SAS_cacheReligionsTuple = tuple(baseList)
 		return self.SAS_cacheReligionsTuple
 
-
 	def placeCorporations(self):
 		self.list = self.getCorporationList()
 		self.placeItems(WidgetTypes.WIDGET_PEDIA_JUMP_TO_CORPORATION, gc.getCorporationInfo)
@@ -1397,15 +1605,14 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 	def placeConcepts(self):
 		self.list = self.getConceptList()
 		self.placeItems(WidgetTypes.WIDGET_PEDIA_DESCRIPTION, gc.getConceptInfo)
-	
+
 	def getConceptList(self):
 		return self.getSortedList(gc.getNumConceptInfos(), gc.getConceptInfo)
-
 
 	def placeBTSConcepts(self):
 		self.list = self.getNewConceptList()
 		self.placeItems(WidgetTypes.WIDGET_PEDIA_DESCRIPTION, self.getNewConceptInfo)
-	
+
 	def getNewConceptList(self):
 		return self.getSortedList(gc.getNumNewConceptInfos(), self.getNewConceptInfo)
 
@@ -1416,7 +1623,6 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 		if not self.isShortcutInfo(info):
 			return info
 		return None
-
 
 	def placeHints(self):
 		screen = self.getScreen()
@@ -1436,7 +1642,6 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 				screen.appendListBoxStringNoUpdate(szHintBox, hint, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
 		screen.updateListBox(szHintBox)
 
-
 	def placeShortcuts(self):
 		self.list = self.getSortedList(gc.getNumNewConceptInfos(), self.getShortcutInfo)
 		self.placeItems(WidgetTypes.WIDGET_PEDIA_DESCRIPTION, self.getShortcutInfo)
@@ -1455,7 +1660,6 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 		self.list = self.getMusicList()
 		self.placeItems(WidgetTypes.WIDGET_PYTHON, self.getMusicInfo)
 
-
 	def getMovieList(self):
 		# <!-- custom: build base list in groupings module, then add headers there. (ChatGPT-5.2 Thinking) -->
 		if self.SAS_cacheMoviesTuple is None:
@@ -1470,7 +1674,6 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 			)
 			self.SAS_cacheMoviesTuple = tuple(listEntries)
 		return self.SAS_cacheMoviesTuple
-
 
 	def getMusicList(self):
 		# <!-- custom: build music base lists + section headers in groupings module to keep this file clean. (ChatGPT-5.2 Thinking) -->
@@ -1529,7 +1732,7 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 		if iMovieType == self.SAS_PEDIA_MOVIE_TYPE_ERA:
 			return gc.getEraInfo(iMovieId)
 		return None
-	
+
 	def getMusicInfo(self, iPacked):
 		iMusicType, iMusicId = self.SAS_unpackMusicKey(iPacked)
 		if iMusicType == self.SAS_PEDIA_MUSIC_TYPE_TECH:
@@ -1769,21 +1972,38 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 	def isShortcutInfo(self, info):
 		return info.getType().find("SHORTCUTS") != -1
 
-	
+	def SAS_asUnicode(self, value, context):
+		if isinstance(value, unicode):
+			return value
+		if isinstance(value, str):
+			try:
+				return value.decode("utf-8")
+			except:
+				try:
+					return value.decode("cp1252")
+				except:
+					raise Exception("SevoPediaMain: cannot decode '%s': %r" % (context, value))
+		return unicode(value)
+
 	def placeItems(self, widget, info):
 		screen = self.getScreen()
 
-		# <!-- custom: type-to-filter search bar for the left item list (in the same style as done in other mod(s)) (chatgpt 5.2 + claude opus 4.5) -->
+		# <!-- custom: search bar for the left item list (chatgpt 5.2 + claude opus 4.5) -->
 		# <!-- custom: remember last list kind so typing can rebuild it (chatgpt 5.2 + claude opus 4.5) -->
 		self.SAS_lastItemsWidget = widget
 		self.SAS_lastItemsInfo = info
+		# <!-- custom: register self as the active refresher; see SAS_activeListRefresher comment. (Claude code Opus 4.7) -->
+		self.SAS_activeListRefresher = self._SAS_refreshLastItems
+		self.SAS_activeKeyNavigator = self.SAS_navigateItemList
 
 		# <!-- custom: search bar (top of item list) (chatgpt 5.2 + claude opus 4.5) -->
 		self.SAS_syncSearchPanel()
 
-		iTableY = self.Y_ITEMS + self.SAS_SEARCH_H + 2
-		iTableH = self.H_ITEMS - (self.SAS_SEARCH_H + 2)
-		# <!-- custom: End - type-to-filter search bar for the left item list (in the same style as done in other mod(s)) (chatgpt 5.2 + claude opus 4.5) -->
+		# <!-- custom: search bar lives in the top header now, so the items list reclaims the
+		# vertical space it used to give up. (Claude code Opus 4.7) -->
+		iTableY = self.Y_ITEMS
+		iTableH = self.H_ITEMS
+		# <!-- custom: End - search bar for the left item list (chatgpt 5.2 + claude opus 4.5) -->
 
 		screen.clearListBoxGFC(self.ITEM_LIST_ID)
 
@@ -1792,9 +2012,9 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 		screen.setStyle(self.ITEM_LIST_ID, "Table_StandardCiv_Style")
 		screen.setTableColumnHeader(self.ITEM_LIST_ID, 0, "", self.W_ITEMS)
 
-		# <!-- custom: type-to-filter search bar for the left item list (in the same style as done in other mod(s)) (chatgpt 5.2 + claude opus 4.5) -->
-		# <!-- custom: get filter string for type-to-filter (chatgpt 5.2 + claude opus 4.5) -->
-		szFilter = self.SAS_szSearchString.strip().lower()
+		# <!-- custom: search bar for the left item list (chatgpt 5.2 + claude opus 4.5) -->
+		# <!-- custom: get filter string for search (chatgpt 5.2 + claude opus 4.5) -->
+		szFilter = self.SAS_asUnicode(self.SAS_szSearchString, "item-list search string").strip().lower()
 		bFiltering = (len(szFilter) > 0)
 
 		# <!-- custom: when filtering, keep headers and separators only for groups that contain at least one match (chatgpt 5.2 + claude opus 4.5) -->
@@ -1825,7 +2045,7 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 			if len(listHeaderIdx) == 0:
 				for iListIdx, it in enumerate(self.list):
 					if it[1] != -1:
-						szName = it[0]
+						szName = self.SAS_asUnicode(it[0], "item-list filter name")
 						if (szName is not None) and (szFilter in szName.lower()):
 							setShowListIdx.add(iListIdx)
 			else:
@@ -1840,7 +2060,7 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 					for j in range(iHeaderIdx + 1, iNextHeaderIdx):
 						it = self.list[j]
 						if it[1] != -1:
-							szName = it[0]
+							szName = self.SAS_asUnicode(it[0], "item-list filter name")
 							if (szName is not None) and (szFilter in szName.lower()):
 								bSectionHasMatch = True
 								setShowListIdx.add(j)
@@ -1869,6 +2089,9 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 		i = 0
 		for idx, item in enumerate(self.list):
 			data1 = item[1] # advc.001: Moved up
+			szCustomHeaderButtonPlaceItems = ""
+			if len(item) > 2:
+				szCustomHeaderButtonPlaceItems = item[2]
 
 			# <!-- custom: if filtering, skip rows not selected by our header-aware filter (chatgpt 5.2 + claude opus 4.5) -->
 			if bFiltering:
@@ -1878,10 +2101,12 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 			# <!-- custom: record mapping from original list index to displayed row index (chatgpt 5.2 + claude opus 4.5) -->
 			if self.SAS_listIdxToRow is not None:
 				self.SAS_listIdxToRow[idx] = i
-			# <!-- custom: End - type-to-filter search bar for the left item list (in the same style as done in other mod(s)) (chatgpt 5.2 + claude opus 4.5) -->
+			# <!-- custom: End - search bar for the left item list (chatgpt 5.2 + claude opus 4.5) -->
 
 			# <!-- custom: make a common initial variable so we can tweak it in specific elif or such blocks as we see fit and keep common logic at the end; using a long name to avoid weird python scope inheritance issues to unrelated scopes -->
 			sTitlePlaceItems = item[0]
+			# <!-- custom: tentative UnicodeDecodeError fix for placeItems path: normalize list titles to unicode before UI concatenation/filtering/header coloring so Python 2.4 does not implicitly ascii-decode non-ASCII entries. (GPT-5.3-Codex) -->
+			sTitlePlaceItems = self.SAS_asUnicode(sTitlePlaceItems, "placeItems title index %d" % idx)
 			widgetPlaceItems = widget
 			bSAS_hasCustomData2 = False
 			# Even though you later handle data1 == -1 inside the civics block, you still do szButtonPlaceItems = info(item[1]).getButton() before any header check.
@@ -1936,7 +2161,13 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 
 			# <advc.001> Widget help for leaders needs the civ ID in data2 (from Taurus)
 			elif (info == gc.getLeaderHeadInfo):
-				data2 = SevoPediaLeader.SevoPediaLeader.getCiv(item[1]) # </advc.001>
+				if data1 == -1:
+					sTitlePlaceItems = CyTranslator().changeTextColor(sTitlePlaceItems, self.COLOR_HIGHLIGHT_TEXT)
+					widgetPlaceItems = WidgetTypes.WIDGET_GENERAL
+					szButtonPlaceItems = szCustomHeaderButtonPlaceItems
+					data2 = 1
+				else:
+					data2 = SevoPediaLeader.SevoPediaLeader.getCiv(item[1]) # </advc.001>
 
 			else:
 				# advc (note): 0 tends to mean no tooltip (or an empty one?).
@@ -1950,22 +2181,22 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 				# <!-- custom: similarly, in sevopedia techs, group techs by era (e.g. Ancient Era, Classical Era, etc.) instead of one long list. Also did similarly for sevopedia buildings and similar pages. Code added with the help of chatgpt 5.2 thanks -->
 				# (That is basically the DoC approach, adapted to your variable names.). After this, your item lists can safely contain (..., -1) headers and blank separators.
 				if data1 == -1:
-					sTitlePlaceItems = CyTranslator().changeTextColor(item[0], self.COLOR_HIGHLIGHT_TEXT)
+					sTitlePlaceItems = CyTranslator().changeTextColor(sTitlePlaceItems, self.COLOR_HIGHLIGHT_TEXT)
 					widgetPlaceItems = WidgetTypes.WIDGET_GENERAL
-					szButtonPlaceItems = ""
+					szButtonPlaceItems = szCustomHeaderButtonPlaceItems
 
 			# <!-- custom: cache selectable rows for arrow navigation (skip headers/spacers) (chatgpt 5.2 + claude opus 4.5) -->
 			if item[1] != -1:
 				self.SAS_itemToSelectablePos[item[1]] = len(self.SAS_selectableListIdx)
 				self.SAS_selectableListIdx.append(idx)
 
+			# <!-- custom: final UnicodeDecodeError guard for item-list rendering; helpers like changeTextColor can return byte strings, so normalize again before unicode concatenation in setTableText. (GPT-5.3-Codex) -->
+			sTitlePlaceItems = self.SAS_asUnicode(sTitlePlaceItems, "placeItems final title index %d" % idx)
 			screen.appendTableRow(self.ITEM_LIST_ID)
 			screen.setTableText(self.ITEM_LIST_ID, 0, i, u"<font=3>" + sTitlePlaceItems + u"</font>", szButtonPlaceItems, widgetPlaceItems, data1, data2, CvUtil.FONT_LEFT_JUSTIFY)
 			self.SAS_rowToListIdx[i] = idx
 			i += 1
 		#screen.updateListBox(self.ITEM_LIST_ID)
-
-
 
 	def back(self):
 		if (len(self.pediaHistory) > 1):
@@ -1974,15 +2205,44 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 			self.pediaJump(current[0], current[1], False, True)
 		return 1
 
-
-
 	def forward(self):
 		if (self.pediaFuture):
 			current = self.pediaFuture.pop()
 			self.pediaJump(current[0], current[1], False, True)
 		return 1
 
+	def SAS_clearNavigation(self):
+		self.pediaFuture = []
+		if self.SAS_lastPediaJump is not None:
+			self.pediaHistory = [self.SAS_lastPediaJump]
+		elif self.iCategory != -1:
+			self.pediaHistory = [(self.iCategory, self.iItem)]
+		else:
+			self.pediaHistory = []
+		self.SAS_setFooterNavigationTexts(self.getScreen(), self.iCategory)
+		return 1
 
+	def SAS_setFooterNavigationTexts(self, screen, iCategory):
+		bCanBack = (len(self.pediaHistory) > 1)
+		bCanForward = (len(self.pediaFuture) > 0)
+		bCanClear = (bCanBack or bCanForward)
+		if bCanBack:
+			szBackText = self.BACK_TEXT
+		else:
+			szBackText = self.BACK_TEXT_DISABLED
+		if bCanForward:
+			szNextText = self.NEXT_TEXT
+		else:
+			szNextText = self.NEXT_TEXT_DISABLED
+		if bCanClear:
+			szClearText = self.SAS_CLEAR_TEXT
+		else:
+			szClearText = self.SAS_CLEAR_TEXT_DISABLED
+		# <!-- custom: keep footer controls stable but grey Back/Next/Clear when they have no effect. (GPT-5.5) -->
+		screen.setText(self.BACK_ID,      "Background", szBackText,     CvUtil.FONT_LEFT_JUSTIFY,  self.X_BACK,      self.Y_BACK,      0, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_PEDIA_BACK,    1, -1)
+		screen.setText(self.NEXT_ID,      "Background", szNextText,     CvUtil.FONT_LEFT_JUSTIFY,  self.X_NEXT,      self.Y_NEXT,      0, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_PEDIA_FORWARD, 1, -1)
+		screen.setText(self.SAS_CLEAR_ID, "Background", szClearText,   CvUtil.FONT_LEFT_JUSTIFY,  self.SAS_X_CLEAR, self.SAS_Y_CLEAR, 0, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_GENERAL,      -1, -1)
+		screen.setText(self.EXIT_ID,      "Background", self.EXIT_TEXT, CvUtil.FONT_RIGHT_JUSTIFY, self.X_EXIT,      self.Y_EXIT,      0, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_CLOSE_SCREEN, -1, -1)
 
 	def link(self, szLink):
 		iCategory = self.SAS_mainLinkToCategory.get(szLink, None)
@@ -1996,8 +2256,6 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 				info = getInfo(i)
 				if info and info.isMatchForLink(szLink, False):
 					return self.pediaJump(iCategory, i, True, True)
-
-
 
 	def handleInput (self, inputClass):
 		if self.pediaMusic.handleOverlayInput(inputClass):
@@ -2026,10 +2284,12 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 			if iHandled:
 				return iHandled
 
-		# <!-- custom: type-to-filter search bar for the left item list (in the same style as done in other mod(s)) (chatgpt 5.2 + claude opus 4.5) -->
-		# Index has its own input (existing behavior).
+		# <!-- custom: forward to Index for its letter-button and table clicks; fall through if it
+		# does not consume the event so the shared search handler below can still process typing. (Claude code Opus 4.7) -->
 		if self.SAS_USE_BOTTOM_TABS and self.isIndexShowing():
-			return self.pediaIndex.handleInput(inputClass)
+			iHandled = self.pediaIndex.handleInput(inputClass)
+			if iHandled:
+				return iHandled
 		if self.isContentsShowing() and self.iCategory == SevoScreenEnums.PEDIA_INDEX:
 			iHandled = self.pediaIndex.handleInput(inputClass)
 			if iHandled:
@@ -2037,63 +2297,82 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 
 		# <!-- custom: clear button click (chatgpt 5.2 + claude opus 4.5) -->
 		if inputClass.getNotifyCode() == NotifyCode.NOTIFY_CLICKED:
-			if inputClass.getFunctionName() == self.SAS_SEARCH_CLEAR_ID:
+			if inputClass.getFunctionName() == self.SAS_CLEAR_ID:
+				# <!-- custom: manual reset for session-persistent Sevopedia Back/Next history; keeps the current page only
+				# so players can recover a clean navigation chain without closing the game. (GPT-5.5) -->
+				return self.SAS_clearNavigation()
+			if inputClass.getFunctionName() == self.SAS_CLEAR_SEARCH_ID:
 				if self.SAS_isSearchActive():
 					self.SAS_szSearchString = u""
 					# <!-- custom: reset debounce state when clearing search (chatgpt 5.2 + claude opus 4.5) -->
 					self.SAS_keyDebounceByKey = {}
-					if self.SAS_lastItemsWidget is not None:
-						self.placeItems(self.SAS_lastItemsWidget, self.SAS_lastItemsInfo)
+					self.SAS_refreshActiveListView()
 				return 1
-
-		# <!-- custom: type-to-filter keyboard input using InputTypes constants like other mod(s) do (chatgpt 5.2 + claude opus 4.5) -->
+			if inputClass.getFunctionName() == self.SAS_SEARCH_KEYS_TOGGLE_ID:
+				if self.IS_SAS_SEVOPEDIA_SEARCH_CLICKABLE_SPECIAL_CHARS_ENABLE:
+					self.SAS_bSearchKeyboardVisible = not self.SAS_bSearchKeyboardVisible
+					self.SAS_syncSearchPanel()
+				return 1
+		# <!-- custom: keyboard input using InputTypes constants like other mod(s) do (chatgpt 5.2 + claude opus 4.5) -->
+		# <!-- custom: gate fires whenever a list-rendering page has registered itself as the active
+		# refresher, regardless of which tab/mode hosts it. (Claude code Opus 4.7) -->
 		if inputClass.getNotifyCode() == NotifyCode.NOTIFY_CHARACTER:
-			if self.SAS_lastItemsWidget is not None and self.isContentsShowing():
-				screen = self.getScreen()
-				if screen.isActive():
-					if (not inputClass.isAltKeyDown()) and (not inputClass.isCtrlKeyDown()):
-						iKey = inputClass.getData()
-						
-						# <!-- custom: debounce per key so fast typing does not produce interleaved duplicates like 'gr' -> 'grgr' (chatgpt 5.2 + claude opus 4.5) -->
-						if self.SAS_shouldDebounceKey(iKey):
-							if self.SAS_keyDebounceByKey.get(iKey, 0):
-								self.SAS_keyDebounceByKey[iKey] = 0
-								return 1
-							self.SAS_keyDebounceByKey[iKey] = 1
-						
-						szChar = self.SAS_getVisibleCharacter(inputClass)
-						if len(szChar) > 0:
-							self.SAS_szSearchString = self.SAS_szSearchString + szChar
-							self.placeItems(self.SAS_lastItemsWidget, self.SAS_lastItemsInfo)
+			screen = self.getScreen()
+			if screen.isActive() and (not inputClass.isAltKeyDown()) and (not inputClass.isCtrlKeyDown()):
+				iKey = inputClass.getData()
+				if iKey == int(InputTypes.KB_LEFT) or iKey == int(InputTypes.KB_RIGHT):
+					# <!-- custom: Left/Right Back/Next worked one item at a time within the same category, but crossing back to another category jumped twice from one keypress. Category redraws reset search debounce state; keeping navigation debounce separate fixed this. (GPT-5.5) -->
+					if self.SAS_shouldIgnoreDebouncedNavigationKey(iKey):
+						return 1
+					if iKey == int(InputTypes.KB_LEFT):
+						return self.back()
+					return self.forward()
+				if (self.isContentsShowing() or self.isIndexShowing()) and self.SAS_activeListRefresher is not None:
+					# <!-- custom: debounce per key so fast typing does not produce interleaved duplicates like 'gr' -> 'grgr' (chatgpt 5.2 + claude opus 4.5) -->
+					if self.SAS_shouldIgnoreDebouncedKey(iKey):
+						return 1
+
+					szChar = self.SAS_getVisibleCharacter(inputClass)
+					if len(szChar) > 0:
+						return self.SAS_appendSearchCharacter(szChar)
+
+					# Handle backspace to delete last character
+					if iKey == int(InputTypes.KB_BACKSPACE):
+						if len(self.SAS_szSearchString) > 0:
+							self.SAS_szSearchString = self.SAS_szSearchString[:-1]
+							self.SAS_refreshActiveListView()
 							return 1
-						
-						# Handle backspace to delete last character
-						if iKey == int(InputTypes.KB_BACKSPACE):
-							if len(self.SAS_szSearchString) > 0:
-								self.SAS_szSearchString = self.SAS_szSearchString[:-1]
-								self.placeItems(self.SAS_lastItemsWidget, self.SAS_lastItemsInfo)
-								return 1
-						# Handle escape to clear search
-						elif iKey == int(InputTypes.KB_ESCAPE):
-							if self.SAS_isSearchActive():
-								self.SAS_szSearchString = u""
-								# <!-- custom: reset debounce state when clearing search (chatgpt 5.2 + claude opus 4.5) -->
-								self.SAS_keyDebounceByKey = {}
-								self.placeItems(self.SAS_lastItemsWidget, self.SAS_lastItemsInfo)
-								return 1
-						# <!-- custom: Based on C2C mod's implementation thanks: add navigation of the item list with the UP/DOWN arrow keys. Code adjusted for AdvCiv-SAS with the help of chatgpt 5.2 and claude opus 4.5. -->
-						# <!-- custom: arrow key navigation for item list (chatgpt 5.2 + claude opus 4.5) -->
-						# Handle UP arrow to navigate to previous item
-						elif iKey == int(InputTypes.KB_UP):
-							if self.SAS_navigateItemList(-1):
-								return 1
-						# Handle DOWN arrow to navigate to next item
-						elif iKey == int(InputTypes.KB_DOWN):
-							if self.SAS_navigateItemList(1):
-								return 1
-						# <!-- custom: End - Based on C2C mod's implementation thanks: add navigation of the item list with the UP/DOWN arrow keys. Code adjusted for AdvCiv-SAS with the help of chatgpt 5.2 and claude opus 4.5. -->
+					# Handle escape to clear search
+					elif iKey == int(InputTypes.KB_ESCAPE):
+						if self.SAS_isSearchActive():
+							self.SAS_szSearchString = u""
+							# <!-- custom: reset debounce state when clearing search (chatgpt 5.2 + claude opus 4.5) -->
+							self.SAS_keyDebounceByKey = {}
+							self.SAS_refreshActiveListView()
+							return 1
+					# <!-- custom: Based on C2C mod's implementation thanks: add navigation of the item list with the UP/DOWN arrow keys. Code adjusted for AdvCiv-SAS with the help of chatgpt 5.2 and claude opus 4.5. -->
+					# <!-- custom: arrow key navigation for item list (chatgpt 5.2 + claude opus 4.5) -->
+					# <!-- custom: later refactored from a direct SAS_navigateItemList call into a dispatcher that invokes whichever navigator the active page registered (SAS_navigateItemList for normal pages, SAS_navigateIndexTable for Index). (Claude code Opus 4.7) -->
+					elif iKey == int(InputTypes.KB_UP):
+						nav = self.SAS_activeKeyNavigator
+						if nav is not None and nav(-1):
+							return 1
+					elif iKey == int(InputTypes.KB_DOWN):
+						nav = self.SAS_activeKeyNavigator
+						if nav is not None and nav(1):
+							return 1
+					# <!-- custom: End - Based on C2C mod's implementation thanks: add navigation of the item list with the UP/DOWN arrow keys. Code adjusted for AdvCiv-SAS with the help of chatgpt 5.2 and claude opus 4.5. -->
 
 		if (inputClass.getNotifyCode() == NotifyCode.NOTIFY_LISTBOX_ITEM_SELECTED):
+			# <!-- custom: Route leader list row selection directly to PEDIA_LEADERS so leaders without a unique civ mapping
+			# (data2 can be -1 for WIDGET_PEDIA_JUMP_TO_LEADER) still open from the Leaders category list. (GPT-5.3-Codex) -->
+			if inputClass.getFunctionName() == self.ITEM_LIST_ID and self.iCategory == SevoScreenEnums.PEDIA_LEADERS:
+				iRow = inputClass.getData()
+				iListIdx = self.SAS_rowToListIdx.get(iRow, None)
+				if iListIdx is not None:
+					item = self.list[iListIdx]
+					if item[1] != -1:
+						return self.pediaJump(SevoScreenEnums.PEDIA_LEADERS, item[1], True, False)
 			if inputClass.getFunctionName() == self.ITEM_LIST_ID and self.iCategory == SevoScreenEnums.PEDIA_BUILDS:
 				iRow = inputClass.getData()
 				iListIdx = self.SAS_rowToListIdx.get(iRow, None)
@@ -2137,7 +2416,7 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 			elif (inputClass.getFunctionName() == self.INDEX_ID):
 				self.showIndex()
 				return 1
-		
+
 		if inputClass.getButtonType() == WidgetTypes.WIDGET_PYTHON:
 			iData1 = inputClass.getData1()
 			iData2 = inputClass.getData2()
@@ -2156,6 +2435,13 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 			if iData1 == self.SAS_PEDIA_PYTHON_MUSIC_PLAY:
 				self.pediaMusic.playMusic(iData2)
 				return 1
+			# <!-- custom: route search-key clicks through WIDGET_PYTHON/data2 instead of parsing widget-name suffixes.
+			# Empirically, Civ can strip numeric suffixes from generated names and trigger:
+			# ValueError: invalid literal for int(): in SevoPediaMain.handleInput. (GPT-5.5) -->
+			if iData1 == self.SAS_PEDIA_PYTHON_SEARCH_KEY:
+				if self.IS_SAS_SEVOPEDIA_SEARCH_CLICKABLE_SPECIAL_CHARS_ENABLE and iData2 >= 0 and iData2 < len(self.SAS_SEARCH_KEYBOARD_CHARS):
+					return self.SAS_appendSearchCharacter(self.SAS_SEARCH_KEYBOARD_CHARS[iData2])
+				return 1
 			# <!-- custom: chart LOG button is routed through WIDGET_PYTHON/data1 instead of function-name matching because generated widget names can be unstable in Sevopedia; this keeps clicks reliable like Movie/Music actions. (GPT-5.3-Codex) -->
 			if iData1 == self.SAS_PEDIA_PYTHON_CHART_LOG:
 				if self.iCategory == SevoScreenEnums.PEDIA_HANDICAP_CHART:
@@ -2170,11 +2456,17 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 				if self.iCategory == SevoScreenEnums.PEDIA_ERA_CHART:
 					self.pediaEraChart.dumpCsvLog()
 					return 1
+			# <!-- custom: route Sevopedia leader attitude preview buttons here as a fallback because some WIDGET_PYTHON clicks may not reach SevoPediaLeader.handleInput depending on pythonFile routing. (GPT-5.3-Codex) -->
+			if iData1 == SevoPediaLeader.SAS_PEDIA_PYTHON_LEADER_ATTITUDE:
+				if self.iCategory == SevoScreenEnums.PEDIA_LEADERS:
+					return self.pediaLeader.applyLeaderAttitude(iData2)
+			# <!-- custom: route Sevopedia leader action preview buttons (no/greeting/agree/disagree) here as the same fallback path used for attitude buttons. (GPT-5.3-Codex) -->
+			if iData1 == SevoPediaLeader.SAS_PEDIA_PYTHON_LEADER_ACTION:
+				if self.iCategory == SevoScreenEnums.PEDIA_LEADERS:
+					return self.pediaLeader.applyLeaderAction(iData2)
 
 		return 0
-		# <!-- custom: End - type-to-filter search bar for the left item list (in the same style as done in other mod(s)) (chatgpt 5.2 + claude opus 4.5) -->
-
-
+		# <!-- custom: End - search bar for the left item list (chatgpt 5.2 + claude opus 4.5) -->
 
 	def update(self, fDelta):
 		if self.pediaMovies.isMoviePlayerOpen():
@@ -2182,10 +2474,10 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 		if self.pediaMusic.isMusicPlayerOpen():
 			self.pediaMusic.updateTimer(fDelta)
 
-
-
 	def deleteAllWidgets(self):
 		screen = self.getScreen()
+		# <!-- custom: SevoPediaLeader attitude preview widgets use fixed IDs, so they are not covered by the sequential getNextWidgetName deletion loop; remove them explicitly to prevent persistence across category changes. (GPT-5.3-Codex) -->
+		self.pediaLeader.deleteAttitudeWidgets(screen)
 		iNumWidgets = self.nWidgetCount
 		self.nWidgetCount = 0
 		for i in range(iNumWidgets):
@@ -2196,11 +2488,10 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 		screen = self.getScreen()
 		screen.deleteWidget("PediaMainCategoryList")
 		screen.deleteWidget("PediaMainItemList")
-		# <!-- custom: type-to-filter search bar for the left item list (in the same style as done in other mod(s)) (chatgpt 5.2 + claude opus 4.5) -->
+		# <!-- custom: search bar for the left item list (chatgpt 5.2 + claude opus 4.5) -->
 		# <!-- custom: also delete search widgets when deleting list widgets (chatgpt 5.2 + claude opus 4.5) -->
 		self.SAS_deleteSearchWidgets(screen)
-		self.pediaIndex.SAS_indexDeleteSearchWidgets()
-		# <!-- custom: End - type-to-filter search bar for the left item list (in the same style as done in other mod(s)) (chatgpt 5.2 + claude opus 4.5) -->
+		# <!-- custom: End - search bar for the left item list (chatgpt 5.2 + claude opus 4.5) -->
 
 	def SAS_setItemsWidth(self, iW):
 		self.W_ITEMS = iW
@@ -2213,7 +2504,6 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 		self.nWidgetCount += 1
 		return szName
 
-
 	def isSortLists(self):
 		return AdvisorOpt.SevopediaSortItemList()
 
@@ -2224,11 +2514,12 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 			item = getInfo(i)
 			# advc.004y: GraphicalOnly check added
 			if item and (not bCheckGraphicalOnly or not item.isGraphicalOnly()):
-				list.append((item.getDescription(), i))
+				# <!-- custom: tentative UnicodeDecodeError fix for list construction/sort path: normalize descriptions before sorting/display so mixed byte/unicode data does not trigger implicit ascii decoding. (GPT-5.3-Codex) -->
+				list.append((self.SAS_asUnicode(item.getDescription(), "sorted list description"), i))
 		if self.isSortLists() and not noSort:
 			list.sort()
 		return list
-	
+
 	# <!-- custom: according to chatgpt 5.2 and if i understood it correctly, TERRAIN_HILL and TERRAIN_PEAK already exist in our terrains list as per CIV4TerrainInfos.xml. However they have an <bGraphicalOnly>1</bGraphicalOnly> so they are excluded from the display. Reveal them from the display here. We'll later handle their incorrect <bWater>1</bWater> property when handling the list. At least we have all the terrains we need now -->
 	# <!-- custom: generalize this logic by using an alternative helper that we can use if we need to (e.g. for peak, hill, or anything else we'd want it to use it for) without affecting or slowing down the other parts of the code that already use the (filtered/default) getSortedList. -->
 	# Wrapper for clarity: same as getSortedList(), but includes GraphicalOnly entries ("Unfiltered" here specifically means "don’t filter GraphicalOnly".).

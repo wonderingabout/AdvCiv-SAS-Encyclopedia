@@ -78,7 +78,6 @@ import BugConfigTracker
 import BugUtil
 import shutil
 
-
 ## Constants
 
 DATA_FOLDER = "Data"
@@ -96,12 +95,10 @@ MY_DOCUMENTS_FOLDER_REG_KEYS = (
 )
 MY_GAMES_FOLDER = "My Games"
 
-
 def isMac():
 	# Returns True if running on a Mac operating system.
 	#
 	return sys.platform == 'darwin'
-
 
 ## Mod Info, Folder and Path Accessors
 
@@ -187,7 +184,6 @@ def getAppFolder():
 	initAppFolder()
 	return _appFolder
 
-
 ## Finding and Creating Files and Directories
 
 def findAssetFile(name, subdir=None):
@@ -256,7 +252,6 @@ def createInfoFile(name, subdir=None):
 	#
 	return createFile(getInfoDir(), name, subdir)
 
-
 def findDir(name):
 	# Locates the named directory in dataDir.
 	#
@@ -283,7 +278,6 @@ def findOrMakeDir(name):
 	#
 	return findDir(name) or makeDir(name)
 
-
 ## Initialization
 
 def init():
@@ -298,7 +292,6 @@ def init():
 	initDataFolder()
 	initSearchPaths()
 
-
 ## Application Directory
 
 _appDir = None
@@ -312,7 +305,7 @@ def initAppFolder():
 		return
 	BugUtil.debug("BugPath - initializing application folder")
 	global _appDir, _appFolder
-	
+
 	# Determine the app directory that holds the executable and Mods
 	# as well as the folder name inside MY_GAMES_FOLDER that holds CustomAssets and Mods.
 	if isMac():
@@ -328,7 +321,6 @@ def initAppFolder():
 	else:
 		BugUtil.warn("BugPath - no executable found")
 	_appFolderInitDone = True
-
 
 ## Mod Display Name
 
@@ -351,7 +343,6 @@ def initModName():
 		BugUtil.error("CvModName.py module has no modName setting")
 	_modNameInitDone = True
 
-	
 ## Mod Directory
 
 _isMod = False
@@ -409,7 +400,6 @@ def setModDir(dir):
 		return True
 	return False
 
-
 ## NoCustomAssets Setting
 
 _noCustomAssets = False
@@ -438,7 +428,6 @@ def initNoCustomAssetsSetting():
 		BugUtil.info("BugPath - NoCustomAssets is %s", _noCustomAssets)
 	_noCustomAssetsSettingInitDone = True
 
-
 ## User and Root Directories
 
 _userDir = None
@@ -452,7 +441,7 @@ def initRootFolder():
 		return
 	BugUtil.debug("BugPath - initializing system folders")
 	global _rootDir, _userDir
-	
+
 	# override root dir from CvAltRoot
 	try:
 		import CvAltRoot
@@ -541,7 +530,6 @@ def setUserDir(dir):
 		return True
 	return False
 
-
 ## Data Directory
 
 _dataDir = None
@@ -582,7 +570,7 @@ def initDataFolder():
 			except OSError:
 				BugUtil.trace("Failed to create directory '%s'", dir)
 	# K-Mod end
-	
+
 	dataDirs = (
 		join(getRootDir(), getModName()),	# My Games\BTS\BUG Mod
 		join(getUserDir(), getModName()),	# My Games\BUG Mod
@@ -623,7 +611,6 @@ def setDataDir(dir):
 			return True
 	return False
 
-
 ## Asset Directories
 
 _assetFileSearchPaths = []
@@ -635,7 +622,7 @@ def initSearchPaths():
 	if _searchPathsInitDone:
 		return
 	BugUtil.debug("BugPath - initializing asset search paths")
-	
+
 	assetDirs = [
 		join(getModDir(), ASSETS_FOLDER),
 		join(getAppDir(), ASSETS_FOLDER),
@@ -645,7 +632,7 @@ def initSearchPaths():
 		assetDirs.insert(0, join(getRootDir(), CUSTOM_ASSETS_FOLDER))
 	for dir in assetDirs:
 		addAssetFileSearchPath(dir)
-	
+
 	if _assetFileSearchPaths:
 		BugConfigTracker.add("Asset_Search_Paths", _assetFileSearchPaths)
 	else:
@@ -657,7 +644,6 @@ def addAssetFileSearchPath(path):
 	#
 	if isdir(path):
 		_assetFileSearchPaths.append(path)
-
 
 ## None-Safe Path/Directory/File Functions
 
@@ -713,7 +699,6 @@ def isfile(path):
 	if path is None:
 		return False
 	return os.path.isfile(path)
-
 
 ## Non-English-Safe Logging
 

@@ -98,7 +98,6 @@ from CvPythonExtensions import *
 import BugUtil
 import FontUtil
 
-
 ## Globals
 
 gc = CyGlobalContext()
@@ -121,7 +120,6 @@ BUILDING_CATHEDRAL = -1
 BUILDING_MONASTERY = -1
 BUILDING_SHRINE = -1
 UNIT_MISSIONARY = -1
-
 
 ## Religions
 
@@ -149,7 +147,6 @@ def getFoundedReligions():
 		if game.getReligionGameTurnFounded(iReligion) >= 0:
 			religions.append(iReligion)
 	return religions
-
 
 ## Buildings
 
@@ -190,7 +187,6 @@ def getBuilding(iReligion, index):
 		BugUtil.error("ReligionUtil - invalid religion %i or building type %i", iReligion, index)
 		return -1
 
-
 def getBuildingReligion(info):
 	# Returns the religion <info> is tied to.
 	#
@@ -227,7 +223,6 @@ def isShrine(info, iReligion):
 #	Returns True if <info> is the Inquisition Office for <iReligion>.
 #	#
 #	return info.isInquisitionOffice()
-
 
 ## Units
 
@@ -268,7 +263,6 @@ def getUnit(iReligion, index):
 		BugUtil.error("ReligionUtil - invalid religion %i or unit type %i", iReligion, index)
 		return -1
 
-
 def getUnitReligion(info):
 	# Returns the religion <info> is tied to.
 	#
@@ -288,7 +282,6 @@ def isMissionary(info, iReligion):
 #	Returns True if <info> is the Inquisitor for <iReligion>.
 #	#
 #	return info.getReligionRemoves(iReligion)
-
 
 ## Cities
 
@@ -310,7 +303,6 @@ def getCityHolyReligions(city):
 			religions.append(eReligion)
 	return religions
 
-
 ## Players
 
 def getPlayerReligions(player):
@@ -331,7 +323,6 @@ def getPlayerHolyReligions(player):
 			religions.append(eReligion)
 	return religions
 
-
 ## Initialization
 
 def init():
@@ -341,18 +332,18 @@ def init():
 	BuildingType("Shrine", FontUtil.getChar("commerce gold"), isShrine)
 # MOD: Add a BuildingType() call for each new religious building type you define
 #	BuildingType("Inquisition Office", FontUtil.getChar("cancel"), isInquisitionOffice)
-	
+
 	UnitType("Missionary", FontUtil.getChar("religion"), isMissionary)
 # MOD: Add a BuildingType() call for each new religious unit type you define
 #	UnitType("Inquisitor", FontUtil.getChar("religion"), isInquisitor)
-	
+
 	global NUM_RELIGIONS, ALL_RELIGIONS
 	NUM_RELIGIONS = gc.getNumReligionInfos()
 	ALL_RELIGIONS = range(NUM_RELIGIONS)
 	for iReligion in ALL_RELIGIONS:
 		BUILDINGS_BY_RELIGION.append([-1] * NUM_BUILDING_TYPES)
 		UNITS_BY_RELIGION.append([-1] * NUM_UNIT_TYPES)
-	
+
 	for iBldg in range(gc.getNumBuildingInfos()):
 		bldg = gc.getBuildingInfo(iBldg)
 		iReligion = getBuildingReligion(bldg)
@@ -363,7 +354,7 @@ def init():
 					BugUtil.debug("ReligionUtil.init - %s %s is %i: %s", 
 								gc.getReligionInfo(iReligion).getDescription(), type.description, iBldg, bldg.getDescription())
 					break
-	
+
 	for iUnit in range(gc.getNumUnitInfos()):
 		unit = gc.getUnitInfo(iUnit)
 		iReligion = getUnitReligion(unit)
@@ -374,7 +365,6 @@ def init():
 					BugUtil.debug("ReligionUtil.init - %s %s is %i: %s", 
 								gc.getReligionInfo(iReligion).getDescription(), type.description, iUnit, unit.getDescription())
 					break
-
 
 ## Building and Unit Types
 

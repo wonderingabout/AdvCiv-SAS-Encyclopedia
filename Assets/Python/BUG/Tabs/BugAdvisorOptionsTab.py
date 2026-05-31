@@ -28,12 +28,12 @@ class BugAdvisorOptionsTab(BugOptionsTab.BugOptionsTab):
 		#self.addCheckbox(screen, left, "MiscHover__CDAZoomCityDetails")
 		#self.addLabel(screen, left, "Finance_Advisor", "Finance [F2]:")
 		#self.addCheckbox(screen, left, "Advisors__BugFinanceAdvisor")
-		
+
 		# advc.004: Can afford some space
 		self.addSpacer(screen, left, "Before_Foreign_Advisor")
 
 		self.addLabel(screen, left, "Foreign_Advisor", "Foreign [F4]:")
-		
+
 		#self.addCheckbox(screen, left, "Advisors__EFADealTurnsLeft")
 		# <advc.072> Replacing the above
 		leftL, leftR = self.addTwoColumnLayout(screen, left, "Advisors__ForeignAdv")
@@ -54,7 +54,7 @@ class BugAdvisorOptionsTab(BugOptionsTab.BugOptionsTab):
 		self.addCheckbox(screen, leftL, "Advisors__EFAWarTrades")
 		# advc.ctr:
 		self.addCheckbox(screen, leftL, "Advisors__EFACityTrades")
-		
+
 		# <advc.004> Moved to center column
 		self.addLabel(screen, center, "Military_Advisor", "Military [F5]:")
 		self.addCheckbox(screen, center, "Advisors__BugMA")
@@ -69,7 +69,7 @@ class BugAdvisorOptionsTab(BugOptionsTab.BugOptionsTab):
 		self.addCheckbox(screen, center, "Advisors__ShowTechEra")
 
 		self.addSpacer(screen, center, "Before_Religious_Advisor") # advc.004
-		
+
 		self.addLabel(screen, center, "Religious_Advisor", "Religion [F7]:")
 		self.addCheckbox(screen, center, "Advisors__BugReligiousTab")
 		self.addTextDropdown(screen, center, center, "Advisors__ShowReligions", True)

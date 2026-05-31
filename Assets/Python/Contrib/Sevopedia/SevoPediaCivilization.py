@@ -13,8 +13,6 @@
 # (c) 2026 wonderingabout & AI helpers (see Authors in root README.md)
 #
 
-
-
 from CvPythonExtensions import *
 import CvUtil
 import ScreenInput
@@ -24,8 +22,6 @@ from _sevopedia_helpers import *
 gc = CyGlobalContext()
 ArtFileMgr = CyArtFileMgr()
 localText = CyTranslator()
-
-
 
 class SevoPediaCivilization:
 
@@ -47,7 +43,6 @@ class SevoPediaCivilization:
 		self.W_CITIES = 290
 		self.X_CITIES = self.top.R_PEDIA_PAGE - self.W_CITIES
 		self.Y_CITIES = self.Y_CIVILIZATION_PANE
-		self.H_CITIES = self.top.B_PEDIA_PAGE - self.Y_CITIES
 
 		# <!-- custom: Music panel uses helper-computed one-button width, right of Civilization Pane. -->
 		self.X_MUSIC = self.X_CIVILIZATION_PANE + self.W_CIVILIZATION_PANE + self.MEDIUM_MARGIN
@@ -84,26 +79,32 @@ class SevoPediaCivilization:
 		self.W_UNIT = halfRowW
 		self.H_UNIT = rowH
 
+		# <!-- custom: NIF Gallery layout - keep Cities panel height aligned to the Leaders/Units row instead of spanning the full page. (GPT-5.2-Codex) -->
+		self.H_CITIES = (self.Y_UNIT + self.H_UNIT) - self.Y_CITIES
+
 		self.X_HISTORY = self.X_CIVILIZATION_PANE
 		self.Y_HISTORY = self.Y_CIVILIZATION_PANE + self.H_CIVILIZATION_PANE + self.MEDIUM_MARGIN
 		self.W_HISTORY = self.W_CIVILIZATION_PANE + self.MEDIUM_MARGIN + self.W_LEADER + self.MEDIUM_MARGIN + self.W_UNIT
 		self.H_HISTORY = self.top.B_PEDIA_PAGE - self.Y_HISTORY
-
-
+		# <!-- custom: NIF Gallery layout - reuse the history area as a full-width leaders multilist panel. (GPT-5.2-Codex) -->
+		self.X_LEADER_GALLERY = self.X_HISTORY
+		self.Y_LEADER_GALLERY = self.Y_HISTORY
+		self.W_LEADER_GALLERY = self.W_HISTORY
+		self.H_LEADER_GALLERY = self.H_HISTORY
+		# <!-- custom: NIF Gallery layout - cache alphabetical leader order once per session to avoid per-civ sorting. (GPT-5.2-Codex) -->
+		if not hasattr(self.top, "SAS_leader_sorted_cache"):
+			cache = []
+			for iLeader in range(gc.getNumLeaderHeadInfos()):
+				leaderInfo = gc.getLeaderHeadInfo(iLeader)
+				cache.append((leaderInfo.getDescription(), iLeader, leaderInfo.getButton()))
+			cache.sort()
+			self.top.SAS_leader_sorted_cache = cache
 
 	def interfaceScreen(self, iCivilization):
 		self.iCivilization = iCivilization
 
-		self.placeCivilizationPane()
-		self.placeCities()
-		self.placeMusic()
-		self.placeTech()
-		self.placeBuilding()
-		self.placeUnit()
-		self.placeLeader()
-		self.placeHistory()
-
-
+		# <!-- custom: NIF Gallery layout - leader gallery takes the whole page; disable other civ panels. (GPT-5.2-Codex) -->
+		self.placeLeaderGallery()
 
 	def placeCivilizationPane(self):
 		screen = self.top.getScreen()
@@ -111,8 +112,6 @@ class SevoPediaCivilization:
 		# <!-- custom: was PanelStyles.PANEL_STYLE_MAIN -->
 		screen.addPanel(self.top.getNextWidgetName(), "", "", False, False, self.X_ICON, self.Y_ICON, self.W_ICON, self.H_ICON, PanelStyles.PANEL_STYLE_EMPTY)
 		screen.addDDSGFC(self.top.getNextWidgetName(), ArtFileMgr.getCivilizationArtInfo(gc.getCivilizationInfo(self.iCivilization).getArtDefineTag()).getButton(), self.X_ICON + self.W_ICON/2 - self.ICON_SIZE/2, self.Y_ICON + self.H_ICON/2 - self.ICON_SIZE/2, self.ICON_SIZE, self.ICON_SIZE, WidgetTypes.WIDGET_GENERAL, -1, -1)
-
-
 
 	# <!-- custom: based on Middle-earth's mod's Platypedia Civilization -->
 	def placeCities(self):
@@ -127,8 +126,6 @@ class SevoPediaCivilization:
 				szText += "\n" + localText.getText("[ICON_BULLET]", ())
 			szText += localText.getText(Info.getCityNames(i), ())
 		screen.addMultilineText(self.top.getNextWidgetName(), szText, self.X_CITIES + 10, self.Y_CITIES + 30, self.W_CITIES, self.H_CITIES - 30, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
-
-
 
 	def placeMusic(self):
 		screen = self.top.getScreen()
@@ -148,8 +145,6 @@ class SevoPediaCivilization:
 		else:
 			screen.setImageButtonAt(self.top.getNextWidgetName(), panelName, self.playButtonPath, buttonX, buttonY, buttonSize, buttonSize, WidgetTypes.WIDGET_PEDIA_MAIN, SevoScreenEnums.PEDIA_MUSIC, -1)
 
-
-
 	def placeTech(self):
 		screen = self.top.getScreen()
 		panelName = self.top.getNextWidgetName()
@@ -158,8 +153,6 @@ class SevoPediaCivilization:
 		for iTech in range(gc.getNumTechInfos()):
 			if (gc.getCivilizationInfo(self.iCivilization).isCivilizationFreeTechs(iTech)):
 				screen.attachImageButton(panelName, "", gc.getTechInfo(iTech).getButton(), GenericButtonSizes.BUTTON_SIZE_CUSTOM, WidgetTypes.WIDGET_PEDIA_JUMP_TO_TECH, iTech, 1, False)
-
-
 
 	def placeBuilding(self):
 		screen = self.top.getScreen()
@@ -174,8 +167,6 @@ class SevoPediaCivilization:
 				iUniqueBuilding > -1 and iDefaultBuilding != iUniqueBuilding):
 				screen.attachImageButton(panelName, "", gc.getBuildingInfo(iUniqueBuilding).getButton(), GenericButtonSizes.BUTTON_SIZE_CUSTOM, WidgetTypes.WIDGET_PEDIA_JUMP_TO_BUILDING, iUniqueBuilding, 1, False)
 
-
-
 	def placeUnit(self):
 		screen = self.top.getScreen()
 		panelName = self.top.getNextWidgetName()
@@ -188,19 +179,47 @@ class SevoPediaCivilization:
 			iUniqueUnit > -1 and iDefaultUnit != iUniqueUnit):
 				screen.attachImageButton(panelName, "", gc.getUnitInfo(iUniqueUnit).getButton(), GenericButtonSizes.BUTTON_SIZE_CUSTOM, WidgetTypes.WIDGET_PEDIA_JUMP_TO_UNIT, iUniqueUnit, 1, False)
 
-
-
 	def placeLeader(self):
 		screen = self.top.getScreen()
 		panelName = self.top.getNextWidgetName()
 		screen.addPanel(panelName, localText.getText("TXT_KEY_CONCEPT_LEADERS", ()), "", False, True, self.X_LEADER, self.Y_LEADER, self.W_LEADER, self.H_LEADER, PanelStyles.PANEL_STYLE_BLUE50)
 		screen.attachLabel(panelName, "", "  ")
-		for iLeader in range(gc.getNumLeaderHeadInfos()):
-			civ = gc.getCivilizationInfo(self.iCivilization)
-			if civ.isLeaders(iLeader):
-				screen.attachImageButton(panelName, "", gc.getLeaderHeadInfo(iLeader).getButton(), GenericButtonSizes.BUTTON_SIZE_CUSTOM, WidgetTypes.WIDGET_PEDIA_JUMP_TO_LEADER, iLeader, self.iCivilization, False)
+		# <!-- custom: NIF Gallery layout - leaders list disabled for now; use the standard "None" text style/padding. (GPT-5.2-Codex) -->
+		txtKeyNone = "TXT_KEY_PEDIA_SAS_NO_BUTTON_FOUND_NONE"
+		textName = self.top.getNextWidgetName()
+		szText = localText.getText(txtKeyNone, ())
+		yPanelCenter = self.Y_LEADER + (self.H_LEADER / 2)
+		screen.addMultilineText(textName, szText, self.X_LEADER + 7, yPanelCenter, self.W_LEADER - 14, self.H_LEADER - 20, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
 
+	def placeLeaderGallery(self):
+		xPanel = self.top.X_PEDIA_PAGE
+		yPanel = self.top.Y_PEDIA_PAGE
+		wPanel = self.top.R_PEDIA_PAGE - self.top.X_PEDIA_PAGE
+		hPanel = self.top.B_PEDIA_PAGE - self.top.Y_PEDIA_PAGE
 
+		headerLabel = localText.getText("TXT_KEY_PEDIA_CATEGORY_LEADER", ())
+		leader_ids, unused_leader_to_civ, unused_total_real = get_real_leader_maps_and_count(EXCLUDED_LEADER_TYPES_FROM_SEVOPEDIA)
+		num_for_civ = 0
+		for iLeader in leader_ids:
+			if gc.getCivilizationInfo(self.iCivilization).isLeaders(iLeader):
+				num_for_civ += 1
+		headerText = format_leaders_header_text(num_for_civ, len(leader_ids), headerLabel)
+
+		screen = self.top.getScreen()
+		panelName = self.top.getNextWidgetName()
+		# <!-- custom: NIF Gallery layout - full-width leaders multilist panel for leader gallery browsing. (GPT-5.2-Codex) -->
+		screen.addPanel(panelName, headerText, "", False, True, xPanel, yPanel, wPanel, hPanel, PanelStyles.PANEL_STYLE_BLUE50)
+
+		rowListName = self.top.getNextWidgetName()
+		multiListX = xPanel + MULTI_LIST_PANEL_OFFSET_X
+		multiListY = yPanel + MULTI_LIST_PANEL_OFFSET_Y
+		multiListW = wPanel + MULTI_LIST_PANEL_ADDITIONAL_W
+		multiListH = hPanel + MULTI_LIST_PANEL_ADDITIONAL_H
+		screen.addMultiListControlGFC(rowListName, "", multiListX, multiListY, multiListW, multiListH, SEVOPEDIA_MULTILIST_NUM_LISTS_AUTO_CALCULATE, MULTILIST_BUTTON_SIZE, MULTILIST_BUTTON_SIZE, TableStyles.TABLE_STYLE_STANDARD)
+
+		for leaderName, iLeader, buttonPath in self.top.SAS_leader_sorted_cache:
+			if gc.getCivilizationInfo(self.iCivilization).isLeaders(iLeader):
+				screen.appendMultiListButton(rowListName, buttonPath, SEVOPEDIA_MULTILIST_COLUMN_INDEX_AUTO, WidgetTypes.WIDGET_PEDIA_JUMP_TO_LEADER, iLeader, self.iCivilization, False)
 
 	def placeHistory(self):
 		screen = self.top.getScreen()
@@ -212,8 +231,6 @@ class SevoPediaCivilization:
 		# <!-- custom: similar fix as in placeHistory of SevoPediCivic.py, choosing a more advanced function that also allows padding, and adding padding, about all these elements, see SevoPediaCivic.py for potentially additional information -->
 		# screen.attachMultilineText(panelName, "Text", szText, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
 		screen.addMultilineText(textName, szText, self.X_HISTORY + 7, self.Y_HISTORY + 10, self.W_HISTORY - (15 * 2), self.H_HISTORY - (15 * 2) - 25 + 29, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
-
-
 
 	def handleInput (self, inputClass):
 		return 0

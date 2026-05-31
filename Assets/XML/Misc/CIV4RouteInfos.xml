@@ -22,7 +22,7 @@
 			<Yields/>
 			<TechMovementChanges>
 				<TechMovementChange>
-					<PrereqTech>TECH_ENGINEERING</PrereqTech>
+					<PrereqTech>TECH_HUNTING</PrereqTech>
 					<iMovementChange>-10</iMovementChange>
 				</TechMovementChange>
 			</TechMovementChanges>
@@ -43,10 +43,7 @@
 			<BonusType>NONE</BonusType>
 			<PrereqOrBonuses>
 				<PrereqOrBonus>
-					<BonusType>BONUS_COAL</BonusType>
-				</PrereqOrBonus>
-				<PrereqOrBonus>
-					<BonusType>BONUS_OIL</BonusType>
+					<BonusType>BONUS_ALUMINUM</BonusType>
 				</PrereqOrBonus>
 			</PrereqOrBonuses>
 			<Yields/>
@@ -55,3 +52,4 @@
 		</RouteInfo>
 	</RouteInfos>
 </Civ4RouteInfos>
+

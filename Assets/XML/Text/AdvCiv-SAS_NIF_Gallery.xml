@@ -1,0 +1,927 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- 
+AI, UI, or other modifications
+Created as part of the AdvCiv-SAS-NIF-Gallery mod
+(c) 2026 wonderingabout & AI helpers (see Authors in root README.md)
+-->
+<Civ4GameText xmlns="http://www.firaxis.com">
+	<!-- custom: missing txt keys after aggressive trim, minimally added again -->
+	<TEXT>
+		<Tag>TXT_KEY_PEDIA_CATEGORY_SHORTCUTS</Tag>
+		<English>Shortcuts</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PEDIA_TRAITS</Tag>
+		<English>Traits</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PEDIA_SCREEN_BACK</Tag>
+		<English>Back</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PEDIA_SCREEN_FORWARD</Tag>
+		<English>Next</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_PEDIA_SCREEN_EXIT</Tag>
+		<English>Exit</English>
+	</TEXT>
+	<!-- custom: leaders -->
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_GRACE_OMALLEY</Tag>
+		<English>Grace O'Malley</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_AMANIRENA</Tag>
+		<English>Amanirena</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_AMINAH</Tag>
+		<English>Aminah</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_MAVIA</Tag>
+		<English>Mavia (Bilqis)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_DIDO</Tag>
+		<English>Dido</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ZENOBIA_03</Tag>
+		<English>Zenobia 03 (Dihya)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ISABELLA_01</Tag>
+		<English>Isabella 01</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_JINGU</Tag>
+		<English>Jingu</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_AWIAKTA</Tag>
+		<English>Awiakta</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_MANGAMMAL</Tag>
+		<English>Mangammal</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ATOTOZTLI_02</Tag>
+		<English>Atotoztli 02 (Nzinga)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_SALAMASINA</Tag>
+		<English>Salamasina</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_WU_ZETIAN</Tag>
+		<English>Wu Zetian</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_LIEU_YE</Tag>
+		<English>Lieu-Ye (Black Hair)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_NANYE_HI</Tag>
+		<English>Nanye-hi (Tomyris)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_NANYE_HI_PEDIA</Tag>
+		<English>Note: a crash seemingly occurs when navigating leader entries with keyboard Up/Down arrows around this leader. See KI-NIF#1.</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_TRUNG_SISTERS</Tag>
+		<English>Trung Sisters</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_XOC</Tag>
+		<English>Xoc</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_CATHERINE_01</Tag>
+		<English>Catherine 01 (Yekaterina)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_BENAZIR_BHUTTO</Tag>
+		<English>Benazir Bhutto</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ISABELLA_02</Tag>
+		<English>Isabella 02</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_MARIA</Tag>
+		<English>Maria</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_MARIA_02</Tag>
+		<English>Maria 02 (no ribbon)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_MARIA_THERESA</Tag>
+		<English>Maria Theresa</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_MARPESIA</Tag>
+		<English>Marpesia</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_PENTHESILEA</Tag>
+		<English>Penthesilea</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_THEODORA</Tag>
+		<English>Theodora</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_JACQUOTTE_DELAHAYE</Tag>
+		<English>Jacquotte Delahaye</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ATOTOZTLI</Tag>
+		<English>Atotoztli</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_MAVIA_02</Tag>
+		<English>Mavia 02</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_CIXI</Tag>
+		<English>Cixi</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_CLEOPATRA</Tag>
+		<English>Cleopatra</English>
+	</TEXT>
+
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ELIZABETH_08</Tag>
+		<English>Elizabeth 08 (Wilhelmina)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_BLONDE_GIRL</Tag>
+		<English>Blonde Girl (Sarah Fedler)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_CLEOPATRA_02</Tag>
+		<English>Cleopatra 02 (Darker 01)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_JINGU_03</Tag>
+		<English>Jingu 03</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_JOAN_OF_ARC</Tag>
+		<English>Joan of Arc</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_JOAN_OF_ARC_02</Tag>
+		<English>Joan of Arc 02 (elizabeth_noshader.nif)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_MANDUKHAI_KHATUN</Tag>
+		<English>Mandukhai Khatun</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_NEFERTITI</Tag>
+		<English>Nefertiti</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_CLEOPATRA_06</Tag>
+		<English>Cleopatra 06</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_HATSHEPSUT_03</Tag>
+		<English>Hatshepsut 03 (Cleopatra 06 (hatshepsut_noshader.nif))</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_DIDO_02</Tag>
+		<English>Dido 02</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_JOAN_OF_ARC_03</Tag>
+		<English>Joan of Arc 03</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ELIZABETH_06</Tag>
+		<English>Elizabeth 06 (Galadriel)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ELIZABETH_07</Tag>
+		<English>Elizabeth 07 (Galadriel (elizabeth.nif))</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ELIZABETH_05</Tag>
+		<English>Elizabeth 05 (Zenobia)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ELIZABETH_01</Tag>
+		<English>Elizabeth 01 (Michaelle Jean)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ELIZABETH_02</Tag>
+		<English>Elizabeth 02 (Makeda)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ELIZABETH_03</Tag>
+		<English>Elizabeth 03 (Teuta)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ANNE_BONNY_03</Tag>
+		<English>Anne Bonny 03 (Helen Clark)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ISABELLA_03</Tag>
+		<English>Isabella 03 (Margrete I)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ISABELLA_04</Tag>
+		<English>Isabella 04 (Trung Trac)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_SALAMASINA_08</Tag>
+		<English>Salamasina 08</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_SALAMASINA_02</Tag>
+		<English>Salamasina 02</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_CATHERINE_04</Tag>
+		<English>Catherine 04 (Thanadelthur)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_VICTORIA_01</Tag>
+		<English>Victoria 01 (Benazir Bhutto)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_VICTORIA_02</Tag>
+		<English>Victoria 02 (Hasina)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_CATHERINE_05</Tag>
+		<English>Catherine 05 (Yulia Tymoshenko)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ZENOBIA</Tag>
+		<English>Zenobia</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_GLORIANA</Tag>
+		<English>Gloriana</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_SHEHERAZADE</Tag>
+		<English>Sheherazade</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_SNOW_QUEEN</Tag>
+		<English>Snow Queen</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_WU_QINGHUA</Tag>
+		<English>Wu Qinghua</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ANA_NZINGA</Tag>
+		<English>Ana Nzinga</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_BOUDICA_01</Tag>
+		<English>Boudica 01</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ISABELLA_05</Tag>
+		<English>Isabella 05</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_TAMAR</Tag>
+		<English>Tamar</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_VICTORIA_03</Tag>
+		<English>Victoria 03 (Maria Theresa)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_CATHERINE_02</Tag>
+		<English>Catherine 02 (Mary Stuart)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_VICTORIA_05</Tag>
+		<English>Victoria 05 (Maria Theresa 03)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_NANYE_HI_02</Tag>
+		<English>Nanye-hi 02</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ISABELLA_06</Tag>
+		<English>Isabella 06 (Tamar)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ISABELLA_07</Tag>
+		<English>Isabella 07 (Margrete 02)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_THEOPHANU</Tag>
+		<English>Theophanu</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_MARFA_BORETSKAYA</Tag>
+		<English>Marfa Boretskaya</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_CLEOPATRA_07</Tag>
+		<English>Cleopatra 07</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_CLEOPATRA_08</Tag>
+		<English>Cleopatra 08</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ISABELLA_08</Tag>
+		<English>Isabella 08 (Puduhepa)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_VICTORIA_04</Tag>
+		<English>Victoria 04 (Maria Theresa 02)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_DIDO_03</Tag>
+		<English>Dido 03 (Red)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_DIDO_04</Tag>
+		<English>Dido 04 (Gold)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_DIDO_05</Tag>
+		<English>Dido 05 (White)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_DIDO_06</Tag>
+		<English>Dido 06</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_DIDO_07</Tag>
+		<English>Dido 07</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_DIDO_08</Tag>
+		<English>Dido 08 (dido_izzy.nif)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_DIDO_09</Tag>
+		<English>Dido 09 (dido_eliz.nif)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ARIADNE</Tag>
+		<English>Ariadne</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_HIMIKO</Tag>
+		<English>Himiko</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_SALAMASINA_05</Tag>
+		<English>Salamasina 05 (Lady of Cao)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_MANDUKHAI_KHATUN_03</Tag>
+		<English>Mandukhai Khatun 03 (Purea)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_BRUNHILD</Tag>
+		<English>Brunhild</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_EVITA_PERON</Tag>
+		<English>Evita Peron</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_EVITA_PERON_02</Tag>
+		<English>Evita Peron 02 (catherine_noshader.nif)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ANA_NZINGA_02</Tag>
+		<English>Ana Nzinga 02</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_HELEN_OF_TROY</Tag>
+		<English>Helen of Troy</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ULPIA_SEVERINA</Tag>
+		<English>Ulpia Severina</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ULPIA_SEVERINA_02</Tag>
+		<English>Ulpia Severina 02 (No Laurel)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_COCKACOESKE</Tag>
+		<English>Cockacoeske</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_SALAMASINA_11</Tag>
+		<English>Salamasina 11 (Generic Asian Empress)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_SALAMASINA_09</Tag>
+		<English>Salamasina 09 (Khri ma lod)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_SALAMASINA_10</Tag>
+		<English>Salamasina 10 (Khri ma lod 02)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_SALAMASINA_12</Tag>
+		<English>Salamasina 12 (Ly Chieu Hoang)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_NUR_JAHAN</Tag>
+		<English>Nur Jahan</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_POPE_JOAN</Tag>
+		<English>Pope Joan</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_SALAMASINA_04</Tag>
+		<English>Salamasina 04 (Ana Nzinga)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_TAMAR_02</Tag>
+		<English>Tamar 02</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_TAMAR_03</Tag>
+		<English>Tamar 03 (Atossa)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_TAMAR_03_PEDIA</Tag>
+		<English>[TAB]Atossa (c. 550-475 BC, Persia) - An Achaemenid queen, daughter of Cyrus the Great, wife of Darius I, mother of Xerxes I, and politically influential at court, especially in helping legitimize Darius' rule through her Cyrus-lineage and in supporting Xerxes' succession.</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_TAMAR_04</Tag>
+		<English>Tamar 04 (Roshanak)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_TAMAR_04_PEDIA</Tag>
+		<English>[TAB]Roshanak (c. 340-310 BC, Bactria) - A Bactrian princess from the eastern Iranian world, daughter of Oxyartes, later known as the wife of Alexander the Great, and remembered as one of the most notable noblewomen linked to Alexander's conquest of Central Asia.</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ZELDA</Tag>
+		<English>Zelda</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ZELDA_02</Tag>
+		<English>Zelda 02 (Arwen)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_MARIA_ELEONORA</Tag>
+		<English>Maria Eleonora</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_MIRANDA_LAWSON</Tag>
+		<English>Miranda Lawson</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_MANDUKHAI_KHATUN_02</Tag>
+		<English>Mandukhai Khatun 02 (Shajar al-Durr)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_SALAMASINA_07</Tag>
+		<English>Salamasina 07 (Shin Sawbu)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_QUILAGO</Tag>
+		<English>Quilago</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_QUILAGO_02</Tag>
+		<English>Quilago 02 (isabella_noshader.nif)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_JINGU_02</Tag>
+		<English>Jingu 02 (Seondeok)</English>
+	</TEXT>
+<TEXT>
+		<Tag>TXT_KEY_LEADER_LIEU_YE_02</Tag>
+		<English>Lieu-Ye 02 (Brown Hair)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ANNE_BONNY</Tag>
+		<English>Anne Bonny</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_JACQUOTTE_DELAHAYE_02</Tag>
+		<English>Jacquotte Delahaye 02 (no eyepatch)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_AELIA_PULCHERIA</Tag>
+		<English>Aelia Pulcheria</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ISHTAR</Tag>
+		<English>Ishtar</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ELIZABETH_09</Tag>
+		<English>Elizabeth 09 (Mary Stuart)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_NEFERTITI_02</Tag>
+		<English>Nefertiti 02</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_VICTORIA_06</Tag>
+		<English>Victoria 06 (Maria Theresa 04)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_VICTORIA_07</Tag>
+		<English>Victoria 07 (Freydis Eiriksdottir (victoria.nif))</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_VICTORIA_08</Tag>
+		<English>Victoria 08 (The Great Leader (victoria_noshader.nif))</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_VICTORIA_09</Tag>
+		<English>Victoria 09 (The Great Leader (victoria (2).nif))</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_VICTORIA_10</Tag>
+		<English>Victoria 10 (The Great Leader (victoria2.nif))</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_VICTORIA_11</Tag>
+		<English>Victoria 11 (The Great Leader (victoria.nif))</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_HATSHEPSUT_01</Tag>
+		<English>Hatshepsut 01 (Tandi Williams (Old) (NoShaderNIF))</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_TANDI_WILLIAMS</Tag>
+		<English>Tandi Williams</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_AMINAH_03</Tag>
+		<English>Aminah 03 (Prisbit)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ISABELLA_21</Tag>
+		<English>Isabella 21 (Theodora 02)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_EVITA_PERON_03</Tag>
+		<English>Evita Peron 03 (Bunny Girl)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_MARIA_ELEONORA_02</Tag>
+		<English>Maria Eleonora 02</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_MISS_SANTA</Tag>
+		<English>Miss Santa</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_GUNNHILD</Tag>
+		<English>Gunnhild</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_MARIA_03</Tag>
+		<English>Maria 03 (Gunnhild (elizabeth_noshader.nif))</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_DIDO_10</Tag>
+		<English>Dido 10 (Hippolyta)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_DIDO_11</Tag>
+		<English>Dido 11 (Hippolyta - Silver Hair)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_TALI_ZORAH</Tag>
+		<English>Tali'Zorah</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_MACHA_MONG_RUAD</Tag>
+		<English>Macha Mong Ruad</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ZENOBIA_02</Tag>
+		<English>Zenobia 02 (Kug-Bau)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_FEMALE_RANGER</Tag>
+		<English>Female Ranger</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_FEMALE_RANGER_02</Tag>
+		<English>Female Ranger 02 (Revealing)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_FEMALE_RANGER_03</Tag>
+		<English>Female Ranger 03 (Non-Shaded)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_GREEK_QUEEN</Tag>
+		<English>Greek Queen</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_FREYDIS_EIRIKSDOTTIR</Tag>
+		<English>Freydis Eiriksdottir</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_BOUDICA_02</Tag>
+		<English>Boudica 02</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_VELETA</Tag>
+		<English>Veleta</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ISABELLA_11</Tag>
+		<English>Isabella 11 (Indian Empress)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_CLEOPATRA_03</Tag>
+		<English>Cleopatra 03 (Darker 02)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_CLEOPATRA_04</Tag>
+		<English>Cleopatra 04 (Darker 03)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_CLEOPATRA_05</Tag>
+		<English>Cleopatra 05 (Darker 04)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_COCKACOESKE_02</Tag>
+		<English>Cockacoeske 02 (No Warpaint)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_GRACE_OMALLEY_02</Tag>
+		<English>Grace O'Malley 02 (Slower Lips and Eyes)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ZELDA_03</Tag>
+		<English>Zelda 03 (Human Ears)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_EVITA_PERON_04</Tag>
+		<English>Evita Peron 04 (Bunny Girl Brunette)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_EVITA_PERON_05</Tag>
+		<English>Evita Peron 05 (Bunny Girl 03 (catherine_noshader.nif))</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_NANYE_HI_03</Tag>
+		<English>Nanye-hi 03 (Running Eagle)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_BENAZIR_02</Tag>
+		<English>Benazir Bhutto 02 (Glasses)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_DEIRDRE_SKYE</Tag>
+		<English>Deirdre Skye</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_CORAZON_SANTIAGO</Tag>
+		<English>Corazon Santiago</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_MIRIAM_GODWINSON</Tag>
+		<English>Miriam Godwinson</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_MIRIAM_GODWINSON_02</Tag>
+		<English>Miriam Godwinson 02 (Gillard)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_MIRIAM_GODWINSON_03</Tag>
+		<English>Miriam Godwinson 03 (Merkel)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_SHEHERAZADE_02</Tag>
+		<English>Sheherazade 02 (Valeria)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_SALAMASINA_06</Tag>
+		<English>Salamasina 06 (Xoc)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ELIZABETH_04</Tag>
+		<English>Elizabeth 04 (Teuta 02)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_AMINAH_02</Tag>
+		<English>Aminah 02 (Amina of Zazzua)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_GLORIANA_02</Tag>
+		<English>Gloriana 02</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ANNE_BONNY_02</Tag>
+		<English>Anne Bonny 02 (Martha (Aelwyn))</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_SALAMASINA_03</Tag>
+		<English>Salamasina 03 (Brandi)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_BLONDE_GIRL_02</Tag>
+		<English>Blonde Girl 02 (Debbie)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_JOAN_OF_ARC_04</Tag>
+		<English>Joan of Arc 04 (Debbie (Old))</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_CLEOPATRA_09</Tag>
+		<English>Cleopatra 09 (Ekmek)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ISABELLA_20</Tag>
+		<English>Isabella 20 (Teuta)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_BOUDICA_00</Tag>
+		<English>Boudica 00</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_CATHERINE_00</Tag>
+		<English>Catherine 00</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ELIZABETH_00</Tag>
+		<English>Elizabeth 00</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_HATSHEPSUT_00</Tag>
+		<English>Hatshepsut 00</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ISABELLA_00</Tag>
+		<English>Isabella 00</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_VICTORIA_00</Tag>
+		<English>Victoria 00</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ISABELLA_10</Tag>
+		<English>Isabella 10 (Dido)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_CATHERINE_03</Tag>
+		<English>Catherine 03 (Mary Stuart 02 (NoShaderNIF))</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_HATSHEPSUT_02</Tag>
+		<English>Hatshepsut 02 (Salamasina)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ISABELLA_09</Tag>
+		<English>Isabella 09 (Theodora)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ISABELLA_22</Tag>
+		<English>Isabella 22 (Theodora 03)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ISABELLA_12</Tag>
+		<English>Isabella 12 (No Crown)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ISABELLA_13</Tag>
+		<English>Isabella 13 (Semiramis)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ISABELLA_14</Tag>
+		<English>Isabella 14 (Celtic Boudica)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ISABELLA_15</Tag>
+		<English>Isabella 15 (Celtic Boudica (isabella_noshader.nif))</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ISABELLA_17</Tag>
+		<English>Isabella 17 (Maria)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ISABELLA_16</Tag>
+		<English>Isabella 16 (Boadicea (isabella_noshader.nif))</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ISABELLA_18</Tag>
+		<English>Isabella 18 (Dido)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ISABELLA_19</Tag>
+		<English>Isabella 19 (Anne (isabella_noshader.nif))</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ATOTOZTLI_03</Tag>
+		<English>Atotoztli 03 (atotoztli.nif)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_DIDO_12</Tag>
+		<English>Dido 12 (almost naked)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_DIDO_13</Tag>
+		<English>Dido 13 (Salamasina)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_DIDO_14</Tag>
+		<English>Dido 14 (Trung Trac)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ASPASIA</Tag>
+		<English>Aspasia of Miletus</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_NEFERTITI_03</Tag>
+		<English>Nefertiti 03 (isabella.nif)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ELIZABETH_10</Tag>
+		<English>Elizabeth 10 (Wilhelmina 02)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_VICTORIA_12</Tag>
+		<English>Victoria 12</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_NANYE_HI_04</Tag>
+		<English>Nanye-hi 04 (Tomyris 02)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ANA_NZINGA_03</Tag>
+		<English>Ana Nzinga 03 ([Michaelle_Jean])</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_SALAMASINA_13</Tag>
+		<English>Salamasina 13 ([Shin_Sawbu] (SalmasinaFinal_Inverted.nif))</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_DIDO_15</Tag>
+		<English>Dido 15 ([jezebel])</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_GREEK_QUEEN_02</Tag>
+		<English>Greek Queen 02 ([TeutaII])</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_WU_QINGHUA_02</Tag>
+		<English>Wu Qinghua 02 ([Corazon])</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ISABELLA_23</Tag>
+		<English>Isabella 23 ([agnes])</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_VICTORIA_13</Tag>
+		<English>Victoria 13 ([merkel])</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_MIRANDA_LAWSON_02</Tag>
+		<English>Miranda Lawson 02 ([clinton])</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_DEIRDRE_SKYE_02</Tag>
+		<English>Deirdre Skye 02 ([Skye])</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ULPIA_SEVERINA_03</Tag>
+		<English>Ulpia Severina 03 ([Manuela_Saenz])</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ULPIA_SEVERINA_04</Tag>
+		<English>Ulpia Severina 04 ([Manuela_Saenz] (isabella_mod.nif))</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ISABELLA_24</Tag>
+		<English>Isabella 24 (Izanami)</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_KONOHANA</Tag>
+		<English>Konohana</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ELF_ELIZ_01</Tag>
+		<English>Elf Eliz 01</English>
+	</TEXT>
+	<TEXT>
+		<Tag>TXT_KEY_LEADER_ELF_ELIZ_02</Tag>
+		<English>Elf Eliz 02</English>
+	</TEXT>
+</Civ4GameText>

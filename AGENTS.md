@@ -3,18 +3,20 @@
 ## Credit
 
 AI, UI, or other modifications
-Created as part of AdvCiv-SAS improvements
+Created as part of the AdvCiv-SAS-NIF-Gallery mod
 (c) 2026 wonderingabout & AI helpers (see Authors in root README.md)
 
 ## General information
 
-This is the general guidelines to follow for this repo of our mod AdvCiv-SAS that is based on AdvCiv 1.12, for AI helpers. You don't need to look at files mentioned in this sub-section for now, just get aware of their existence if you need them later in our tasks.
+This is the general guidelines to follow for this repo of our mod AdvCiv-SAS-NIF-Gallery that is based on AdvCiv-SAS (which is itself based on AdvCiv 1.12), for AI helpers. You don't need to look at files mentioned in this sub-section for now, just get aware of their existence if you need them later in our tasks.
 
 You can expand this [AGENTS.md](/AGENTS.md) freely as you see fit.
 
+Note: this AdvCiv-SAS-NIF-Gallery is based on AdvCiv-SAS's `AGENTS.md`, so you may have to adjust absolute paths or such to have a corresponding equivalent to what this mod uses.
+
 ## git, GitHub, and git diff info
 
-Our mod is also on github, see [AdvCiv-SAS's github repo](https://github.com/wonderingabout/AdvCiv-SAS).
+Our mod is also on github, see [AdvCiv-SAS-NIF-Gallery's github repo](https://github.com/wonderingabout/AdvCiv-SAS-NIF-Gallery).
 
 Locally our project is a git repo too, generally with a fresh commit for each new main task, so feel free to git diff while doing your tasks to see your progress and analyze or such.
 
@@ -22,7 +24,7 @@ Important git-diff caution: moving/reordering plus modifying large similar-looki
 
 ## Information Fetching from other known helpful mods
 
-If you don't know how to do something, generally mostly for UI stuff as we like to have and invent our own AI logic, generally (not a strict requirement but generally so), if you find yourself stuck or in doubt to double-check how other mods implement things, consider looking at what these mods do, as they usually have high-tech stuff that has oftentimes proven handy for the AdvCiv-SAS mod, in particular and mostly for UI:
+If you don't know how to do something, generally mostly for UI stuff as we like to have and invent our own AI logic, generally (not a strict requirement but generally so), if you find yourself stuck or in doubt to double-check how other mods implement things, consider looking at what these mods do, as they usually have high-tech stuff that has oftentimes proven handy for the AdvCiv-SAS-NIF-Gallery mod, in particular and mostly for UI:
 
 - The Middle-earth mod (in particular but not only their Platypedia) at "C:\Program Files (x86)\Steam\steamapps\common\Sid Meier's Civilization IV Beyond the Sword\Beyond the Sword\Mods\Middle-earth"
 - The C2C (Cavemen2Cosmos) mod (in particular but not only for UI/EXE stuff) at "C:\Program Files (x86)\Steam\steamapps\common\Sid Meier's Civilization IV Beyond the Sword\Beyond the Sword\Mods\Caveman2Cosmos"
@@ -47,34 +49,33 @@ The root Program Files Civ4 folder is here:
 
 Also, legacy documentation (K-Mod, AdvCiv, etc.) may prove helpful, but it is lengthy, grep if needed from there:
 
-- "C:\Program Files (x86)\Steam\steamapps\common\Sid Meier's Civilization IV Beyond the Sword\Beyond the Sword\Mods\AdvCiv-SAS\_0_Common_Docs\AdvCiv_Base_Doc\manual.txt"
+- "C:\Program Files (x86)\Steam\steamapps\common\Sid Meier's Civilization IV Beyond the Sword\Beyond the Sword\Mods\AdvCiv-SAS-NIF-Gallery\_0_Common_Docs\AdvCiv_Base_Doc\manual.txt"
 
 Our AdvCiv-SAS documentation is mostly located here:
 
-- root README.md: "C:\Program Files (x86)\Steam\steamapps\common\Sid Meier's Civilization IV Beyond the Sword\Beyond the Sword\Mods\AdvCiv-SAS\README.md"
-- Docs folder: "C:\Program Files (x86)\Steam\steamapps\common\Sid Meier's Civilization IV Beyond the Sword\Beyond the Sword\Mods\AdvCiv-SAS\_1_AdvCiv-SAS\Docs"
-- Screenshots for a lot of AdvCiv-SAS elements ingame including but not only Sevopedia, Advisors, etc. They are fairly updated too if it helps: "C:\Program Files (x86)\Steam\steamapps\common\Sid Meier's Civilization IV Beyond the Sword\Beyond the Sword\Mods\AdvCiv-SAS\_1_AdvCiv-SAS\Images"
+- root README.md: "C:\Program Files (x86)\Steam\steamapps\common\Sid Meier's Civilization IV Beyond the Sword\Beyond the Sword\Mods\AdvCiv-SAS-NIF-Gallery\README.md"
+- Docs folder: "C:\Program Files (x86)\Steam\steamapps\common\Sid Meier's Civilization IV Beyond the Sword\Beyond the Sword\Mods\AdvCiv-SAS-NIF-Gallery\_1_AdvCiv-SAS\Docs"
+- Screenshots for a lot of AdvCiv-SAS-NIF-Gallery elements ingame including but not only Sevopedia, Advisors, etc. They are fairly updated too if it helps: "C:\Program Files (x86)\Steam\steamapps\common\Sid Meier's Civilization IV Beyond the Sword\Beyond the Sword\Mods\AdvCiv-SAS-NIF-Gallery\_1_AdvCiv-SAS\Images"
 
 May help to find key documentation, additionally to doing a grep or such, indexes like `# advc.004y: Restored (comment out to remove traits)` refer to and provide key information about a change (grep the tag e.g. `004y` in the manual).
 
 Compile errors (e.g., for a "Release" build) at:
 
-- "C:\Program Files (x86)\Steam\steamapps\common\Sid Meier's Civilization IV Beyond the Sword\Beyond the Sword\Mods\AdvCiv-SAS\CvGameCoreDLL\Project\Release\AdvCiv.log"
+- "C:\Program Files (x86)\Steam\steamapps\common\Sid Meier's Civilization IV Beyond the Sword\Beyond the Sword\Mods\AdvCiv-SAS-NIF-Gallery\CvGameCoreDLL\Project\Release\AdvCiv.log"
 
 ## File reading from a non-global link
 
-- If the user provides a link like [Civ4ScreenShot1511.JPG](Assets/Python/Screens/Civ4ScreenShot1511.JPG), or some other relative path, then since you know where our mod is ("C:\Program Files (x86)\Steam\steamapps\common\Sid Meier's Civilization IV Beyond the Sword\Beyond the Sword\Mods\AdvCiv-SAS\"), then you can infer and reconstruct the path from it without asking the user unless you are unable to, for example ""C:\Program Files (x86)\Steam\steamapps\common\Sid Meier's Civilization IV Beyond the Sword\Beyond the Sword\Mods\AdvCiv-SAS\Assets\Python\Screens\Civ4ScreenShot1511.JPG"
 - If you cannot read one of the files or links the user sends (not including web pages or such), specify it to the user instead of blindly proceeding, as the info like a screenshot may help you see and solve the issue.
 
 ## Sevopedia debug dumps (Python API introspection)
 
 When a Python getter seems missing or unclear (e.g., the culture breakdown error where `CvCivicInfo` has no `getCommerceChange`), use Sevopedia debug dumps to verify what Python can actually access without having to guess if a getter is exposed in Python or requires DLL changes; these debug logs are usually our first and preferred source of truth since they are real inspect logs, although they might be slightly outdated if DLL changes were made since then.
 
-- "C:\Program Files (x86)\Steam\steamapps\common\Sid Meier's Civilization IV Beyond the Sword\Beyond the Sword\Mods\AdvCiv-SAS\Assets\Python\Contrib\Sevopedia\Debug" (example file: [__SevoPediaCivic-gc-inner-debug-content.txt](/Assets/Python/Contrib/Sevopedia/Debug/__SevoPediaCivic-gc-inner-debug-content.txt)).
+- "C:\Program Files (x86)\Steam\steamapps\common\Sid Meier's Civilization IV Beyond the Sword\Beyond the Sword\Mods\AdvCiv-SAS-NIF-Gallery\Assets\Python\Contrib\Sevopedia\Debug" (example file: [__SevoPediaCivic-gc-inner-debug-content.txt](/Assets/Python/Contrib/Sevopedia/Debug/__SevoPediaCivic-gc-inner-debug-content.txt)).
 
 Alternatively, the Civ4 BUG documentation is also provided as .txt, may be helpful, consider reading it for double check or grep needs if in doubt or such. It helped us find the `Destroy2DSound` python function for example, doc is helpful as reference (but lengthy):
 
-- "C:\Program Files (x86)\Steam\steamapps\common\Sid Meier's Civilization IV Beyond the Sword\Beyond the Sword\Mods\AdvCiv-SAS\_0_Common_Docs\CIV4BUG_Sourceforge_net_All_Classes_Doc\civ4bug_sourceforge_net_pythonAPI_AllClasses_html.txt"
+- "C:\Program Files (x86)\Steam\steamapps\common\Sid Meier's Civilization IV Beyond the Sword\Beyond the Sword\Mods\AdvCiv-SAS-NIF-Gallery\_0_Common_Docs\CIV4BUG_Sourceforge_net_All_Classes_Doc\civ4bug_sourceforge_net_pythonAPI_AllClasses_html.txt"
 
 ## Information Fetching online
 
@@ -82,7 +83,8 @@ If you find yourself stuck like for audio stopping issues, feel free to ask the 
 
 ## Comment Editing Rules
 
-- Always preserve the `<!-- custom` prefix - never remove it when summarizing comments. At the end of your comment, append a `-->` if not already done.
+- When adding new comments, use the format `<!-- custom: ... (model name) -->` (with `//` or `#` prefix as appropriate), and model name in the suffix with a `-->` at the end if not already done (e.g., `(GPT-5.3-Codex) -->`, `(Claude code Sonnet 4.5 (summarized)) -->`). Do not use other tags like `advc.` (which we do not use, as they do not belong to us: e.g., base advciv uses `advc.sas` to reference our AdvCiv-SAS changes).
+- If model name is missing in the suffix, it is likely a user comment (not from an LLM) and if so it is not something that needs to be fixed.
 - Simplify verbose comments without changing meaning or technical details.
 - Focus on rewording/rephrasing - the goal is to remove prose and conversational filler while preserving all technical information. Don't over-summarize to the point of losing important technical context.
 - Do not requalify subjective wording (e.g., keep "nicer display" instead of rephrasing as "tighter look") to avoid misinterpreting meaning.
@@ -96,12 +98,16 @@ If you find yourself stuck like for audio stopping issues, feel free to ask the 
 - Preserve rationales (e.g., "it is distracting") when they explain why a change was made.
 - Preserve rationale clauses about why something is unnecessary (e.g., "we don't need to show beyond BFC").
 - Be more verbose when explaining rationales - it's important to capture the intent behind the change while summarizing. The "why" is critical, so preserve problem descriptions, observed behavior, and intended fixes more fully than other commentary.
-- Preserve contrast/difference phrasing when it carries technical meaning (e.g., "unlike in the foreign advisor").
-- Keep exact marker strings like "AdvCiv Mod" or "AdvCiv-SAS Mod" for later searches.
-- When adding new comments, use the format `<!-- custom: ... (GPT-5.3-Codex) -->` (with `//` or `#` prefix as appropriate) instead of other tags like advc.sas.
+- Do not soften observed or unknown or unclear behavior into hypothetical wording. For example, if a bug was empirically reproduced, say what happened rather than "could/may/might".
+- When a change empirically fixes an issue, include in the comment that this change fixed the issue.
+- For the above 2 bullets: Example bad: `<!-- custom: use navigation-specific debounce because Back/Next can redraw another category, and category redraws reset search debounce state. (GPT-5.5) -->`. Example good: `# <!-- custom: Left/Right Back/Next worked one item at a time within the same category, but crossing back to another category jumped twice from one keypress. Category redraws reset search debounce state; keeping navigation debounce separate fixed this. (GPT-5.5) -->`.
+- Also, our inferred theory can be wrong or not relevant, or unneeded, and we may just not have found the solution yet, so omit theoretical inference rationales unless clearly obvious and stick to observed data and results rather generally.
+- For the above bullet: Example bad: `# <!-- custom: Late-game Battles tab is slow because the EXE rebuilds many table rows/cells. Data-layer and row-payload caching were tested first and did not significantly help; preserve the built table widget while this advisor stays open, then rebuild only when player/history/layout signature changes. (GPT-5.5) -->`. Example good: `# <!-- custom: Late-game Battles tab opened slowly in a sample with 710+ rows. Data-layer caching and fully prepared row-payload caching were tested first and did not significantly help; preserving the built table widget made same-advisor tab switches almost instant, and making the screen persistent preserves it across close/reopen too. Rebuild when player/history/layout signature changes. (GPT-5.5) -->`.
+- When a change empirically fixes an issue, include in the comment that this change fixed the issue; see the good Left/Right Back/Next example above.
+- Appendix for uncertainty in comments: omit uncertain explanations by default rather than writing something that could be wrong. Include uncertainty only when it is useful technical context, and then state the uncertainty directly (e.g., "not yet tested after changing screen resolution in-session") instead of implying a guessed mechanism.
+- Generally comment from the old/base AdvCiv perspective to explain what we changed. Some code we change is already AdvCiv-SAS custom code; when that is clear, try to convey it briefly so the comment stays accurate and shows the logic behind the change (e.g., `# <!-- custom: Manually positioning the mouse on footer Back/Next for each pedia link is tedious. After we added Up/Down item-list navigation, map Left/Right arrows to Sevopedia Back/Next history as the natural keyboard counterpart. (GPT-5.5) -->`). Tracing code origin is hard though and not critical, so do not overthink it; leave it to the user if in doubt.
+- Keep exact marker strings like "AdvCiv Mod" or "AdvCiv-SAS-NIF-Gallery Mod" for later searches.
 - Do not use `/*` or `"""` or `'''` or such docstrings or variants. Prefer `//` or `#` or similar so they are easier to manage/uncomment and less costly computationally. Keep existing ones as they are, as some `"""` docstrings seem functionally used in tests (do not modify these, only the new ones we create).
-- Add a suffix with your model name to your code comments; e.g., `(GPT-5.3-Codex (summarized)) -->`, `(Claude code Sonnet 4.5 (summarized)) -->`.
-- When writing new code, do not use other credentials than our custom ones, e.g. no `// advc.`, as they do not belong to us. Use `<!-- custom:` instead.
 - Do NOT commit changes without explicit user approval - wait for review at the end.
 - Preserve problem descriptions, observed behaviors, empirical results (e.g., "city C fully improved at turn 105"), and intended fixes while removing verbosity
 - Pattern: Keep technical details and "why" verbose, remove conversational filler
@@ -152,39 +158,64 @@ These are general guidelines, not irrevocable requirements; adjust based on task
 - No approximations like `"%.1f"` or `%02d`; we want precision, no fluff. Use `%f` or `%d` instead. Example of exception: `%02d` as zero-padding for nicer ordering/alignment `(Calendar_01, Calendar_02, ...)`.
 - Prefer `const` for locals whenever possible to make intent clear and prevent accidental mutation.
 - Favor effectiveness and simplicity over complex heuristics; avoid overengineering.
+- Prefer derived variables or an explicit `if/else` over assigning a value and then mutating it. Example problem: avoid setting `iPlotCol = iBaseCol` and later doing `iPlotCol += 3`, or setting a default like `iPlotCol = 19` and then overriding it later with `iPlotCol = 22`. Example solution: use `iContextColCount = 3` and `iPlotCol = iBaseCol + iContextColCount`, or set `iPlotCol` once in each branch when a SAS define changes the number of desired columns/parameters. An `if/else` is also good when the branches explain distinct layout or logic cases.
 - For AI or gameplay logic changes, include a slightly more verbose rationale (why it helps efficiency or outcomes), not just what changed.
 - When adding rationale, focus on the economic/strategic reasoning (efficiency, versatility, risk, maintenance) and capture the thought process behind the change.
 - Do not commit changes unless the user explicitly approves; prefer review/discussion before commits.
-- When doing performance optimizations, checking quotes only on one side is handy to spot all string lookups we could potentially cache. E.g. `gc.getInfoTypeForString("` has this result `iHill = gc.getInfoTypeForString("TERRAIN_HILL")`.
+- Note: for the collapse multiline to singleline bullets below, such a refactor would be extensive, so if we need to, do it as we go rather than all in one-go throughout our whole codebase. It's a low-priority nicety — don't go out of your way for it during unrelated tasks; only apply it to code you're already editing, or if it seems relevant/related to your current task, or when explicitly asked to do a collapse pass.
+- Try to make one liner code whenever possible, for example a line like `draw_expandable_text_panel(screen, self.top, szTitle, self.X_HISTORY, self.Y_HISTORY, self.W_HISTORY, self.H_HISTORY, szText, self.bHistoryExpanded, SAS_MAGIC_PEDIA_PYTHON_HISTORY_EXPAND)` is much easier to scan or grep through/compare throughout our codebase than a multiline mostly needlessly stylized version of it. The user has line wrap on VS Code so it is preferrable for the user too. See also a LLM-helpers to perform that refactor for py files in [collapse_multiline_brackets.py](/LLM_Helpers/collapse_multiline_brackets.py) and [singleline_pass3_comments_and_long.py](/LLM_Helpers/singleline_pass3_comments_and_long.py).
+- Note: there are some exceptions to the above collapse multiline preference; for example, for very long or uniform listings, a multiline statement seems preferable and more readable. Examples: as of now in `self.SAS_CATEGORY_DEFS` (in SevoPediaMain.py), or multi-field tabular data (e.g. `aSupport`/`aArmy` in CvMilitaryAdvisor.py, `field_specs`/`row_specs` chart tables, polygon `[x, y]` vertex lists, 2D matrices, dispatch dicts, and per-row-documented config tables). Flat lists/tuples of plain values, single split calls, and boolean `or`/`and` chains, that should generally be collapsed as well, also have some exceptions, such as clearly very lengthy or iterative ones; e.g., the `or` chains near `eComment == self.getCommentID(` (CvDiplomacy.py). Adjust as you see fit.
+- Note: a fast way to find collapse candidates is a global regex search for `(\n\t` and `[\n\t` (an open paren or bracket immediately followed by a newline + tab, i.e. a wrapped call/list/tuple/`if`/`def`); also `,\n\t` catches mid-arg splits.
+- When manually collapsing, if a block has inline comments mid-args, hoist them into a single comment line just above the now-collapsed line (rephrase so it still reads correctly out of position) rather than skipping the collapse — one greppable line of code is the goal, comments above are fine.
+- After collapsing, verify nothing broke: compare `(`/`[`/`{` balance of the file vs `git show HEAD:<file>` (must be identical, since collapsing only removes newlines/indent, never tokens) and `ast.parse` it (a pre-existing Python 2 `print x` statement will fail Py3 `ast.parse` even on untouched files; the paren-balance-vs-HEAD check is the reliable one there).
+- When doing performance optimizations, checking quotes (i.e. `"`) only on one side is handy to spot all string lookups we could potentially cache. E.g. `gc.getInfoTypeForString("` has this result `iHill = gc.getInfoTypeForString("TERRAIN_HILL")` (or the same with `getInfoTypeOrFail("`). Or appending `.` or `)` or ` ` or `,`, or ` `, etc., to what we want to simplify. E.g., `GET_TEAM(getTeam()).` or `GET_TEAM(getTeam()))`, or `GET_TEAM(getTeam()) ` (with a space), or `GET_TEAM(getTeam()),`, etc. Basically any charcter other than `;`, for example `GET_TEAM(getTeam());`, most likely indicates this is not a cached variable and so most likely an optimize candidate.
 - When doing performance optimizations, using local variables only is enough and best if we don't use this variable elsewhere. E.g. `eYellow = gc.getInfoTypeForString("COLOR_YELLOW")` at init in SevoPediaMain.py.
+- In some rare cases, it is better not to cache rather than cache, because we will not read the define again, so caching is costlier and needless. For example, `start_year = gc.getDefineINT("START_YEAR")` when `start_year` is only used once to build a (sevopedia game speed) chart that we cache and then the variable is discarded. Mark these with a comment like `not cached: read once only`.
 - Use specific asset names whenever possibly to avoid likely reuse of an unknown BTS one that may not be listed in our mod's files. Example: `TXT_KEY_PEDIA_STATISTICS` to `TXT_KEY_PEDIA_SAS_STATISTICS`.
 - Avoid fluff like `================`, keep it nice and simple and clean.
 - Avoid silent fallbacks or placeholder defaults when data is missing: we want it to loudly fail so code is more robust rather.
 - Avoid complicated and formatting-error prone characters (e.g., `“` or `”`), use simple characters (e.g., `"`) instead.
+- Never put a double-hyphen `--` (or `---`, etc.) inside an XML comment `<!-- ... -->`: it is illegal per the XML spec and breaks parsing of the whole file (empirically broke `GlobalDefines_advciv_sas.xml` when a comment described scoreboard/commerce buttons as `"++"/"--"`). This applies to actual `.xml` files only, not Python `#`/C++ `//` comments. When describing `--`/`---` button glyphs in an XML comment, space them (`- -`, `- - -`) or use words (`minus minus`, `fast step`, `fast/fastest tier`, etc.) instead.
+- Note: codex's shell/tool output likely sometimes displays mojibake for characters that look correct in VS Code or git diff (e.g., smart quotes shown as `â€œ` / `â€`) hence the user/LLM mismatch. Do not "fix" encoding based only on the terminal/tool rendering; rely on VS Code (user feedback) or git diff if they show the file cleanly.
+- Note: sometimes our files have a mix of CRLF/LF in them causing next commit to have a massive git diff (e.g., 240 insertions(+), 240 deletions(-) when there is in fact no change) when VS Code or maybe the LLM tries to next modify it, and this is a problem because it pollutes diff and makes it hard to read. Empirically, it happened to [CvInfoScreen.py](/Assets/Python/Screens/CvInfoScreen.py) or [CvMilitaryAdvisor.py](/Assets/Python/Screens/CvMilitaryAdvisor.py), and we could resolve it by adding a newline at end of file, saving, then deleting it (not undoing, so we preserve the change) or some other minor modifications (this is likely why VS Code shows no diff lines changed but the file is still not removed from changed files), then git staging this file only, committing it so the massive noisy diff normalizes (or we may commit the noisy diff with our actual change in one commit anyway if not critical for no tedium), and then reapplying our proper file (note that you need to reapply it in same expected format, usually CRLF not LF, else you'd have every line to be a diff (git would assume we changed it all from CRLF to LF)). This is likely caused by codex's apply patching tool (git bash shows `warning: in the working copy of 'AGENTS.md', LF will be replaced by CRLF the next time Git touches it` after codex's one line modification). On your end, don't mind it and let the user handle it, as it is cheaper in tokens and more reliable, but inform the user if you notice it. Use `git diff --ignore-space-at-eol --stat` and `git diff --ignore-space-at-eol -- <file>` to continue your work and review the semantic changes, then let the user handle EOL cleanup afterwards unless explicitly asked.
 
 ### Python (Civ4)
 
 - Assume Python 2.4 constraints: avoid closures and ternary operators, define variables before use, and prefer tabs for indentation.
-- Treat linting output as hints only; Civ4 runs Python 2.4 and engine imports can look unused to Python 3 linters.
-- Use the Python 2.4/3 print compatibility trick for debugging: `print("msg %s" % value)` is valid in both (single string only).
+- Treat Ruff/lint output as hints only; Civ4 runs Python 2.4 and engine imports can look unused to modern linters.
+- We don't always need to use linters as part of our tasks, but if we do, among them, VS Code Ruff extension is useful for open-file Problems feedback; locally installed Ruff (`py -m ruff`) is better for broad audits, saved reports, and narrow rule-by-rule autofixes.
+- Example (Git Bash): `cd "/c/Program Files (x86)/Steam/steamapps/common/Sid Meier's Civilization IV Beyond the Sword/Beyond the Sword/Mods/AdvCiv-SAS" && mkdir -p LLM_Helpers/outputs && ts=$(date +%Y%m%d_%H%M%S) && out="LLM_Helpers/outputs/ruff_all_py_${ts}.txt" && { py -m ruff check . --output-format=grouped > "$out" 2>&1 || true; } && echo "wrote $out"`
+- Use Ruff `--fix` only for reviewed safe rules (e.g. `E713`); do not broad-autofix risky rules such as `F401`, `F841`, `E712`, old parser warnings, or anything touching Civ4 import/runtime assumptions.
+- Always review `git diff` before committing Ruff-driven changes.
+- Use the Python 2.4/3 print compatibility trick for debugging: `print("msg %s" % value)` is valid in both (single string only). For bulk cleanup of simple Python 2 bare prints, use [wrap_python2_prints_for_linting.py](/LLM_Helpers/wrap_python2_prints_for_linting.py), then manually review any comma-print cases that need `%` formatting so Ruff/Python 3 parsing can show real issues instead of print-syntax noise.
+- For Python 2 parser cleanup, start with the easy cases first, such as `print "x"` -> `print("x")` or `raise Error, value` -> `raise Error(value)`. Leave more complicated cases, such as old `except Error, e` syntax, tuple-unpacking `except`, re-raise changes, or compatibility fallbacks, for manual review or a later pass.
 - Prefer robust UI identifiers: widget names can strip numeric suffixes, so use descriptive text suffixes and map widget IDs to data for event handling.
+- For Civ4 Python UI labels that pass through font-tagged/markup renderers (`screen.setText`, `screen.setLabel`, `SASTextScale.labelText`, etc.), keep raw text in state and escape only the display string: `szDisplay = szRaw.replace(u"&", u"&amp;").replace(u"<", u"&lt;").replace(u">", u"&gt;")`. This preserves clicked or keyboard-typed raw characters for logic/search while rendering them safely. Raw `&`, `<`, and `>` are XML/markup-sensitive and would normally break XML, so they are rarely useful for ordinary XML text-key search; this rule is mainly for Python UI rendering of dynamic/user-entered text. In the Sevopedia search bar, raw `<`/`>` corrupted the label with `/font`-like fragments, and raw `&` could be invisible and make following characters unclear.
 - In fragile Civ4 Python, wrap risky calls in try/except and trust UI state when engine state can drift.
 - When adding guidance, include at least one simple code example so other agents can copy the pattern.
+- When caching defines or XML variables, we need to init to `None` and cache explictly later when the variable is used or somewhere at call time. This is because empirically aggressive initialization at init is fragile and can cause crashes. For helper files, we use the `global` and if `None` pattern. Since this new pattern is a recent addition, we are not changing them all right now but rather as we go or implement new stuff. See [KI#128](/_1_AdvCiv-SAS/Docs/README_Known_Issues.md#128---seemingly-fixed--worked-around-runtime-ui-definestyle-changes-could-produce-crashy-python-like-behavior) (in AdvCiv-SAS mod, not in this mod).
 - It seems definebool does not exist in python, so use boolean comparison on int rather; e.g., `IS_SAS_CV_INFO_SCREEN_HISTORY_LOG_BUTTON_ENABLE = (gc.getDefineINT("SAS_CV_INFO_SCREEN_HISTORY_LOG_BUTTON_ENABLE") > 0)`. Does not apply to C++ though that has defineBOOL.
 - Avoid silent fallbacks or placeholder defaults when data is missing; prefer fatal errors with clear messages so issues surface early, and validate list structures (e.g., assert expected prefixes/types in debug checks).
 - Prefer `getInfoTypeOrFail("TAG")` (from `SASUtils`) over raw `gc.getInfoTypeForString("TAG")` whenever possible so bad XML tags fail loudly and early; this helped catch incorrect direction-string usage in Planet Generator map (e.g., incorrect `getInfoTypeOrFail("DIRECTION_NORTH")` failing instead of `DirectionTypes.DIRECTION_NORTH*` enum constants; or incorrect `getInfoTypeOrFail("PLOT_PEAK")` instead of correct `PlotTypes.PLOT_PEAK` (in Peirce map)).
 - When parsing large structured data, validate against expected samples or assertions early, and log diagnostics to surface schema/list mistakes (e.g., missing commas or malformed enum lists).
 - Use `from module import *` for helper modules to reduce import tedium and make future additions seamless.
-- Keep import burden on callers for Civ4-specific dependencies: helper functions should receive Civ4 objects (e.g. `gc`, `screen`, `CyGame()`) as parameters rather than importing them internally. This avoids circular dependencies. Standard Python modules (`re`, `math`, etc.) are fine to import directly in helpers since they're cached and always available.
+- Keep caller-owned or volatile Civ4 UI/game objects as parameters when needed (e.g. `screen`, `top`, selected city/player objects, or a precomputed `kGame`) rather than hiding them inside helpers. Stable shared Civ4 globals such as `gc`, `localText`, and `ArtFileMgr` may live at helper-module scope when that matches the file's established pattern. This avoids circular dependencies while keeping high-use helpers practical.
+- Keep magic numbers/constants in [SASMagicNumbers.py](/Assets/Python/SASMagicNumbers.py) when they benefit from a named home, especially when they are imported across maps, advisors, Sevopedia, and utilities. This module should stay import-free: no `CvPythonExtensions`, no `gc`, no screen helpers, and no `SASUtils`, so it remains a safe leaf module and does not create circular-dependency or load-order risk. Prefix exported names with `SAS_MAGIC_` to reduce accidental global-name collisions in files that use from-module import-star. Useful examples: `SAS_MAGIC_PEDIA_PYTHON_BUILD = 6798` is shared by Sevopedia and Tech Chooser instead of being defined twice; `SAS_MAGIC_PEDIA_PYTHON_LEADER_ATTITUDE = 6805` was originally local to Sevopedia Leader but also checked by Sevopedia Main, so centralizing avoids widget-id drift/collision; `SAS_MAGIC_WORLDSIZE_HUGE = 6` avoids duplicated Huge-index fixes in map generator utilities and mapscripts after the AdvCiv-SAS Arena world-size insertion shifted runtime world-size indices.
 - When extracting shared code to helpers, group all patterns together if similar enough otherwise (e.g. all enum prefixes in one tuple) for simplicity, even if some prefixes are only used by one caller.
 
 ## XML
 
-- Any new XML text should to our AdvCiv-SAS files such as [AdvCiv-SAS_main.xml](/Assets/XML/Text/AdvCiv-SAS_main.xml) (e.g., `TXT_KEY_BUILDING_KOREAN_GYEONGDANG`), and only in `<English>`.
-- Example of exception: long Civilopedia blurbs (e.g., `TXT_KEY_BUILDING_KOREAN_GYEONGDANG_PEDIA`) in [AdvCiv-SAS_Sevopedia_Lengthy.xml](/Assets/XML/Text/AdvCiv-SAS_Sevopedia_Lengthy.xml), even when it uses a stub (becuase it will be filled later with lengthy content).
-- Move XML texts we modify from other files to our AdvCiv-SAS files too and remove other languages while doing so.
+- Any new XML text should to our AdvCiv-SAS-NIF-Gallery file [AdvCiv-SAS_NIF_Gallery.xml](/Assets/XML/Text/AdvCiv-SAS_NIF_Gallery.xml).
+- Save XML in UTF-8 not with BOM because BOM introduces bad chars and is needless.
+- Move XML texts we modify from other files to our AdvCiv-SAS-NIF-Gallery files too and remove other languages while doing so.
 - Avoid to comment in deep-nested XML just in case. For example, comment before `<ObsoleteSafeCommerceChanges>`, not before its child `<iCommerce>`.
-- Prefer ISO-8859-1 in XML Text files, because it correctly detects and displays characters like `è` or `î` (unlike UTF-8), and because it seems to be the native supported for these files.
+- Avoid complicated and formatting-error prone characters (e.g., `“` or `”`), use simple characters (e.g., `"`) instead.
+- Prefer UTF-8 as it's simple and seemingly works well enough; avoid UTF-8 with BOM as it can cause actual mojibake artifacts like `â€”it` or `â€™` the user sees on VS Code or other issues.
+- Exception: preserve each XML file's existing encoding if it's not UTF-8; do not convert encodings unless explicitly requested for no tedium and as we have no reason to (e.g., keep legacy Windows-1252 files such as BUG XML files as-is), plus this would have a high chance of causing formatting errors otherwise.
+- Note and additional observation: the codex formatter seems unreliable and inconsistent with what users see (e.g., showing the LLM model a BOM text when user sees a non BOM one, causing mismatches and weird git diff: refer to git diff or what base AdvCiv mod uses as format if in doubt).
+- For leaderhead art defs, mod-local cross-folder dependencies to another custom folder (`Art/LeaderHeads/<OtherLocalFolder>/...`) are forbidden for this mod. Use files from that leader's own folder, or use a vanilla/base-Civ4 path if local KFM/animations are missing. This is a strict modularity rule to prevent coupling between custom folders. Examples solved: `ART_DEF_LEADER_GUNNHILD` moved from custom-folder KFM to base `Art/LeaderHeads/Elizabeth/elizabeth.kfm`; `ART_DEF_LEADER_CLEOPATRA_2` moved from `Art/LeaderHeads/Cleopatra/isabella.kfm` to base `Art/LeaderHeads/Isabella/isabella.kfm`; `ART_DEF_LEADER_SHIN_SAWBU_2` moved from `Art/LeaderHeads/Cixi/asoka.kfm` to base `Art/LeaderHeads/Asoka/asoka.kfm`.
+- For leaderhead art defs: if stub, we have no guidance so we need to guess which file to use for each part of the art def, however if a path exists (e.g. downloaded asset with provided XML already) we should keep it as is and only do path-fix only. Example for stub: `<NIF>Art/LeaderHeads/Stub/stub.nif</NIF>` -> `<NIF>Art/LeaderHeads/Sheherazade_2/isabella.nif</NIF>`. Examples for non-stub: 1: `<NIF>art/LeaderHeads/SHAH/isabella.nif</NIF>` -> `<NIF>Art/LeaderHeads/Sheherazade_2/isabella.nif</NIF>` (SHAH is legacy Leaderhead from download to fix, or prefix path could be false for our mod too like `Custom Civilizations/`, use real local folder in our mod Sheherazade_2); example 2 for non-stub: `<BackgroundKFM>art/LeaderHeads/Cyrus/Cyrus_BG.kfm</BackgroundKFM>` -> `<BackgroundKFM>Art/LeaderHeads/Cyrus/Cyrus_BG.kfm</BackgroundKFM>` (Cyrus is valid vanilla folder, do not alter it, only fix capitalization). We should avoid altering provided download art unless we encounter issues or the user specifies otherwise. Why: this avoids silent regressions and preserves source intent.
+- For custom leader XML naming, reusing base Civ4 leader IDs as-is is forbidden (e.g., do not use `LEADER_BOUDICA` / `ART_DEF_LEADER_BOUDICA` for custom entries). Suffix from the first custom variant (e.g., `LEADER_BOUDICA_1`, `ART_DEF_LEADER_BOUDICA_1`) to avoid conflicts and hidden dependencies. `ZENOBIA` naming is fine only when it is not a base-Civ4 leader ID.
 
 ## C++
 
@@ -194,12 +225,9 @@ These are general guidelines, not irrevocable requirements; adjust based on task
 - When changing attack logic, account for special unit roles (bombard/collateral) and UWAI expectations.
 - Prefer low-level entry points (e.g., `canScrap`, `canUpgrade`, `AI_chooseUnit` or equivalent) to avoid edge cases from higher-level callers; keep logic close to core decisions. Example: for attack order changes, hook `groupAttack`/`AI_getBestGroupAttacker` rather than odds-estimation helpers, so other functions or pieces of logic don't overlap with or override our code.
 - When doing performance optimizations, such as caching to `CvTeamAI const& kTeam = GET_TEAM(getTeam());` redundant definitions in a function, reuse existing variable names unless not relevant for our needs. It is fine if some functions have `kTeam` while others have `kOurTeam` in the same file, what matters is same function is consistent when using the same variable. This avoids errors too. Same reasoning with `kPlayer` and `kOwner`, etc.
-- When doing performance optimizations, a good trick that may help find many entries fairly cheaply is to append `.` or `)` or ` ` or `,`, etc., to what we want to simplify. For example `GET_TEAM(getTeam()).` or `GET_TEAM(getTeam()))`, or `GET_TEAM(getTeam()) `, or `GET_TEAM(getTeam()),`, etc. Basically any charcter other than `;`, for example `GET_TEAM(getTeam());`, most likely indicates this is not a cached variable and so most likely an optimize candidate.
-- When doing performance optimizations, also optimize commented-out code for exhaustiveness.
-- When doing performance optimizations, if there are returns and they don't use our cached variable, cache after them.
 - Use `static const` for our defines whenever possible and relevant for computational efficiency (value is always the same, quick check it rather). Example `static const bool bSAS_CAN_SCRAP_OBSOLETE_TECH = GC.getDefineBOOL("SAS_CAN_SCRAP_OBSOLETE_TECH");`.
 
 ### Docs
 
 - For markdownlint, try to resolve warnings; if a fix is unclear or risky, ask the user.
-- When adding doc entries in dev mode (most of the time), prefix bullet titles with `- (Requires AdvCiv-SAS X+)` where `X` is current latest commit + 1, since docs describe post-commit state for readers. Current rule of thumb: last stable is 5500, so 5501+ is beta/dev and should carry the prefix until the next stable release.
+- When adding doc entries in dev mode (most of the time), prefix bullet titles with `- (Requires AdvCiv-SAS-NIF-Gallery X+)` where `X` is current latest commit + 1, since docs describe post-commit state for readers. Current rule of thumb: last stable is 5500, so 5501+ is beta/dev and should carry the prefix until the next stable release.

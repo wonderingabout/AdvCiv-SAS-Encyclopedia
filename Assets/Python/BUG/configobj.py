@@ -109,7 +109,6 @@ try:
 except NameError:
     True, False = 1, 0
 
-
 __version__ = '4.2.0'
 
 __revision__ = '$Id: configobj.py 156 2006-01-31 14:57:08Z fuzzyman $'
@@ -162,7 +161,7 @@ class ConfigObjError(SyntaxError):
     """
     This is the base class for all errors that ConfigObj raises.
     It is a subclass of SyntaxError.
-    
+
     >>> raise ConfigObjError
     Traceback (most recent call last):
     ConfigObjError
@@ -176,7 +175,7 @@ class ConfigObjError(SyntaxError):
 class NestingError(ConfigObjError):
     """
     This error indicates a level of nesting that doesn't match.
-    
+
     >>> raise NestingError
     Traceback (most recent call last):
     NestingError
@@ -187,7 +186,7 @@ class ParseError(ConfigObjError):
     This error indicates that a line is badly written.
     It is neither a valid ``key = value`` line,
     nor a valid section marker line.
-    
+
     >>> raise ParseError
     Traceback (most recent call last):
     ParseError
@@ -196,7 +195,7 @@ class ParseError(ConfigObjError):
 class DuplicateError(ConfigObjError):
     """
     The keyword or section specified already exists.
-    
+
     >>> raise DuplicateError
     Traceback (most recent call last):
     DuplicateError
@@ -205,7 +204,7 @@ class DuplicateError(ConfigObjError):
 class ConfigspecError(ConfigObjError):
     """
     An error occured whilst parsing a configspec.
-    
+
     >>> raise ConfigspecError
     Traceback (most recent call last):
     ConfigspecError
@@ -231,7 +230,7 @@ class RepeatSectionError(ConfigObjError):
     """
     This error indicates additional sections in a section with a
     ``__many__`` (repeated) section.
-    
+
     >>> raise RepeatSectionError
     Traceback (most recent call last):
     RepeatSectionError
@@ -428,7 +427,6 @@ class Section(dict):
         for entry in indict:
             self[entry] = indict[entry]
 
-
     def pop(self, key, *args):
         # """ """
         val = dict.pop(self, key, *args)
@@ -511,14 +509,14 @@ class Section(dict):
     __str__ = __repr__
 
     # Extra methods - not in a normal dictionary
-    
+
     def clearKeyComments(self, key):
         # Clears all comments for the given key.
         #
         if key in self.scalars or key in self.sections:
             self.comments[key] = []
             self.inline_comments[key] = ''
-    
+
     def addKeyComment(self, key, comment=None):
         # Adds the given text as a single-line comment with a leading '# '.
         # 
@@ -543,10 +541,10 @@ class Section(dict):
     def dict(self):
         """
         Return a deepcopy of self as a dictionary.
-        
+
         All members that are ``Section`` instances are recursively turned to
         ordinary dictionaries - by calling their ``dict`` method.
-        
+
         >>> n = a.dict()
         >>> n == a
         1
@@ -567,7 +565,7 @@ class Section(dict):
     def merge(self, indict):
         """
         A recursive update - useful for merging config files.
-        
+
         >>> a = '''[section1]
         ...     option1 = True
         ...     [[subsection]]
@@ -622,30 +620,30 @@ class Section(dict):
             call_on_sections=False, **keywargs):
         """
         Walk every member and call a function on the keyword and value.
-        
+
         Return a dictionary of the return values
-        
+
         If the function raises an exception, raise the errror
         unless ``raise_errors=False``, in which case set the return value to
         ``False``.
-        
+
         Any unrecognised keyword arguments you pass to walk, will be pased on
         to the function you pass in.
-        
+
         Note: if ``call_on_sections`` is ``True`` then - on encountering a
         subsection, *first* the function is called for the *whole* subsection,
         and then recurses into it's members. This means your function must be
         able to handle strings, dictionaries and lists. This allows you
         to change the key of subsections as well as for ordinary members. The
         return value when called on the whole subsection has to be discarded.
-        
+
         See  the encode and decode methods for examples, including functions.
-        
+
         .. caution::
-        
+
             You can use ``walk`` to transform the names of members of a section
             but you mustn't add or delete members.
-        
+
         >>> config = '''[XXXXsection]
         ... XXXXkey = XXXXvalue'''.splitlines()
         >>> cfg = ConfigObj(config)
@@ -705,11 +703,11 @@ class Section(dict):
     def decode(self, encoding):
         """
         Decode all strings and values to unicode, using the specified encoding.
-        
+
         Works with subsections and list values.
-        
+
         Uses the ``walk`` method.
-        
+
         Testing ``encode`` and ``decode``.
         >>> m = ConfigObj(a)
         >>> m.decode('ascii')
@@ -779,17 +777,17 @@ class Section(dict):
         Accepts a key as input. The corresponding value must be a string or
         the objects (``True`` or 1) or (``False`` or 0). We allow 0 and 1 to
         retain compatibility with Python 2.2.
-        
+
         If the string is one of  ``True``, ``On``, ``Yes``, or ``1`` it returns 
         ``True``.
-        
+
         If the string is one of  ``False``, ``Off``, ``No``, or ``0`` it returns 
         ``False``.
-        
+
         ``as_bool`` is not case sensitive.
-        
+
         Any other input will raise a ``ValueError``.
-        
+
         >>> a = ConfigObj()
         >>> a['a'] = 'fish'
         >>> a.as_bool('a')
@@ -819,10 +817,10 @@ class Section(dict):
     def as_int(self, key):
         """
         A convenience method which coerces the specified value to an integer.
-        
+
         If the value is an invalid literal for ``int``, a ``ValueError`` will
         be raised.
-        
+
         >>> a = ConfigObj()
         >>> a['a'] = 'fish'
         >>> a.as_int('a')
@@ -841,10 +839,10 @@ class Section(dict):
     def as_float(self, key):
         """
         A convenience method which coerces the specified value to a float.
-        
+
         If the value is an invalid literal for ``float``, a ``ValueError`` will
         be raised.
-        
+
         >>> a = ConfigObj()
         >>> a['a'] = 'fish'
         >>> a.as_float('a')
@@ -858,14 +856,13 @@ class Section(dict):
         3.2000000000000002
         """
         return float(self[key])
-    
 
 class ConfigObj(Section):
     """
     An object to read, create, and write config files.
-    
+
     Testing with duplicate keys and sections.
-    
+
     >>> c = '''
     ... [hello]
     ... member = value
@@ -877,7 +874,7 @@ class ConfigObj(Section):
     >>> ConfigObj(c.split('\\n'), raise_errors = True)
     Traceback (most recent call last):
     DuplicateError: Duplicate section name at line 5.
-    
+
     >>> d = '''
     ... [hello]
     ... member = value
@@ -1250,9 +1247,9 @@ class ConfigObj(Section):
     def _parse(self, infile):
         """
         Actually parse the config file
-        
+
         Testing Interpolation
-        
+
         >>> c = ConfigObj()
         >>> c['DEFAULT'] = {
         ...     'b': 'goodbye',
@@ -1277,9 +1274,9 @@ class ConfigObj(Section):
         1
         >>> c['section']['c'] == 'Yo hello - goodbye'
         1
-        
+
         Switching Interpolation Off
-        
+
         >>> c.interpolation = False
         >>> c['section']['a'] == '%(datadir)s\\\\some path\\\\file.py'
         1
@@ -1287,9 +1284,9 @@ class ConfigObj(Section):
         1
         >>> c['section']['c'] == 'Yo %(a)s'
         1
-        
+
         Testing the interpolation errors.
-        
+
         >>> c.interpolation = True
         >>> c['section']['d']
         Traceback (most recent call last):
@@ -1297,9 +1294,9 @@ class ConfigObj(Section):
         >>> c['section']['e']
         Traceback (most recent call last):
         InterpolationDepthError: max interpolation depth exceeded in value "%(c)s".
-        
+
         Testing our quoting.
-        
+
         >>> i._quote('\"""\'\'\'')
         Traceback (most recent call last):
         SyntaxError: EOF while scanning triple-quoted string
@@ -1311,7 +1308,7 @@ class ConfigObj(Section):
         >>> k._quote(' "\' ', multiline=False)
         Traceback (most recent call last):
         SyntaxError: EOL while scanning single-quoted string
-        
+
         Testing with "stringify" off.
         >>> c.stringify = False
         >>> c['test'] = 1
@@ -1572,9 +1569,9 @@ class ConfigObj(Section):
         """
         Given a value string, unquote, remove comment,
         handle lists. (including empty and single member lists)
-        
+
         Testing list values.
-        
+
         >>> testconfig3 = '''
         ... a = ,
         ... b = test,
@@ -1590,9 +1587,9 @@ class ConfigObj(Section):
         1
         >>> d['d'] == ['test1', 'test2', 'test3']
         1
-        
+
         Testing with list values off.
-        
+
         >>> e = ConfigObj(
         ...     testconfig3.split('\\n'),
         ...     raise_errors=True,
@@ -1605,9 +1602,9 @@ class ConfigObj(Section):
         1
         >>> e['d'] == 'test1, test2, test3,'
         1
-        
+
         Testing creating from a dictionary.
-        
+
         >>> f = {
         ...     'key1': 'val1',
         ...     'key2': 'val2',
@@ -1632,9 +1629,9 @@ class ConfigObj(Section):
         >>> g = ConfigObj(f)
         >>> f == g
         1
-        
+
         Testing we correctly detect badly built list values (4 of them).
-        
+
         >>> testconfig4 = '''
         ... config = 3,4,,
         ... test = 3,,4
@@ -1646,9 +1643,9 @@ class ConfigObj(Section):
         ... except ConfigObjError, e:
         ...     len(e.errors)
         4
-        
+
         Testing we correctly detect badly quoted values (4 of them).
-        
+
         >>> testconfig5 = '''
         ... config = "hello   # comment
         ... test = 'goodbye
@@ -1697,9 +1694,9 @@ class ConfigObj(Section):
     def _multiline(self, value, infile, cur_index, maxline):
         """
         Extract the value, where we are in a multiline situation
-        
+
         Testing multiline values.
-        
+
         >>> i == {
         ...     'name4': ' another single line value ',
         ...     'multi section': {
@@ -1837,7 +1834,7 @@ class ConfigObj(Section):
     def _handle_comment(self, comment):
         """
         Deal with a comment.
-        
+
         >>> filename = a.filename
         >>> a.filename = None
         >>> values = a.write()
@@ -1847,7 +1844,7 @@ class ConfigObj(Section):
         ...     line = values[index-1]
         ...     assert line.endswith('# comment ' + str(index))
         >>> a.filename = filename
-        
+
         >>> start_comment = ['# Initial Comment', '', '#']
         >>> end_comment = ['', '#', '# Final Comment']
         >>> newconfig = start_comment + testconfig1.split('\\n') + end_comment
@@ -1884,14 +1881,14 @@ class ConfigObj(Section):
         raise SyntaxError
 
     # Public methods
-    
+
     def clearComments(self):
         self.clearInitialComment()
         self.clearFinalComment()
-    
+
     def clearInitialComment(self):
         self.initial_comment = []
-    
+
     def addInitialComment(self, comment=None):
         if comment is None:
             self.initial_comment.append('')
@@ -1899,10 +1896,10 @@ class ConfigObj(Section):
             self.initial_comment.append('#')
         else:
             self.initial_comment.append('# ' + comment)
-    
+
     def clearFinalComment(self):
         self.final_comment = []
-    
+
     def addFinalComment(self, comment=None):
         if comment is None:
             self.final_comment.append('')
@@ -1914,9 +1911,9 @@ class ConfigObj(Section):
     def write(self, outfile=None, section=None):
         """
         Write the current ConfigObj as a file
-        
+
         tekNico: FIXME: use StringIO instead of real files
-        
+
         >>> filename = a.filename
         >>> a.filename = 'test.ini'
         >>> a.write()
@@ -2035,38 +2032,38 @@ class ConfigObj(Section):
     def validate(self, validator, preserve_errors=False, section=None):
         """
         Test the ConfigObj against a configspec.
-        
+
         It uses the ``validator`` object from *validate.py*.
-        
+
         To run ``validate`` on the current ConfigObj, call: ::
-        
+
             test = config.validate(validator)
-        
+
         (Normally having previously passed in the configspec when the ConfigObj
         was created - you can dynamically assign a dictionary of checks to the
         ``configspec`` attribute of a section though).
-        
+
         It returns ``True`` if everything passes, or a dictionary of
         pass/fails (True/False). If every member of a subsection passes, it
         will just have the value ``True``. (It also returns ``False`` if all
         members fail).
-        
+
         In addition, it converts the values from strings to their native
         types if their checks pass (and ``stringify`` is set).
-        
+
         If ``preserve_errors`` is ``True`` (``False`` is default) then instead
         of a marking a fail with a ``False``, it will preserve the actual
         exception object. This can contain info about the reason for failure.
         For example the ``VdtValueTooSmallError`` indeicates that the value
         supplied was too small. If a value (or section) is missing it will
         still be marked as ``False``.
-        
+
         You must have the validate module to use ``preserve_errors=True``.
-        
+
         You can then use the ``flatten_errors`` function to turn your nested
         results dictionary into a flattened list of failures - useful for
         displaying meaningful error messages.
-        
+
         >>> try:
         ...     from validate import Validator
         ... except ImportError:
@@ -2129,7 +2126,7 @@ class ConfigObj(Section):
         >>> val.check(c1.configspec['test4'], c1['test4'])
         Traceback (most recent call last):
         VdtValueTooSmallError: the value "5.0" is too small.
-        
+
         >>> val_test_config = '''
         ...     key = 0
         ...     key2 = 1.1
@@ -2195,9 +2192,9 @@ class ConfigObj(Section):
         ...     },
         ... }
         1
-        
+
         Now testing with repeated sections : BIG TEST
-        
+
         >>> repeated_1 = '''
         ... [dogs]
         ...     [[__many__]] # spec for a dog
@@ -2410,7 +2407,7 @@ class ConfigObj(Section):
         ...     },
         ... }
         1
-        
+
         Test that interpolation is preserved for validated string values.
         Also check that interpolation works in configspecs.
         >>> t = ConfigObj()
@@ -2436,7 +2433,7 @@ class ConfigObj(Section):
         1
         >>> c['interpolated string']
         'fuzzy-wuzzy'
-        
+
         FIXME: Above tests will fail if we couldn't import Validator (the ones
         that don't raise errors will produce different output and still fail as
         tests)
@@ -2530,13 +2527,13 @@ class SimpleVal(object):
     """
     A simple validator.
     Can be used to check that all members expected are present.
-    
+
     To use it, provide a configspec with all your members in (the value given
     will be ignored). Pass an instance of ``SimpleVal`` to the ``validate``
     method of your ``ConfigObj``. ``validate`` will return ``True`` if all
     members are present, or a dictionary with True/False meaning
     present/missing. (Whole missing sections will be replaced with ``False``)
-    
+
     >>> val = SimpleVal()
     >>> config = '''
     ... test1=40
@@ -2577,10 +2574,10 @@ class SimpleVal(object):
     >>> o.validate(val)
     0
     """
-    
+
     def __init__(self):
         self.baseErrorClass = ConfigObjError
-    
+
     def check(self, check, member, missing=False):
         # A dummy check method, always returns the value unchanged.
         #
@@ -2593,34 +2590,34 @@ def flatten_errors(cfg, res, levels=None, results=None):
     """
     An example function that will turn a nested dictionary of results
     (as returned by ``ConfigObj.validate``) into a flat list.
-    
+
     ``cfg`` is the ConfigObj instance being checked, ``res`` is the results
     dictionary returned by ``validate``.
-    
+
     (This is a recursive function, so you shouldn't use the ``levels`` or
     ``results`` arguments - they are used by the function.
-    
+
     Returns a list of keys that failed. Each member of the list is a tuple :
     ::
-    
+
         ([list of sections...], key, result)
-    
+
     If ``validate`` was called with ``preserve_errors=False`` (the default)
     then ``result`` will always be ``False``.
 
     *list of sections* is a flattened list of sections that the key was found
     in.
-    
+
     If the section was missing then key will be ``None``.
-    
+
     If the value (or section) was missing then ``result`` will be ``False``.
-    
+
     If ``validate`` was called with ``preserve_errors=True`` and a value
     was present, but failed the check, then ``result`` will be the exception
     object returned. You can use this as a string that describes the failure.
-    
+
     For example *The value "3" is of the wrong type*.
-    
+
     # FIXME: is the ordering of the output arbitrary ?
     >>> import validate
     >>> vtor = validate.Validator()
@@ -2712,7 +2709,6 @@ def flatten_errors(cfg, res, levels=None, results=None):
     #
     return results
 
-
 # FIXME: test error code for badly built multiline values
 # FIXME: test handling of StringIO
 # FIXME: test interpolation with writing
@@ -2720,7 +2716,7 @@ def flatten_errors(cfg, res, levels=None, results=None):
 def _doctest():
     """
     Dummy function to hold some of the doctests.
-    
+
     >>> a.depth
     0
     >>> a == {
@@ -2779,7 +2775,7 @@ def _doctest():
     >>> t2.inline_comments['b'] = ''
     >>> del t2['a']
     >>> assert t2.write() == ['','b = b', '']
-    
+
     # Test ``list_values=False`` stuff
     >>> c = '''
     ...     key1 = no quotes
@@ -2802,9 +2798,9 @@ def _doctest():
     >>> cfg.write() == ["key1 = '''Multiline\\nValue'''",
     ... 'key2 = \\'\\'\\'"Value" with \\'quotes\\' !\\'\\'\\'']
     1
-    
+
     Test flatten_errors:
-    
+
     >>> from validate import Validator, VdtValueTooSmallError
     >>> config = '''
     ...     test1=40
@@ -2861,7 +2857,7 @@ def _doctest():
     the value "5.0" is too small.
     True
     the value "5.0" is too small.
-    
+
     Test unicode handling, BOM, write witha file like object and line endings :
     >>> u_base = '''
     ... # initial comment
@@ -2962,7 +2958,7 @@ if __name__ == '__main__':
                         keys21 = val1
                         keys22 = val2
                         keys23 = val3
-                        
+
                             [['section 2 sub 1']]
                             fish = 3
     """

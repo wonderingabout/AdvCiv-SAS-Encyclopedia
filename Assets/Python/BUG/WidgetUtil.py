@@ -43,7 +43,6 @@ import BugConfig
 import BugUtil
 import BugGameUtils # kmodx
 
-
 ## Widget Types
 
 g_nextWidget = WidgetTypes.NUM_WIDGET_TYPES
@@ -64,7 +63,6 @@ def createWidget(name):
 		setattr(WidgetTypes, name, widget)
 		g_nextWidget += 1
 		return widget
-
 
 ## Hover Help Text
 
@@ -106,7 +104,6 @@ def _setWidgetHelp(widget, type, func):
 		BugUtil.debug("WidgetUtil - registering %s hover help for WidgetTypes %d: %s", type, widget, func)
 		g_widgetHelp[widget] = func
 
-	
 def getWidgetHelp(argsList):
 	# Returns the hover help text for <eWidgetType> if registered, otherwise returns an empty string.
 	#
@@ -122,13 +119,12 @@ def getWidgetHelp(argsList):
 	# </kmodx>
 	return u""
 
-
 ## Configuration Handler
 
 class WidgetHandler(BugConfig.Handler):
-	
+
 	TAG = "widget"
-	
+
 	def __init__(self):
 		BugConfig.Handler.__init__(self, WidgetHandler.TAG, "name text xml module function")
 		self.addAttribute("name", True)
@@ -136,7 +132,7 @@ class WidgetHandler(BugConfig.Handler):
 		self.addAttribute("xml")
 		self.addAttribute("module", False, True)
 		self.addAttribute("function")
-	
+
 	def handle(self, element, name, text, xml, module, function):
 		widget = createWidget(name)
 		if text:

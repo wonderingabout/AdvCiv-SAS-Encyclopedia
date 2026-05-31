@@ -2,16 +2,12 @@
 # Created as part of AdvCiv-SAS improvements
 # (c) 2026 wonderingabout & AI helpers (see Authors in root README.md)
 
-
-
 from CvPythonExtensions import *
 import CvUtil
 
 gc = CyGlobalContext()
 ArtFileMgr = CyArtFileMgr()
 localText = CyTranslator()
-
-
 
 class SevoPediaMediaPlayer:
 
@@ -56,8 +52,6 @@ class SevoPediaMediaPlayer:
 		self.currentLabelX = 0
 		self.currentLabelY = 0
 
-
-
 	def openScreen(self):
 		screen = CyGInterfaceScreen(self.screenId, self.screenEnum)
 
@@ -80,8 +74,6 @@ class SevoPediaMediaPlayer:
 		screen.addPanel(self.clickPrefix + "BG", u"", u"", True, False, -10, -10, screen.getXResolution() + 20, screen.getYResolution() + 20, PanelStyles.PANEL_STYLE_MAIN)
 		return screen
 
-
-
 	def setupLayout(self, screen, szTitleText, bShowTitle=True):
 		iScreenW = screen.getXResolution()
 		iScreenH = screen.getYResolution()
@@ -96,8 +88,6 @@ class SevoPediaMediaPlayer:
 		if bShowTitle and szTitleText:
 			screen.setLabel(self.clickPrefix + "Title", "Background", u"<font=4b>" + szTitleText.upper() + u"</font>", CvUtil.FONT_CENTER_JUSTIFY, iScreenW / 2, 8, -0.1, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
 		return (iScreenW, iScreenH, iMediaX, iMediaY, iMediaW, iMediaH)
-
-
 
 	def placeExitButton(self, screen, iScreenW, iScreenH):
 		iSize, iGap, iBaseY = self._getTransportLayout(iScreenW, iScreenH)
@@ -114,15 +104,11 @@ class SevoPediaMediaPlayer:
 		except:
 			pass
 
-
-
 	# <!-- custom: useful to replay files with variants such as _ORDER or _SELECT civilization sounds that play a different variant on replay (e.g. "Yes", "Agreed", "Right Away" (imaginary examples)), or for convenience so we don't exit the screen to replay. Added with the very nice help of GPT-5.2-Codex thanks. -->
 	def placeReplayButton(self, screen, iScreenW, iScreenH):
 		iSize, iGap, iBaseY = self._getTransportLayout(iScreenW, iScreenH)
 		iReplayX = self._getTransportButtonX(iScreenW, 2)
 		screen.setImageButton(self.replayId, self.replayButtonPath, iReplayX, iBaseY, iSize, iSize, WidgetTypes.WIDGET_GENERAL, -1, -1)
-
-
 
 	def placePrevNextButtons(self, screen, iScreenW, iScreenH):
 		iSize, iGap, iBaseY = self._getTransportLayout(iScreenW, iScreenH)
@@ -131,16 +117,12 @@ class SevoPediaMediaPlayer:
 		screen.setImageButton(self.prevId, self.prevButtonPath, iPrevX, iBaseY, iSize, iSize, WidgetTypes.WIDGET_GENERAL, -1, -1)
 		screen.setImageButton(self.nextId, self.nextButtonPath, iNextX, iBaseY, iSize, iSize, WidgetTypes.WIDGET_GENERAL, -1, -1)
 
-
-
 	def placeGroupSkipButtons(self, screen, iScreenW, iScreenH):
 		iSize, iGap, iBaseY = self._getTransportLayout(iScreenW, iScreenH)
 		iPrevGroupX = self._getTransportButtonX(iScreenW, 0)
 		iNextGroupX = self._getTransportButtonX(iScreenW, 6)
 		screen.setImageButton(self.prevGroupId, self.prevGroupButtonPath, iPrevGroupX, iBaseY, iSize, iSize, WidgetTypes.WIDGET_GENERAL, -1, -1)
 		screen.setImageButton(self.nextGroupId, self.nextGroupButtonPath, iNextGroupX, iBaseY, iSize, iSize, WidgetTypes.WIDGET_GENERAL, -1, -1)
-
-
 
 	def placeToggleButton(self, screen, iScreenW, iScreenH):
 		if not self.toggleButtonPath:
@@ -149,15 +131,11 @@ class SevoPediaMediaPlayer:
 		iFlipX = self._getTransportButtonX(iScreenW, 3)
 		screen.setImageButton(self.toggleId, self.toggleButtonPath, iFlipX, iBaseY, iSize, iSize, WidgetTypes.WIDGET_GENERAL, -1, -1)
 
-
-
 	def _getTransportLayout(self, iScreenW, iScreenH):
 		iSize = 64
 		iGap = 8
 		iBaseY = iScreenH - 74
 		return (iSize, iGap, iBaseY)
-
-
 
 	def _getTransportButtonX(self, iScreenW, iIndex):
 		iSize = 64
@@ -166,8 +144,6 @@ class SevoPediaMediaPlayer:
 		iTotalW = (iCount * iSize) + ((iCount - 1) * iGap)
 		iLeftX = iScreenW / 2 - iTotalW / 2
 		return iLeftX + iIndex * (iSize + iGap)
-
-
 
 	def placeQueueList(self, screen, iScreenW, iScreenH, items, currentIndex, groupByIndex, groupLabels, itemIcons):
 		if (items is None) or (len(items) == 0):
@@ -257,8 +233,6 @@ class SevoPediaMediaPlayer:
 			iRows += 1
 			i += 1
 
-
-
 	def clearQueueList(self, screen):
 		try:
 			screen.deleteWidget(self.queuePanelId)
@@ -268,8 +242,6 @@ class SevoPediaMediaPlayer:
 			screen.deleteWidget(self.queueListId)
 		except:
 			pass
-
-
 
 	def placeTvPanel(self, screen, iScreenW, iScreenH):
 		iPanelX = 20
@@ -304,15 +276,11 @@ class SevoPediaMediaPlayer:
 		iMediaY = iPanelY + (iPanelH - iMediaH) / 2
 		return (iPanelX, iPanelY, iPanelW, iPanelH, iMediaX, iMediaY, iMediaW, iMediaH)
 
-
-
 	def clearTvPanel(self, screen):
 		try:
 			screen.deleteWidget(self.tvPanelId)
 		except:
 			pass
-
-
 
 	def placeTextPanel(self, screen, iScreenW, iScreenH, szText):
 		if not szText:
@@ -341,8 +309,6 @@ class SevoPediaMediaPlayer:
 		screen.addPanel(szTextPanelId, "", "", True, True, iTextX, iTextY, iTextW, iTextH, PanelStyles.PANEL_STYLE_EMPTY)
 		screen.attachMultilineText(szTextPanelId, "Text", u"<font=2>" + szText + u"</font>", WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
 
-
-
 	def placePrevNextLabels(self, screen, iScreenW, iScreenH, szPrev, szNext):
 		iSize, iGap, iBaseY = self._getTransportLayout(iScreenW, iScreenH)
 		iPrevX = self._getTransportButtonX(iScreenW, 1)
@@ -353,42 +319,26 @@ class SevoPediaMediaPlayer:
 		if szNext:
 			screen.setLabel(self.nextId + "Label", "Background", u"<font=3>" + unicode(szNext) + u"</font>", CvUtil.FONT_CENTER_JUSTIFY, iNextX + iSize / 2, iLabelY, -0.1, FontTypes.SMALL_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
 
-
-
 	def setReplayCallback(self, replayCallback):
 		self.replayCallback = replayCallback
-
-
 
 	def setPrevCallback(self, prevCallback):
 		self.prevCallback = prevCallback
 
-
-
 	def setNextCallback(self, nextCallback):
 		self.nextCallback = nextCallback
-
-
 
 	def setPrevGroupCallback(self, prevGroupCallback):
 		self.prevGroupCallback = prevGroupCallback
 
-
-
 	def setNextGroupCallback(self, nextGroupCallback):
 		self.nextGroupCallback = nextGroupCallback
-
-
 
 	def setToggleButton(self, szArtInfoType):
 		self.toggleButtonPath = ArtFileMgr.getInterfaceArtInfo(szArtInfoType).getPath()
 
-
-
 	def setToggleCallback(self, toggleCallback):
 		self.toggleCallback = toggleCallback
-
-
 
 	def playSound(self, szSoundScript, iSoundId, bForce3D):
 		self.soundId = None
@@ -420,8 +370,6 @@ class SevoPediaMediaPlayer:
 			self.soundId = None
 			self.is3DSound = False
 
-
-
 	def stopSound(self):
 		if self.soundId is not None and self.soundId != -1:
 			try:
@@ -444,8 +392,6 @@ class SevoPediaMediaPlayer:
 			self.soundId = None
 			self.is3DSound = False
 
-
-
 	def closeScreen(self):
 		screen = CyGInterfaceScreen(self.screenId, self.screenEnum)
 		screen.hideScreen()
@@ -453,12 +399,8 @@ class SevoPediaMediaPlayer:
 		self.screen = None
 		self.timerRunning = False
 
-
-
 	def getScreen(self):
 		return self.screen
-
-
 
 	def placeTimerLabel(self, screen, iScreenW, iScreenH):
 		self.timerLabelX = 20
@@ -467,8 +409,6 @@ class SevoPediaMediaPlayer:
 		self.currentLabelY = self.timerLabelY
 		self._updateTimerLabel()
 
-
-
 	def setCurrentLabel(self, screen, szLabel):
 		if not szLabel:
 			return
@@ -476,23 +416,17 @@ class SevoPediaMediaPlayer:
 			return
 		screen.setLabel(self.currentLabelId, "Background", u"<font=3>" + unicode(szLabel) + u"</font>", CvUtil.FONT_LEFT_JUSTIFY, self.currentLabelX, self.currentLabelY, -0.1, FontTypes.SMALL_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
 
-
-
 	def startTimer(self):
 		self.timerSeconds = 0
 		self.timerRemainder = 0.0
 		self.timerRunning = True
 		self._updateTimerLabel()
 
-
-
 	def resetTimer(self):
 		self.timerSeconds = 0
 		self.timerRemainder = 0.0
 		self.timerRunning = True
 		self._updateTimerLabel()
-
-
 
 	def updateTimer(self, fDelta):
 		if (not self.timerRunning) or (self.screen is None):
@@ -505,15 +439,11 @@ class SevoPediaMediaPlayer:
 		self.timerSeconds += iTicks
 		self._updateTimerLabel()
 
-
-
 	def _updateTimerLabel(self):
 		if self.screen is None:
 			return
 		szText = self._formatElapsed(self.timerSeconds)
 		self.screen.setLabel(self.timerLabelId, "Background", u"<font=3>" + szText + u"</font>", CvUtil.FONT_LEFT_JUSTIFY, self.timerLabelX, self.timerLabelY, -0.1, FontTypes.SMALL_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
-
-
 
 	def _formatElapsed(self, iSeconds):
 		iSec = iSeconds % 60
@@ -522,8 +452,6 @@ class SevoPediaMediaPlayer:
 		if iHour > 0:
 			return u"%d:%02d:%02d" % (iHour, iMin, iSec)
 		return u"%02d:%02d" % (iMin, iSec)
-
-
 
 	def handleInput(self, inputClass, closeCallback, bCloseOnMovieDone):
 		if not self.isOpen:

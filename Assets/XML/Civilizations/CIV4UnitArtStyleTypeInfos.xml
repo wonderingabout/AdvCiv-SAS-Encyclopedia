@@ -12,7 +12,7 @@
 			<Type>UNIT_ARTSTYLE_ASIAN</Type>
 			<StyleUnits>
 				<StyleUnit>
-					<UnitType>UNIT_ARCHER</UnitType>
+					<UnitType>UNIT_WARRIOR</UnitType>
 					<UnitMeshGroup>
 						<EarlyArtDefineTag>ART_DEF_UNIT_ARCHER_ASIAN</EarlyArtDefineTag>
 						<LateArtDefineTag>ART_DEF_UNIT_ARCHER_ASIAN</LateArtDefineTag>
@@ -20,7 +20,7 @@
 					</UnitMeshGroup>
 				</StyleUnit>
 				<StyleUnit>
-					<UnitType>UNIT_CHARIOT</UnitType>
+					<UnitType>UNIT_WARRIOR</UnitType>
 					<UnitMeshGroup>
 						<EarlyArtDefineTag>ART_DEF_UNIT_CHARIOT_ASIAN</EarlyArtDefineTag>
 						<LateArtDefineTag>ART_DEF_UNIT_CHARIOT_ASIAN</LateArtDefineTag>
@@ -28,7 +28,7 @@
 					</UnitMeshGroup>
 				</StyleUnit>
 				<StyleUnit>
-					<UnitType>UNIT_HORSE_KNIGHT</UnitType>
+					<UnitType>UNIT_WARRIOR</UnitType>
 					<UnitMeshGroup>
 						<EarlyArtDefineTag>ART_DEF_UNIT_HORSE_KNIGHT_ASIAN</EarlyArtDefineTag>
 						<LateArtDefineTag>ART_DEF_UNIT_HORSE_KNIGHT_ASIAN</LateArtDefineTag>
@@ -36,7 +36,7 @@
 					</UnitMeshGroup>
 				</StyleUnit>
 				<StyleUnit>
-					<UnitType>UNIT_SCOUT</UnitType>
+					<UnitType>UNIT_WARRIOR</UnitType>
 					<UnitMeshGroup>
 						<EarlyArtDefineTag>ART_DEF_UNIT_SCOUT_ASIAN</EarlyArtDefineTag>
 						<LateArtDefineTag>ART_DEF_UNIT_SCOUT_ASIAN</LateArtDefineTag>
@@ -44,7 +44,7 @@
 					</UnitMeshGroup>
 				</StyleUnit>
 				<StyleUnit>
-					<UnitType>UNIT_SETTLER</UnitType>
+					<UnitType>UNIT_WARRIOR</UnitType>
 					<UnitMeshGroup>
 						<EarlyArtDefineTag>ART_DEF_UNIT_SETTLER_ELDER_ASIAN</EarlyArtDefineTag>
 						<LateArtDefineTag>ART_DEF_UNIT_SETTLER_ELDER_ASIAN</LateArtDefineTag>
@@ -62,7 +62,7 @@
 					</UnitMeshGroup>
 				</StyleUnit>
 				<StyleUnit>
-					<UnitType>UNIT_SPEARMAN</UnitType>
+					<UnitType>UNIT_WARRIOR</UnitType>
 					<UnitMeshGroup>
 						<EarlyArtDefineTag>ART_DEF_UNIT_SPEARMAN_ASIAN</EarlyArtDefineTag>
 						<LateArtDefineTag>ART_DEF_UNIT_SPEARMAN_ASIAN</LateArtDefineTag>
@@ -70,7 +70,7 @@
 					</UnitMeshGroup>
 				</StyleUnit>
 				<StyleUnit>
-					<UnitType>UNIT_SWORDSMAN</UnitType>
+					<UnitType>UNIT_WARRIOR</UnitType>
 					<UnitMeshGroup>
 						<EarlyArtDefineTag>ART_DEF_UNIT_SWORDSMAN_ASIAN</EarlyArtDefineTag>
 						<LateArtDefineTag>ART_DEF_UNIT_SWORDSMAN_ASIAN</LateArtDefineTag>
@@ -86,7 +86,7 @@
 					</UnitMeshGroup>
 				</StyleUnit>
 				<StyleUnit>
-					<UnitType>UNIT_WORKER</UnitType>
+					<UnitType>UNIT_WARRIOR</UnitType>
 					<UnitMeshGroup>
 						<EarlyArtDefineTag>ART_DEF_UNIT_WORKER_ASIAN</EarlyArtDefineTag>
 						<LateArtDefineTag>ART_DEF_UNIT_WORKERMODERN</LateArtDefineTag>
@@ -99,7 +99,7 @@
 			<Type>UNIT_ARTSTYLE_EUROPEAN</Type>
 			<StyleUnits>
 				<StyleUnit>
-					<UnitType>UNIT_HORSE_KNIGHT</UnitType>
+					<UnitType>UNIT_WARRIOR</UnitType>
 					<UnitMeshGroup>
 						<EarlyArtDefineTag>ART_DEF_UNIT_HORSE_KNIGHT_EUROPEAN</EarlyArtDefineTag>
 						<LateArtDefineTag>ART_DEF_UNIT_HORSE_KNIGHT_EUROPEAN</LateArtDefineTag>
@@ -107,7 +107,7 @@
 					</UnitMeshGroup>
 				</StyleUnit>
 				<StyleUnit>
-					<UnitType>UNIT_SCOUT</UnitType>
+					<UnitType>UNIT_WARRIOR</UnitType>
 					<UnitMeshGroup>
 						<EarlyArtDefineTag>ART_DEF_UNIT_SCOUT_EUROPEAN</EarlyArtDefineTag>
 						<LateArtDefineTag>ART_DEF_UNIT_SCOUT_EUROPEAN</LateArtDefineTag>
@@ -115,7 +115,7 @@
 					</UnitMeshGroup>
 				</StyleUnit>
 				<StyleUnit>
-					<UnitType>UNIT_SETTLER</UnitType>
+					<UnitType>UNIT_WARRIOR</UnitType>
 					<UnitMeshGroup>
 						<EarlyArtDefineTag>ART_DEF_UNIT_SETTLER_EUROPEAN</EarlyArtDefineTag>
 						<LateArtDefineTag>ART_DEF_UNIT_SETTLER_EUROPEAN</LateArtDefineTag>
@@ -133,7 +133,7 @@
 					</UnitMeshGroup>
 				</StyleUnit>
 				<StyleUnit>
-					<UnitType>UNIT_SPEARMAN</UnitType>
+					<UnitType>UNIT_WARRIOR</UnitType>
 					<UnitMeshGroup>
 						<EarlyArtDefineTag>ART_DEF_UNIT_SPEARMAN_EUROPEAN</EarlyArtDefineTag>
 						<LateArtDefineTag>ART_DEF_UNIT_SPEARMAN_EUROPEAN</LateArtDefineTag>
@@ -141,7 +141,7 @@
 					</UnitMeshGroup>
 				</StyleUnit>
 				<StyleUnit>
-					<UnitType>UNIT_WORKER</UnitType>
+					<UnitType>UNIT_WARRIOR</UnitType>
 					<UnitMeshGroup>
 						<EarlyArtDefineTag>ART_DEF_UNIT_WORKER_EUROPEAN</EarlyArtDefineTag>
 						<LateArtDefineTag>ART_DEF_UNIT_WORKERMODERN</LateArtDefineTag>
@@ -154,7 +154,7 @@
 			<Type>UNIT_ARTSTYLE_GRECO_ROMAN</Type>
 			<StyleUnits>
 				<StyleUnit>
-					<UnitType>UNIT_HORSE_ARCHER</UnitType>
+					<UnitType>UNIT_WARRIOR</UnitType>
 					<UnitMeshGroup>
 						<EarlyArtDefineTag>ART_DEF_UNIT_HORSE_ARCHER_ROMAN</EarlyArtDefineTag>
 						<LateArtDefineTag>ART_DEF_UNIT_HORSE_ARCHER_ROMAN</LateArtDefineTag>
@@ -162,7 +162,7 @@
 					</UnitMeshGroup>
 				</StyleUnit>
 				<StyleUnit>
-					<UnitType>UNIT_CROSSBOWMAN</UnitType>
+					<UnitType>UNIT_WARRIOR</UnitType>
 					<UnitMeshGroup>
 						<EarlyArtDefineTag>ART_DEF_UNIT_CROSSBOWMAN_GRECO_ROMAN</EarlyArtDefineTag>
 						<LateArtDefineTag>ART_DEF_UNIT_CROSSBOWMAN_GRECO_ROMAN</LateArtDefineTag>
@@ -170,7 +170,7 @@
 					</UnitMeshGroup>
 				</StyleUnit>
 				<StyleUnit>
-					<UnitType>UNIT_SCOUT</UnitType>
+					<UnitType>UNIT_WARRIOR</UnitType>
 					<UnitMeshGroup>
 						<EarlyArtDefineTag>ART_DEF_UNIT_SCOUT_GRECO_ROMAN</EarlyArtDefineTag>
 						<LateArtDefineTag>ART_DEF_UNIT_SCOUT_GRECO_ROMAN</LateArtDefineTag>
@@ -178,7 +178,7 @@
 					</UnitMeshGroup>
 				</StyleUnit>
 				<StyleUnit>
-					<UnitType>UNIT_SPEARMAN</UnitType>
+					<UnitType>UNIT_WARRIOR</UnitType>
 					<UnitMeshGroup>
 						<EarlyArtDefineTag>ART_DEF_UNIT_SPEARMAN_GRECO_ROMAN</EarlyArtDefineTag>
 						<LateArtDefineTag>ART_DEF_UNIT_SPEARMAN_GRECO_ROMAN</LateArtDefineTag>
@@ -194,7 +194,7 @@
 					</UnitMeshGroup>
 				</StyleUnit>
 				<StyleUnit>
-					<UnitType>UNIT_WAR_ELEPHANT</UnitType>
+					<UnitType>UNIT_WARRIOR</UnitType>
 					<UnitMeshGroup>
 						<EarlyArtDefineTag>ART_DEF_UNIT_CARTHAGE_WAR_ELEPHANT</EarlyArtDefineTag>
 						<LateArtDefineTag>ART_DEF_UNIT_CARTHAGE_WAR_ELEPHANT</LateArtDefineTag>
@@ -207,7 +207,7 @@
 			<Type>UNIT_ARTSTYLE_MIDDLE_EAST</Type>
 			<StyleUnits>
 				<StyleUnit>
-					<UnitType>UNIT_ARCHER</UnitType>
+					<UnitType>UNIT_WARRIOR</UnitType>
 					<UnitMeshGroup>
 						<EarlyArtDefineTag>ART_DEF_UNIT_ARCHER_MIDDLE_EAST</EarlyArtDefineTag>
 						<LateArtDefineTag>ART_DEF_UNIT_ARCHER_MIDDLE_EAST</LateArtDefineTag>
@@ -215,7 +215,7 @@
 					</UnitMeshGroup>
 				</StyleUnit>
 				<StyleUnit>
-					<UnitType>UNIT_AXEMAN</UnitType>
+					<UnitType>UNIT_WARRIOR</UnitType>
 					<UnitMeshGroup>
 						<EarlyArtDefineTag>ART_DEF_UNIT_AXEMAN_MIDDLE_EAST</EarlyArtDefineTag>
 						<LateArtDefineTag>ART_DEF_UNIT_AXEMAN_MIDDLE_EAST</LateArtDefineTag>
@@ -223,7 +223,7 @@
 					</UnitMeshGroup>
 				</StyleUnit>
 				<StyleUnit>
-					<UnitType>UNIT_CROSSBOWMAN</UnitType>
+					<UnitType>UNIT_WARRIOR</UnitType>
 					<UnitMeshGroup>
 						<EarlyArtDefineTag>ART_DEF_UNIT_CROSSBOWMAN_MIDDLE_EAST</EarlyArtDefineTag>
 						<LateArtDefineTag>ART_DEF_UNIT_CROSSBOWMAN_MIDDLE_EAST</LateArtDefineTag>
@@ -231,7 +231,7 @@
 					</UnitMeshGroup>
 				</StyleUnit>
 				<StyleUnit>
-					<UnitType>UNIT_HORSE_KNIGHT</UnitType>
+					<UnitType>UNIT_WARRIOR</UnitType>
 					<UnitMeshGroup>
 						<EarlyArtDefineTag>ART_DEF_UNIT_HORSE_KNIGHT_MIDDLE_EAST</EarlyArtDefineTag>
 						<LateArtDefineTag>ART_DEF_UNIT_HORSE_KNIGHT_MIDDLE_EAST</LateArtDefineTag>
@@ -239,7 +239,7 @@
 					</UnitMeshGroup>
 				</StyleUnit>
 				<StyleUnit>
-					<UnitType>UNIT_SETTLER</UnitType>
+					<UnitType>UNIT_WARRIOR</UnitType>
 					<UnitMeshGroup>
 						<EarlyArtDefineTag>ART_DEF_UNIT_SETTLER_MIDDLE_EAST</EarlyArtDefineTag>
 						<LateArtDefineTag>ART_DEF_UNIT_SETTLER_MIDDLE_EAST</LateArtDefineTag>
@@ -257,7 +257,7 @@
 					</UnitMeshGroup>
 				</StyleUnit>
 				<StyleUnit>
-					<UnitType>UNIT_SCOUT</UnitType>
+					<UnitType>UNIT_WARRIOR</UnitType>
 					<UnitMeshGroup>
 						<EarlyArtDefineTag>ART_DEF_UNIT_SCOUT_MIDDLE_EAST</EarlyArtDefineTag>
 						<LateArtDefineTag>ART_DEF_UNIT_SCOUT_MIDDLE_EAST</LateArtDefineTag>
@@ -265,7 +265,7 @@
 					</UnitMeshGroup>
 				</StyleUnit>
 				<StyleUnit>
-					<UnitType>UNIT_SPEARMAN</UnitType>
+					<UnitType>UNIT_WARRIOR</UnitType>
 					<UnitMeshGroup>
 						<EarlyArtDefineTag>ART_DEF_UNIT_SPEARMAN_MIDDLE_EAST</EarlyArtDefineTag>
 						<LateArtDefineTag>ART_DEF_UNIT_SPEARMAN_MIDDLE_EAST</LateArtDefineTag>
@@ -273,7 +273,7 @@
 					</UnitMeshGroup>
 				</StyleUnit>
 				<StyleUnit>
-					<UnitType>UNIT_WAR_ELEPHANT</UnitType>
+					<UnitType>UNIT_WARRIOR</UnitType>
 					<UnitMeshGroup>
 						<EarlyArtDefineTag>ART_DEF_UNIT_WAR_ELEPHANT_MIDDLE_EAST</EarlyArtDefineTag>
 						<LateArtDefineTag>ART_DEF_UNIT_WAR_ELEPHANT_MIDDLE_EAST</LateArtDefineTag>
@@ -289,7 +289,7 @@
 					</UnitMeshGroup>
 				</StyleUnit>
 				<StyleUnit>
-					<UnitType>UNIT_WORKER</UnitType>
+					<UnitType>UNIT_WARRIOR</UnitType>
 					<UnitMeshGroup>
 						<EarlyArtDefineTag>ART_DEF_UNIT_WORKER_MIDDLE_EAST</EarlyArtDefineTag>
 						<LateArtDefineTag>ART_DEF_UNIT_WORKERMODERN</LateArtDefineTag>
@@ -302,7 +302,7 @@
 			<Type>UNIT_ARTSTYLE_SOUTH_AMERICA</Type>
 			<StyleUnits>
 				<StyleUnit>
-					<UnitType>UNIT_HORSE_KNIGHT</UnitType>
+					<UnitType>UNIT_WARRIOR</UnitType>
 					<UnitMeshGroup>
 						<EarlyArtDefineTag>ART_DEF_UNIT_HORSE_KNIGHT_SOUTH_AMERICA</EarlyArtDefineTag>
 						<LateArtDefineTag>ART_DEF_UNIT_HORSE_KNIGHT_SOUTH_AMERICA</LateArtDefineTag>
@@ -310,7 +310,7 @@
 					</UnitMeshGroup>
 				</StyleUnit>
 				<StyleUnit>
-					<UnitType>UNIT_SETTLER</UnitType>
+					<UnitType>UNIT_WARRIOR</UnitType>
 					<UnitMeshGroup>
 						<EarlyArtDefineTag>ART_DEF_UNIT_SETTLER_SOUTH_AMERICA</EarlyArtDefineTag>
 						<LateArtDefineTag>ART_DEF_UNIT_SETTLER_SOUTH_AMERICA</LateArtDefineTag>
@@ -328,7 +328,7 @@
 					</UnitMeshGroup>
 				</StyleUnit>
 				<StyleUnit>
-					<UnitType>UNIT_SPEARMAN</UnitType>
+					<UnitType>UNIT_WARRIOR</UnitType>
 					<UnitMeshGroup>
 						<EarlyArtDefineTag>ART_DEF_UNIT_SPEARMAN_SOUTH_AMERICA</EarlyArtDefineTag>
 						<LateArtDefineTag>ART_DEF_UNIT_SPEARMAN_SOUTH_AMERICA</LateArtDefineTag>
@@ -336,7 +336,7 @@
 					</UnitMeshGroup>
 				</StyleUnit>
 				<StyleUnit>
-					<UnitType>UNIT_SWORDSMAN</UnitType>
+					<UnitType>UNIT_WARRIOR</UnitType>
 					<UnitMeshGroup>
 						<EarlyArtDefineTag>ART_DEF_UNIT_SWORDSMAN_SOUTH_AMERICA</EarlyArtDefineTag>
 						<LateArtDefineTag>ART_DEF_UNIT_SWORDSMAN_SOUTH_AMERICA</LateArtDefineTag>
@@ -352,7 +352,7 @@
 					</UnitMeshGroup>
 				</StyleUnit>
 				<StyleUnit>
-					<UnitType>UNIT_WORKER</UnitType>
+					<UnitType>UNIT_WARRIOR</UnitType>
 					<UnitMeshGroup>
 						<EarlyArtDefineTag>ART_DEF_UNIT_WORKER_SOUTH_AMERICA</EarlyArtDefineTag>
 						<LateArtDefineTag>ART_DEF_UNIT_WORKERMODERN</LateArtDefineTag>
@@ -363,3 +363,4 @@
 		</UnitArtStyleTypeInfo>
 	</UnitArtStyleTypeInfos>
 </Civ4UnitArtStyleTypeInfos>
+

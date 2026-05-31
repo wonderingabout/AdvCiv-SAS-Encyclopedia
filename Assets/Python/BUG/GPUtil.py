@@ -63,18 +63,17 @@ g_gpUnitTypes = None
 g_gpColors = None
 g_unitIcons = None
 
-
 # Information
 
 def init():
 	global g_gpIcon
 	g_gpIcon = FontUtil.getChar("greatpeople")
-	
+
 	global g_gpUnitTypes
 	g_gpUnitTypes = [None] * NUM_GP
 	for i, s in enumerate(g_gpBarList):
 		g_gpUnitTypes[i] = gc.getInfoTypeForString(s)
-	
+
 	global g_gpColors
 	g_gpColors = [None] * NUM_GP
 	g_gpColors[GP_GREAT_SPY] = gc.getInfoTypeForString("COLOR_WHITE")
@@ -86,7 +85,7 @@ def init():
 	g_gpColors[GP_GREAT_GENERAL] = gc.getInfoTypeForString("COLOR_RED")
 	# MOD: specify color for each new great person (3)
 	#g_gpColors[GP_DOCTOR] = gc.getInfoTypeForString("COLOR_WHITE")
-	
+
 	global g_unitIcons
 	g_unitIcons = {}
 	g_unitIcons[g_gpUnitTypes[GP_GREAT_SPY]] = FontUtil.getChar(FontSymbols.COMMERCE_ESPIONAGE_CHAR)
@@ -111,7 +110,6 @@ def getUnitIcon(iUnit):
 	except:
 		BugUtil.warn("no GP icon for unit %d", iUnit)
 		return u"%c" % CyGame().getSymbolID(FontSymbols.GREAT_PEOPLE_CHAR)
-
 
 # Getting Progress
 
@@ -198,7 +196,6 @@ def calcPercentages(city):
 		#	percents[0] = (percents[0][0] + iLeftover, percents[0][1])
 	return percents
 
-
 # Displaying Progress
 
 def getHoverText(eWidgetType, iData1, iData2, bOption):
@@ -217,7 +214,7 @@ def getHoverText(eWidgetType, iData1, iData2, bOption):
 	if (iRate > 0):
 		szText += u"\n%d%s%s " % (iRate, g_gpIcon, BugUtil.getPlainText("TXT_KEY_PER_TURN"))
 		szText += BugUtil.getText("INTERFACE_CITY_TURNS", (iTurns,))
-	
+
 	percents = calcPercentages(city)
 	if (len(percents) > 0):
 		percents.sort()

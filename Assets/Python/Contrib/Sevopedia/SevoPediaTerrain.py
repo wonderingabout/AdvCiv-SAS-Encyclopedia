@@ -5,17 +5,15 @@
 # <!-- custom: imported with almost no modification from RFC Dawn of Civilization mod C:\Program Files (x86)\Steam\steamapps\common\Sid Meier's Civilization IV Beyond the Sword\Beyond the Sword\Mods\RFC Dawn of Civilization\Assets\Python\Pedia\CvPediaTerrain.py then adjusted for AdvCiv-SAS -->
 #
 
-
 from CvPythonExtensions import *
 import CvUtil
 from SASUtils import getInfoTypeOrFail
+from SASUtils import getInfoTypeOrMinusOne
 
 from _sevopedia_helpers import *
 
 gc = CyGlobalContext()
 localText = CyTranslator()
-
-
 
 class SevoPediaTerrain:
 	def __init__(self, main):
@@ -96,12 +94,10 @@ class SevoPediaTerrain:
 		self.I_TERRAIN_COAST = getInfoTypeOrFail("TERRAIN_COAST")
 		self.I_TERRAIN_OCEAN = getInfoTypeOrFail("TERRAIN_OCEAN")
 
-		self.I_PROMOTION_HILLS_MASTER1 = getInfoTypeOrFail("PROMOTION_HILLS_MASTER1")
-		self.I_PROMOTION_HILLS_MASTER2 = getInfoTypeOrFail("PROMOTION_HILLS_MASTER2")
-		self.I_PROMOTION_HILLS_MASTER3 = getInfoTypeOrFail("PROMOTION_HILLS_MASTER3")
-		self.I_PROMOTION_NAVIGATOR = getInfoTypeOrFail("PROMOTION_NAVIGATOR")
-
-
+		self.I_PROMOTION_HILLS_MASTER1 = getInfoTypeOrMinusOne("PROMOTION_HILLS_MASTER1")
+		self.I_PROMOTION_HILLS_MASTER2 = getInfoTypeOrMinusOne("PROMOTION_HILLS_MASTER2")
+		self.I_PROMOTION_HILLS_MASTER3 = getInfoTypeOrMinusOne("PROMOTION_HILLS_MASTER3")
+		self.I_PROMOTION_NAVIGATOR = getInfoTypeOrMinusOne("PROMOTION_NAVIGATOR")
 
 	def interfaceScreen(self, iTerrain):
 		self.iTerrain = iTerrain
@@ -116,8 +112,6 @@ class SevoPediaTerrain:
 		self.placeUnitsImpassable()
 		self.placeSpecial()
 		self.placeHistory()
-
-
 
 	def placeInfo(self):
 		screen = self.top.getScreen()
@@ -154,8 +148,6 @@ class SevoPediaTerrain:
 					szStats += (u"%d%c  " % (iYieldChange, gc.getYieldInfo(iYield).getChar()))
 
 		screen.appendListBoxString(panel, szStats, WidgetTypes.WIDGET_GENERAL, 0, 0, CvUtil.FONT_LEFT_JUSTIFY)
-
-
 
 	def placeBuildUnits(self):
 		screen = self.top.getScreen()
@@ -206,8 +198,6 @@ class SevoPediaTerrain:
 			yPanelCenter = self.Y_BUILD_UNITS + (self.H_BUILD_UNITS / 2)
 			screen.addMultilineText(textName, szText, self.X_BUILD_UNITS + 7, yPanelCenter, self.W_BUILD_UNITS - 14, self.H_BUILD_UNITS - 20, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
 
-
-
 	def placeSpecial(self):
 		xPanel = self.X_SPECIAL
 		yPanel = self.Y_SPECIAL
@@ -237,8 +227,6 @@ class SevoPediaTerrain:
 			szText = szText.replace("\n\n", "\n").strip()
 			screen.addMultilineText(text, szText, self.X_SPECIAL + 10, self.Y_SPECIAL + 30, self.W_SPECIAL - 20, self.H_SPECIAL - 40, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
 
-
-
 	def placeFeatures(self):
 		xPanel = self.X_FEATURES
 		yPanel = self.Y_FEATURES
@@ -267,8 +255,6 @@ class SevoPediaTerrain:
 					continue
 				elif FeatureInfo.isTerrain(self.iTerrain):
 					screen.attachImageButton(panel, "", FeatureInfo.getButton(), GenericButtonSizes.BUTTON_SIZE_CUSTOM, WidgetTypes.WIDGET_PEDIA_JUMP_TO_FEATURE, iFeature, 1, False)
-
-
 
 	def placeImprovements(self):
 		xPanel = self.X_IMPROVEMENTS
@@ -311,8 +297,6 @@ class SevoPediaTerrain:
 				elif ImprovementInfo.getTerrainMakesValid(self.iTerrain) or (ImprovementInfo.isWater() and (self.iTerrain == self.I_TERRAIN_COAST or self.iTerrain == self.I_TERRAIN_OCEAN)):
 					screen.attachImageButton(panel, "", ImprovementInfo.getButton(), GenericButtonSizes.BUTTON_SIZE_CUSTOM, WidgetTypes.WIDGET_PEDIA_JUMP_TO_IMPROVEMENT, iImprovement, 1, False)
 
-
-
 	def placeBonusesWithNoFeature(self):
 		xPanel = self.X_BONUSES_WITH_NO_FEATURE
 		yPanel = self.Y_BONUSES_WITH_NO_FEATURE
@@ -349,8 +333,6 @@ class SevoPediaTerrain:
 				elif (bonusInfo.isTerrain(self.iTerrain)) or (self.iTerrain == self.I_TERRAIN_HILL and bonusInfo.isHills()):
 					screen.attachImageButton(panel, "", bonusInfo.getButton(), GenericButtonSizes.BUTTON_SIZE_CUSTOM, WidgetTypes.WIDGET_PEDIA_JUMP_TO_BONUS, iBonus, 1, False)
 
-
-
 	# <!-- custom: code provided by chatgpt thanks to my prompts too and adjustments too-->
 	def placeBonusesOnlyWithFeature(self):
 		xPanel = self.X_BONUSES_ONLY_WITH_FEATURE
@@ -383,8 +365,6 @@ class SevoPediaTerrain:
 
 				if BonusInfo.isFeatureTerrain(self.iTerrain):
 					screen.attachImageButton(panel, "", BonusInfo.getButton(), GenericButtonSizes.BUTTON_SIZE_CUSTOM, WidgetTypes.WIDGET_PEDIA_JUMP_TO_BONUS, iBonus, 1, False)
-
-
 
 	# <!-- custom: code provided with the help of chatgpt thanks and adjusted or not for advciv-sas -->
 	def placeRelevantUnits(self):
@@ -463,9 +443,9 @@ class SevoPediaTerrain:
 				iHillsAttack = unitInfo.getHillsAttackModifier()
 				iHillsDefense = unitInfo.getHillsDefenseModifier()
 
-				isHasHM1 = unitInfo.getFreePromotions(self.I_PROMOTION_HILLS_MASTER1)
-				isHasHM2 = unitInfo.getFreePromotions(self.I_PROMOTION_HILLS_MASTER2)
-				isHasHM3 = unitInfo.getFreePromotions(self.I_PROMOTION_HILLS_MASTER3)
+				isHasHM1 = (self.I_PROMOTION_HILLS_MASTER1 != -1 and unitInfo.getFreePromotions(self.I_PROMOTION_HILLS_MASTER1))
+				isHasHM2 = (self.I_PROMOTION_HILLS_MASTER2 != -1 and unitInfo.getFreePromotions(self.I_PROMOTION_HILLS_MASTER2))
+				isHasHM3 = (self.I_PROMOTION_HILLS_MASTER3 != -1 and unitInfo.getFreePromotions(self.I_PROMOTION_HILLS_MASTER3))
 
 				if ((iHillsAttack != 0) or (iHillsDefense != 0) or isHasHM1 or isHasHM2 or isHasHM3):
 					screen.appendMultiListButton(rowListName, unitInfo.getButton(), SEVOPEDIA_MULTILIST_COLUMN_INDEX_AUTO, WidgetTypes.WIDGET_PEDIA_JUMP_TO_UNIT, iUnit, 1, False)
@@ -507,7 +487,7 @@ class SevoPediaTerrain:
 				iTerrainAttack = unitInfo.getTerrainAttackModifier(self.iTerrain)
 				iTerrainDefense = unitInfo.getTerrainDefenseModifier(self.iTerrain)
 
-				isHasN = unitInfo.getFreePromotions(self.I_PROMOTION_NAVIGATOR)
+				isHasN = (self.I_PROMOTION_NAVIGATOR != -1 and unitInfo.getFreePromotions(self.I_PROMOTION_NAVIGATOR))
 
 				if (unitInfo.isCanMoveAllTerrain() or ((unitInfo.getDomainType() == DomainTypes.DOMAIN_SEA) and (not unitInfo.getTerrainImpassable(self.iTerrain)) and (unitInfo.getTerrainPassableTech(self.iTerrain) == -1)) or (iTerrainAttack != 0) or (iTerrainDefense != 0) or isHasN):
 					screen.appendMultiListButton(rowListName, unitInfo.getButton(), SEVOPEDIA_MULTILIST_COLUMN_INDEX_AUTO, WidgetTypes.WIDGET_PEDIA_JUMP_TO_UNIT, iUnit, 1, False)
@@ -518,7 +498,7 @@ class SevoPediaTerrain:
 						numTxt = "N"
 					else:
 						numTxt = "_/_"  # or "" if you prefer no tag
-				
+
 					extraCorrectionX = get_extra_correction_x(numTxt)
 					add_multilist_numTxt_under_button(multiListX, multiListY, extraCorrectionX, iButtonIndex, MULTILIST_BUTTON_SIZE, maxButtonsPerRow, numTxt, screen, self.top, WidgetTypes.WIDGET_GENERAL, CvUtil.FONT_CENTER_JUSTIFY)
 
@@ -632,8 +612,6 @@ class SevoPediaTerrain:
 				if blocked:
 					screen.appendMultiListButton(rowListName, unitInfo.getButton(), SEVOPEDIA_MULTILIST_COLUMN_INDEX_AUTO, WidgetTypes.WIDGET_PEDIA_JUMP_TO_UNIT, iUnit, 1, False)
 
-
-
 	def placeHistory(self):
 		screen = self.top.getScreen()
 		panel = self.top.getNextWidgetName()
@@ -645,7 +623,6 @@ class SevoPediaTerrain:
 		szHistory = info.getCivilopedia()
 		screen.addMultilineText(text, szHistory, self.X_HISTORY + 10, self.Y_HISTORY + 30, self.W_HISTORY - 20, self.H_HISTORY - 40, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
 
-
-
 	def handleInput (self, inputClass):
 		return 0
+

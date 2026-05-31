@@ -6,8 +6,6 @@
 # (c) 2026 wonderingabout & AI helpers (see Authors in root README.md)
 #
 
-
-
 from CvPythonExtensions import *
 import CvUtil
 from SASUtils import getInfoTypeOrFail
@@ -18,15 +16,13 @@ gc = CyGlobalContext()
 ArtFileMgr = CyArtFileMgr()
 localText = CyTranslator()
 
-
-
 class SevoPediaBuild:
 
 	def __init__(self, main):
 		self.iBuild = -1
 		self.top = main
 		self.SAS_iBuildRoad = getInfoTypeOrFail("BUILD_ROAD")
-		self.SAS_iBuildRailroad = getInfoTypeOrFail("BUILD_RAILROAD")
+		self.SAS_iBuildRailroad = getInfoTypeOrFail("BUILD_ROAD")
 
 		self.MEDIUM_MARGIN = 15
 		self.SMALL_MARGIN = self.MEDIUM_MARGIN - 5
@@ -85,7 +81,6 @@ class SevoPediaBuild:
 		self.FEATURE_STRUCT_PANEL_HEADER_H = 28
 		self.FEATURE_STRUCT_BUTTON_TOP_REL = self.H_FEATURE_STRUCTS - self.FEATURE_STRUCT_PANEL_HEADER_H - self.FEATURE_STRUCT_BUTTON_ROW_H - self.FEATURE_STRUCT_BUTTON_BOTTOM_MARGIN
 
-
 	def _getBuildFeatureProductionModifierTechs(self):
 		buildInfo = gc.getBuildInfo(self.iBuild)
 		bHasRemovalProduction = False
@@ -96,7 +91,6 @@ class SevoPediaBuild:
 		if not bHasRemovalProduction:
 			return []
 		return get_feature_production_modifier_techs()
-
 
 	def interfaceScreen(self, iBuild):
 		self.iBuild = iBuild
@@ -110,7 +104,6 @@ class SevoPediaBuild:
 		self.placeSpecial()
 		self.placeHistory()
 
-
 	def placeBuildPane(self):
 		screen = self.top.getScreen()
 		buildInfo = gc.getBuildInfo(self.iBuild)
@@ -123,7 +116,6 @@ class SevoPediaBuild:
 		screen.enableSelect(panel, False)
 		screen.appendListBoxString(panel, u"<font=4b>" + buildInfo.getDescription() + u"</font>", WidgetTypes.WIDGET_GENERAL, 0, 0, CvUtil.FONT_LEFT_JUSTIFY)
 		screen.appendListBoxString(panel, localText.getText("TXT_KEY_PEDIA_BUILD", ()), WidgetTypes.WIDGET_GENERAL, 0, 0, CvUtil.FONT_LEFT_JUSTIFY)
-
 
 	def placeRequires(self):
 		screen = self.top.getScreen()
@@ -146,7 +138,6 @@ class SevoPediaBuild:
 			yPanelCenter = self.Y_REQUIRES + (self.H_REQUIRES / 2)
 			screen.addMultilineText(textName, szText, self.X_REQUIRES + 7, yPanelCenter, self.W_REQUIRES - 14, self.H_REQUIRES - 20, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
 
-
 	def placeImprovements(self):
 		screen = self.top.getScreen()
 		panelName = self.top.getNextWidgetName()
@@ -167,7 +158,7 @@ class SevoPediaBuild:
 			iBuild = -1
 			if routeInfo.getType() == "ROUTE_ROAD":
 				iBuild = self.SAS_iBuildRoad
-			elif routeInfo.getType() == "ROUTE_RAILROAD":
+			elif routeInfo.getType() == "ROUTE_ROAD":
 				iBuild = self.SAS_iBuildRailroad
 			if iBuild < 0:
 				raise Exception("SevoPediaBuild: missing Build for route %s" % routeInfo.getType())
@@ -180,7 +171,6 @@ class SevoPediaBuild:
 			szText = localText.getText(txtKeyNone, ())
 			yPanelCenter = self.Y_IMPROVEMENTS + (self.H_IMPROVEMENTS / 2)
 			screen.addMultilineText(textName, szText, self.X_IMPROVEMENTS + 7, yPanelCenter, self.W_IMPROVEMENTS - 14, self.H_IMPROVEMENTS - 20, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
-
 
 	def placeFeatureProduction(self):
 		screen = self.top.getScreen()
@@ -199,7 +189,6 @@ class SevoPediaBuild:
 
 		for iTech, unused_iModifier in techModifiers:
 			screen.attachImageButton(panelName, "", gc.getTechInfo(iTech).getButton(), GenericButtonSizes.BUTTON_SIZE_CUSTOM, WidgetTypes.WIDGET_PEDIA_JUMP_TO_TECH, iTech, 1, False)
-
 
 	def placeUnitsBuild(self):
 		screen = self.top.getScreen()
@@ -227,7 +216,6 @@ class SevoPediaBuild:
 			szText = localText.getText(txtKeyNone, ())
 			yPanelCenter = self.Y_UNITS_BUILD + (self.H_UNITS_BUILD / 2)
 			screen.addMultilineText(textName, szText, self.X_UNITS_BUILD + 7, yPanelCenter, self.W_UNITS_BUILD - 14, self.H_UNITS_BUILD - 20, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
-
 
 	def placeFeatureStructs(self):
 		screen = self.top.getScreen()
@@ -301,7 +289,6 @@ class SevoPediaBuild:
 					else:
 						screen.setImageButtonAt(self.top.getNextWidgetName(), panelName, buttonArt, x, buttonTopRel, buttonRowH, buttonRowH, WidgetTypes.WIDGET_PEDIA_JUMP_TO_FEATURE, buttonId, 1)
 
-
 	def placeSpecial(self):
 		screen = self.top.getScreen()
 		panelName = self.top.getNextWidgetName()
@@ -341,7 +328,6 @@ class SevoPediaBuild:
 		listName = self.top.getNextWidgetName()
 		screen.addMultilineText(listName, szSpecialText, self.X_SPECIAL + 10, self.Y_SPECIAL + 30, self.W_SPECIAL - 20, self.H_SPECIAL - 40, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
 
-
 	def placeHistory(self):
 		screen = self.top.getScreen()
 		panel = self.top.getNextWidgetName()
@@ -352,7 +338,6 @@ class SevoPediaBuild:
 
 		szHistory = info.getCivilopedia()
 		screen.addMultilineText(text, szHistory, self.X_HISTORY + 10, self.Y_HISTORY + 30, self.W_HISTORY - 20, self.H_HISTORY - 40, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
-
 
 	def handleInput(self, inputClass):
 		return 0
