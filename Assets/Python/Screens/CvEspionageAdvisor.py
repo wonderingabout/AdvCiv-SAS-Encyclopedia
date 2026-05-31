@@ -307,7 +307,6 @@ class CvEspionageAdvisor:
 				else:
 					szText = u"<font=2><color=192,0,0,0>%s</color></font>" %(localText.getText("TXT_KEY_ESPIONAGE_NUM_EPS_PER_TURN", (pActivePlayer.getEspionageSpending(iTargetTeam), )))
 
-
 				screen.setLabelAt( szName, attach, szText, 0, 247, iY - 1, self.Z_CONTROLS, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1 )
 
 				szName = "SpendingIcon%d" %(iPlayerID)
@@ -328,7 +327,6 @@ class CvEspionageAdvisor:
 				szName = "DecreaseButton%d" %(iPlayerID)
 				self.aszDecreaseButtons.append(szName)
 				screen.setImageButtonAt( szName, attach, ArtFileMgr.getInterfaceArtInfo("INTERFACE_BUTTONS_MINUS").getPath(), 68, iY + 1, iSize, iSize, WidgetTypes.WIDGET_GENERAL, self.iDecreaseButtonID, iPlayerID )
-
 
 				iPlayerLoop += 1
 
@@ -410,7 +408,6 @@ class CvEspionageAdvisor:
 				screen.deleteWidget(szName)
 				screen.setLabelAt( szName, attach, szText, 0, 3, iY - 9, self.Z_CONTROLS, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1 )
 
-
 				iPlayerLoop += 1
 
 			# Is there any other players which have been met?
@@ -471,7 +468,6 @@ class CvEspionageAdvisor:
 				screen.setTableColumnHeader(szMissionsTable, 2, "", self.W_TABLE_2)
 				screen.setTableColumnHeader(szMissionsTable, 3, "", self.W_TABLE_3)
 
-
 				# Loop through all Missions
 				for iPass in range(3): # advc.120d
 					for iMissionLoop in range(gc.getNumEspionageMissionInfos()):
@@ -498,7 +494,6 @@ class CvEspionageAdvisor:
 
 							if (self.iActiveCityID != -1 and pMission.isTargetsCity()):
 								pPlot = pActiveCity.plot()
-
 
 							if (self.iActiveCityID != -1 or not pMission.isTargetsCity()):
 
@@ -637,7 +632,6 @@ class CvEspionageAdvisor:
 					self.iActiveCityID = -1
 
 				CyInterface().setDirty(InterfaceDirtyBits.Espionage_Advisor_DIRTY_BIT, True)
-
 
 			##### City Listbox #####
 			if ("%s%d" %(inputClass.getFunctionName(), inputClass.getID()) == self.szCityListBox):

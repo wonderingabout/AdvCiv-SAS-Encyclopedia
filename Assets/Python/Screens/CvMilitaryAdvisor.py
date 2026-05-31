@@ -149,8 +149,6 @@ class CvMilitaryAdvisor:
 		# <!-- custom: cache the define lookup once. (GPT-5.2-Codex (summarized)). Note: done here rather than in init since it doesn't work in many ingame py file (tech chooser, main interface for those i tried), so use safer pattern reliably rather -->
 		self.IS_SAS_CV_MILITARY_ADVISOR_UNIT_COMBATS_UNITS_BUTTONS = (gc.getDefineINT("SAS_CV_MILITARY_ADVISOR_UNIT_COMBATS_UNITS_BUTTONS") > 0)
 
-
-
 	def getScreen(self):
 		return CyGInterfaceScreen(self.MILITARY_SCREEN_NAME, self.screenId)
 
@@ -244,7 +242,6 @@ class CvMilitaryAdvisor:
 			screen.setStackedBarColors(self.GREAT_GENERAL_BAR_ID, InfoBarTypes.INFOBAR_EMPTY, gc.getInfoTypeForString("COLOR_EMPTY"))
 			screen.setBarPercentage(self.GREAT_GENERAL_BAR_ID, InfoBarTypes.INFOBAR_STORED, float(iExperience) / float(gc.getPlayer(self.iActivePlayer).greatPeopleThreshold(true)))
 			screen.setLabel(self.GREAT_GENERAL_LABEL_ID, "", localText.getText("TXT_KEY_MISC_COMBAT_EXPERIENCE", ()), CvUtil.FONT_CENTER_JUSTIFY, self.X_GREAT_GENERAL_BAR + self.W_GREAT_GENERAL_BAR/2, self.Y_GREAT_GENERAL_BAR + 6, 0, FontTypes.GAME_FONT, WidgetTypes.WIDGET_HELP_GREAT_GENERAL, -1, -1)
-
 
 	# returns a unique ID for a widget in this screen
 	def getNextWidgetName(self):
@@ -526,8 +523,6 @@ class CvMilitaryAdvisor:
 				if self.IS_SAS_CV_MILITARY_ADVISOR_UNIT_COMBATS_UNITS_BUTTONS and szButton:
 					screen.setImageButton(szIconName, szButton, iIconX, iIconY, iIconSize, iIconSize, iWidget, iData1, iData2)
 
-
-
 	def refresh(self, bReload):
 
 		if (self.iActivePlayer < 0):
@@ -573,8 +568,4 @@ class CvMilitaryAdvisor:
 				screen.setState(self.getLeaderButton(iLoopPlayer), (iLoopPlayer in self.selectedPlayerList))				
 
 		self.refreshUnitSelection(bReload)
-
-
-
-
 

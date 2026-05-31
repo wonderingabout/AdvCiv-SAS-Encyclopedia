@@ -63,7 +63,6 @@ promotionsVerticalMargin = 20
 promotionsHorizontalSpacing = 75
 promotionsVerticalSpacing = 5
 
-
 ################################### BEGIN CLASS DEFINITIONS ###########################################
 #Don't change below unless you know what you're doing
 
@@ -291,7 +290,6 @@ class UnitUpgradesGraph:
 					if (not mGraph.graph.has_key(u)):
 						node.upgradesFrom.remove(u)
 
-
 			nextDummy = -1
 			#For any upgrade path that crosses more than one level, insert dummy nodes in between
 			for (unitA, nodeA) in mGraph.graph.items():
@@ -317,7 +315,6 @@ class UnitUpgradesGraph:
 							nextDummy -= 1
 						nodeA.upgradesTo.add(unitB)
 						nodeB.upgradesFrom.add(nextDummy + 1)
-
 
 			#Now we can build the matrix from the order data
 			#make sure the matrix is <depth> deep
@@ -594,7 +591,6 @@ class PromotionsGraph(UnitUpgradesGraph):
 
 	def unitToString(self, unit):
 		return gc.getPromotionInfo(unit).getDescription() + ":%d"%(unit, )
-
 
 	def placeOnScreen(self, screen, unit, xPos, yPos):
 		screen.setImageButtonAt(self.pediaScreen.getNextWidgetName(), self.upgradesList, gc.getPromotionInfo(unit).getButton(), xPos, yPos, self.buttonSize, self.buttonSize, WidgetTypes.WIDGET_PEDIA_JUMP_TO_PROMOTION, unit, 1)

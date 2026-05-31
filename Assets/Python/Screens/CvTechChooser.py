@@ -397,7 +397,6 @@ class CvTechChooser:
 #			screen.show(self.TabPanels[1])
 #			screen.setFocus(self.TabPanels[1])
 
-
 	def DrawTechChooser(self, screen, sPanel, bTechPanel, bTechName, bTechIcon, bTechDetails, bANDPreReq, bORPreReq):
 #		BugUtil.debug("cvTechChooser: DrawTechChooser (%s)", sPanel)
 #		self.timer.reset()
@@ -1387,8 +1386,6 @@ class CvTechChooser:
 					CvScreensInterface.pediaJumpToBuild((inputClass.getData2(),))
 					return 1
 
-
-
 		return 0
 
 	def getNextWidgetName(self, sName):
@@ -1408,10 +1405,6 @@ class CvTechChooser:
 		self.nWidgetCount = 0
 		self.sWidgets = []
 		return
-
-
-
-
 
 	def getXStart(self):
 		return ( self.BOX_INCREMENT_WIDTH * self.PIXEL_INCREMENT )

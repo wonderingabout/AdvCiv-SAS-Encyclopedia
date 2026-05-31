@@ -11,7 +11,6 @@ import Popup as PyPopup
 from PyHelpers import PyPlayer, PyInfo
 import CvEventManager
 
-
 # globals
 gc = CyGlobalContext()
 game = CyGame()
@@ -34,11 +33,9 @@ class Tester :
 
 		self.customEM.removeEventHandler( "kbdEvent", self.onKbdEvent )
 
-
 	def blankHandler( self, playerID, netUserData, popupReturn ) :
 		# Dummy handler to take the second event for popup
 		return
-
 
 	def onKbdEvent(self, argsList ):
 		'keypress handler'
@@ -51,7 +48,6 @@ class Tester :
 
 			if( theKey == int(InputTypes.KB_S) and self.customEM.bShift and self.customEM.bCtrl ) :
 				self.showStrandedPopup()
-
 
 	def showStrandedPopup( self ) :
 

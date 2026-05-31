@@ -14,7 +14,6 @@ import CvScreenEnums
 #  Thanks to Lee Reeves, AKA Taelis on civfanatics.com
 #  Thanks to Solver
 
-
 # globals
 gc = CyGlobalContext()
 ArtFileMgr = CyArtFileMgr()

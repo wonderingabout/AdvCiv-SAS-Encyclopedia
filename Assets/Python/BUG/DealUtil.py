@@ -32,12 +32,10 @@ import BugDll
 import PlayerUtil
 import TradeUtil
 
-
 ## Constants
 
 GOLD_TRADE_ITEMS = (TradeableItems.TRADE_GOLD, TradeableItems.TRADE_GOLD_PER_TURN)
 VASSAL_TRADE_ITEMS = (TradeableItems.TRADE_VASSAL, TradeableItems.TRADE_SURRENDER)
-
 
 ## Globals
 
@@ -45,7 +43,6 @@ gc = CyGlobalContext()
 
 g_eventManager = None
 g_lastDealCount = 0
-
 
 ## Deal Functions
 
@@ -91,7 +88,6 @@ def findDealsByPlayerAndType(ePlayer, types):
 		for type in matches:
 			found.setdefault(deal.getOtherPlayer(), {})[type] = deal
 	return found
-
 
 ## TradeableItem Functions
 
@@ -139,7 +135,6 @@ def isVassal(eItem):
 def isEndWar(eItem):
 	return eItem == TradeableItems.TRADE_PEACE_TREATY or isVassal(eItem)
 
-
 ## Initialization and Events
 
 def addEvents(eventManager):
@@ -161,7 +156,6 @@ def onGameUpdate(argsList):
 		g_eventManager.fireEvent("DealCanceled", -1, -1, None)
 	else:
 		g_lastDealCount = count
-
 
 ## Wrapper Classes
 
@@ -284,7 +278,6 @@ class ReversedDeal(Deal):
 		return self.deal.getSecondTrade(index)
 	def getOtherTrade(self, index):
 		return self.deal.getFirstTrade(index)
-
 
 ## Testing
 

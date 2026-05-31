@@ -93,7 +93,6 @@ class Tracker:
 				self.values[eYield][eType] = 0
 		self.tileCounts = [0, 0, 0, 0]
 
-
 	def getYield(self, eYield, eType):
 		return self.values[eYield][eType]
 
@@ -101,7 +100,6 @@ class Tracker:
 		# Adds the given yield value to the given type in the table.
 		#
 		self.values[eYield][eType] += iValue
-
 
 	def addBuilding(self, eYield, iValue):
 		self._addYield(eYield, BUILDINGS, iValue)
@@ -179,7 +177,6 @@ class Tracker:
 			iCharLimit = 8
 			if len(self.sModifierDetail) > (iCharLimit + 1):
 				self.sModifierDetail = (self.sModifierDetail[:iCharLimit] + '.')
-
 
 	def fillTable(self, screen, table, eYield, eTileType):
 		# Fills the given GFC table control with the chosen yield values.

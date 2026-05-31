@@ -272,7 +272,6 @@ class CvForeignAdvisor:
 					screen.appendListBoxString(dealPanelName, CyGameTextMgr().getDealString(deal, iLoopPlayer), WidgetTypes.WIDGET_DEAL_KILL, deal.getID(), -1, CvUtil.FONT_LEFT_JUSTIFY)
 					iRow += 1
 
-
 	def drawPossibleDeals(self):
 
 		screen = self.getScreen()
@@ -509,7 +508,6 @@ class CvForeignAdvisor:
 			iLeaderHeight = self.H_LEADER
 			iLeaderWidth = self.W_LEADER
 
-
 		screen = self.getScreen()
 
 		#screen.addPanel(self.getNextWidgetName(), "", "", False, False, 0, 50, self.W_SCREEN, 667, PanelStyles.PANEL_STYLE_MAIN_WHITE)
@@ -713,7 +711,6 @@ class CvForeignAdvisor:
 							szName = self.getNextLineName()
 							screen.addLineGFC(self.BACKGROUND_ID, szName, int(fXSelected), int(fYSelected), int(self.X_LEADER_CIRCLE_TOP), int(fLeaderTop + iLeaderHeight/2), gc.getInfoTypeForString("COLOR_WHITE") )
 
-
 	# returns a unique ID for a widget in this screen
 	def getNextWidgetName(self):
 		szName = self.WIDGET_ID + str(self.nWidgetCount * NUM_FOREIGN_SCREENS + self.iScreen)
@@ -736,7 +733,6 @@ class CvForeignAdvisor:
 		for i in range(nLines):
 			screen.removeLineGFC(self.BACKGROUND_ID, self.getNextLineName())
 		self.nLineCount = 0	
-
 
 	def deleteAllWidgets(self):
 		screen = self.getScreen()

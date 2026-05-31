@@ -13,8 +13,6 @@
 # Created as part of AdvCiv-SAS improvements
 # (c) 2026 wonderingabout & AI helpers (see Authors in root README.md)
 
-
-
 from CvPythonExtensions import *
 
 import CvUtil
@@ -59,8 +57,6 @@ from _sevopedia_helpers import *
 import _sevopedia_main_groupings as SAS_MainGroupings
 import SASDefineGuard
 
-
-
 gc = CyGlobalContext()
 ArtFileMgr = CyArtFileMgr()
 localText = CyTranslator()
@@ -68,8 +64,6 @@ localText = CyTranslator()
 AdvisorOpt = BugCore.game.Advisors
 
 g_TraitUtilInitDone = False
-
-
 
 class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 
@@ -406,8 +400,6 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 		self.IS_SAS_SEVOPEDIA_MUSIC_LEADER_INTRO_WAR_FIRST_LEADER_ONLY = (gc.getDefineINT("SAS_SEVOPEDIA_MUSIC_LEADER_INTRO_WAR_FIRST_LEADER_ONLY") > 0)
 		self.IS_SAS_SEVOPEDIA_MUSIC_LEADER_WAR_FIRST_LEADER_ONLY = (gc.getDefineINT("SAS_SEVOPEDIA_MUSIC_LEADER_WAR_FIRST_LEADER_ONLY") > 0)
 
-
-
 	# <!-- custom: search bar helper methods (chatgpt 5.2 + claude opus 4.5) -->
 	def SAS_safeDeleteWidget(self, screen, szWidget):
 		try:
@@ -742,7 +734,6 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 		return False
 	# <!-- custom: End - Based on C2C mod's implementation thanks: add navigation of the item list with the UP/DOWN arrow keys. Code adjusted for AdvCiv-SAS with the help of chatgpt 5.2 and claude opus 4.5. -->
 
-
 	def getScreen(self):
 		return CyGInterfaceScreen(self.PEDIA_MAIN_SCREEN, SevoScreenEnums.PEDIA_MAIN)
 
@@ -774,8 +765,6 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 		# This lets players inspect several entries (e.g. Leader AIP pages), exit to the map, reopen Sevopedia,
 		# and still use Back/Next instead of rebuilding the same navigation chain. See KI#125. (GPT-5.5) -->
 		self.pediaJump(current[0], current[1], False, True)
-
-
 
 	def pediaJump(self, iCategory, iItem, bRemoveFwdList, bIsLink):
 		# <!-- custom: note: fixed a (seemingly base advciv) bug in in CvDLLWidgetData.cpp where iItem was -1 for obsolete bonuses redirecting from tech advisor, unlike obsolete buildings which didn't have the issue weirdly/strangely, with chatgpt's help and thanks to my prompt too and observation of the issue and or such but also chatgpt's help in guiding me bit too; i had put a workaround here to use a placeholder for iItem but no needed anymore now that this is fixed so reverted everything as base advciv code was minus this extra code comment, see also code comment at WIDGET_HELP_BONUS_REVEAL in CvDLLWidgetData.cpp or known issue number 22 as of now in known issues of advciv-sas readme for details as well. -->
@@ -1067,8 +1056,6 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 		screen.setText(self.SAS_CLEAR_ID,"Background", self.SAS_CLEAR_TEXT, CvUtil.FONT_LEFT_JUSTIFY,  self.SAS_X_CLEAR, self.SAS_Y_CLEAR, 0, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_GENERAL,      -1, -1)
 		screen.setText(self.EXIT_ID,     "Background", self.EXIT_TEXT,      CvUtil.FONT_RIGHT_JUSTIFY, self.X_EXIT,      self.Y_EXIT,      0, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_CLOSE_SCREEN, -1, -1)
 
-
-
 	def placeCategories(self, iCategory=None):
 		screen = self.getScreen()
 		screen.addListBoxGFC(self.CATEGORY_LIST_ID, "", self.X_CATEGORIES, self.Y_CATEGORIES, self.W_CATEGORIES, self.H_CATEGORIES, TableStyles.TABLE_STYLE_STANDARD)
@@ -1098,7 +1085,6 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 			screen.appendListBoxStringNoUpdate(self.CATEGORY_LIST_ID, szHeading, WidgetTypes.WIDGET_PEDIA_MAIN, category[2], 0, CvUtil.FONT_LEFT_JUSTIFY)
 		screen.updateListBox(self.CATEGORY_LIST_ID)
 
-
 	def placeTechs(self):
 		self.list = self.getTechList()
 		self.placeItems(WidgetTypes.WIDGET_PEDIA_JUMP_TO_TECH, gc.getTechInfo)
@@ -1113,7 +1099,6 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 	def SAS_getTechsGroupedByEra(self):
 		return SAS_MainGroupings.SAS_getTechsGroupedByEra(self.isSortLists())
 
-
 	def getTechList(self):
 		if self.SAS_cacheTechsTuple is None:
 			if self.IS_SAS_SEVOPEDIA_MAIN_TECHS_GROUP_BY_ERA:
@@ -1122,7 +1107,6 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 				# <!-- custom: base advciv's formula, only difference is we cache it now -->
 				self.SAS_cacheTechsTuple = tuple(self.getSortedList(gc.getNumTechInfos(), gc.getTechInfo))
 		return self.SAS_cacheTechsTuple
-
 
 	def placeUnits(self):
 		self.list = self.getUnitList()
@@ -1134,7 +1118,6 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 	def SAS_getUnitsGroupedByEra_fromBaseList(self, baseList):
 		return SAS_MainGroupings.SAS_getUnitsGroupedByEra_fromBaseList(baseList, False, self.SAS_getUnitAvailabilityEra)
 
-
 	# <!-- custom: similarly, in sevopedia units, group units by era (based on prereq tech) instead of one long list. Code added with the help of chatgpt 5.2 thanks -->
 	def getUnitList(self):
 		if self.SAS_cacheUnitsTuple is None:
@@ -1144,7 +1127,6 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 			else:
 				self.SAS_cacheUnitsTuple = tuple(baseList)
 		return self.SAS_cacheUnitsTuple
-
 
 	def placeUnitUpgrades(self):
 		screen = self.getScreen()
@@ -1183,7 +1165,6 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 		self.SAS_prepareSpecialPageDeletingItemList(screen)
 		self.pediaEraChart.interfaceScreen()
 
-
 	def placeUnitCategories(self):
 		self.list = self.getUnitCategoryList()
 		self.placeItems(WidgetTypes.WIDGET_PEDIA_JUMP_TO_UNIT_COMBAT, gc.getUnitCombatInfo)
@@ -1191,14 +1172,12 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 	def getUnitCategoryList(self):
 		return self.getSortedList(gc.getNumUnitCombatInfos(), gc.getUnitCombatInfo)
 
-
 	def placePromotions(self):
 		self.list = self.getPromotionList()
 		self.placeItems(WidgetTypes.WIDGET_PEDIA_JUMP_TO_PROMOTION, gc.getPromotionInfo)
 
 	def getPromotionList(self):
 		return self.getSortedList(gc.getNumPromotionInfos(), gc.getPromotionInfo)
-
 
 	def placePromotionTree(self):
 		screen = self.getScreen()
@@ -1216,7 +1195,6 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 		upgradesGraph = UnitUpgradesGraph.PromotionsGraph(self)
 		upgradesGraph.getGraph()
 		upgradesGraph.drawGraph()
-
 
 	def placeBuildings(self):
 		self.list = self.getBuildingList()
@@ -1257,7 +1235,6 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 				self.SAS_cacheRegularBuildingsTuple = tuple(baseList)
 		return self.SAS_cacheRegularBuildingsTuple
 
-
 	def placeNationalWonders(self):
 		self.list = self.getNationalWonderList()
 		self.placeItems(WidgetTypes.WIDGET_PEDIA_JUMP_TO_BUILDING, gc.getBuildingInfo)
@@ -1273,7 +1250,6 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 			if self.SAS_cacheNationalWondersTuple is None:
 				self.SAS_cacheNationalWondersTuple = tuple(self.getBuildingSortedList(1))
 			return self.SAS_cacheNationalWondersTuple
-
 
 	def placeWorldWonders(self):
 		self.list = self.getWorldWonderList()
@@ -1291,7 +1267,6 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 				self.SAS_cacheWorldWondersTuple = tuple(self.getBuildingSortedList(2))
 			return self.SAS_cacheWorldWondersTuple
 
-
 	def placeProjects(self):
 		self.list = self.getProjectList()
 		self.placeItems(WidgetTypes.WIDGET_PEDIA_JUMP_TO_PROJECT, gc.getProjectInfo)
@@ -1308,7 +1283,6 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 
 		return -1  # "No Tech Prerequisite" bucket
 
-
 	# Helper we can reuse for project lists, with the help of chatgpt 5.2 thanks.
 	def SAS_getProjectsGroupedByEra_fromBaseList(self, baseList):
 		return SAS_MainGroupings.SAS_getProjectsGroupedByEra_fromBaseList(baseList, False, self.SAS_getProjectAvailabilityEra)
@@ -1323,7 +1297,6 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 				self.SAS_cacheProjectsTuple = tuple(baseList)
 		return self.SAS_cacheProjectsTuple
 
-
 	def placeSpecialists(self):
 		self.list = self.getSpecialistList()
 		self.placeItems(WidgetTypes.WIDGET_PEDIA_JUMP_TO_SPECIALIST, gc.getSpecialistInfo)
@@ -1331,7 +1304,6 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 	# Helper to group specialists by type (e.g. Engineer vs Great Engineer). Great specialists are identified by "GREAT_" in SpecialistInfo.getType(), matching RFC DoC's convention.
 	def SAS_getSpecialistsGroupedByType(self):
 		return SAS_MainGroupings.SAS_getSpecialistsGroupedByType(self.isSortLists())
-
 
 	def getSpecialistList(self):
 		if self.SAS_cacheSpecialistsTuple is None:
@@ -1341,7 +1313,6 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 				self.SAS_cacheSpecialistsTuple = tuple(self.getSortedList(gc.getNumSpecialistInfos(), gc.getSpecialistInfo))
 		return self.SAS_cacheSpecialistsTuple
 
-
 	def placeTerrains(self):
 		self.list = self.getTerrainList()
 		self.placeItems(WidgetTypes.WIDGET_PEDIA_JUMP_TO_TERRAIN, gc.getTerrainInfo)
@@ -1349,7 +1320,6 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 	def SAS_getTerrainsGroupedByLandWater_fromBaseList(self, baseList):
 		return SAS_MainGroupings.SAS_getTerrainsGroupedByLandWater_fromBaseList(
 			baseList, False, self.SAS_SEVOPEDIA_TERRAIN_GRAPHICAL_ONLY_HIGH_IDS)
-
 
 	def getTerrainList(self):
 		if self.SAS_cacheTerrainsTuple is None:
@@ -1376,7 +1346,6 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 		return SAS_MainGroupings.SAS_getFeaturesGroupedByLandWater_fromBaseList(
 			baseList, False, self.SAS_SEVOPEDIA_TERRAIN_GRAPHICAL_ONLY_HIGH_IDS)
 
-
 	def getFeatureList(self):
 		if self.SAS_cacheFeaturesTuple is None:
 			baseList = self.getSortedList(gc.getNumFeatureInfos(), gc.getFeatureInfo)
@@ -1385,7 +1354,6 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 			else:
 				self.SAS_cacheFeaturesTuple = tuple(baseList)
 		return self.SAS_cacheFeaturesTuple
-
 
 	def placeBonuses(self):
 		self.list = self.getBonusList()
@@ -1398,7 +1366,6 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 		return SAS_MainGroupings.SAS_getBonusesGroupedByImprovement_fromBaseList(
 			baseList, False)
 
-
 	def getBonusList(self):
 		if self.SAS_cacheBonusesTuple is None:
 			baseList = self.getSortedList(gc.getNumBonusInfos(), gc.getBonusInfo)
@@ -1407,7 +1374,6 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 			else:
 				self.SAS_cacheBonusesTuple = tuple(baseList)
 		return self.SAS_cacheBonusesTuple
-
 
 	def placeImprovements(self):
 		self.list = self.getImprovementList()
@@ -1421,14 +1387,12 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 	def SAS_isBonusCapableImprovement(self, iImprovement):
 		return SAS_MainGroupings.SAS_isBonusCapableImprovement(iImprovement)
 
-
 	def SAS_isFoodYieldImprovement(self, iImprovement):
 		return SAS_MainGroupings.SAS_isFoodYieldImprovement(iImprovement)
 
 	def SAS_getImprovementsGroupedByTerrain_fromBaseList(self, baseList):
 		return SAS_MainGroupings.SAS_getImprovementsGroupedByTerrain_fromBaseList(
 			baseList, False)
-
 
 	def getImprovementList(self):
 		if self.SAS_cacheImprovementsTuple is None:
@@ -1463,7 +1427,6 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 		return SAS_MainGroupings.SAS_getBuildsGroupedByType_fromBaseList(
 			baseList, False)
 
-
 	def getBuildList(self):
 		if self.SAS_cacheBuildsTuple is None:
 			baseList = self.getSortedList(gc.getNumBuildInfos(), gc.getBuildInfo)
@@ -1472,7 +1435,6 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 			else:
 				self.SAS_cacheBuildsTuple = tuple(baseList)
 		return self.SAS_cacheBuildsTuple
-
 
 	def placeCivs(self):
 		self.list = self.getCivilizationList()
@@ -1501,7 +1463,6 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 
 		return r # </advc.004y>
 
-
 	def placeLeaders(self):
 		self.list = self.getLeaderList()
 		self.placeItems(WidgetTypes.WIDGET_PEDIA_JUMP_TO_LEADER, gc.getLeaderHeadInfo)
@@ -1524,7 +1485,6 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 		if len(r) > 0 and gc.getLeaderHeadInfo(r[0][1]).getWonderConstructRand() <= 0:
 			r.pop(0)
 		return r # </advc.004y>
-
 
 	# <!-- custom: Sevopedia Traits rework - Previously traits used a hacky CONCEPT_TRAIT_* wrapper approach where
 	# trait entries were stored as NewConcept entries and required extracting the actual TraitInfo via string parsing.
@@ -1583,7 +1543,6 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 	def SAS_getCivicsGroupedByCivicOption(self):
 		return SAS_MainGroupings.SAS_getCivicsGroupedByCivicOption(self.isSortLists())
 
-
 	def getCivicList(self):
 		if self.SAS_cacheCivicsTuple is None:
 			if self.IS_SAS_SEVOPEDIA_MAIN_CIVICS_GROUP_BY_CIVIC_TYPES:
@@ -1591,7 +1550,6 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 			else:
 				self.SAS_cacheCivicsTuple = tuple(self.getSortedList(gc.getNumCivicInfos(), gc.getCivicInfo))
 		return self.SAS_cacheCivicsTuple
-
 
 	def placeReligions(self):
 		self.list = self.getReligionList()
@@ -1623,7 +1581,6 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 				self.SAS_cacheReligionsTuple = tuple(baseList)
 		return self.SAS_cacheReligionsTuple
 
-
 	def placeCorporations(self):
 		self.list = self.getCorporationList()
 		self.placeItems(WidgetTypes.WIDGET_PEDIA_JUMP_TO_CORPORATION, gc.getCorporationInfo)
@@ -1652,7 +1609,6 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 	def getConceptList(self):
 		return self.getSortedList(gc.getNumConceptInfos(), gc.getConceptInfo)
 
-
 	def placeBTSConcepts(self):
 		self.list = self.getNewConceptList()
 		self.placeItems(WidgetTypes.WIDGET_PEDIA_DESCRIPTION, self.getNewConceptInfo)
@@ -1667,7 +1623,6 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 		if not self.isShortcutInfo(info):
 			return info
 		return None
-
 
 	def placeHints(self):
 		screen = self.getScreen()
@@ -1687,7 +1642,6 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 				screen.appendListBoxStringNoUpdate(szHintBox, hint, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
 		screen.updateListBox(szHintBox)
 
-
 	def placeShortcuts(self):
 		self.list = self.getSortedList(gc.getNumNewConceptInfos(), self.getShortcutInfo)
 		self.placeItems(WidgetTypes.WIDGET_PEDIA_DESCRIPTION, self.getShortcutInfo)
@@ -1706,7 +1660,6 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 		self.list = self.getMusicList()
 		self.placeItems(WidgetTypes.WIDGET_PYTHON, self.getMusicInfo)
 
-
 	def getMovieList(self):
 		# <!-- custom: build base list in groupings module, then add headers there. (ChatGPT-5.2 Thinking) -->
 		if self.SAS_cacheMoviesTuple is None:
@@ -1721,7 +1674,6 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 			)
 			self.SAS_cacheMoviesTuple = tuple(listEntries)
 		return self.SAS_cacheMoviesTuple
-
 
 	def getMusicList(self):
 		# <!-- custom: build music base lists + section headers in groupings module to keep this file clean. (ChatGPT-5.2 Thinking) -->
@@ -2033,7 +1985,6 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 					raise Exception("SevoPediaMain: cannot decode '%s': %r" % (context, value))
 		return unicode(value)
 
-
 	def placeItems(self, widget, info):
 		screen = self.getScreen()
 
@@ -2247,8 +2198,6 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 			i += 1
 		#screen.updateListBox(self.ITEM_LIST_ID)
 
-
-
 	def back(self):
 		if (len(self.pediaHistory) > 1):
 			self.pediaFuture.append(self.pediaHistory.pop())
@@ -2256,14 +2205,11 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 			self.pediaJump(current[0], current[1], False, True)
 		return 1
 
-
-
 	def forward(self):
 		if (self.pediaFuture):
 			current = self.pediaFuture.pop()
 			self.pediaJump(current[0], current[1], False, True)
 		return 1
-
 
 	def SAS_clearNavigation(self):
 		self.pediaFuture = []
@@ -2298,8 +2244,6 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 		screen.setText(self.SAS_CLEAR_ID, "Background", szClearText,   CvUtil.FONT_LEFT_JUSTIFY,  self.SAS_X_CLEAR, self.SAS_Y_CLEAR, 0, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_GENERAL,      -1, -1)
 		screen.setText(self.EXIT_ID,      "Background", self.EXIT_TEXT, CvUtil.FONT_RIGHT_JUSTIFY, self.X_EXIT,      self.Y_EXIT,      0, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_CLOSE_SCREEN, -1, -1)
 
-
-
 	def link(self, szLink):
 		iCategory = self.SAS_mainLinkToCategory.get(szLink, None)
 		if iCategory is not None:
@@ -2312,8 +2256,6 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 				info = getInfo(i)
 				if info and info.isMatchForLink(szLink, False):
 					return self.pediaJump(iCategory, i, True, True)
-
-
 
 	def handleInput (self, inputClass):
 		if self.pediaMusic.handleOverlayInput(inputClass):
@@ -2526,15 +2468,11 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 		return 0
 		# <!-- custom: End - search bar for the left item list (chatgpt 5.2 + claude opus 4.5) -->
 
-
-
 	def update(self, fDelta):
 		if self.pediaMovies.isMoviePlayerOpen():
 			self.pediaMovies.updateTimer(fDelta)
 		if self.pediaMusic.isMusicPlayerOpen():
 			self.pediaMusic.updateTimer(fDelta)
-
-
 
 	def deleteAllWidgets(self):
 		screen = self.getScreen()
@@ -2565,7 +2503,6 @@ class SevoPediaMain(CvPediaScreen.CvPediaScreen):
 		szName = self.WIDGET_ID + str(self.nWidgetCount)
 		self.nWidgetCount += 1
 		return szName
-
 
 	def isSortLists(self):
 		return AdvisorOpt.SevopediaSortItemList()

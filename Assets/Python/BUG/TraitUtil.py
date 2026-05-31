@@ -48,7 +48,6 @@ def addTrait(trait, icon, button):
 		if button is not None:
 			TRAIT_BUTTONS[eTrait] = button
 
-
 def getIcon(eTrait):
 	if eTrait in TRAIT_ICONS:
 		return TRAIT_ICONS[eTrait]

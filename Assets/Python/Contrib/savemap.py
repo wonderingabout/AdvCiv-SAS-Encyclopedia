@@ -148,7 +148,6 @@ def savemap(argsList=None):
 			if(pPlot.isWOfRiver()):
 				riverns[pIndex] = int(pPlot.getRiverNSDirection())
 
-
 	# write mapscript
 	# <advc.savem>
 	mapScriptName = str(map.getMapScriptName())

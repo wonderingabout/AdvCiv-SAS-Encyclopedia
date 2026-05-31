@@ -12,7 +12,6 @@
 import BugOptions
 import BugUtil
 
-
 ## Game and Mods
 
 class Game(object):
@@ -90,7 +89,6 @@ class Game(object):
 	def _addScreen(self, screen):
 		self._screens[screen.id] = screen
 
-
 class Mod(object):
 	# Provides Option accessors.
 
@@ -137,7 +135,6 @@ class Mod(object):
 					return lambda *ignored: False
 		raise AttributeError(id)
 
-
 	def _createParameterizedAccessorPair(self, id, getter=None, setter=None, values=None):
 		id = BugOptions.qualify(self._id, id)
 		if getter:
@@ -159,7 +156,6 @@ class Mod(object):
 				option = self._getOption(id % args)
 				option.setValue(value)
 			setattr(self, setter, set)
-
 
 game = Game()
 

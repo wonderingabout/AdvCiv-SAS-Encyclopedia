@@ -160,7 +160,6 @@ def onDealCanceled(argsList):
 	#
 	CyInterface().setDirty(InterfaceDirtyBits.Score_DIRTY_BIT, True)
 
-
 class Column:
 
 	def __init__(self, key, id, type=SKIP, text=None, alt=None):
@@ -187,7 +186,6 @@ class Column:
 
 	def isSpecial(self):
 		return self.type == SPECIAL
-
 
 class Scoreboard:
 	# Holds and builds the ScoreCards.
@@ -219,7 +217,6 @@ class Scoreboard:
 
 	def size(self):
 		return len(self._playerScores)
-
 
 	def setAlive(self):
 		self._set(ALIVE)
@@ -314,7 +311,6 @@ class Scoreboard:
 	def setWorstEnemy(self):
 		self._set(WORST_ENEMY)
 
-
 	def setWaiting(self):
 		self._set(WAITING)
 
@@ -358,7 +354,6 @@ class Scoreboard:
 	def _set(self, part, value=True, widget=None):
 		self._anyHas[part] = True
 		self._currPlayerScore.set(part, value, widget)
-
 
 	def assignRanks(self):
 		# Assigns a rank from 1 to N based on score.
@@ -416,7 +411,6 @@ class Scoreboard:
 					sName = "ScoreText%d-%d" %(iPlayer, iPart)
 					screen.show(sName)
 
-
 	# Both cut from CvMainInterface.updateScoreStrings
 	@staticmethod
 	def isShowTeamScore(iTeam):
@@ -444,8 +438,6 @@ class Scoreboard:
 		# BUG - Dead Civs:
 		return ((ScoreOpt.isShowDeadCivs() and p.isEverAlive()) or p.isAlive())
 	# </advc.085>
-
-
 
 	def draw(self, screen):
 		# Sorts and draws the scoreboard right-to-left, bottom-to-top.
@@ -701,7 +693,6 @@ class Scoreboard:
 		#screen.show( "ScoreBackground" ) # advc.004z: Handled by caller now
 		timer.log()
 
-
 class TeamScores:
 	def __init__(self, scoreboard, team, rank):
 		self._scoreboard = scoreboard
@@ -752,7 +743,6 @@ class TeamScores:
 			if self._master is None:
 				self._isVassal = False
 			# K-Mod end
-
 
 class PlayerScore:
 	def __init__(self, teamScore, player, rank):

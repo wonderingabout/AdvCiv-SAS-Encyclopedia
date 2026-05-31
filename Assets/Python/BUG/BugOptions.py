@@ -87,7 +87,6 @@
 ##
 ## Author: EmperorFool
 
-
 # Options holds all of the options in a map from string ID to Option and the
 # INI file facades in a map from string ID to IniFile.
 #
@@ -103,7 +102,6 @@
 #     or
 #   if g_options.Autolog.LogBuildCompleted: ...
 #
-
 
 from CvPythonExtensions import *
 import BugConfig
@@ -166,7 +164,6 @@ class Options(object):
 			for file in self.files.itervalues():
 				file.write()
 
-
 	def findOption(self, id):
 		# Returns the Option with the given ID or returns None of not found.
 		if (id in self.options):
@@ -199,7 +196,6 @@ class Options(object):
 		for option in self.options.itervalues():
 			option.resetValue()
 
-
 	def createFileGetter(self, file):
 		# Creates a getter for the given IniFile.
 		def get():
@@ -207,7 +203,6 @@ class Options(object):
 		getter = "get" + file.id
 		setattr(self, getter, get)
 		BugUtil.debug("BugOptions - %s will return IniFile %s", getter, file.id)
-
 
 # The singleton Options object that holds all Option and IniFile objects.
 
@@ -234,7 +229,6 @@ def read():
 
 def write():
 	g_options.write()
-
 
 class IniFile(object):
 	# Controls reading/writing an INI file and getting/setting Option values.
@@ -326,7 +320,6 @@ class IniFile(object):
 		else:
 			BugUtil.warn("BugOptions - INI file '%s' was never read", self.name)
 
-
 	def exists(self, section, key=None):
 		return self.config and section in self.config and (key is None or key in self.config[section])
 
@@ -360,7 +353,6 @@ class IniFile(object):
 			return self.getSection(section).as_float(key)
 		return default
 
-
 	def setString(self, section, key, value):
 		return self.setValue(section, key, str(value))
 
@@ -390,7 +382,6 @@ class IniFile(object):
 				return True
 		#BugUtil.debug("BugOptions - option %s.%s not changed", section, key)
 		return False
-
 
 NONE_TYPE = "none"
 TYPE_REPLACE = {
@@ -487,7 +478,6 @@ class AbstractOption(object):
 	def getDefaultResetterName(self):
 		return "reset" + self.getTrimmedID()
 
-
 #	def getType(self):
 #		return NONE_TYPE
 
@@ -511,7 +501,6 @@ class AbstractOption(object):
 
 	def __str__(self):
 		return "<%s %s [%s]>" % (self.id, self.getType(), str(self.getDefault()))
-
 
 	def createAccessorPair(self, getter=None, setter=None):
 		# Creates a pair of plain accessors (getter and setter) for this Option.
@@ -612,7 +601,6 @@ class AbstractOption(object):
 	def bindAccessor(self, name, function):
 		setattr(self.mod, name, function)
 
-
 	def hasValue(self, *args):
 		return self.getRawValue() is not None
 
@@ -698,7 +686,6 @@ class AbstractOption(object):
 		BugUtil.debug("BugOptions - resetting %s", self.getID())
 		self.setValue(self.getDefault(), *args)
 
-
 class BaseOption(AbstractOption):
 	#
 	# Holds the metadata for a single option.
@@ -737,13 +724,11 @@ class BaseOption(AbstractOption):
 		if dirty:
 			self.addDirty(dirty)
 
-
 	def getType(self):
 		return self.type
 
 	def getDefault(self):
 		return self.default
-
 
 	def getTitle(self):
 		if (not self.translated):
@@ -794,7 +779,6 @@ class BaseOption(AbstractOption):
 		"Marks this option so that it will be translated again the next time it is accessed"
 		self.translated = False
 
-
 	def onChanged(self, *args):
 		if not BugInit.g_initRunning:
 			self.doDirties(*args)
@@ -840,7 +824,6 @@ class BaseOption(AbstractOption):
 			value = self.getValue()
 			for func in self.dirtyFunctions:
 				func(self, value)
-
 
 LIST_TYPES = ("string", "int", "float", "color")
 
@@ -909,7 +892,6 @@ class BaseListOption(BaseOption):
 	def __str__(self):
 		return "<%s %s [%s] list (%d %ss)>" % (self.id, self.type, str(self.default), len(self.values), self.listType)
 
-
 	def getValues(self):
 		return self.values
 
@@ -963,7 +945,6 @@ class BaseListOption(BaseOption):
 				# Munge values based on type or create different comparator functions
 				self.createComparer(name, values)
 
-
 	def getFormat(self):
 		return self.format
 
@@ -1005,7 +986,6 @@ class BaseListOption(BaseOption):
 				self.displayValues = self.values
 		super(BaseListOption, self).translate()
 
-
 	def isValid(self, value):
 		return value in self.values
 
@@ -1036,13 +1016,11 @@ class BaseListOption(BaseOption):
 		else:
 			self.setValue(self.values[index], *args)
 
-
 ## ------ UNSAVED OPTIONS -----------------------------------------------------
 
 class UnsavedMixin(object):
 
 	# Stores its value in memory only, never reading it from or writing it to disk.
-
 
 	def __init__(self, value):
 		# Sets the value to the one passed in, typically the default value.
@@ -1068,7 +1046,6 @@ class UnsavedListOption(UnsavedMixin, BaseListOption):
 	def __init__(self, mod, id, type=None, default=None, andId=None, dll=None, listType="string", values=None, format=None, title=None, tooltip=None, dirty=None):
 		BaseListOption.__init__(self, mod, id, type, default, andId, dll, listType, values, format, title, tooltip, dirty)
 		UnsavedMixin.__init__(self, self.default)
-
 
 ## ------ INI FILE OPTIONS ----------------------------------------------------
 
@@ -1147,7 +1124,6 @@ class IniListOption(IniMixin, BaseListOption):
 		BaseListOption.__init__(self, mod, id, type, default, andId, dll, listType, values, format, title, tooltip, dirty)
 		IniMixin.__init__(self, file, section, key)
 
-
 ## ------ LINKED OPTIONS ------------------------------------------------------
 
 class LinkedOption(AbstractOption):
@@ -1197,7 +1173,6 @@ class LinkedOption(AbstractOption):
 
 	def _setValue(self, value, *args):
 		return self.option._setValue(value, *args)
-
 
 class LinkedListOption(LinkedOption):
 	#
@@ -1264,7 +1239,6 @@ class LinkedListOption(LinkedOption):
 	def setIndex(self, index, *args):
 		self.option.setIndex(index, *args)
 
-
 ## Option IDs
 
 MOD_OPTION_SEP = "__"
@@ -1285,7 +1259,6 @@ def unqualify(optionId):
 		if pos >= 0:
 			return optionId[pos + 2:]
 	return optionId
-
 
 ## Configuration
 
@@ -1308,7 +1281,6 @@ class OptionsHandler(BugConfig.Handler):
 		if ini:
 			ini.read()
 
-
 class SectionHandler(BugConfig.Handler):
 
 	TAG = "section"
@@ -1320,7 +1292,6 @@ class SectionHandler(BugConfig.Handler):
 
 	def handle(self, element, name):
 		element.setState("ini-section", name)
-
 
 class BaseOptionHandler(BugConfig.Handler):
 
@@ -1387,7 +1358,6 @@ class BaseOptionHandler(BugConfig.Handler):
 		element.setState("option", option)
 		return option
 
-
 class OptionHandler(BaseOptionHandler):
 
 	TAG = "option"
@@ -1411,7 +1381,6 @@ class OptionHandler(BaseOptionHandler):
 
 	def handle(self, element, id, type, key, default, andId, dll, label, help, dirtyBit, getter, setter):
 		self.createOption(element, id, type, key, default, andId, dll, label, help, dirtyBit, getter, setter)
-
 
 class ListOptionHandler(BaseOptionHandler):
 
@@ -1443,7 +1412,6 @@ class ListOptionHandler(BaseOptionHandler):
 	def complete(self, element):
 		element.getState("option").createComparers()
 
-
 class ListChoiceHandler(BugConfig.Handler):
 
 	TAG = "choice"
@@ -1457,7 +1425,6 @@ class ListChoiceHandler(BugConfig.Handler):
 	def handle(self, element, id, getter, setter):
 		option = element.getState("option")
 		option.addValue(id, getter, setter)
-
 
 class LinkedOptionHandler(BaseOptionHandler):
 
@@ -1480,7 +1447,6 @@ class LinkedOptionHandler(BaseOptionHandler):
 		else:
 			BugUtil.error("Option ID %s in element <%s> %s not found", to, element.tag, id)
 
-
 class ChangeHandler(BugConfig.Handler):
 
 	TAG = "change"
@@ -1499,7 +1465,6 @@ class ChangeHandler(BugConfig.Handler):
 			option.addDirtyFunction(BugUtil.getFunction(module, function, True))
 		else:
 			raise BugUtil.ConfigError("Element <%s> requires attribute dirtyBit or both module and function", element.tag)
-
 
 class AccessorHandler(BugConfig.Handler):
 

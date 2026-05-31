@@ -3,19 +3,15 @@
 ## 
 ## CvAdvisorUtils
 
-
 from CvPythonExtensions import *
 import PyHelpers
-
 
 gc = CyGlobalContext()
 localText = CyTranslator()
 PyPlayer = PyHelpers.PyPlayer
 
-
 g_iAdvisorNags = 0
 g_listNoLiberateCities = []
-
 
 def resetAdvisorNags():
 	global g_iAdvisorNags
@@ -35,7 +31,6 @@ def featPopup(iPlayer):
 	if (gc.getGame().getElapsedGameTurns() == 0):
 		return False
 	return True
-
 
 def populationFeat(iPlayer, eFeat, szText):
 

@@ -124,7 +124,6 @@ TRADE_PROFIT_FUNC = None
 
 TRADE_FORMATS = {}
 
-
 ## Trading Partners
 
 def canTrade(playerOrID, withPlayerOrID):
@@ -153,7 +152,6 @@ def getMapTradePartners(playerOrID):
 	# Returns a list of CyPlayers that can trade maps with <player>.
 	#
 	return getTradePartnersByTeam(playerOrID, lambda fromTeam, toTeam: fromTeam.isMapTrading() or toTeam.isMapTrading())
-
 
 def getOpenBordersTradePartners(playerOrID):
 	# Returns a list of CyPlayers that can sign an Open Borders agreement with <player>.
@@ -191,7 +189,6 @@ def canSignPermanentAlliance(fromTeam, toTeam):
 		return False
 	return fromTeam.isPermanentAllianceTrading() or toTeam.isPermanentAllianceTrading()
 
-
 def getPeaceTradePartners(playerOrID):
 	# Returns a list of CyPlayers that can sign a peace treaty with <player>.
 	#
@@ -220,7 +217,6 @@ def canAcceptVassal(masterTeam, vassalTeam, bAtWar):
 		return False
 	# master must possess tech
 	return masterTeam.isVassalStateTrading()
-
 
 def tradeParters(playerOrID):
 	# Iterates over all of <player>'s possible trade partners, yielding each CyPlayer in turn.
@@ -254,7 +250,6 @@ def getTradePartnersByTeam(playerOrID, testFunction, *args):
 		if testFunction(team, PlayerUtil.getTeam(partner.getTeam()), *args):
 			partners.append(partner)
 	return partners
-
 
 ## Trade Items
 
@@ -325,7 +320,6 @@ def getTradeableBonuses(fromPlayerOrID, toPlayerOrID):
 			else:
 				wont.add(eBonus)
 	return will, wont
-
 
 ## Trade Routes
 
@@ -410,7 +404,6 @@ def initFractionalTrade():
 		TRADE_PROFIT_FUNC = CyCity.calculateTradeProfit
 		FRACTIONAL_TRADE = False
 
-
 ## Trade Class
 
 class Trade(object):
@@ -480,7 +473,6 @@ class Trade(object):
 				self.getOtherPlayer(), 
 				format(self.getOtherPlayer(), self.otherTrades())))
 
-
 ## TradeData Formatting
 
 def format(player, trade):
@@ -547,7 +539,6 @@ def addTrade(type, format):
 	TRADE_FORMATS[type] = format
 	return format
 
-
 ## Functions for use as argsFunction: converting TradeData.iData into
 ## whatever you want to display in the formatted string.
 
@@ -572,7 +563,6 @@ def getTradePlayer(player, trade):
 def getTradePeaceDeal(player, trade):
 	BugUtil.debug("TradeUtil - peace treaty has iData %d", trade.iData)
 	return BugUtil.getText("TXT_KEY_TRADE_PEACE_TREATY_STRING", (gc.getDefineINT("PEACE_TREATY_LENGTH"),))
-
 
 ## Classes for Formatting TradeData
 
@@ -621,7 +611,6 @@ class ComplexTradeFormat(BaseTradeFormat):
 	def getParameters(self, player, trade):
 		return trade.iData
 
-
 ## Initialization
 
 def init():
@@ -630,7 +619,6 @@ def init():
 	initCorporationBonuses()
 	initFractionalTrade()
 	initTradeableItems()
-
 
 ## Testing
 

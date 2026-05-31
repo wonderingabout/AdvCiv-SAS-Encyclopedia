@@ -17,7 +17,6 @@ from operator import itemgetter # K-Mod (used to avoid OOS when sorting)
 gc = CyGlobalContext()
 localText = CyTranslator()
 
-
 # advc.137: All event preconditions that use DefaultPlayers in BtS are going to
 # use this function instead. Using default player counts was a bad idea
 # to begin with, and, now that I've increased the default player count on Huge maps,
@@ -26,7 +25,6 @@ def worldSizeTarget():
 	#return gc.getWorldInfo(gc.getMap().getWorldSize()).getDefaultPlayers() # BtS behavior
 	# 5 adjusted by building class prereq modifier, rounded to nearest.
 	return ((5 * (100 + gc.getWorldInfo(gc.getMap().getWorldSize()).getBuildingClassPrereqModifier())) + 50) // 100
-
 
 ######## BLESSED SEA ###########
 
@@ -110,7 +108,6 @@ def applyBlessedSea2(argsList):
 					iBuilding = i
 					break
 
-
 	if (iBuilding == -1):
 		return
 
@@ -125,7 +122,6 @@ def applyBlessedSea2(argsList):
 
 		(loopCity, iter) = player.nextCity(iter, false)
 
-
 def canApplyBlessedSea2(argsList):
 	iEvent = argsList[0]
 	kTriggeredData = argsList[1]
@@ -138,7 +134,6 @@ def canApplyBlessedSea2(argsList):
 				if (gc.getBuildingInfo(i).getReligionType() == kTriggeredData.eReligion):
 					iBuilding = i
 					break
-
 
 	if (iBuilding == -1):
 		return false
@@ -158,7 +153,6 @@ def canApplyBlessedSea2(argsList):
 
 	return bFound
 
-
 ######## HOLY MOUNTAIN ###########
 
 def getHelpHolyMountain1(argsList):
@@ -177,7 +171,6 @@ def getHelpHolyMountain1(argsList):
 				if (gc.getBuildingInfo(i).getReligionType() == iReligion):
 					iBuilding = i
 					break
-
 
 		szHelp = localText.getText("TXT_KEY_EVENT_HOLY_MOUNTAIN_HELP", ( gc.getBuildingInfo(iBuilding).getTextKey(), gc.getBuildingInfo(iBuilding).getTextKey(), iMinPoints))
 
@@ -331,7 +324,6 @@ def canDoWeddingFeud3(argsList):
 
 	return true
 
-
 def doWeddingFeud3(argsList):
 	iEvent = argsList[0]
 	kTriggeredData = argsList[1]
@@ -362,7 +354,6 @@ def doWeddingFeud3(argsList):
 			gc.getTeam(destPlayer.getTeam()).declareWarEvent(player.getTeam(), false, WarPlanTypes.WARPLAN_LIMITED)
 
 	return 1
-
 
 def weddingFeud3Callback(argsList):
 	iButton = argsList[0]
@@ -477,7 +468,6 @@ def canApplyBardTale3(argsList):
 
 	return true
 
-
 def getHelpBardTale3(argsList):
 	iEvent = argsList[0]
 	kTriggeredData = argsList[1]
@@ -513,7 +503,6 @@ def canApplyLooters3(argsList):
 			iNumBuildings += 1
 
 	return (iNumBuildings > 0)
-
 
 def applyLooters3(argsList):
 	iEvent = argsList[0]
@@ -625,7 +614,6 @@ def canApplyHurricane1(argsList):
 def canApplyHurricane2(argsList):			
 	return (not canApplyHurricane1(argsList))
 
-
 def applyHurricane1(argsList):
 	iEvent = argsList[0]
 	kTriggeredData = argsList[1]
@@ -652,7 +640,6 @@ def applyHurricane1(argsList):
 		szBuffer = localText.getText("TXT_KEY_EVENT_CITY_IMPROVEMENT_DESTROYED", (gc.getBuildingInfo(iBuilding).getTextKey(), ))
 		CyInterface().addMessage(kTriggeredData.ePlayer, false, gc.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_BOMBARDED", InterfaceMessageTypes.MESSAGE_TYPE_INFO, gc.getBuildingInfo(iBuilding).getButton(), gc.getInfoTypeForString("COLOR_RED"), city.getX(), city.getY(), true, true)
 		city.setNumRealBuilding(iBuilding, 0)
-
 
 ######## CYCLONE ###########
 
@@ -705,7 +692,6 @@ def canApplyTsunami1(argsList):
 def canApplyTsunami2(argsList):			
 	return (not canApplyTsunami1(argsList))
 
-
 def applyTsunami1(argsList):
 	iEvent = argsList[0]
 	kTriggeredData = argsList[1]
@@ -735,7 +721,6 @@ def applyTsunami2(argsList):
 			city.setNumRealBuilding(iBuilding, 0)
 			listBuildings.remove(iBuilding)
 
-
 def getHelpTsunami2(argsList):
 	iEvent = argsList[0]
 	kTriggeredData = argsList[1]
@@ -745,7 +730,6 @@ def getHelpTsunami2(argsList):
 	szHelp = localText.getText("TXT_KEY_EVENT_TSUNAMI_2_HELP", (5, city.getNameKey()))
 
 	return szHelp
-
 
 ######## MONSOON ###########
 
@@ -1037,7 +1021,6 @@ def applyGreatDepression(argsList):
 				popupInfo.setText(szText)
 				popupInfo.addPopup(iPlayer)
 
-
 def getHelpGreatDepression(argsList):
 	iEvent = argsList[0]
 	kTriggeredData = argsList[1]
@@ -1136,7 +1119,6 @@ def canTriggerGoldRush(argsList):
 	if player.getCurrentEra() != iIndustrial:
 		return false
 
-
 	return true
 
 ######## INFLUENZA ###########
@@ -1189,7 +1171,6 @@ def applyInfluenza2(argsList):
 		szBuffer = localText.getText("TXT_KEY_EVENT_INFLUENZA_HIT_CITY", (loopCity.getNameKey(), ))
 		CyInterface().addMessage(kTriggeredData.ePlayer, false, gc.getEVENT_MESSAGE_TIME(), szBuffer, "AS2D_PILLAGE", InterfaceMessageTypes.MESSAGE_TYPE_INFO, None, gc.getInfoTypeForString("COLOR_RED"), loopCity.getX(), loopCity.getY(), true, true)
 
-
 def getHelpInfluenza2(argsList):
 	iEvent = argsList[0]
 	kTriggeredData = argsList[1]
@@ -1199,7 +1180,6 @@ def getHelpInfluenza2(argsList):
 	return szHelp
 
 ######## SOLO FLIGHT ###########
-
 
 def canTriggerSoloFlight(argsList):	
 	kTriggeredData = argsList[0]
@@ -1244,7 +1224,6 @@ def applySoloFlight(argsList):
 			loopTeam = gc.getTeam(loopPlayer.getTeam())
 			if loopTeam.isHasMet(gc.getPlayer(kTriggeredData.ePlayer).getTeam()):
 				loopPlayer.AI_changeAttitudeExtra(kTriggeredData.ePlayer, 1)
-
 
 ######## ANTELOPE ###########
 
@@ -1321,7 +1300,6 @@ def canTriggerWhaleOfAThing(argsList):
 
 	return true
 
-
 ######## HIYOSILVER ###########
 
 def canTriggerHiyoSilver(argsList):
@@ -1361,7 +1339,6 @@ def canTriggerWiningMonks(argsList):
 
 	return true
 
-
 def doWiningMonks2(argsList):
 #	Need this because wineries are not normally allowed unless there is already wine.
 	iEvent = argsList[0]
@@ -1382,7 +1359,6 @@ def getHelpWiningMonks2(argsList):
 	szHelp = localText.getText("TXT_KEY_EVENT_IMPROVEMENT_GROWTH", ( gc.getImprovementInfo(iImp).getTextKey(), ))
 
 	return szHelp
-
 
 ######## INDEPENDENTFILMS ###########
 
@@ -1438,7 +1414,6 @@ def getHelpAncientOlympics2(argsList):
 
 	return szHelp
 
-
 ######## MODERN OLYMPICS ###########
 
 def canTriggerModernOlympics(argsList):
@@ -1477,7 +1452,6 @@ def applyModernOlympics(argsList):
 			loopTeam = gc.getTeam(loopPlayer.getTeam())
 			if loopTeam.isHasMet(gc.getPlayer(kTriggeredData.ePlayer).getTeam()):
 				loopPlayer.AI_changeAttitudeExtra(kTriggeredData.ePlayer, 1)
-
 
 ######## INTERSTATE ###########
 
@@ -1541,7 +1515,6 @@ def canApplyEarthDay2(argsList):
 					if (loopPlayer.getTradeDenial(kTriggeredData.ePlayer, tradeData) == DenialTypes.NO_DENIAL):
 						return true
 	return false
-
 
 def applyEarthDay2(argsList):
 	iEvent = argsList[0]
@@ -1631,7 +1604,6 @@ def applyFreedomConcert2(argsList):
 							iBestDistance = iDistance
 
 				(loopCity, iter) = player.nextCity(iter, false)
-
 
 			if bestCity is not None:									
 				bestCity.setHasReligion(iReligion, true, true, true)
@@ -1829,7 +1801,6 @@ def getHelpAncientTexts2(argsList):
 
 	return szHelp
 
-
 ######## IMPACT_CRATER ###########
 
 def canTriggerImpactCrater(argsList):
@@ -1866,7 +1837,6 @@ def getHelpImpactCrater2(argsList):
 	szHelp = localText.getText("TXT_KEY_EVENT_IMPROVEMENT_GROWTH", ( gc.getImprovementInfo(iMine).getTextKey(), ))
 
 	return szHelp
-
 
 # <advc.311>
 def numUnitsUprising(playerId):
@@ -1963,7 +1933,6 @@ def canTriggerUprising(playerId, techReqTag1, techReqTag2, counterUnitClassTag):
 			return True
 	return False
 # </advc.311>
-
 
 ######## THE_HUNS ###########
 
@@ -2130,7 +2099,6 @@ def canTriggerSecurityTax(argsList):
 
 	return true
 
-
 ######## LITERACY ###########
 
 def canTriggerLiteracy(argsList):
@@ -2239,7 +2207,6 @@ def getHelpHarbormaster1(argsList):
 
 	return szHelp
 
-
 def canTriggerHarbormaster(argsList):
 	kTriggeredData = argsList[0]
 	trigger = gc.getEventTriggerInfo(kTriggeredData.eTrigger)
@@ -2299,7 +2266,6 @@ def getHelpClassicLiterature1(argsList):
 	szHelp = localText.getText("TXT_KEY_EVENT_CLASSIC_LITERATURE_HELP_1", (iLibrariesRequired, ))
 
 	return szHelp
-
 
 def canTriggerClassicLiteratureDone(argsList):
 	kTriggeredData = argsList[0]
@@ -2559,7 +2525,6 @@ def applyBestDefenseDone2(argsList):
 			loopTeam = gc.getTeam(loopPlayer.getTeam())
 			if loopTeam.isHasMet(gc.getPlayer(kTriggeredData.ePlayer).getTeam()):
 				loopPlayer.AI_changeAttitudeExtra(kTriggeredData.ePlayer, 3)
-
 
 def canApplyBestDefenseDone3(argsList):
 	iEvent = argsList[0]
@@ -2833,7 +2798,6 @@ def canTriggerEsteemedPlaywright(argsList):
 
 	return true
 
-
 ######## SECRET_KNOWLEDGE ###########
 
 def getHelpSecretKnowledge2(argsList):
@@ -2864,7 +2828,6 @@ def canTriggerHighWarlord(argsList):
 		return false
 
 	return true
-
 
 ######## EXPERIENCED_CAPTAIN ###########
 
@@ -2922,7 +2885,6 @@ def canApplyPartisans1(argsList):
 				if not (loopPlot.isVisibleEnemyUnit(kTriggeredData.ePlayer) or loopPlot.isWater() or loopPlot.isImpassable() or loopPlot.isCity()):
 					return true
 	return false
-
 
 def applyPartisans1(argsList):
 	iEvent = argsList[0]
@@ -3105,7 +3067,6 @@ def getGreedUnit(player, plot):
 
 	return iBestUnit
 
-
 def getHelpGreedDone1(argsList):
 	iEvent = argsList[0]
 	kTriggeredData = argsList[1]
@@ -3132,7 +3093,6 @@ def applyGreedDone1(argsList):
 	if iUnitType != -1:
 		for i in range(iNumUnits):
 			player.initUnit(iUnitType, plot.getX(), plot.getY(), UnitAITypes.UNITAI_ATTACK, DirectionTypes.DIRECTION_SOUTH)
-
 
 ######## WAR CHARIOTS ###########
 
@@ -3192,7 +3152,6 @@ def canTriggerEliteSwordsDone(argsList):
 
 	return true
 
-
 def canApplyEliteSwordsDone2(argsList):
 	iEvent = argsList[0]
 	kTriggeredData = argsList[1]
@@ -3246,7 +3205,6 @@ def canTriggerWarshipsDone(argsList):
 
 	return true
 
-
 def canApplyWarshipsDone2(argsList):
 	iEvent = argsList[0]
 	kTriggeredData = argsList[1]
@@ -3282,7 +3240,6 @@ def canTriggerGunsButterDone(argsList):
 		return false
 
 	return true
-
 
 def canApplyGunsButterDone2(argsList):
 	iEvent = argsList[0]
@@ -3526,7 +3483,6 @@ def canTriggerCorporateExpansionDone(argsList):
 	if iNumCitiesRequired > gc.getGame().countCorporationLevels(kOrigTriggeredData.eCorporation):
 		return false
 
-
 	kActualTriggeredDataObject = player.getEventTriggered(kTriggeredData.iId)
 	kActualTriggeredDataObject.eCorporation = kOrigTriggeredData.eCorporation
 	kActualTriggeredDataObject.eBuilding = kOrigTriggeredData.eBuilding
@@ -3673,7 +3629,6 @@ def applyHostileTakeoverDone1(argsList):
 	if city is not None and not city.isNone():
 		city.setBuildingCommerceChange(gc.getBuildingInfo(kTriggeredData.eBuilding).getBuildingClassType(), CommerceTypes.COMMERCE_GOLD, 20)
 
-
 ######## Great Beast ########
 
 def doGreatBeast3(argsList):
@@ -3744,7 +3699,6 @@ def canTriggerControversialPhilosopherCity(argsList):
 
 ####### Spy Discovered #######
 
-
 def canDoSpyDiscovered3(argsList):
 	iEvent = argsList[0]
 	kTriggeredData = argsList[1]
@@ -3809,7 +3763,6 @@ def doNuclearProtest1(argsList):
 def getHelpNuclearProtest1(argsList):
 	szHelp = localText.getText("TXT_KEY_EVENT_NUCLEAR_PROTEST_1_HELP", ())
 	return szHelp
-
 
 ######## Preaching Researcher #######
 

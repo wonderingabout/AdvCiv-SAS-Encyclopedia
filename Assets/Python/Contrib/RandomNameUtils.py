@@ -13,7 +13,6 @@ import math
 
 gc = CyGlobalContext()	
 
-
 # Lists of names have been generated using
 # NameMage
 # Version 1.02
@@ -192,8 +191,6 @@ civilizationNameHash =	{
 							},
 						}	
 
-
-
 def getRandomCivilizationName(iCivilizationType):
 	unitName = ""
 
@@ -206,9 +203,7 @@ def getRandomCivilizationName(iCivilizationType):
 		middleName = generateCivilizationName(iCivilizationType)
 		unitName = firstName + " " + middleName + " " + lastName
 
-
 	return unitName
-
 
 def generateCivilizationName(iCivilizationType):
 	strCivilizationType = "DEFAULT"
@@ -240,7 +235,6 @@ def generateCivilizationName(iCivilizationType):
 
 	return strName
 
-
 # Returns a random unique name not found in the global mercenary pool
 def getRandomName():
 
@@ -255,7 +249,6 @@ def getRandomName():
 	if(len(unitName) < 14):
 		middleName = middleNameList[random.get(len(middleNameList), "Random Name")]
 		unitName = firstName + " " + middleName + " " + lastName
-
 
 	return unitName
 

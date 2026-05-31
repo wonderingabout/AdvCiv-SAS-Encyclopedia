@@ -139,7 +139,6 @@ def registerSymbolSynonym(key, symbol, synonym):
 		BugUtil.debug("FontUtil - registering synonym '%s'", synonym)
 		keySymbols[synonym] = symbol
 
-
 ## symbol lookup
 
 def getSymbol(symbolOrKey):
@@ -165,7 +164,6 @@ def getChar(symbolOrKey):
 	except KeyError:
 		raise BugUtil.ConfigError("unknown font symbol or key '%s'" % str(symbolOrKey))
 
-
 ## message processing
 
 def replaceSymbols(text, unknownReplacement=""):
@@ -175,7 +173,6 @@ def replaceSymbols(text, unknownReplacement=""):
 		except BugUtil.ConfigError:
 			return unknownReplacement
 	return SYMBOL_REGEXP.sub(replace, text)
-
 
 ## configuration handler
 

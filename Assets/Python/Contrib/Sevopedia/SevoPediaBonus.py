@@ -13,7 +13,6 @@
 # (c) 2026 wonderingabout & AI helpers (see Authors in root README.md)
 #
 
-
 from CvPythonExtensions import *
 import CvUtil
 import ScreenInput
@@ -27,8 +26,6 @@ localText = CyTranslator()
 
 # <!-- custom: change its value if you don't want to see AI information in the special abilities panel -->
 IS_SHOW_AI_INFO = (gc.getDefineINT("SAS_SEVOPEDIA_BONUS_SHOW_AI_INFORMATION") > 0)
-
-
 
 class SevoPediaBonus:
 
@@ -139,8 +136,6 @@ class SevoPediaBonus:
 		self.W_HISTORY = self.W_BONUS_ANIMATION
 		self.H_HISTORY = self.top.B_PEDIA_PAGE - self.Y_HISTORY
 
-
-
 	def interfaceScreen(self, iBonus):
 		self.iBonus = iBonus
 
@@ -161,8 +156,6 @@ class SevoPediaBonus:
 		self.placeObsoleteWith()
 		self.placeHistory()
 
-
-
 	def placeBonusPane(self):
 		screen = self.top.getScreen()
 		screen.addPanel( self.top.getNextWidgetName(), "", "", False, False, self.X_BONUS_PANE, self.Y_BONUS_PANE, self.W_BONUS_PANE, self.H_BONUS_PANE, PanelStyles.PANEL_STYLE_BLUE50)
@@ -170,8 +163,6 @@ class SevoPediaBonus:
 		screen.addPanel(self.top.getNextWidgetName(), "", "", False, False, self.X_ICON, self.Y_ICON, self.W_ICON, self.H_ICON, PanelStyles.PANEL_STYLE_EMPTY)
 		screen.addDDSGFC(self.top.getNextWidgetName(), gc.getBonusInfo(self.iBonus).getButton(), self.X_ICON + self.W_ICON/2 - self.ICON_SIZE/2, self.Y_ICON + self.H_ICON/2 - self.ICON_SIZE/2, self.ICON_SIZE, self.ICON_SIZE, WidgetTypes.WIDGET_GENERAL, -1, -1 )
 		screen.addBonusGraphicGFC(self.top.getNextWidgetName(), self.iBonus, self.X_BONUS_ANIMATION, self.Y_BONUS_ANIMATION, self.W_BONUS_ANIMATION, self.H_BONUS_ANIMATION, WidgetTypes.WIDGET_GENERAL, -1, -1, self.X_ROTATION_BONUS_ANIMATION, self.Z_ROTATION_BONUS_ANIMATION, self.SCALE_ANIMATION, True)
-
-
 
 	def placeStats(self):
 		screen = self.top.getScreen()
@@ -198,15 +189,12 @@ class SevoPediaBonus:
 				szText2 = u"<font=4><b>" + szText1 + "\n" + u"</b></font>"
 				screen.appendListBoxString(panelName, szText2, WidgetTypes.WIDGET_GENERAL, 0, 0, CvUtil.FONT_LEFT_JUSTIFY)
 
-
-
 	# <!-- custom: switch to an horizontal panel version provided by claude ai at my request thanks. -->
 	# <!-- custom: note: this needs to be debugged (simplify code, add left side padding before first button) -->
 	def placeImprovements(self):
 		screen = self.top.getScreen()
 		panelName = self.top.getNextWidgetName()
 		screen.addPanel(panelName, localText.getText("TXT_KEY_PEDIA_SEVOPEDIA_BONUS_TOTAL_BASE_AND_EXTRA_IMPROVEMENTS_YIELD_CHANGES", ()), "", True, True, self.X_IMPROVEMENTS, self.Y_IMPROVEMENTS, self.W_IMPROVEMENTS, self.H_IMPROVEMENTS, PanelStyles.PANEL_STYLE_BLUE50)
-
 
 		# Create a row container for horizontal layout
 		rowPanelName = self.top.getNextWidgetName()
@@ -275,8 +263,6 @@ class SevoPediaBonus:
 			szText = localText.getText("TXT_KEY_PEDIA_SAS_NO_BUTTON_FOUND_NONE", ())
 			screen.addMultilineText(textName, szText, self.X_IMPROVEMENTS + 7, yPanelCenter, self.W_IMPROVEMENTS - 14, self.H_IMPROVEMENTS - 20, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
 
-
-
 	def placeUnits(self):
 		screen = self.top.getScreen()
 		panelName = self.top.getNextWidgetName()
@@ -320,8 +306,6 @@ class SevoPediaBonus:
 			textName = self.top.getNextWidgetName()
 			szText = localText.getText("TXT_KEY_PEDIA_SAS_NO_BUTTON_FOUND_NONE", ())
 			screen.addMultilineText(textName, szText, self.X_UNITS + 7, yPanelCenter, self.W_UNITS - 14, self.H_UNITS - 20, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
-
-
 
 	def placeBuildingsAndProjects(self):
 		screen = self.top.getScreen()
@@ -378,8 +362,6 @@ class SevoPediaBonus:
 			szText = localText.getText("TXT_KEY_PEDIA_SAS_NO_BUTTON_FOUND_NONE", ())
 			screen.addMultilineText(textName, szText, self.X_BUILDINGS_AND_PROJECTS + 7, yPanelCenter, self.W_BUILDINGS_AND_PROJECTS - 14, self.H_BUILDINGS_AND_PROJECTS - 20, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
 
-
-
 	# <!-- custom: add some terrains (as of now minus some plot types), and features information, code based on multilist code in sevopedia religion that we also use in several places. -->
 	def placeTerrains(self):
 		xPanel = self.X_TERRAINS
@@ -425,8 +407,6 @@ class SevoPediaBonus:
 			yPanelCenter = yPanel + (hPanel / 2)
 			screen.addMultilineText(textName, szText, xPanel + 7, yPanelCenter, wPanel - 14, hPanel - 20, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
 
-
-
 	def placeFeatures(self):
 		xPanel = self.X_FEATURES
 		yPanel = self.Y_FEATURES
@@ -470,8 +450,6 @@ class SevoPediaBonus:
 			szText = localText.getText(txtKeyNoButtonFound, ())
 			yPanelCenter = yPanel + (hPanel / 2)
 			screen.addMultilineText(textName, szText, xPanel + 7, yPanelCenter, wPanel - 14, hPanel - 20, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
-
-
 
 	# <!-- custom: also show Bonuses available through FeatureTerrainBooleans, such as as of now bonus_gemstones being available in grassland forest, but not in TerrainBooleans (no grassland entry there), so show this info here as well; code provided with the help of chatgpt thanks and such etc-->
 	def placeFeatureTerrainBooleans(self):
@@ -517,8 +495,6 @@ class SevoPediaBonus:
 			yPanelCenter = yPanel + (hPanel / 2)
 			screen.addMultilineText(textName, szText, xPanel + 7, yPanelCenter, wPanel - 14, hPanel - 20, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
 
-
-
 	def placeSpecial(self):
 		screen = self.top.getScreen()
 		panelName = self.top.getNextWidgetName()
@@ -554,8 +530,6 @@ class SevoPediaBonus:
 
 		screen.addMultilineText(listName, szSpecialText, self.X_SPECIAL+5, self.Y_SPECIAL+30, self.W_SPECIAL-10, self.H_SPECIAL-35, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
 
-
-
 	def placeRevealedBy(self):
 		screen = self.top.getScreen()
 		panelName = self.top.getNextWidgetName()
@@ -576,8 +550,6 @@ class SevoPediaBonus:
 			szText = localText.getText("TXT_KEY_PEDIA_SAS_NO_BUTTON_FOUND_ALWAYS", ())
 			screen.addMultilineText(textName, szText, self.X_REVEALED_BY + 7, yPanelCenter, self.W_REVEALED_BY - 14, self.H_REVEALED_BY - 20, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
 
-
-
 	def placeTradeableSince(self):
 		screen = self.top.getScreen()
 		panelName = self.top.getNextWidgetName()
@@ -595,8 +567,6 @@ class SevoPediaBonus:
 			textName = self.top.getNextWidgetName()
 			szText = localText.getText("TXT_KEY_PEDIA_SAS_NO_BUTTON_FOUND_ALWAYS", ())
 			screen.addMultilineText(textName, szText, self.X_TRADEABLE_SINCE + 7, yPanelCenter, self.W_TRADEABLE_SINCE - 14, self.H_TRADEABLE_SINCE - 20, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
-
-
 
 	# Places the tech that obsoletes this bonus resource in the Sevopedia.
 	def placeObsoleteWith(self):
@@ -623,8 +593,6 @@ class SevoPediaBonus:
 			szText = localText.getText("TXT_KEY_PEDIA_SAS_NO_BUTTON_FOUND_NEVER", ())
 			screen.addMultilineText(textName, szText, self.X_OBSOLETE_WITH + 7, yPanelCenter, self.W_OBSOLETE_WITH - 14, self.H_OBSOLETE_WITH - 20, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
 
-
-
 	def placeHistory(self):
 		screen = self.top.getScreen()
 		panelName = self.top.getNextWidgetName()
@@ -635,8 +603,6 @@ class SevoPediaBonus:
 		# <!-- custom: i also don't think we need casting (30), so keeping it as the more simple 30 after testing (no casting), seems to run fine so leaving as is, not that it was an error i think per say but i don't know, but weird so "fixed" it even though it was not an "error" i think, just redudant maybe. -->
 		#screen.addMultilineText( textName, gc.getBonusInfo(self.iBonus).getCivilopedia(), self.X_HISTORY + 15, self.Y_HISTORY + 40, self.W_HISTORY - (30), self.H_HISTORY - (15 * 2) - 25, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
 		screen.addMultilineText(textName, gc.getBonusInfo(self.iBonus).getCivilopedia(), self.X_HISTORY + 7, self.Y_HISTORY + 10 + self.H_ADJUST_Y_AFTER_ANIMATION_NO_HEADER, self.W_HISTORY - 30, self.H_HISTORY - (15 * 2) - 25, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
-
-
 
 	def handleInput (self, inputClass):
 		return 0

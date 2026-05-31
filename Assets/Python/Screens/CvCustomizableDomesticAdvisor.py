@@ -117,7 +117,6 @@ def getEditHelpText(eWidgetType, iData1, iData2, bOption):
 	else:
 		return BugUtil.getPlainText("TXT_KEY_CDA_START_EDITING")
 
-
 # Class CvDomesticAdvisor
 
 class CvCustomizableDomesticAdvisor:
@@ -318,7 +317,6 @@ class CvCustomizableDomesticAdvisor:
 			"NEUTRAL": self.NEUTRAL_VALUES_DICT,
 			"GREAT": self.GREAT_VALUES_DICT,			
 			}
-
 
 		# This creates the set of ALL coloring keys.
 		# Do NOT touch.
@@ -1914,7 +1912,6 @@ class CvCustomizableDomesticAdvisor:
 		y = city.getCommerceRate(arg)
 		return len([i for i in L if i > y]) + 1
 
-
 	def canAdviseToConstruct(self, city, i):
 
 		info = gc.getBuildingInfo(i)
@@ -2829,7 +2826,6 @@ class CvCustomizableDomesticAdvisor:
 
 		return 1
 
-
 	def reloadPages(self, inputClass):
 
 		self.currentPageNum = 0
@@ -3148,7 +3144,6 @@ class CvCustomizableDomesticAdvisor:
 
 			if not p.has_key("columns"):
 				p["columns"] = [("NAME", 95, "text")]
-
 
 	def renamePage(self, inputClass):
 

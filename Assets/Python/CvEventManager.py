@@ -6,7 +6,6 @@
 ## The argsList can contain anything from mouse location to key info
 ## The EVENTLIST that are being notified can be found 
 
-
 from CvPythonExtensions import *
 import CvUtil
 import CvScreensInterface
@@ -25,7 +24,6 @@ gc = CyGlobalContext()
 localText = CyTranslator()
 PyPlayer = PyHelpers.PyPlayer
 PyInfo = PyHelpers.PyInfo
-
 
 # globals
 ###################################################
@@ -927,7 +925,6 @@ class CvEventManager:
 			return CvScreensInterface.handleForward(screens)
 
 		return 0
-
 
 #################### TRIGGERED EVENTS ##################	
 

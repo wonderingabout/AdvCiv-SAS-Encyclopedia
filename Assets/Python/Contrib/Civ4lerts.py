@@ -67,7 +67,6 @@ __version__ = "$Revision: 1.2 $"
 ## Other:
 ## City is under cultural pressure
 
-
 from CvPythonExtensions import *
 import AttitudeUtil
 import BugCore
@@ -95,7 +94,6 @@ gc = CyGlobalContext()
 localText = CyTranslator()
 
 Civ4lertsOpt = BugCore.game.Civ4lerts
-
 
 ## Initialization
 
@@ -136,7 +134,6 @@ class Civ4lerts:
 def isSilent():
 	return not gc.getPlayer(gc.getGame().getActivePlayer()).isHuman()
 # </advc.127>
-
 
 ## Displaying Alert Messages
 
@@ -181,7 +178,6 @@ def addMessage(iPlayer, szString, szIcon, iFlashX=-1, iFlashY=-1, bOffArrow=Fals
 	eventMessageTime = gc.getDefineINT("EVENT_MESSAGE_TIME")
 	CyInterface().addMessage(iPlayer, False, eventMessageTime, szString, None, InterfaceMessageTypes.MESSAGE_TYPE_INFO, szIcon, ColorTypes(-1), iFlashX, iFlashY, bOffArrow, bOnArrow)
 
-
 ## Base Alert Class
 
 class AbstractStatefulAlert:
@@ -213,7 +209,6 @@ class AbstractStatefulAlert:
 	def _reset(self):
 		"Resets the state for this alert."
 		pass
-
 
 ## City Alert Managers
 
@@ -316,7 +311,6 @@ class EndTurnReadyCityAlertManager(AbstractCityAlertManager):
 		if isSilent():
 			return # advc.127
 		self.checkAllActivePlayerCities()
-
 
 ## City Alerts
 
@@ -809,7 +803,6 @@ class CanHurryGold(AbstractCanHurry):
 		iGold = city.hurryGold(self.keHurryType)
 		return localText.getText("TXT_KEY_CIV4LERTS_ON_CITY_CAN_HURRY_GOLD", (city.getName(), info.getDescription(), iGold))
 
-
 ## Trading Gold
 
 class GoldTrade(AbstractStatefulAlert):
@@ -904,7 +897,6 @@ class GoldPerTurnTrade(AbstractStatefulAlert):
 
 	def _setMaxGoldPerTurnTrade(self, player, rival, value):
 		self.maxGoldPerTurnTrade[player][rival] = value
-
 
 ## Diplomacy
 

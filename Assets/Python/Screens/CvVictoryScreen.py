@@ -463,7 +463,6 @@ class CvVictoryScreen:
 		# </advc.703>
 		self.drawTabs()
 
-
 # BUG Additions Start
 	def showMembersScreen(self):
 		if AdvisorOpt.isMembers():
@@ -886,7 +885,6 @@ class CvVictoryScreen:
 		screen.setTableColumnHeader(szTable, 1, "", self.TABLE2_WIDTH_1)
 		# advc.703: Code moved into subroutine
 		self.appendMemberRows(screen, szTable)
-
 
 	# <advc.703>
 	def showRiseFall(self):
@@ -1620,7 +1618,6 @@ class CvVictoryScreen:
 						screen.setTableText(szTable, 5, iRow, (u"%.2f%%" % (bestPop * 100 / totalPop)), "", WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
 
 					bEntriesFound = True
-
 
 				# <!-- custom: cache adjusted land percent to avoid duplicate call (claude opus 4.5) -->
 				iAdjustedLandPercent = gc.getGame().getAdjustedLandPercent(iLoopVC)

@@ -7,7 +7,6 @@
 # (c) 2026 wonderingabout & AI helpers (see Authors in root README.md)
 #
 
-
 from CvPythonExtensions import *
 import CvUtil
 import ScreenInput
@@ -30,8 +29,6 @@ IS_SHOW_ZERO_TRAIT_PAIRS_LEFT = (gc.getDefineINT("SAS_SEVOPEDIA_TRAIT_SHOW_ZERO_
 # allPairsData: list of (trait1, trait2, count, [leaderIds]) - all trait combinations globally
 # allPairsMinMax: (minCount, maxCount) - for ranking bar normalization
 TRAIT_STATISTICS_CACHE = None
-
-
 
 def precomputeTraitStatisticsCache():
 	# Precompute and cache trait statistics data. Called once from SevoPediaMain.placeTraits()
@@ -115,7 +112,6 @@ def precomputeTraitStatisticsCache():
 
 	print("Sevopedia Trait statistics cache prebuilt. This should appear only once per gaming session.")
 	return TRAIT_STATISTICS_CACHE
-
 
 class SevoPediaTrait:
 
@@ -219,7 +215,6 @@ class SevoPediaTrait:
 		# <!-- custom: Row height for statistics tables. Icon size and spacing now use centralized INCHART_* constants. (Claude Opus 4.5) -->
 		# LEADER_ICON_SIZE and LEADER_BUTTON_COLUMN_SPACING replaced by INCHART_ICON_SIZE and INCHART_ICON_SPACING from _sevopedia_helpers
 
-
 	# <!-- custom: Updated to receive trait ID directly via WIDGET_PYTHON approach (no longer concept-based). (Claude code Opus 4.5) -->
 	def interfaceScreen(self, iTrait):
 		self.iLeader = -1
@@ -229,8 +224,6 @@ class SevoPediaTrait:
 		self.placeStatistics()
 		self.placeSpecial()
 		self.placeHistory()
-
-
 
 	def placeLeaders(self):
 		screen = self.top.getScreen()
@@ -256,8 +249,6 @@ class SevoPediaTrait:
 			if iCiv == -1:
 				continue
 			screen.appendMultiListButton(rowListName, gc.getLeaderHeadInfo(iLeader).getButton(), SEVOPEDIA_MULTILIST_COLUMN_INDEX_AUTO, WidgetTypes.WIDGET_PEDIA_JUMP_TO_LEADER, iLeader, iCiv, False)
-
-
 
 	# <!-- custom: Statistics panel with two charts:
 	# Left: Trait pairings for current trait (trait, paired count, total, leaders)
@@ -382,8 +373,6 @@ class SevoPediaTrait:
 			return [], (0, 0), 0
 		return cache["allPairsData"], cache["allPairsMinMax"], cache["allPairsMaxLeaders"]
 
-
-
 	def placeSpecial(self):
 		screen = self.top.getScreen()
 		panelName = self.top.getNextWidgetName()
@@ -424,8 +413,6 @@ class SevoPediaTrait:
 			if bFound:
 				screen.addMultilineText(listName, szSpecial, self.X_SPECIAL+5, self.Y_SPECIAL+32, self.W_SPECIAL-10, self.H_SPECIAL-40, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
 
-
-
 	# <!-- custom: History panel showing civilopedia text for the trait, similar to SevoPediaImprovement. (Claude code Opus 4.5) -->
 	def placeHistory(self):
 		screen = self.top.getScreen()
@@ -435,8 +422,6 @@ class SevoPediaTrait:
 		textName = self.top.getNextWidgetName()
 		szText = gc.getTraitInfo(self.iTrait).getCivilopedia()
 		screen.addMultilineText(textName, szText, self.X_HISTORY + 7, self.Y_HISTORY + 30, self.W_HISTORY - 5, self.H_HISTORY - 40, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
-
-
 
 	def handleInput (self, inputClass):
 		return 0

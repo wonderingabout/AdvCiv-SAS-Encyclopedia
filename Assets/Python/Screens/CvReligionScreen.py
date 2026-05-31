@@ -240,7 +240,6 @@ class CvReligionScreen:
 #			szLabel = localText.changeTextColor(szLabel, gc.getInfoTypeForString("COLOR_YELLOW"))
 		screen.setLabelAt(szName, szArea, szLabel, CvUtil.FONT_CENTER_JUSTIFY,  self.X_SCROLLABLE_RELIGION_AREA + xLoop, self.Y_RELIGION_NAME, self.DZ, FontTypes.GAME_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)		
 
-
 	def drawHelpInfo(self):
 
 		screen = self.getScreen()
@@ -428,7 +427,6 @@ class CvReligionScreen:
 			self.H_SCROLL_OFFSET = 20
 		else:
 			self.H_SCROLL_OFFSET = 0
-
 
 	# Draws the city list
 	def drawCityInfo(self, iReligion):

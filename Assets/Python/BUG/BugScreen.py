@@ -74,7 +74,6 @@ gc = CyGlobalContext()
 ArtFileMgr = CyArtFileMgr()
 localText = CyTranslator()
 
-
 class BugTab:
 	def __init__(self, sWidgetId, sTxt_Key, sFont, bUpper, iX, iY, iZ, bShow, bEnabled, bActive, sDraw, sRefresh, WidgetType):
 		self.widget_id = sWidgetId
@@ -112,7 +111,6 @@ class BugTab:
 		elif self.active:
 			szText = localText.changeTextColor(szText, gc.getInfoTypeForString("COLOR_YELLOW"))
 		return szText
-
 
 class BugScreen:
 	def __init__(self, sWidgetId, screen, iWidth, iHeight):

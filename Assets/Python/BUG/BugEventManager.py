@@ -322,7 +322,6 @@ class BugEventManager(CvEventManager.CvEventManager):
 		# a string which will be converted to such.
 		# If any keystrokes have existing handlers, new ones are ignored and a warning is displayed.
 
-
 		if isinstance(keys, InputUtil.Keystroke):
 			keys = (keys,)
 		elif isinstance(keys, types.StringTypes):
@@ -333,7 +332,6 @@ class BugEventManager(CvEventManager.CvEventManager):
 			else:
 				BugUtil.debug("BugEventManager - setting shortcut handler for %s", key)
 				self.shortcuts[key] = handler
-
 
 	def fireEvent(self, eventType, *args):
 		# Fires the given event passing in all args as a list.
@@ -409,7 +407,6 @@ class BugEventManager(CvEventManager.CvEventManager):
 		BugInit.init()
 		self._handleDefaultEvent(eventType, argsList)
 
-
 	def resetActiveTurn(self, argsList=None):
 		self.iActiveTurn = -1
 		self.eActivePlayer = -1
@@ -452,7 +449,6 @@ class BugEventManager(CvEventManager.CvEventManager):
 		if not self.bEndTurnFired:
 			self.bEndTurnFired = True
 			self.fireEvent("endTurnReady", self.iActiveTurn)
-
 
 # Used Event Handlers
 
@@ -528,7 +524,6 @@ class BugEventManager(CvEventManager.CvEventManager):
 				# </advc.007b>
 		return 0
 
-
 # Sample Event Handlers
 
 	def onPreGameStart(self, argsList):
@@ -554,7 +549,6 @@ class BugEventManager(CvEventManager.CvEventManager):
 	def onResolutionChanged(self, argsList):
 		# Called when the user changes their graphics resolution.
 		iResolution = argsList[0]
-
 
 	def onUnitUpgraded(self, argsList):
 		# Called when a unit is upgraded.
@@ -593,7 +587,6 @@ class BugEventManager(CvEventManager.CvEventManager):
 		BugUtil.debug("%s flanks %s for %d HP", 
 				pAttacker.getName(), pDefender.getName(), iDamage)
 
-
 	def onPlayerRevolution(self, argsList):
 		ePlayer, iAnarchyTurns, leOldCivics, leNewCivics = argsList
 		civics = []
@@ -609,7 +602,6 @@ class BugEventManager(CvEventManager.CvEventManager):
 		# advc.127: Replacing the above. ChtLvl is always 0 in multiplayer.
 		return (getChtLvl() or (CyGame().isGameMultiPlayer() and gc.getDefineINT("ENABLE_AUTOPLAY_MULTIPLAYER") > 0))
 
-
 EVENT_FUNCTION_MAP = {
 	"kbdEvent": BugEventManager._handleConsumableEvent,
 	"mouseEvent": BugEventManager._handleConsumableEvent,
@@ -620,7 +612,6 @@ EVENT_FUNCTION_MAP = {
 	#"GameStart": BugEventManager._handleInitBugEvent,
 	#"windowActivation": BugEventManager._handleInitBugEvent,
 }
-
 
 ## Initialization
 

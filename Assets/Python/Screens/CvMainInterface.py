@@ -117,7 +117,6 @@ RAW_YIELD_HELP = (	"TXT_KEY_RAW_YIELD_VIEW_TRADE",
 # BUG - field of view slider:
 #DEFAULT_FIELD_OF_VIEW = 42 # disabled (replaced) by K-Mod
 
-
 class CvMainInterface:
 	"Main Interface Screen"
 	def _cacheMapViewRightPanelRects(self):
@@ -575,7 +574,6 @@ class CvMainInterface:
 #		self.sDrawMethod = self.DRAW_METHOD_PLE
 # BUG - draw method
 
-
 # BUG - PLE - start
 		self.PLE = PLE.PLE()
 #		self.PLE.PLE_initialize()
@@ -619,7 +617,6 @@ class CvMainInterface:
 #		self.iVisibleUnits 			= 0
 		self.iMaxPlotListIcons 		= 0
 
-
 		self.bPLECurrentlyShowing	= False
 		self.bVanCurrentlyShowing	= False
 # BUG - draw method
@@ -662,8 +659,6 @@ class CvMainInterface:
 		self.IS_SAS_CV_MAIN_INTERFACE_HIDE_PLOT_LIST_PANEL_IN_CITY_SCREEN = None
 		# <!-- custom: optional unit info button in the map view unit panel. (GPT-5.2-Codex) -->
 		self.IS_SAS_CV_MAIN_INTERFACE_UNIT_INFO_BUTTON = None
-
-
 
 ############## Basic operational functions ###################
 
@@ -2263,7 +2258,6 @@ class CvMainInterface:
 		screen.hide("OneLineGPBar")
 # BUG - Bars on single line for higher resolution screens - end
 
-
 		# *********************************************************************************
 		# SELECTION DATA BUTTONS/STRINGS
 		# *********************************************************************************
@@ -3515,7 +3509,6 @@ class CvMainInterface:
 #			screen.hide(szString + "Upgrade")
 # BUG - draw method
 
-
 	def updatePlotListButtons_Orig(self, screen):
 # need to put in something similar to 	def displayUnitPlotListObjects(self, screen, pLoopUnit, nRow, nCol):
 		pPlot = CyInterface().getSelectionPlot()
@@ -3708,7 +3701,6 @@ class CvMainInterface:
 		# updatePlotListButtons_Orig I think.)
 		return 0
 # BUG - BUG unit plot draw method - end
-
 
 	# <!-- custom: do not show the useless flag, we need the space for buttons anyway, done with the help of GPT-5.2-Codex thanks a lot -->
 	# # This will update the flag widget for SP hotseat and dbeugging
@@ -4301,7 +4293,6 @@ class CvMainInterface:
 			if iCount >= iMaxCount:
 				break
 # BUG - Bars on single line for higher resolution screens - end
-
 
 # BUG - city specialist - start
 	def updateCitizenButtons_hide(self):
@@ -7821,7 +7812,6 @@ class CvMainInterface:
 			iX += iStep
 			i += 1
 
-
 	def createGlobeviewButtons(self):
 		screen = self.screen
 		kGLM = CyGlobeLayerManager()
@@ -7839,7 +7829,6 @@ class CvMainInterface:
 					ButtonStyles.BUTTON_STYLE_LABEL)
 			screen.setStyle(szButtonID, szStyle)
 			screen.hide(szButtonID)
-
 
 	def createMinimapButtons(self):
 		screen = self.screen
@@ -7971,7 +7960,6 @@ class CvMainInterface:
 					BugOptionsScreen.showOptionsScreen()
 					return 1
 # BUG - BUG Option Button - End
-
 
 # BUG - Raw Yields - start
 		if (inputClass.getFunctionName().startswith("RawYields")):

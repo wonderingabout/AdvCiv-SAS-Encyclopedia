@@ -755,8 +755,6 @@ class CvExoticForeignAdvisor (CvForeignAdvisor.CvForeignAdvisor):
 						if objReligionInfo:
 							screen.attachImageButton(infoPanelName, "", objReligionInfo.getButton(), GenericButtonSizes.BUTTON_SIZE_CUSTOM, WidgetTypes.WIDGET_PEDIA_JUMP_TO_RELIGION, nFavoriteReligion, 1, False)
 
-
-
 	def drawInfoImproved (self, bInitial):
 		screen = self.getScreen()
 
@@ -1288,8 +1286,6 @@ class CvExoticForeignAdvisor (CvForeignAdvisor.CvForeignAdvisor):
 		# self.RES_LEFT_RIGHT_SPACE = self.MIN_LEFT_RIGHT_SPACE
 		# self.RES_TOP_BOTTOM_SPACE = self.MIN_TOP_BOTTOM_SPACE
 
-
-
 	def calculateSurplusPanelLayout(self):
 		self.SURPLUS_X = self.RES_LEFT_RIGHT_SPACE
 		self.SURPLUS_Y = self.RES_TOP_BOTTOM_SPACE
@@ -1311,8 +1307,6 @@ class CvExoticForeignAdvisor (CvForeignAdvisor.CvForeignAdvisor):
 		self.SURPLUS_CIRCLE_X_START = self.SURPLUS_TABLE_X + 4
 		# advc.073: Renamed from SURPLUS_CIRCLE_Y
 		self.SURPLUS_CIRCLE_Y_START = self.SURPLUS_TABLE_Y + 5
-
-
 
 	def drawResourceDeals(self, bInitial):
 		screen = self.getScreen()
@@ -1523,7 +1517,6 @@ class CvExoticForeignAdvisor (CvForeignAdvisor.CvForeignAdvisor):
 				currentRow += 1
 		self.resIconGrid.refresh()
 
-
 	def scrollTradeTableUp(self):
 		if (self.iScreen == self.SCREEN_DICT["BONUS"]):
 			self.resIconGrid.scrollUp()
@@ -1632,7 +1625,6 @@ class CvExoticForeignAdvisor (CvForeignAdvisor.CvForeignAdvisor):
 								self.techIconGrid.addIcon( currentRow, iTechColCantThem, gc.getTechInfo(iLoopTech).getButton(), 64, WidgetTypes.WIDGET_PEDIA_JUMP_TO_TECH, iLoopTech )
 				currentRow += 1
 		self.techIconGrid.refresh()
-
 
 	def initTechTable(self):
 		screen = self.getScreen()

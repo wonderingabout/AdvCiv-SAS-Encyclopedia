@@ -270,7 +270,6 @@ class CvCivicsScreen:
 
 		return 0
 
-
 	def drawHelpText(self, iCivicOption):
 
 		activePlayer = gc.getPlayer(self.iActivePlayer)
@@ -301,7 +300,6 @@ class CvCivicsScreen:
 		szHelpAreaID = self.HELP_AREA_NAME + str(iCivicOption)		
 		screen.addMultilineText(szHelpAreaID, szHelpText, fX+5, fY, self.HEADINGS_WIDTH-7, self.HELP_BOTTOM - fY-2, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)				
 
-
 	# Will draw the help text
 	def drawAllHelpText(self):
 		for i in range (gc.getNumCivicOptionInfos()):		
@@ -313,7 +311,6 @@ class CvCivicsScreen:
 			screen.addPanel(szPaneID, "", "", True, True, fX, self.HELP_TOP, self.HEADINGS_WIDTH, self.HELP_BOTTOM - self.HELP_TOP, PanelStyles.PANEL_STYLE_MAIN)
 
 			self.drawHelpText(i)
-
 
 	# Will Update the maintenance/anarchy/etc
 	def updateAnarchy(self):
@@ -366,7 +363,6 @@ class CvCivicsScreen:
 			screen = self.getScreen()
 			screen.hideScreen()
 
-
 	def Cancel(self, inputClass):
 		screen = self.getScreen()
 		if (inputClass.getNotifyCode() == NotifyCode.NOTIFY_CLICKED) :
@@ -403,7 +399,4 @@ class CvCivicsScreen:
 
 	def update(self, fDelta):
 		return
-
-
-
 

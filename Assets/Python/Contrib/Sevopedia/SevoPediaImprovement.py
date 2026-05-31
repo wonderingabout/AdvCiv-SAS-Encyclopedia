@@ -13,8 +13,6 @@
 # (c) 2026 wonderingabout & AI helpers (see Authors in root README.md)
 #
 
-
-
 from CvPythonExtensions import *
 import CvUtil
 import ScreenInput
@@ -28,8 +26,6 @@ ArtFileMgr = CyArtFileMgr()
 localText = CyTranslator()
 
 IMPROVEMENT_FARM = None
-
-
 
 def precomputeImprovementLeaderCache():
 	global IMPROVEMENT_FARM
@@ -69,8 +65,6 @@ def precomputeImprovementLeaderCache():
 
 	print("Sevopedia Improvement leader cache prebuilt. This should appear only once per gaming session.")
 	return IMPROVEMENT_FARM
-
-
 
 class SevoPediaImprovement:
 
@@ -184,8 +178,6 @@ class SevoPediaImprovement:
 		# IMPROVEMENT_FARM, IMPROVEMENT_FARM, IMPROVEMENT_FARM replaced by
 		# INCHART_ICON_SIZE, INCHART_ICON_SPACING, INCHART_ROW_HEIGHT -->
 
-
-
 	def interfaceScreen(self, iImprovement):
 		self.iImprovement = iImprovement
 
@@ -200,8 +192,6 @@ class SevoPediaImprovement:
 		self.placeTerrainMakesValids()
 		self.placeFeatureMakesValids()
 		self.placeHistory()
-
-
 
 	def placeImprovementPane(self):
 		screen = self.top.getScreen()
@@ -246,8 +236,6 @@ class SevoPediaImprovement:
 
 			screen.addMultilineText(self.top.getNextWidgetName(), szYield, self.X_IMPROVEMENT_PANE + xCenteringPositioning + xCenteringAdjust +5, self.Y_IMPROVEMENT_PANE - 13 + yBottomPositioning, self.W_IMPROVEMENT_PANE-10, self.H_IMPROVEMENT_PANE-10, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
 
-
-
 	def placeSpecial(self):
 		screen = self.top.getScreen()
 		panelName = self.top.getNextWidgetName()
@@ -261,8 +249,6 @@ class SevoPediaImprovement:
 		szSpecialText = szSpecialText.replace("\n\n", "\n").strip()
 
 		screen.addMultilineText(listName, szSpecialText, self.X_SPECIAL + 10, self.Y_SPECIAL + 30, self.W_SPECIAL - 20, self.H_SPECIAL - 40, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
-
-
 
 	def placeBonusYields(self):
 		screen = self.top.getScreen()
@@ -296,13 +282,9 @@ class SevoPediaImprovement:
 				screen.attachImageButton( childPanelName, "", gc.getBonusInfo(j).getButton(), GenericButtonSizes.BUTTON_SIZE_CUSTOM, WidgetTypes.WIDGET_PEDIA_JUMP_TO_BONUS, j, 1, False )
 				screen.attachLabel(childPanelName, "", u"<font=4>" + szYield + u"</font>")
 
-
-
 	def placeImprovementAnimation(self):
 		screen = self.top.getScreen()
 		screen.addImprovementGraphicGFC(self.top.getNextWidgetName(), self.iImprovement, self.X_IMPROVEMENT_ANIMATION, self.Y_IMPROVEMENT_ANIMATION, self.W_IMPROVEMENT_ANIMATION, self.H_IMPROVEMENT_ANIMATION, WidgetTypes.WIDGET_GENERAL, -1, -1, self.X_ROTATION_IMPROVEMENT_ANIMATION, self.Z_ROTATION_IMPROVEMENT_ANIMATION, self.SCALE_ANIMATION, True)
-
-
 
 	def placeBuilds(self):
 		screen = self.top.getScreen()
@@ -324,8 +306,6 @@ class SevoPediaImprovement:
 			yPanelCenter = self.Y_BUILD_PANEL + (self.H_BUILD_PANEL / 2)
 			screen.addMultilineText(textName, szText, self.X_BUILD_PANEL + 7, yPanelCenter, self.W_BUILD_PANEL - 14, self.H_BUILD_PANEL - 20, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
 
-
-
 	def placeRequires(self):
 		screen = self.top.getScreen()
 		panelName = self.top.getNextWidgetName()
@@ -345,8 +325,6 @@ class SevoPediaImprovement:
 			szText = localText.getText(txtKeyNone, ())
 			yPanelCenter = self.Y_REQUIRES + (self.H_REQUIRES / 2)
 			screen.addMultilineText(textName, szText, self.X_REQUIRES + 7, yPanelCenter, self.W_REQUIRES - 14, self.H_REQUIRES - 20, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
-
-
 
 	# <!-- custom: code entirely replaced with a code provided by claude ai based on m-e mod 's placeImprovements code (in (adjust to your mod path) C:\Program Files (x86)\Steam\steamapps\common\Sid Meier's Civilization IV Beyond the Sword\Beyond the Sword\Mods\Middle-earth\Assets\Python\Screens\PlatyPedia\PlatyPediaImprovement.py ), also with gemini ai's help too thanks a lot as well, and adjusted or not for advciv-sas -->
 	def placeMostYields(self):
@@ -458,7 +436,6 @@ class SevoPediaImprovement:
 				screen.setLabelAt(self.top.getNextWidgetName(), scrollPanelName, u"<font=4>" + sText + u"</font>", CvUtil.FONT_LEFT_JUSTIFY, iButtonSize + 8, iY + iButtonSize/2 - 8, -0.1, FontTypes.SMALL_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
 				iY += (iButtonSize + 8)
 
-
 	def placeImprovementLeaderTable(self):
 		screen = self.top.getScreen()
 		xPanel = self.X_IMPROVEMENT_LEADERS
@@ -505,7 +482,6 @@ class SevoPediaImprovement:
 			screen.setTableText(tableName, 1, iRow, u"<font=2>%d</font>" % leaderCount, "", WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_CENTER_JUSTIFY)
 			inchart_set_icon_cells(screen, tableName, iRow, weightToLeaders[weight], 2, maxLeaders, INCHART_ICON_TYPE_LEADER, {"leaderToCiv": leaderToCiv})
 
-
 	# <!-- custom: _setLeaderIconCells removed - now uses centralized inchart_set_icon_cells from _sevopedia_helpers -->
 
 	# <!-- custom: new addition thanks to chatgpt; as for logic this is how it works-functions based on chatgpt's explanation as well as my own research/findings in (translate to english using web browser or such) https://gforestshade.github.io/kujira/post/civ4improvementinfos/#terrainmakesvalids: if some terrains are specified then the improvement is only allowed on these terrains, else improvement is allowed on all terrains; not sure i got it all right (in particular in the case of irrigation or such conditions seemingly allowing the improvement on a terrain even if not listed here), so i am not sure it is all accurate but maybe is, check to be sure, and adjust this if needed; i implemented it as such and also added an explicative text that maybe the restriction could be elsewhere if not in improvementinfos. -->
@@ -534,8 +510,6 @@ class SevoPediaImprovement:
 			yPanelCenter = yPanel + (hPanel / 2)
 			screen.addMultilineText(textName, szText, xPanel + 7, yPanelCenter, wPanel - 14, hPanel - 20, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
 
-
-
 	def placeFeatureMakesValids(self):
 		xPanel = self.X_FEATURE_MAKES_VALIDS
 		yPanel = self.Y_FEATURE_MAKES_VALIDS
@@ -561,8 +535,6 @@ class SevoPediaImprovement:
 			yPanelCenter = yPanel + (hPanel / 2)
 			screen.addMultilineText(textName, szText, xPanel + 7, yPanelCenter, wPanel - 14, hPanel - 20, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
 
-
-
 	# <!-- custom: addition based on our existing mod's code in some other class, as for pedia entries, imported from m-e mod (see main readme for mod abbreviation details in as of now credits section) (but i also found them later in c2c mod and they are seemingly the same but the file is sadly/unfortunately way too bloated so going for the m-e mod one(s if talking about the assets themselves in thinking/saying so)) -->
 	def placeHistory(self):
 		screen = self.top.getScreen()
@@ -571,8 +543,6 @@ class SevoPediaImprovement:
 		screen.attachLabel(panelName, "", "  ")
 		textName = self.top.getNextWidgetName()
 		screen.addMultilineText(textName, gc.getImprovementInfo(self.iImprovement).getCivilopedia(), self.X_HISTORY + 7, self.Y_HISTORY + 10 + self.H_ADJUST_Y_AFTER_ANIMATION_NO_HEADER, self.W_HISTORY - 30, self.H_HISTORY - (15 * 2) - 25, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
-
-
 
 	def handleInput (self, inputClass):
 		return 0

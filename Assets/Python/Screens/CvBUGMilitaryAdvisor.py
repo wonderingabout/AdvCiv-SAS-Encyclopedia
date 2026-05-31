@@ -104,7 +104,6 @@ class CvMilitaryAdvisor:
 		self.LEADER_BUTTON_ID = "MilitaryAdvisorLeaderButton-BUG"
 		self.MINIMAP_PANEL = "MilitaryMiniMapPanel-BUG"
 
-
 		self.iPlayerPower = 0
 		self.iDemographicsMission = -1
 
@@ -181,7 +180,6 @@ class CvMilitaryAdvisor:
 #		self.RESOURCE_ICON_SIZE = 34
 
 		self.szMaybeButton = ArtFileMgr.getInterfaceArtInfo("QUESTION_MARK").getPath()
-
 
 	def getScreen(self):
 		return CyGInterfaceScreen(self.SCREEN_NAME, self.screenId)
@@ -330,7 +328,6 @@ class CvMilitaryAdvisor:
 			and iLoopPlayer != self.iActivePlayer
 			and not pPlayer.isBarbarian()
 			and not pPlayer.isMinorCiv()):
-
 
 #				szPlayerName = pPlayer.getName() + "/" + pPlayer.getCivilizationShortDescription(0)
 #				BugUtil.debug("Grid_ThreatIndex - Start %i %s" % (iLoopPlayer, szPlayerName))
@@ -823,7 +820,6 @@ class CvMilitaryAdvisor:
 				szButton = gc.getUnitInfo(iUnit).getButton()
 				self.iconGrid.addIcon(iRow, iCol, szButton, 32, WidgetTypes.WIDGET_PEDIA_JUMP_TO_UNIT, iUnit)
 
-
 #### Deployment Tab ####
 
 	def showUnitLocation(self):
@@ -1113,7 +1109,6 @@ class CvMilitaryAdvisor:
 	def isSelectedUnit(self, iPlayer, iUnitId):
 		return (iPlayer, iUnitId) in self.selectedUnits
 
-
 	def drawCombatExperience(self):
 
 		if (gc.getPlayer(self.iActivePlayer).greatPeopleThreshold(true) > 0):
@@ -1137,14 +1132,12 @@ class CvMilitaryAdvisor:
 
 			screen.setLabel(szGGTxt_ID, "", localText.getText("TXT_KEY_MISC_COMBAT_EXPERIENCE", ()), CvUtil.FONT_CENTER_JUSTIFY, self.X_GREAT_GENERAL_BAR + self.W_GREAT_GENERAL_BAR/2, self.Y_GREAT_GENERAL_BAR + 6, 0, FontTypes.GAME_FONT, WidgetTypes.WIDGET_HELP_GREAT_GENERAL, -1, -1)
 
-
 	def minimapClicked(self):
 		self.hideScreen()
 
 	def getLeaderButtonWidget(self, iPlayer):
 		szName = self.LEADER_BUTTON_ID + str(iPlayer)
 		return szName
-
 
 	# returns a unique ID for a widget in this screen
 	def getNextWidgetName(self):
@@ -1236,7 +1229,6 @@ class CvMilitaryAdvisor:
 			return self.iconGrid.handleInput(inputClass)
 
 		return 0
-
 
 	def update(self, fDelta):
 		return

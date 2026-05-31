@@ -15,8 +15,6 @@
 #
 # <!-- custom: Long_Comments_py.txt #4 -->
 
-
-
 from CvPythonExtensions import *
 import CvUtil
 import ScreenInput
@@ -24,13 +22,9 @@ import SevoScreenEnums
 
 from _sevopedia_helpers import *
 
-
-
 gc = CyGlobalContext()
 ArtFileMgr = CyArtFileMgr()
 localText = CyTranslator()
-
-
 
 class SevoPediaBuilding:
 
@@ -145,8 +139,6 @@ class SevoPediaBuilding:
 		self.W_HISTORY = self.W_BUILDING_ANIMATION
 		self.H_HISTORY = self.top.B_PEDIA_PAGE - self.Y_HISTORY
 
-
-
 	def interfaceScreen(self, iBuilding):
 		self.iBuilding = iBuilding
 
@@ -164,8 +156,6 @@ class SevoPediaBuilding:
 		self.placeCivilizations()
 		self.placeHistory()
 
-
-
 	def placeBuildingPane(self):
 		screen = self.top.getScreen()
 
@@ -173,18 +163,12 @@ class SevoPediaBuilding:
 		screen.addPanel(self.top.getNextWidgetName(), "", "", False, False, self.X_ICON, self.Y_ICON, self.W_ICON, self.H_ICON, PanelStyles.PANEL_STYLE_MAIN)
 		screen.addDDSGFC(self.top.getNextWidgetName(), gc.getBuildingInfo(self.iBuilding).getButton(), self.X_ICON + self.W_ICON/2 - self.ICON_SIZE/2, self.Y_ICON + self.H_ICON/2 - self.ICON_SIZE/2, self.ICON_SIZE, self.ICON_SIZE, WidgetTypes.WIDGET_GENERAL, -1, -1 )
 
-
-
 	def setupStatsPanel(self, screen, panelName, txtKey, panelStyle):
 		screen.addPanel(panelName, localText.getText(txtKey, ()), "", True, True, self.X_STATS_PANE, self.Y_STATS_PANE, self.W_STATS_PANE, self.H_STATS_PANE, panelStyle,)
-
-
 
 	def fillStatsCell(self, screen, label, xLabel, y):
 		labelText = u"<font=4>%s</font>" % label
 		screen.setText(self.top.getNextWidgetName(), "", labelText, CvUtil.FONT_LEFT_JUSTIFY, xLabel, y, 0, FontTypes.SMALL_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
-
-
 
 	def getStatsNextItemCoordinates(self, x, y, rowItemId, columnWidth):
 		anticipatedNextRowId = rowItemId + 1
@@ -200,8 +184,6 @@ class SevoPediaBuilding:
 			y += self.H_STATS_PANE_LINE_HEIGHT
 			rowItemId += 1
 			return x, y, rowItemId
-
-
 
 	# <!-- custom: table code based on placeAIPersonality panel method/function in sevopedialeader we (me and chatgpt) had written and enhanced together and all, modifying/adjusting it for this sevopediabuilding (much) simpler panel (stats pane) need but still important as we don't want to scroll after say 4th element, move to 2nd column rather and resume filling there. -->
 	def placeStats(self):
@@ -235,7 +217,6 @@ class SevoPediaBuilding:
 			szText2 = u"%c  %s" % (gc.getYieldInfo(YieldTypes.YIELD_PRODUCTION).getChar(), szCost)
 			self.fillStatsCell(screen, szText2, x, y)
 			x, y, rowItemId = self.getStatsNextItemCoordinates(x, y, rowItemId, columnWidth)
-
 
 		# <!-- custom: 2 Direct Yield Changes (like Food, Production, Gold), and Yield Modifiers (Food +x%, Production +x%, Gold +x%) with power breakdown added thanks to Claude AI and my prompts or tweaks/adjustments or not or yes or and but or not but or and(2) -->
 		for k in range(YieldTypes.NUM_YIELD_TYPES):
@@ -445,8 +426,6 @@ class SevoPediaBuilding:
 					buttonY = (self.Y_FLAT_GREAT_PERSON + buttonYOffset) - self.Y_STATS_PANE
 					screen.setImageButtonAt(buttonWidget, panelName, greatPersonButton, buttonX, buttonY, buttonW, buttonH, WidgetTypes.WIDGET_PEDIA_JUMP_TO_UNIT, iGreatPersonUnit, 1)
 
-
-
 	# <!-- custom: additional info by chatgpt thanks: "The self.iBuilding is a unique ID already. But the prerequisites (like isBuildingClassNeededInCity) refer to a class, not a specific building. That's where the helper comes in." + also "The helper get_iDefaultBuilding_current_civ(iBuildingClass) is not for the current building (self.iBuilding). It's used to resolve prerequisite buildings by class — and each building class can have different versions (UUs) for each civ." i don't know if accurate but maybe is, so adding this info here as part of refactoring and wondering if we should use it in required for to which chatgpt also replied thanks but or not but or yes but"In placeRequiredFor: You’re checking: for each building: if building X requires our current building's class: show building X" and "You already have the concrete building (X). No need to resolve anything — you are showing the building that depends on yours, not the class." -->
 	def get_iDefaultBuilding_current_civ(self, i):
 		# Get the default building of this class for the current civilization
@@ -454,8 +433,6 @@ class SevoPediaBuilding:
 			return gc.getCivilizationInfo(gc.getPlayer(self.top.iActivePlayer).getCivilizationType()).getCivilizationBuildings(i)
 		else:
 			return gc.getBuildingClassInfo(i).getDefaultBuildingIndex()
-
-
 
 	def placeRequires(self):
 		xPanel = self.X_REQUIRES
@@ -610,8 +587,6 @@ class SevoPediaBuilding:
 			yPanelCenter = yPanel + (hPanel / 2)
 			screen.addMultilineText(textName, szText, xPanel + 7, yPanelCenter, wPanel - 14, hPanel - 20, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
 
-
-
 	def placeMovie(self):
 		screen = self.top.getScreen()
 		panelName = self.top.getNextWidgetName()
@@ -637,7 +612,6 @@ class SevoPediaBuilding:
 			yPanelCenter = self.Y_MOVIE + (self.H_MOVIE / 2)
 			screen.addMultilineText(textName, szText, self.X_MOVIE + 7, yPanelCenter, self.W_MOVIE - 14, self.H_MOVIE - 20, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
 
-
 	# <!-- custom: code provided by gemini ai and adjusted or not for advciv-sas -->  
 	def is_building_prereq_overridden_by_civic(self, iBuildingId):
 		# Checks if the prerequisite for the given building ID can be overridden by any civic.
@@ -659,8 +633,6 @@ class SevoPediaBuilding:
 				return True
 
 		return False
-
-
 
 	def placeRequiredFor(self):
 		# Shows buildings that require this building as a prerequisite
@@ -748,8 +720,6 @@ class SevoPediaBuilding:
 			yPanelCenter = yPanel + (hPanel / 2)
 			screen.addMultilineText(textName, szText, xPanel + 7, yPanelCenter, wPanel - 14, hPanel - 20, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
 
-
-
 	def placeObsoleteWith(self):
 		screen = self.top.getScreen()
 		panelName = self.top.getNextWidgetName()
@@ -786,8 +756,6 @@ class SevoPediaBuilding:
 			textName = self.top.getNextWidgetName()
 			szText = localText.getText("TXT_KEY_PEDIA_SAS_NO_BUTTON_FOUND_NEVER", ())
 			screen.addMultilineText(textName, szText, self.X_OBSOLETE_WITH + 7, yPanelCenter, self.W_OBSOLETE_WITH - 14, self.H_OBSOLETE_WITH - 20, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
-
-
 
 	def placeFreePBBS(self):
 		xPanel = self.X_FREE_PBBS
@@ -884,8 +852,6 @@ class SevoPediaBuilding:
 			yPanelCenter = yPanel + (hPanel / 2)
 			screen.addMultilineText(textName, szText, xPanel + 7, yPanelCenter, wPanel - 14, hPanel - 20, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
 
-
-
 	def isBuildingUnique(self, iBuildingIndex):
 		# Helper function to determine if a building is civ-specific (unique)
 		#
@@ -895,8 +861,6 @@ class SevoPediaBuilding:
 		# A building is unique if it's not the default building for its class
 		defaultBuildingForClass = buildingClassInfo.getDefaultBuildingIndex()
 		return iBuildingIndex != defaultBuildingForClass
-
-
 
 	def getBuildingCiv(self, iBuildingIndex):
 		# Helper function to get which civ a unique building belongs to
@@ -912,8 +876,6 @@ class SevoPediaBuilding:
 				return iCiv
 		return -1  # Should not happen for unique buildings
 
-
-
 	def buildingClassHasUniqueVersions(self, buildingClassType):
 		# Helper function to check if a building class has any unique versions
 		#
@@ -927,8 +889,6 @@ class SevoPediaBuilding:
 			if civBuildingForClass != defaultBuilding:
 				return True
 		return False
-
-
 
 	def placeFreeWith(self):
 		xPanel = self.X_FREE_WITH
@@ -1004,8 +964,6 @@ class SevoPediaBuilding:
 			yPanelCenter = yPanel + (hPanel / 2)
 			screen.addMultilineText(textName, szText, xPanel + 7, yPanelCenter, wPanel - 14, hPanel - 20, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
 
-
-
 	def placeReplace(self):
 		xPanel = self.X_REPLACE
 		yPanel = self.Y_REPLACE
@@ -1055,8 +1013,6 @@ class SevoPediaBuilding:
 			yPanelCenter = yPanel + (hPanel / 2)
 			screen.addMultilineText(textName, szText, xPanel + 7, yPanelCenter, wPanel - 14, hPanel - 20, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
 
-
-
 	def placeCivilizations(self):
 		screen = self.top.getScreen()
 		panelName = self.top.getNextWidgetName()
@@ -1091,8 +1047,6 @@ class SevoPediaBuilding:
 			szText = localText.getText("TXT_KEY_PEDIA_CIVILIZATIONS_NO_BUTTON_FOUND", ())
 			screen.addMultilineText(textName, szText, self.X_CIVILIZATIONS + 7, yPanelCenter, self.W_CIVILIZATIONS - 14, self.H_CIVILIZATIONS - 20, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
 
-
-
 	# <!-- custom: add iconquestprob with the help of claude ai, quite similarly than for the getChopProductionText addition in sevopedia feature) -->
 	def getIConquestProbText(self):
 		buildingInfo = gc.getBuildingInfo(self.iBuilding)
@@ -1100,8 +1054,6 @@ class SevoPediaBuilding:
 		conquestProb = buildingInfo.getConquestProbability()
 
 		return (u"%siConquestProb: %d" % (localText.getText("[ICON_BULLET]", ()), conquestProb))
-
-
 
 	def placeSpecial(self):
 		screen = self.top.getScreen()
@@ -1117,13 +1069,9 @@ class SevoPediaBuilding:
 
 		screen.addMultilineText(listName, szSpecialText, self.X_SPECIAL+5, self.Y_SPECIAL+30, self.W_SPECIAL-10, self.H_SPECIAL-35, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
 
-
-
 	def placeBuildingAnimation(self):
 		screen = self.top.getScreen()	
 		screen.addBuildingGraphicGFC(self.top.getNextWidgetName(), self.iBuilding, self.X_BUILDING_ANIMATION, self.Y_BUILDING_ANIMATION, self.W_BUILDING_ANIMATION, self.H_BUILDING_ANIMATION, WidgetTypes.WIDGET_GENERAL, -1, -1, self.X_ROTATION_BUILDING_ANIMATION, self.Z_ROTATION_BUILDING_ANIMATION, self.SCALE_ANIMATION, True)
-
-
 
 	def placeHistory(self):
 		screen = self.top.getScreen()
@@ -1142,8 +1090,6 @@ class SevoPediaBuilding:
 		szText += gc.getBuildingInfo(self.iBuilding).getCivilopedia()
 		# <!-- custom: but here we also restore/add padding -->
 		screen.addMultilineText(textName, szText, self.X_HISTORY + 7, self.Y_HISTORY + 10 + self.H_ADJUST_Y_AFTER_ANIMATION_NO_HEADER, self.W_HISTORY - 30, self.H_HISTORY - (15 * 2) - 25, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
-
-
 
 	def handleInput (self, inputClass):
 		return 0

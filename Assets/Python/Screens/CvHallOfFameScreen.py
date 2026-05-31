@@ -67,7 +67,6 @@ class CvHallOfFameScreen:
 
 		self.bAllowReplay = False
 
-
 	def getScreen(self):
 		return CyGInterfaceScreen(self.SCREEN_NAME, self.screenId)
 
@@ -116,8 +115,6 @@ class CvHallOfFameScreen:
 
 		# Header...
 		screen.setLabel(self.HEADER_ID, "Background", u"<font=4b>" + localText.getText("TXT_KEY_HALL_OF_FAME_SCREEN_TITLE", ()).upper() + u"</font>", CvUtil.FONT_CENTER_JUSTIFY, self.X_SCREEN, self.Y_TITLE, 0, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1 )
-
-
 
 		xDropDown = self.DROPDOWN_SPACING_X
 		yDropDown = self.DROPDOWN_Y
@@ -239,7 +236,6 @@ class CvHallOfFameScreen:
 			and (self.iSpeedFilter == -1 or self.iSpeedFilter == replayInfo.getGameSpeed()) 
 			and (self.iVictoryFilter == -1 or self.iVictoryFilter == replayInfo.getVictoryType()) 
 			and ((self.iMultiplayerFilter == 1) == replayInfo.isMultiplayer()))
-
 
 	def drawContents(self):
 
@@ -491,6 +487,4 @@ class CvHallOfFameScreen:
 
 	def update(self, fDelta):
 		return					
-
-
 

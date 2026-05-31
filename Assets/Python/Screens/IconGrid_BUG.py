@@ -5,12 +5,10 @@ import CvScreenEnums
 import BugUtil
 import math
 
-
 # globals
 gc = CyGlobalContext()
 ArtFileMgr = CyArtFileMgr()
 localText = CyTranslator()
-
 
 class IconData:
 	def __init__(self, sImage, iSize, widgetType, iData1, iData2=-1, bEnabled=True):
@@ -66,8 +64,6 @@ class CellData:
 	def addStackedBar(self, fValue, sColor, sText, iFont):
 		self.stackedbar.append(StackedBarData(fValue, sColor, sText, iFont))
 
-
-
 class RowData:
 
 	def __init__(self, sRowHeader, sMessage, iFont, iNumColumns):
@@ -90,8 +86,6 @@ class RowData:
 
 	def addStackedBar(self, iColumnIndex, fValue, sColor, sText, iFont):
 		self.cells[iColumnIndex].addStackedBar(fValue, sColor, sText, iFont)
-
-
 
 class ColumnGroup:
 
@@ -179,32 +173,25 @@ class IconGrid_BUG:
 			int(InputTypes.KB_END): self.scrollBottom,
 		}
 
-
 	def setGroupBorder(self, iVal):
 		self.groupBorder = iVal
-
 
 	def setGroupLabelOffset(self, sVal):
 		self.groupLabelOffset = sVal
 
-
 	def setMinColumnSpace(self, iVal):
 		self.minColSpace = iVal
 
-
 	def	setMinRowSpace(self, iVal):
 		self.minRowSpace = iVal
-
 
 	def setSize(self, iWidth, iHeight):
 		self.width = iWidth
 		self.height = iHeight
 
-
 	def setPosition(self, iX, iY):
 		self.xStart = iX
 		self.yStart = iY
-
 
 	def getPrefferedWidth(self):
 		self.calculateLayout()
@@ -228,8 +215,6 @@ class IconGrid_BUG:
 			prefferedWidth += self.rowBorderWidth * 2
 		return prefferedWidth
 
-
-
 	def getPrefferedHeight(self):
 		self.calculateLayout()
 		initHeight = self.totalRowHeight * self.numRows + self.minRowSpace * (self.numRows - 1)
@@ -242,11 +227,9 @@ class IconGrid_BUG:
 		else:
 			return initHeight + self.headerHeight
 
-
 	def setHeader(self, iCol, sLabel, iFont=3):
 		self.header[iCol] = sLabel
 		self.headerFont[iCol] = iFont
-
 
 	def setTextColWidth(self, iCol, iWidth):
 		self.textColWidth[iCol] = iWidth
@@ -257,7 +240,6 @@ class IconGrid_BUG:
 	def createColumnGroup(self, sLabel, iLength):
 		self.columnGroups.append(ColumnGroup(sLabel, iLength))
 
-
 	def createGrid(self):
 		self.calculateLayout()
 		self.addControls()
@@ -265,7 +247,6 @@ class IconGrid_BUG:
 	def hideGrid(self):
 		self.widgetCount = 0
 		self.hideControls()
-
 
 	def appendRow(self, sRowHeader, sMessage, iFont=3):
 		self.data.append(RowData(sRowHeader, sMessage, iFont, len(self.columns)))
@@ -287,7 +268,6 @@ class IconGrid_BUG:
 	def clearData(self):
 		self.scrollPosition = 0
 		self.data = []
-
 
 	def scrollUp(self):
 		self.scrollPosition = self.scrollPosition - 1
@@ -331,7 +311,6 @@ class IconGrid_BUG:
 				return 1
 
 		return 0
-
 
 	def refresh(self):
 		# check if scrollPosition is valid and show/hide scroll buttons

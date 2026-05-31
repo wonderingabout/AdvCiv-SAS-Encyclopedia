@@ -15,8 +15,6 @@
 # <!-- custom: enhanced in AdvCiv-SAS with new Unlocked with and Yields panel based on the Middle-earth mod's Platypedi's specialists page ("C:\Program Files (x86)\Steam\steamapps\common\Sid Meier's Civilization IV Beyond the Sword\Beyond the Sword\Mods\Middle-earth\Assets\Python\Screens\PlatyPedia\PlatyPediaSpecialist.py"), with the help of GPT-5.2-Codex thanks a lot! -->
 #
 
-
-
 from CvPythonExtensions import *
 import CvUtil
 import ScreenInput
@@ -25,8 +23,6 @@ import SevoScreenEnums
 gc = CyGlobalContext()
 ArtFileMgr = CyArtFileMgr()
 localText = CyTranslator()
-
-
 
 class SevoPediaSpecialist:
 
@@ -76,8 +72,6 @@ class SevoPediaSpecialist:
 
 		self.BUTTON_SIZE = 64
 
-
-
 	def interfaceScreen(self, iSpecialist):
 		self.iSpecialist = iSpecialist
 
@@ -87,8 +81,6 @@ class SevoPediaSpecialist:
 		self.placeYields()
 		self.placeHistory()
 
-
-
 	def placeSpecialistPane(self):
 		screen = self.top.getScreen()
 
@@ -97,8 +89,6 @@ class SevoPediaSpecialist:
 		#screen.addPanel(self.top.getNextWidgetName(), "", "", False, False, self.X_ICON, self.Y_ICON, self.W_ICON, self.H_ICON, PanelStyles.PANEL_STYLE_MAIN)
 		screen.addPanel(self.top.getNextWidgetName(), "", "", False, False, self.X_ICON, self.Y_ICON, self.W_ICON, self.H_ICON, PanelStyles.PANEL_STYLE_EMPTY)
 		screen.addDDSGFC(self.top.getNextWidgetName(), gc.getSpecialistInfo(self.iSpecialist).getButton(), self.X_ICON + self.W_ICON/2 - self.ICON_SIZE/2, self.Y_ICON + self.H_ICON/2 - self.ICON_SIZE/2, self.ICON_SIZE, self.ICON_SIZE, WidgetTypes.WIDGET_GENERAL, -1, -1)
-
-
 
 	def placeEffects(self):
 		screen = self.top.getScreen()
@@ -111,16 +101,12 @@ class SevoPediaSpecialist:
 		headerExtraHeight = 10
 		screen.addMultilineText(textName, szSpecialText, self.X_EFFECTS_PANEL + 5, self.Y_EFFECTS_PANEL - headerExtraHeight, self.W_EFFECTS_PANEL - 10, self.H_TOP_PANEL - headerExtraHeight, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
 
-
-
 	def _append_change_text(self, szText, iChange, iChar):
 		if iChange != 0:
 			if szText:
 				szText += u", "
 			szText += u"%+d%c" % (iChange, iChar)
 		return szText
-
-
 
 	def _format_slot_label(self, iCount, iFree):
 		szText = u""
@@ -131,8 +117,6 @@ class SevoPediaSpecialist:
 				szText += u", "
 			szText += u"+%d Free" % iFree
 		return szText
-
-
 
 	def placeExtraSlots(self):
 		screen = self.top.getScreen()
@@ -201,8 +185,6 @@ class SevoPediaSpecialist:
 			textName = self.top.getNextWidgetName()
 			screen.setLabelAt(textName, scrollName, u"<font=4>No extra slots gained</font>", CvUtil.FONT_LEFT_JUSTIFY, 0, iY, -0.1, FontTypes.SMALL_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
 
-
-
 	def placeYields(self):
 		screen = self.top.getScreen()
 		panelName = self.top.getNextWidgetName()
@@ -249,8 +231,6 @@ class SevoPediaSpecialist:
 			textName = self.top.getNextWidgetName()
 			screen.setLabelAt(textName, scrollName, u"<font=4>No extra yields gained</font>", CvUtil.FONT_LEFT_JUSTIFY, 0, iY, -0.1, FontTypes.SMALL_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
 
-
-
 	def placeHistory(self):
 		screen = self.top.getScreen()
 		panelName = self.top.getNextWidgetName()
@@ -260,8 +240,6 @@ class SevoPediaSpecialist:
 		# <!-- custom: also account for scrolling: top text needs to remain visible as an entire line. Note: somehow modifying H weirdly changes the Y optimal scroll point so adjust one at a time maybe. -->
 		panelTopPadding = 40
 		screen.addMultilineText(textName, szText, self.X_HISTORY + 7, self.Y_HISTORY + panelTopPadding, self.W_HISTORY - 7, self.H_HISTORY - panelTopPadding - 20, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
-
-
 
 	def handleInput (self, inputClass):
 		return 0

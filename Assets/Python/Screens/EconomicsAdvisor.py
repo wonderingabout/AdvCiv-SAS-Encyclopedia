@@ -123,7 +123,6 @@ class EconomicsAdvisor:
 					screen.setText (szTextId, "", u"<font=4>" + localText.getColorText (self.PAGE_NAME_LIST[i], (), gc.getInfoTypeForString ("COLOR_YELLOW")).upper() + u"</font>", CvUtil.FONT_CENTER_JUSTIFY, xLink, self.Y_LINK, 0, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
 				xLink += self.DX_LINK
 
-
 	def drawFinance(self):
 		screen = self.getScreen()
 		# Header...
@@ -298,7 +297,6 @@ class EconomicsAdvisor:
 				szRate = u"<font=3>" + unicode(player.getCommerceRate(CommerceTypes(eCommerce))) + u"</font>"
 				screen.setLabel(self.getNextWidgetName(), "Background", szRate, CvUtil.FONT_RIGHT_JUSTIFY, self.X_LEFT_PANEL + self.PANE_WIDTH - self.TEXT_MARGIN, yLocation + self.TEXT_MARGIN, self.Z_CONTROLS + self.DZ, FontTypes.GAME_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
 
-
 		# K-Mod. Show gold rate if it hasn't been shown already
 		if (not player.isCommerceFlexible(CommerceTypes.COMMERCE_GOLD)):
 			yLocation += self.Y_SPACING
@@ -445,7 +443,6 @@ class EconomicsAdvisor:
 		screen.setLabel(self.getNextWidgetName(), "Background", u"<font=3>" + localText.getText("TXT_KEY_FINANCIAL_ADVISOR_INCOME", ()) + "</font>", CvUtil.FONT_LEFT_JUSTIFY, self.X_MIDDLE_PANEL + self.TEXT_MARGIN, yLocation + self.TEXT_MARGIN, self.Z_CONTROLS + self.DZ, FontTypes.GAME_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1 )
 		screen.setLabel(self.getNextWidgetName(), "Background", u"<font=3>" + unicode(iIncome) + "</font>", CvUtil.FONT_RIGHT_JUSTIFY, self.X_MIDDLE_PANEL + self.PANE_WIDTH - self.TEXT_MARGIN, yLocation + self.TEXT_MARGIN, self.Z_CONTROLS + self.DZ, FontTypes.GAME_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1 )
 
-
 		# Expenses
 		yLocation = self.Y_LOCATION
 		iExpenses = 0
@@ -500,7 +497,6 @@ class EconomicsAdvisor:
 
 		szTopPanel = self.getNextWidgetName()
 		screen.addPanel(szTopPanel, u"", "", True, True, self.X_LEFT_PANEL, self.Y_TOP_PANEL, self.X_RIGHT_PANEL + self.PANE_WIDTH - self.X_LEFT_PANEL, self.H_TOP_PANEL, PanelStyles.PANEL_STYLE_MAIN )
-
 
 		iGlobalWarmingIndex = game.getGlobalWarmingIndex()
 		iGlobalWarmingChances = game.getGlobalWarmingChances()
@@ -570,7 +566,6 @@ class EconomicsAdvisor:
 			screen.setLabel(self.getNextWidgetName(), "Background", u"<font=3>" + localText.getText("TXT_KEY_CONCEPT_BUILDINGS", ()) + "</font>", CvUtil.FONT_LEFT_JUSTIFY, self.X_LEFT_PANEL + 2*self.TEXT_MARGIN, yLocation + self.TEXT_MARGIN, self.Z_CONTROLS + self.DZ, FontTypes.GAME_FONT, WidgetTypes.WIDGET_HELP_POLLUTION_SOURCE, PollutionTypes.POLLUTION_BUILDINGS, -1 )
 			screen.setLabel(self.getNextWidgetName(), "Background", u"<font=3>" + unicode(iBuildings) + "</font>", CvUtil.FONT_RIGHT_JUSTIFY, self.X_LEFT_PANEL + self.PANE_WIDTH - self.TEXT_MARGIN, yLocation + self.TEXT_MARGIN, self.Z_CONTROLS + self.DZ, FontTypes.GAME_FONT, WidgetTypes.WIDGET_HELP_POLLUTION_SOURCE, PollutionTypes.POLLUTION_BUILDINGS, -1 )
 
-
 		if iResources != 0:
 			yLocation += self.Y_SPACING
 			screen.setLabel(self.getNextWidgetName(), "Background", u"<font=3>" + localText.getText("TXT_KEY_CONCEPT_RESOURCES", ()) + "</font>", CvUtil.FONT_LEFT_JUSTIFY, self.X_LEFT_PANEL + 2*self.TEXT_MARGIN, yLocation + self.TEXT_MARGIN, self.Z_CONTROLS + self.DZ, FontTypes.GAME_FONT, WidgetTypes.WIDGET_HELP_POLLUTION_SOURCE, PollutionTypes.POLLUTION_BONUSES, -1 )
@@ -586,7 +581,6 @@ class EconomicsAdvisor:
 		screen.setLabel(self.getNextWidgetName(), "Background", u"<font=3>" + localText.getText("TXT_KEY_TOTAL", ()) + "</font>", CvUtil.FONT_LEFT_JUSTIFY, self.X_LEFT_PANEL + self.TEXT_MARGIN, yLocation + self.TEXT_MARGIN, self.Z_CONTROLS + self.DZ, FontTypes.GAME_FONT, WidgetTypes.WIDGET_HELP_POLLUTION_SOURCE, iPollutionTypes, -1 )
 		screen.setLabel(self.getNextWidgetName(), "Background", u"<font=3>" + unicode(iLocalPollution) + "</font>", CvUtil.FONT_RIGHT_JUSTIFY, self.X_LEFT_PANEL + self.PANE_WIDTH - self.TEXT_MARGIN, yLocation + self.TEXT_MARGIN, self.Z_CONTROLS + self.DZ, FontTypes.GAME_FONT, WidgetTypes.WIDGET_HELP_POLLUTION_SOURCE, iPollutionTypes, -1 )
 
-
 		yLocation += 1.5 * self.Y_SPACING
 		screen.setLabel(self.getNextWidgetName(), "Background", u"<font=3>" + localText.getText("TXT_KEY_ENVIRONMENT_TOTAL_OFFSETS", ()) + "</font>", CvUtil.FONT_LEFT_JUSTIFY, self.X_LEFT_PANEL + self.TEXT_MARGIN, yLocation + self.TEXT_MARGIN, self.Z_CONTROLS + self.DZ, FontTypes.GAME_FONT, WidgetTypes.WIDGET_HELP_POLLUTION_OFFSETS, -1, -1 )
 		screen.setLabel(self.getNextWidgetName(), "Background", u"<font=3>" + unicode(-iLocalDefence) + "</font>", CvUtil.FONT_RIGHT_JUSTIFY, self.X_LEFT_PANEL + self.PANE_WIDTH - self.TEXT_MARGIN, yLocation + self.TEXT_MARGIN, self.Z_CONTROLS + self.DZ, FontTypes.GAME_FONT, WidgetTypes.WIDGET_HELP_POLLUTION_OFFSETS, -1, -1 )
@@ -598,7 +592,6 @@ class EconomicsAdvisor:
 		yLocation += 1.5 * self.Y_SPACING
 		screen.setLabel(self.getNextWidgetName(), "Background", u"<font=3>" + localText.getText("TXT_KEY_ENVIRONMENT_LOCAL_THRESHOLD", ()) + "</font>", CvUtil.FONT_LEFT_JUSTIFY, self.X_LEFT_PANEL + self.TEXT_MARGIN, yLocation + self.TEXT_MARGIN, self.Z_CONTROLS + self.DZ, FontTypes.GAME_FONT, WidgetTypes.WIDGET_HELP_SUSTAINABILITY_THRESHOLD, -1, -1 )
 		screen.setLabel(self.getNextWidgetName(), "Background", u"<font=3>" + unicode(iLocalThreshold) + "</font>", CvUtil.FONT_RIGHT_JUSTIFY, self.X_LEFT_PANEL + self.PANE_WIDTH - self.TEXT_MARGIN, yLocation + self.TEXT_MARGIN, self.Z_CONTROLS + self.DZ, FontTypes.GAME_FONT, WidgetTypes.WIDGET_HELP_SUSTAINABILITY_THRESHOLD, -1, -1 )
-
 
 		# Middle panel: Global
 		yLocation  = self.Y_LOCATION
@@ -672,9 +665,7 @@ class EconomicsAdvisor:
 			screen.setLabel(self.getNextWidgetName(), "Background", u"<font=3>" + localText.getText("TXT_KEY_CHANCES", ()) + "</font>", CvUtil.FONT_LEFT_JUSTIFY, self.X_RIGHT_PANEL + self.TEXT_MARGIN, yLocation + self.TEXT_MARGIN, self.Z_CONTROLS + self.DZ, FontTypes.GAME_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1 )
 			screen.setLabel(self.getNextWidgetName(), "Background", u"<font=3>" + unicode(game.getGlobalWarmingChances()) + "</font>", CvUtil.FONT_RIGHT_JUSTIFY, self.X_RIGHT_PANEL + self.PANE_WIDTH - self.TEXT_MARGIN, yLocation + self.TEXT_MARGIN, self.Z_CONTROLS + self.DZ, FontTypes.GAME_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1 )
 
-
 		return 0
-
 
 	# returns a unique ID for a widget in this screen
 	def getNextWidgetName(self):

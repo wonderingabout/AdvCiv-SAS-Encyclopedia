@@ -268,7 +268,6 @@ class CvOptionsScreen:
 		self.drawAudioOptionsTab()
 		self.drawOtherTab()
 
-
 	def drawGameOptionsTab(self):
 
 		tab = self.pTabControl
@@ -428,7 +427,6 @@ class CvOptionsScreen:
 		tab.setLayoutFlag("GraphicsPanelHBox", "LAYOUT_SIZE_HPREFERREDEXPANDING")
 		tab.setLayoutFlag("GraphicsPanelHBox", "LAYOUT_SIZE_VPREFERREDEXPANDING")
 
-
 		####### RESOLUTION
 
 		tab.attachVBox("GraphicsPanelHBox", "ResVBox")
@@ -444,7 +442,6 @@ class CvOptionsScreen:
 		tab.attachHBox("ResPanel", hbox)
 		tab.setLayoutFlag(hbox, "LAYOUT_SIZE_HEXPANDING")
 		tab.setLayoutFlag(hbox, "LAYOUT_SIZE_VEXPANDING")
-
 
 		vbox = "ResPanelVBox"
 		tab.attachVBox(hbox, vbox)
@@ -711,7 +708,6 @@ class CvOptionsScreen:
 		tab.setLayoutFlag("AudioPanelHBox", "LAYOUT_SIZE_HEXPANDING")
 		tab.setLayoutFlag("AudioPanelHBox", "LAYOUT_SIZE_VEXPANDING")
 
-
 		######################### Create the 6 volume slider/checkboxes #########################
 
 		tab.attachVBox("AudioPanelVBox", "VolumeVBox")
@@ -799,7 +795,6 @@ class CvOptionsScreen:
 			# bNoSoundTrue set above
 			tab.attachCheckBox(vbox, szWidgetName, szOptionDesc, self.callbackIFace, szCallbackFunction, szWidgetName, bNoSoundTrue)
 			tab.setLayoutFlag(szWidgetName, "LAYOUT_HCENTER")
-
 
 		tab.attachHSeparator("VolumePanelVBox", "SoundSeparator")
 
@@ -970,7 +965,6 @@ class CvOptionsScreen:
 		# advc.076: Moved into subroutine
 		self.attachExitButton(tab)
 
-
 	def drawOtherTab(self):
 
 		tab = self.pTabControl
@@ -984,7 +978,6 @@ class CvOptionsScreen:
 		tab.attachHBox("OtherPanel", "OtherPanelHBox")
 		tab.setLayoutFlag("OtherPanelHBox", "LAYOUT_SPACING_INNERFORM")
 		tab.setLayoutFlag("OtherPanelHBox", "LAYOUT_SIZE_HEXPANDING")
-
 
 		########### CLOCK
 
@@ -1038,7 +1031,6 @@ class CvOptionsScreen:
 		bAlarmOn = isAlarmOn()
 		tab.attachCheckBox("ClockPanelVBox", szWidgetName, szOptionDesc, self.callbackIFace, szCallbackFunction, szWidgetName, bAlarmOn)
 
-
 		########### PROFILE
 
 		UserProfile.loadProfileFileNames()
@@ -1057,7 +1049,6 @@ class CvOptionsScreen:
 		tab.attachVBox("ProfilePanel", "ProfilePanelVBox")
 		tab.setLayoutFlag("ProfilePanelVBox", "LAYOUT_SIZE_HPREFERREDEXPANDING")
 		tab.setLayoutFlag("ProfilePanelVBox", "LAYOUT_SIZE_VPREFERREDEXPANDING")
-
 
 		# Profiles Dropdown
 
@@ -1105,7 +1096,6 @@ class CvOptionsScreen:
 		szWidgetName = "DeleteProfileButton"
 		tab.attachButton("ProfilePanelVBox", szWidgetName, szOptionDesc, self.callbackIFace, szCallbackFunction, szWidgetName)
 
-
 		########## NETWORKING		
 		# advc.076: Remove the entire network panel
 		#tab.attachVBox("OtherPanelHBox", "NetVBox")
@@ -1136,7 +1126,6 @@ class CvOptionsScreen:
 		#szWidgetName = "ModemSelection"
 		#szWidgetLbl = localText.getText("TXT_KEY_OPTIONS_MODEM_LBL", ())
 		#tab.attachRadioButton("NetPanelVBox", szWidgetName, szWidgetLbl, self.callbackIFace, szCallbackFunction, str(szWidgetName), bIsModem)
-
 
 		########## EXIT
 
