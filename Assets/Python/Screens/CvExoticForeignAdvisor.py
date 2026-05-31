@@ -81,7 +81,7 @@ class CvExoticForeignAdvisor (CvForeignAdvisor.CvForeignAdvisor):
 		self.GLANCE_BUTTON = "ForeignAdvisorPlusMinus"
 		self.X_LINK = 0
 		self.Y_LINK = 726
-		
+
 		# <!-- custom: remove these iExtraWidth and iExtraHeight-like as we don't want yellow margins: they are distracting and not not useful; channge with the help of gemini pro 3 thanks.  -->
 		# self.X_GLANCE_OFFSET = 6 # advc.004: was 10
 		# self.Y_GLANCE_OFFSET = 3
@@ -100,84 +100,84 @@ class CvExoticForeignAdvisor (CvForeignAdvisor.CvForeignAdvisor):
 		###################
 		# General options #
 		###################
-		
+
 		# Show the names of the leaders if 'True'
 		self.SHOW_LEADER_NAMES = False
-		
+
 		# Show a border around the rows
 		self.SHOW_ROW_BORDERS = True
-		
+
 		# Minimum space at the top and bottom of the screen.
 		# <!-- custom: after our changes, blue panel is overfilling on top and bottom, adjusted with the help of gemini 3 pro thanks -->
 		# The blue panel is overflowing because MIN_TOP_BOTTOM_SPACE is set to 30, but the Civ4 top/bottom UI bars are 55 pixels tall. We need to increase the margin so the panel clears those bars.
 		# <!-- custom: update: with 55 we have some yellow uneeded margins a slightly lower value seems to work much better at removing these, but a too low one creates an unwanted display somehow, adjusted as such based on a similar suggestion of gemini 3 pro thanks -->
 		# self.MIN_TOP_BOTTOM_SPACE = 30 # advc.073: was 60
 		self.MIN_TOP_BOTTOM_SPACE = 45
-		
+
 		# Minimum space at the left and right end of the screen.
 		# <!-- custom: reduce this as we don't need so much space on the sides, and we need the space to show more info as per gemini 3 pro's solution thanks -->
 		# self.MIN_LEFT_RIGHT_SPACE = 25
 		self.MIN_LEFT_RIGHT_SPACE = 0
-		
+
 		# Extra border at the left and right ends of the column groups (import/export)
 		self.GROUP_BORDER = 8
-		
+
 		# Extra space before the label of the column groups (import/export)
 		self.GROUP_LABEL_OFFSET = "   "
-		
+
 		# Minimum space between the columns
 		self.MIN_COLUMN_SPACE = 5
-		
+
 		# Minimum space between the rows
 		self.MIN_ROW_SPACE = 1
-		
+
 		##########################
 		# Resources view options #
 		##########################
-		
+
 		# If 'True', the amount for each surplus resource is subtracted by one. So it shows how many you
 		# can give away without losing the resource yourself. This value isn't affected by any default 
 		# layout.
 		self.RES_SHOW_EXTRA_AMOUNT = False # advc.073: was True
-		
+
 		# If 'True', the amount's are shown as an overlay on top of the lower left corner of the resources.
 		# If 'False', the amount's are shown below the resources so you'll need to use a higher value for 
 		# self.RES_SURPLUS_HEIGHT (see below).
 		# advc.073 (comment): I doubt that False will work correctly with the changes I've made
 		self.RES_SHOW_SURPLUS_AMOUNT_ON_TOP = True
-		
+
 		# If 'True', the resource columns are grouped as import and export.
 		self.RES_SHOW_IMPORT_EXPORT_HEADER = True
-		
+
 		# If 'True', two extra columns are used to display resources that are traded in active deals.
 		self.RES_SHOW_ACTIVE_TRADE = True
-		
+
 		# Height of the panel showing the surplus resources. If self.RES_SHOW_SURPLUS_AMOUNT_ON_TOP is 'False'
 		# you'll need to set a higher value for this variable (110 is recommended).
 		# <!-- custom: it seems to me just one row of bonuses is enough, to begin with we don't have that much in our mod and not so much are tradeable at the same time anyway (plus we removed the header as well so we don't need as much space), so reduce this -->
 		# self.RES_SURPLUS_HEIGHT = 110 # advc.073: was 80
 		self.RES_SURPLUS_HEIGHT = 60
-		
+
 		self.RES_GOLD_COL_WIDTH = 25
-		
+
 		# Space between the two panels.
 		self.RES_PANEL_SPACE = 0
-		
+
 		#############################
 		# Technologies view options #
 		#############################
-		
+
 		# If 'True', use icon size 32x32
 		# If 'False', use icon size 64x64
 		self.TECH_USE_SMALL_ICONS = True
-		
+
 		self.TECH_STATUS_COL_WIDTH = 40
 		self.TECH_GOLD_COL_WIDTH = 60
-		
+
 		###############
 		# End options #
 		###############
-		
+
 		self.TITLE_HEIGHT = 24
 		self.TABLE_CONTROL_HEIGHT = 24
 		self.RESOURCE_ICON_SIZE = 34
@@ -358,13 +358,13 @@ class CvExoticForeignAdvisor (CvForeignAdvisor.CvForeignAdvisor):
 		if (self.iScreen != iScreen):	
 			self.killScreen()
 			self.iScreen = iScreen
-		
+
 		screen = self.getScreen()
 		if screen.isActive():
 			return
 		screen.setRenderInterfaceOnly(True)
 		screen.showScreen( PopupStates.POPUPSTATE_IMMEDIATE, False)
-	
+
 		self.iActiveLeader = CyGame().getActivePlayer()
 		self.iSelectedLeader = self.iActiveLeader
 		self.listSelectedLeaders = []
@@ -379,7 +379,7 @@ class CvExoticForeignAdvisor (CvForeignAdvisor.CvForeignAdvisor):
 		# RJG Start - following line added as per RJG (http://forums.civfanatics.com/showpost.php?p=6996936&postcount=15)
 		# FROM BUG MA Widescreen START
 		# over-ride screen width, height
-		
+
 		##
 		# K-Mod, 7/dec/12, karadoc
 		#returned the window to the standard size
@@ -391,10 +391,10 @@ class CvExoticForeignAdvisor (CvForeignAdvisor.CvForeignAdvisor):
 		#if self.W_SCREEN < 1024:
 			#self.W_SCREEN = 1024
 			#self.L_SCREEN = 0
-		
+
 		self.X_EXIT = self.W_SCREEN - 30
 		# FROM BUG MA Widescreen END
-		
+
 		#self.X_EXIT = self.W_SCREEN - 10
 		# RJG End
 		#self.DX_LINK = (self.X_EXIT - self.X_LINK) / (len (self.SCREEN_DICT) + 1) # disabled by K-Mod
@@ -402,7 +402,7 @@ class CvExoticForeignAdvisor (CvForeignAdvisor.CvForeignAdvisor):
 		self.Y_EXIT = self.H_SCREEN - 42
 		self.Y_LINK = self.H_SCREEN - 42
 		self.Y_BOTTOM_PANEL = self.H_SCREEN - 55
-		
+
 		# Set the background and exit button, and show the screen
 		screen.setDimensions(0, 0, self.W_SCREEN, self.H_SCREEN)
 		screen.addDrawControl(self.BACKGROUND_ID, ArtFileMgr.getInterfaceArtInfo("SCREEN_BG_OPAQUE").getPath(), 0, 0, self.W_SCREEN, self.H_SCREEN, WidgetTypes.WIDGET_GENERAL, -1, -1 )
@@ -426,7 +426,7 @@ class CvExoticForeignAdvisor (CvForeignAdvisor.CvForeignAdvisor):
 
 		self.nWidgetCount = 0
 		self.nLineCount = 0
-		
+
 		if (CyGame().isDebugMode()):
 			self.szDropdownName = self.getWidgetName(self.DEBUG_DROPDOWN_ID)
 			screen.addDropDownBoxGFC(self.szDropdownName, 22, 12, 300, WidgetTypes.WIDGET_GENERAL, -1, -1, FontTypes.GAME_FONT)
@@ -438,26 +438,26 @@ class CvExoticForeignAdvisor (CvForeignAdvisor.CvForeignAdvisor):
 					screen.addPullDownString(self.szDropdownName, gc.getPlayer(j).getName(), j, j, bSelected )
 
 		CyInterface().setDirty(InterfaceDirtyBits.Foreign_Screen_DIRTY_BIT, False)
-		
+
 		# Draw leader heads
 		self.drawContents(True)
-				
+
 	# Drawing Leaderheads
 	def drawContents(self, bInitial):
-	
+
 		if (self.iScreen < 0):
 			return
-						
+
 		self.objActiveLeader = gc.getPlayer(self.iActiveLeader)
 		self.iActiveTeam = self.objActiveLeader.getTeam()
 		self.objActiveTeam = gc.getTeam(self.iActiveTeam)
 		self.deleteAllWidgets()
-		
+
 		screen = self.getScreen()
 
 		# Header...
 		screen.setLabel(self.getNextWidgetName(), "", self.SCREEN_TITLE, CvUtil.FONT_CENTER_JUSTIFY, self.W_SCREEN / 2, self.Y_TITLE, 0, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1 )
-	
+
 		if (self.REV_SCREEN_DICT.has_key(self.iScreen)):
 			self.DRAW_DICT[self.REV_SCREEN_DICT[self.iScreen]] (bInitial)
 		else:
@@ -484,7 +484,7 @@ class CvExoticForeignAdvisor (CvForeignAdvisor.CvForeignAdvisor):
 			else:
 				screen.setText (szTextId, "", u"<font=4>" + localText.getColorText (self.TXT_KEY_DICT[szScreen], (), gc.getInfoTypeForString ("COLOR_YELLOW")).upper() + u"</font>", CvUtil.FONT_CENTER_JUSTIFY, xLink + self.LABEL_WIDTH_LIST[i]/2, self.Y_LINK, 0, FontTypes.TITLE_FONT, WidgetTypes.WIDGET_FOREIGN_ADVISOR, -1, -1)
 			xLink += self.LABEL_WIDTH_LIST[i]
-	
+
 	def drawActive (self, bInitial):
 		screen = self.getScreen()
 
@@ -515,10 +515,10 @@ class CvExoticForeignAdvisor (CvForeignAdvisor.CvForeignAdvisor):
 
 		# Get the Players
 		playerActive = gc.getPlayer(self.iActiveLeader)
-					
+
 		# Put everything inside a main panel, so we get vertical scrolling
 		mainPanelName = self.getNextWidgetName()
-		
+
 		#screen.addPanel(mainPanelName, "", "", True, True, 50, 100, self.W_SCREEN - 100, self.H_SCREEN - 200, PanelStyles.PANEL_STYLE_EMPTY)
 		# <advc.066> Replacing the above (same as in drawInfoOriginal)
 		# <!-- custom: remove the margins same as in the other foreign advisor tabs after our changes, similarly to what gemini 3 pro advised in its solution thanks. Note: a negative leftRightMargin value such as -3 allows to remove the last yellow edges that remain at 0 it seems, not applied here for beautification -->
@@ -572,7 +572,7 @@ class CvExoticForeignAdvisor (CvForeignAdvisor.CvForeignAdvisor):
 			screen.attachLabel(playerPanelName, "", "   ")
 
 			screen.attachImageButton(playerPanelName, "", gc.getLeaderHeadInfo(objLoopPlayer2.getLeaderType()).getButton(), GenericButtonSizes.BUTTON_SIZE_CUSTOM, WidgetTypes.WIDGET_LEADERHEAD, iLoopPlayer, -1, False)
-						
+
 			innerPanelName = self.getNextWidgetName()
 			screen.attachPanel(playerPanelName, innerPanelName, "", "", False, False, PanelStyles.PANEL_STYLE_EMPTY)
 
@@ -651,10 +651,10 @@ class CvExoticForeignAdvisor (CvForeignAdvisor.CvForeignAdvisor):
 
 		# Get the Players
 		playerActive = gc.getPlayer(self.iActiveLeader)
-					
+
 		# Put everything inside a main panel, so we get vertical scrolling
 		mainPanelName = self.getNextWidgetName()
-		
+
 		#screen.addPanel(mainPanelName, "", "", True, True, 50, 100, self.W_SCREEN - 100, self.H_SCREEN - 200, PanelStyles.PANEL_STYLE_EMPTY)
 		# <advc.066> Replacing the above (same as in drawActive)
 		# <!-- custom: remove the margins same as in the other foreign advisor tabs after our changes, similarly to what gemini 3 pro advised in its solution thanks. Note: a negative leftRightMargin value such as -3 allows to remove the last yellow edges that remain at 0 it seems, not applied here for beautification -->
@@ -782,7 +782,7 @@ class CvExoticForeignAdvisor (CvForeignAdvisor.CvForeignAdvisor):
 		screen.addPanel(headerPanelName, "", "", False, True, iLeft, iTop, iWidth, iHeight, PanelStyles.PANEL_STYLE_EMPTY)
 
 		iOffset = 0
-		
+
 		for headerText in self.headerTexts:
 			itemName = self.getNextWidgetName()
 			screen.attachTextGFC(headerPanelName, itemName, headerText, FontTypes.GAME_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
@@ -805,7 +805,7 @@ class CvExoticForeignAdvisor (CvForeignAdvisor.CvForeignAdvisor):
 		screen.addPanel(mainPanelName, "", "", True, True, iLeft, iTop, iWidth, iHeight, PanelStyles.PANEL_STYLE_EMPTY)
 
 		FavoriteCivicDetector.doUpdate()
-		
+
 		# display the active player's row at the top
 		self.drawInfoRow(screen, mainPanelName, self.iActiveLeader, PanelStyles.PANEL_STYLE_MAIN_BLACK25)
 
@@ -835,7 +835,7 @@ class CvExoticForeignAdvisor (CvForeignAdvisor.CvForeignAdvisor):
 			#and (self.objActiveTeam.isHasMet(iLoopTeam) or gc.getGame().isDebugMode())
 			and not objLoopPlayer.isBarbarian()
 			and not objLoopPlayer.isMinorCiv()):
-			
+
 			objLeaderHead = gc.getLeaderHeadInfo (objLoopPlayer.getLeaderType())
 			objAttitude = AttitudeUtil.Attitude(iLoopPlayer, self.iActiveLeader)
 
@@ -852,7 +852,7 @@ class CvExoticForeignAdvisor (CvForeignAdvisor.CvForeignAdvisor):
 			else:
 				screen.attachImageButton(playerPanelName, itemName, objLeaderHead.getButton(), GenericButtonSizes.BUTTON_SIZE_46, WidgetTypes.WIDGET_LEADERHEAD, iLoopPlayer, self.iActiveLeader, False)
 			#screen.setHitTest(itemName, HitTestTypes.HITTEST_NOHIT)
-					
+
 			infoPanelName = self.getNextWidgetName()
 			screen.attachPanel(playerPanelName, infoPanelName, "", "", False, False, PanelStyles.PANEL_STYLE_EMPTY)
 
@@ -899,7 +899,7 @@ class CvExoticForeignAdvisor (CvForeignAdvisor.CvForeignAdvisor):
 			# Disable the widget if this is active player since we don't have diplo info.
 			if bIsActivePlayer:
 				screen.setHitTest(itemName, HitTestTypes.HITTEST_NOHIT)
-			
+
 			# Trade
 			if (bIsActivePlayer or objLoopPlayer.canHaveTradeRoutesWith(self.iActiveLeader)):
 				(iTradeCommerce, iTradeRoutes) = self.calculateTrade (self.iActiveLeader, iLoopPlayer)
@@ -925,7 +925,7 @@ class CvExoticForeignAdvisor (CvForeignAdvisor.CvForeignAdvisor):
 
 			# Spacer so Favorite Civics aren't right next to current civics
 			screen.attachTextGFC(infoPanelName, "", " ", FontTypes.GAME_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
-			
+
 			# Favorite Civic
 			if (not bIsActivePlayer):
 				nFavoriteCivic = objLeaderHead.getFavoriteCivic()
@@ -947,7 +947,7 @@ class CvExoticForeignAdvisor (CvForeignAdvisor.CvForeignAdvisor):
 								objCivicInfo = gc.getCivicInfo (nFavoriteCivic)
 								screen.attachImageButton (infoPanelName, "", objCivicInfo.getButton(), GenericButtonSizes.BUTTON_SIZE_46, WidgetTypes.WIDGET_PEDIA_JUMP_TO_CIVIC, nFavoriteCivic, 1, False)
 							return
-					
+
 				if nFavoriteCivic != -1:
 					objCivicInfo = gc.getCivicInfo (nFavoriteCivic)
 					screen.attachImageButton (infoPanelName, "", objCivicInfo.getButton(), GenericButtonSizes.BUTTON_SIZE_46, WidgetTypes.WIDGET_PEDIA_JUMP_TO_CIVIC, nFavoriteCivic, 1, False)
@@ -975,7 +975,7 @@ class CvExoticForeignAdvisor (CvForeignAdvisor.CvForeignAdvisor):
 		# ExoticForPrint ("Entered drawGlance")
 
 		screen = self.getScreen()
-		
+
 		# <advc.066> Reduce panel height when there are few civs
 		self.mainPanelHeight = self.H_SCREEN - 155
 		if not gc.getGame().isDebugMode():
@@ -1064,7 +1064,7 @@ class CvExoticForeignAdvisor (CvForeignAdvisor.CvForeignAdvisor):
 					else:
 						screen.setState(szName, False)
 					nCount += 1
-		
+
 	def drawGlanceRows (self, screen, mainPanelName, bSorted = False, nPlayer = 1):
 		# ExoticForPrint ("MAX Players = %d" % gc.getMAX_PLAYERS())
 		ltSortedRelations = [(None,-1)] * gc.getMAX_PLAYERS()
@@ -1218,7 +1218,7 @@ class CvExoticForeignAdvisor (CvForeignAdvisor.CvForeignAdvisor):
 		self.resIconGrid.setGroupLabelOffset(self.GROUP_LABEL_OFFSET)
 		self.resIconGrid.setMinColumnSpace(self.MIN_COLUMN_SPACE)
 		self.resIconGrid.setMinRowSpace(self.MIN_ROW_SPACE)
-		
+
 		self.leaderCol = 0
 		#self.surplusCol = 1
 		#self.usedCol = 2
@@ -1235,7 +1235,7 @@ class CvExoticForeignAdvisor (CvForeignAdvisor.CvForeignAdvisor):
 		self.activeExportCol = 6
 		self.activeImportCol = 7
 		self.payingCol = 8
-		
+
 		# <!-- custom: use cached text values for performance (claude code sonnet 4.5) -->
 		self.resIconGrid.setHeader( self.leaderCol, self.TEXT_LEADER )
 		# <advc.073>
@@ -1254,7 +1254,7 @@ class CvExoticForeignAdvisor (CvForeignAdvisor.CvForeignAdvisor):
 		# New column that takes over most of the wontTradeCol resources
 		self.resIconGrid.setHeader( self.noNeedCol, self.TEXT_NO_NEED )
 		# </advc.073>
-		
+
 		if (self.RES_SHOW_ACTIVE_TRADE):
 			# advc.073: was TXT_KEY_FOREIGN_ADVISOR_EXPORT. Now all the headings take the perspective of the foreign leader (except noNeed)
 			self.resIconGrid.setHeader( self.activeExportCol, self.TEXT_IMPORTING )
@@ -1275,14 +1275,14 @@ class CvExoticForeignAdvisor (CvForeignAdvisor.CvForeignAdvisor):
 				#self.resIconGrid.createColumnGroup(localText.getText("TXT_KEY_FOREIGN_ADVISOR_ACTIVE", ()), 3)
 				# advc.073: Replacing the above
 				self.resIconGrid.createColumnGroup(" ", 3)
-		
+
 		gridWidth = self.resIconGrid.getPrefferedWidth()
 		gridHeight = self.resIconGrid.getPrefferedHeight()
 		self.RES_LEFT_RIGHT_SPACE = (self.W_SCREEN - gridWidth - 20) / 2
 		self.RES_TOP_BOTTOM_SPACE = (self.H_SCREEN - gridHeight - self.RES_SURPLUS_HEIGHT - self.RES_PANEL_SPACE - self.TITLE_HEIGHT - 20) / 2
 		gridX = self.RES_LEFT_RIGHT_SPACE + 10
 		gridY = self.RES_TOP_BOTTOM_SPACE + self.RES_SURPLUS_HEIGHT + self.RES_PANEL_SPACE + self.TITLE_HEIGHT + 10
-		
+
 		self.resIconGrid.setPosition(gridX, gridY)
 		self.resIconGrid.setSize(gridWidth, gridHeight)
 		# self.RES_LEFT_RIGHT_SPACE = self.MIN_LEFT_RIGHT_SPACE
@@ -1319,13 +1319,13 @@ class CvExoticForeignAdvisor (CvForeignAdvisor.CvForeignAdvisor):
 
 		activePlayer = gc.getPlayer(self.iActiveLeader)
 		self.initTradeTable()
-		
+
 		# Find all the surplus resources
 		tradeData = TradeData()
 		tradeData.ItemType = TradeableItems.TRADE_RESOURCES
 		listSurplus = []
 		listNonSurplus = [] # advc.073
-		
+
 		for iLoopBonus in range(gc.getNumBonusInfos()):
 			bSurplus = False # advc.073
 			tradeData.iData = iLoopBonus
@@ -1342,13 +1342,13 @@ class CvExoticForeignAdvisor (CvForeignAdvisor.CvForeignAdvisor):
 				listNonSurplus.append(iLoopBonus)
 			# </advc.073>
 		self.calculateSurplusPanelLayout()
-		
+
 		# Assemble the surplus panel
 		self.mainAvailablePanel = self.getNextWidgetName()
 		# <!-- custom: save some space, don't use a header. -->
 		# screen.addPanel( self.mainAvailablePanel, localText.getText("TXT_KEY_FOREIGN_ADVISOR_SURPLUS_RESOURCES", ()), "", False, False, self.SURPLUS_X, self.SURPLUS_Y, self.SURPLUS_WIDTH, self.RES_SURPLUS_HEIGHT, PanelStyles.PANEL_STYLE_MAIN )
 		screen.addPanel( self.mainAvailablePanel, "", "", False, False, self.SURPLUS_X, self.SURPLUS_Y, self.SURPLUS_WIDTH, self.RES_SURPLUS_HEIGHT, PanelStyles.PANEL_STYLE_MAIN )
-		
+
 		self.availableMultiList = self.getNextWidgetName()
 		# advc.073: I don't know how to make the surplus amounts wrap into another row, so the surplus resources will all have to be placed in the top row, even if there isn't enough space.
 		maxIconsPerRow = max(len(listSurplus), self.SURPLUS_WIDTH // self.RESOURCE_ICON_SIZE)
@@ -1365,21 +1365,21 @@ class CvExoticForeignAdvisor (CvForeignAdvisor.CvForeignAdvisor):
 				#if iIndex > maxIconsPerRow:
 				#	circleY += self.RESOURCE_ICON_SIZE
 				screen.addDDSGFC( self.availableTable + "Circle" + str(iIndex), ArtFileMgr.getInterfaceArtInfo("WHITE_CIRCLE_40").getPath(), self.SURPLUS_CIRCLE_X_START + iIndex * self.RESOURCE_ICON_SIZE, circleY, 16, 16, WidgetTypes.WIDGET_GENERAL, -1, -1 )
-		
+
 		# add the table showing the amounts
 		screen.addTableControlGFC( self.availableTable, len(listSurplus), self.SURPLUS_TABLE_X, self.SURPLUS_TABLE_Y, len(listSurplus) * self.RESOURCE_ICON_SIZE, self.TABLE_CONTROL_HEIGHT, False, False, 16, 16, TableStyles.TABLE_STYLE_EMPTY )
-		
+
 		# Add the bonuses to the surplus panel with their amount
 		for iIndex in range(len(listSurplus)):
 			# screen.addCheckBoxGFCAt (self.mainAvailablePanel, "Foo" + str(iIndex), gc.getBonusInfo (listSurplus[iIndex]).getButton(), ArtFileMgr.getInterfaceArtInfo ("BUTTON_HILITE_SQUARE").getPath(), self.X_GLANCE_OFFSET + (self.RESOURCE_ICON_SIZE * iIndex), 10, 32, 32, WidgetTypes.WIDGET_PEDIA_JUMP_TO_BONUS, listSurplus[iIndex], -1, ButtonStyles.BUTTON_STYLE_LABEL, False)
 			# advc.073: Pass the active player to the BULL widget in order to signal that all takers are supposed to be listed
 			screen.appendMultiListButton( self.availableMultiList, gc.getBonusInfo(listSurplus[iIndex]).getButton(), 0, WidgetTypes.WIDGET_PEDIA_JUMP_TO_BONUS_TRADE, listSurplus[iIndex], self.iActiveLeader, False )
 			screen.setTableColumnHeader( self.availableTable, iIndex, u"", self.RESOURCE_ICON_SIZE )
-			
+
 			amount = activePlayer.getNumTradeableBonuses(listSurplus[iIndex])
 			if (self.RES_SHOW_EXTRA_AMOUNT):
 				amount = amount - 1
-			
+
 			if (self.RES_SHOW_SURPLUS_AMOUNT_ON_TOP):
 				amountStr = u"<font=2>" + localText.changeTextColor(str(amount), gc.getInfoTypeForString("COLOR_YELLOW")) + "</font>"
 			else:
@@ -1390,7 +1390,7 @@ class CvExoticForeignAdvisor (CvForeignAdvisor.CvForeignAdvisor):
 			screen.appendMultiListButton(self.availableMultiList, gc.getBonusInfo(listNonSurplus[iIndex]).getButton(), 0, WidgetTypes.WIDGET_PEDIA_JUMP_TO_BONUS_TRADE, listNonSurplus[iIndex], self.iActiveLeader, False)
 			screen.setTableColumnHeader(self.availableTable, iIndex, u"", self.RESOURCE_ICON_SIZE)
 		# </advc.073>
-		
+
 		# # Assemble the panel that shows the trade table
 		# <!-- custom: beautify, trim or adjust the edges to remove empty space or overfilling blue panel or such -->
 		# iExtraY = 0
@@ -1401,32 +1401,32 @@ class CvExoticForeignAdvisor (CvForeignAdvisor.CvForeignAdvisor):
 		self.TABLE_PANEL_Y = self.SURPLUS_Y + self.RES_SURPLUS_HEIGHT + self.RES_PANEL_SPACE + iExtraY
 		self.TABLE_PANEL_WIDTH = self.W_SCREEN - 2 * self.RES_LEFT_RIGHT_SPACE
 		self.TABLE_PANEL_HEIGHT = self.H_SCREEN - self.TABLE_PANEL_Y - self.RES_TOP_BOTTOM_SPACE + iExtraHeight
-		
+
 		self.tradePanel = self.getNextWidgetName()
 		# <!-- custom: save some space, don't use a header. -->
 		# screen.addPanel( self.tradePanel, localText.getText("TXT_KEY_FOREIGN_ADVISOR_TRADE_TABLE", ()), "", True, True, self.TABLE_PANEL_X, self.TABLE_PANEL_Y, self.TABLE_PANEL_WIDTH, self.TABLE_PANEL_HEIGHT, PanelStyles.PANEL_STYLE_MAIN )
 		screen.addPanel( self.tradePanel, "", "", True, True, self.TABLE_PANEL_X, self.TABLE_PANEL_Y, self.TABLE_PANEL_WIDTH, self.TABLE_PANEL_HEIGHT, PanelStyles.PANEL_STYLE_MAIN )
 
 		self.resIconGrid.createGrid()
-		
+
 		# find all players that need to be listed 
 		self.resIconGrid.clearData()
 		tradeData = TradeData()
 		tradeData.ItemType = TradeableItems.TRADE_RESOURCES
 		currentRow = 0
-		
+
 		for iLoopPlayer in range(gc.getMAX_PLAYERS()):
 			currentPlayer = gc.getPlayer(iLoopPlayer)
 			if ( currentPlayer.isAlive() and not currentPlayer.isBarbarian() and not currentPlayer.isMinorCiv() and gc.getTeam(currentPlayer.getTeam()).isHasMet(activePlayer.getTeam()) and iLoopPlayer != self.iActiveLeader ):
 				message = ""
 				if ( not activePlayer.canTradeNetworkWith(iLoopPlayer) ):
 					message = self.TEXT_NOT_CONNECTED
-				
+
 				self.resIconGrid.appendRow(currentPlayer.getName(), message)
 				self.resIconGrid.addIcon( currentRow, self.leaderCol
 										, gc.getLeaderHeadInfo(currentPlayer.getLeaderType()).getButton()
 										, 64, WidgetTypes.WIDGET_LEADERHEAD, iLoopPlayer, self.iActiveLeader )
-				
+
 				# gold
 				# advc.036:
 				bWillTalk = currentPlayer.AI_isWillingToTalk(self.iActiveLeader)
@@ -1434,7 +1434,7 @@ class CvExoticForeignAdvisor (CvForeignAdvisor.CvForeignAdvisor):
 					# <!-- custom: looks like gc.getPlayer(iLoopPlayer) could be optimized with the cached currentPlayer variable so did as such -->
 					sAmount = str(currentPlayer.AI_maxGoldPerTurnTrade(self.iActiveLeader))
 					self.resIconGrid.setText(currentRow, self.canPayCol, sAmount)
-				
+
 				# bonuses
 				importFromPlayer = [] # advc.036
 				for iLoopBonus in range(gc.getNumBonusInfos()):
@@ -1501,7 +1501,7 @@ class CvExoticForeignAdvisor (CvForeignAdvisor.CvForeignAdvisor):
 									if (tradeData2.ItemType == TradeableItems.TRADE_RESOURCES):
 										# advc.073: DEAL_KILL widget enabled; advc.085: iData2 set to -1
 										self.resIconGrid.addIcon( currentRow, self.activeExportCol, gc.getBonusInfo(tradeData2.iData).getButton(), 64, WidgetTypes.WIDGET_DEAL_KILL, iLoopDeal, -1)
-							
+
 							if ( deal.getSecondPlayer() == iLoopPlayer and deal.getFirstPlayer() == self.iActiveLeader ):
 								for iLoopTradeItem in range(deal.getLengthFirstTrades()):
 									tradeData2 = deal.getFirstTrade(iLoopTradeItem)
@@ -1522,8 +1522,8 @@ class CvExoticForeignAdvisor (CvForeignAdvisor.CvForeignAdvisor):
 						self.resIconGrid.setText(currentRow, self.payingCol, str(amount))
 				currentRow += 1
 		self.resIconGrid.refresh()
-	
-	
+
+
 	def scrollTradeTableUp(self):
 		if (self.iScreen == self.SCREEN_DICT["BONUS"]):
 			self.resIconGrid.scrollUp()
@@ -1543,7 +1543,7 @@ class CvExoticForeignAdvisor (CvForeignAdvisor.CvForeignAdvisor):
 		elif (self.iScreen == self.SCREEN_DICT["CITIES"]):
 			self.cityIconGrid.scrollDown()
 		# </advc.ctr>
-				
+
 	def drawTechDeals(self, bInitial):
 		screen = self.getScreen()
 		activePlayer = gc.getPlayer(self.iActiveLeader)
@@ -1636,7 +1636,7 @@ class CvExoticForeignAdvisor (CvForeignAdvisor.CvForeignAdvisor):
 
 	def initTechTable(self):
 		screen = self.getScreen()
-		
+
 		# 1. Define the full screen
 		# <!-- custom: note: this is the starting position of the grid/table, not of the blue panel -->
 		# <!-- custom: note: for example gridX moves the grid's starting position more to the left or right (for example so we use what used to be the yellow empty space on the left (and also on the right) if needed) -->
@@ -1899,11 +1899,11 @@ class CvExoticForeignAdvisor (CvForeignAdvisor.CvForeignAdvisor):
 			r += " " + (u"%c" % self.iOccupationIcon)
 		return r
 	# </advc.ctr>
-		
+
 	##########################################
 	### END CHANGES ENHANCED INTERFACE MOD ###
 	##########################################
-					
+
 	# Handles the input for this screen...
 	def handleInput (self, inputClass):
 		if (inputClass.getNotifyCode() == NotifyCode.NOTIFY_CLICKED):
@@ -1929,7 +1929,7 @@ class CvExoticForeignAdvisor (CvForeignAdvisor.CvForeignAdvisor):
 	##########################################
 	### END CHANGES ENHANCED INTERFACE MOD ###
 	##########################################
-		
+
 		elif (inputClass.getNotifyCode() == NotifyCode.NOTIFY_LISTBOX_ITEM_SELECTED):
 			if (inputClass.getFunctionName() + str(inputClass.getID()) == self.getWidgetName(self.DEBUG_DROPDOWN_ID)):
 				print 'debug dropdown event'
@@ -1942,7 +1942,7 @@ class CvExoticForeignAdvisor (CvForeignAdvisor.CvForeignAdvisor):
 			if (inputClass.getData() == int(InputTypes.KB_LSHIFT) or inputClass.getData() == int(InputTypes.KB_RSHIFT)):
 				self.iShiftKeyDown = inputClass.getID()
 				return 1
-		
+
 		if (self.iScreen == self.SCREEN_DICT["BONUS"]):
 			return self.resIconGrid.handleInput(inputClass)
 		elif (self.iScreen == self.SCREEN_DICT["TECH"]):

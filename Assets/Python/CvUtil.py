@@ -115,7 +115,7 @@ def convertToUnicode(s):
 	if (isinstance(s, str)):
 		return s.decode("latin_1")
 	return s
-	
+
 def convertToStr(s):
 	# if the string is unicode, convert it to str by encoding it using 8859-1, latin_1
 	#
@@ -133,7 +133,7 @@ class RedirectDebug:
 			self.m_PythonMgr.debugMsgWide(stuff)
 		else:
 			self.m_PythonMgr.debugMsg(stuff)
-		
+
 class RedirectError:
 	# Send Error Messages to Civ Engine
 	def __init__(self):
@@ -168,7 +168,7 @@ def pyAssert(cond, msg):
 	if not cond:
 		sys.stderr.write(msg)
 	assert cond, msg # advc.001 (from MNAI)
-	
+
 def getScoreComponent(iRawScore, iInitial, iMax, iFactor, bExponential, bFinal, bVictory):
 
 	if gc.getGame().getEstimateEndTurn() == 0:
@@ -187,7 +187,7 @@ def getScoreComponent(iRawScore, iInitial, iMax, iFactor, bExponential, bFinal, 
 		iScore = (iFactor * (iRawScore + iFree)) / (iFree + iMax)
 	else:
 		iScore = iFactor
-		
+
 	if bVictory:
 		iScore = ((100 + gc.getDefineINT("SCORE_VICTORY_PERCENT")) * iScore) / 100
 
@@ -198,7 +198,7 @@ def getScoreComponent(iRawScore, iInitial, iMax, iFactor, bExponential, bFinal, 
 		# </advc.250a>
 
 	return int(iScore)
-	
+
 def getOppositeCardinalDirection(dir):
 	return (dir + 2) % CardinalDirectionTypes.NUM_CARDINALDIRECTION_TYPES
 
@@ -224,7 +224,7 @@ def getInfo(strInfoType, strInfoName):	# returns info for InfoType
 	#set Type to lowercase
 	strInfoType = strInfoType.lower()
 	strInfoName = strInfoName.capitalize()
-	
+
 	#get the appropriate dictionary item
 	infoDict = GlobalInfosMap.get(strInfoType)
 	#get the number of infos
@@ -232,7 +232,7 @@ def getInfo(strInfoType, strInfoName):	# returns info for InfoType
 	#loop through each info
 	for i in range(numInfos):
 		loopInfo = infoDict['GET'](i)
-		
+
 		if loopInfo.getDescription() == strInfoName:
 			#and return the one requested
 			return loopInfo
@@ -249,7 +249,7 @@ def AdjustBuilding(add, all, BuildingIdx, pCity): # adds/removes buildings from 
 
 def getIcon(iconEntry):						# returns Font Icons
 	global FontIconMap
-	
+
 	iconEntry = iconEntry.lower()
 	if (FontIconMap.has_key(iconEntry)):
 		return 	FontIconMap.get(iconEntry)
@@ -352,10 +352,10 @@ def combatMessageBuilder(cdAttacker, cdDefender, iCombatOdds):
 	combatDetailMessageBuilder(cdDefender,cdAttacker.eOwner,1)
 	combatDetailMessageBuilder(cdAttacker,cdDefender.eOwner,-1)
 	combatDetailMessageBuilder(cdDefender,cdDefender.eOwner,1)
-	
+
 def initDynamicFontIcons():
 	global FontIconMap
-	
+
 	info = ""
 	desc = ""
 	# add Commerce Icons
@@ -377,9 +377,9 @@ def initDynamicFontIcons():
 	for key in OtherFontIcons.keys():
 		#print key
 		FontIconMap[key] = (u"%c" % CyGame().getSymbolID(OtherFontIcons.get(key)))
-	
+
 	#print FontIconMap
-	
+
 def addIconToMap(infoChar, desc):
 	global FontIconMap
 	desc = convertToStr(desc)

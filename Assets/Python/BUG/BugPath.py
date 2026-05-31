@@ -312,7 +312,7 @@ def initAppFolder():
 		return
 	BugUtil.debug("BugPath - initializing application folder")
 	global _appDir, _appFolder
-	
+
 	# Determine the app directory that holds the executable and Mods
 	# as well as the folder name inside MY_GAMES_FOLDER that holds CustomAssets and Mods.
 	if isMac():
@@ -351,7 +351,7 @@ def initModName():
 		BugUtil.error("CvModName.py module has no modName setting")
 	_modNameInitDone = True
 
-	
+
 ## Mod Directory
 
 _isMod = False
@@ -452,7 +452,7 @@ def initRootFolder():
 		return
 	BugUtil.debug("BugPath - initializing system folders")
 	global _rootDir, _userDir
-	
+
 	# override root dir from CvAltRoot
 	try:
 		import CvAltRoot
@@ -582,7 +582,7 @@ def initDataFolder():
 			except OSError:
 				BugUtil.trace("Failed to create directory '%s'", dir)
 	# K-Mod end
-	
+
 	dataDirs = (
 		join(getRootDir(), getModName()),	# My Games\BTS\BUG Mod
 		join(getUserDir(), getModName()),	# My Games\BUG Mod
@@ -635,7 +635,7 @@ def initSearchPaths():
 	if _searchPathsInitDone:
 		return
 	BugUtil.debug("BugPath - initializing asset search paths")
-	
+
 	assetDirs = [
 		join(getModDir(), ASSETS_FOLDER),
 		join(getAppDir(), ASSETS_FOLDER),
@@ -645,7 +645,7 @@ def initSearchPaths():
 		assetDirs.insert(0, join(getRootDir(), CUSTOM_ASSETS_FOLDER))
 	for dir in assetDirs:
 		addAssetFileSearchPath(dir)
-	
+
 	if _assetFileSearchPaths:
 		BugConfigTracker.add("Asset_Search_Paths", _assetFileSearchPaths)
 	else:

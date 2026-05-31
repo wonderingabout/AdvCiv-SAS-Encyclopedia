@@ -59,7 +59,7 @@ def StartLogger(vsFileName):
 		szfileName = gc.getPlayer(ePlayer).getName()
 	else:
 		szfileName = vsFileName
-	
+
 	ziStyle = AutologOpt.getFormatStyle()
 #	' valid styles are plain (0), html (1), forum with " for color(2) or forum without " for color(3)'
 	if (ziStyle == 1):
@@ -68,7 +68,7 @@ def StartLogger(vsFileName):
 	else:
 		if not (szfileName.endswith(".txt")):
 			szfileName = szfileName + ".txt"
-	
+
 	Logger.setLogFileName(szfileName)
 	if (not AutologOpt.isSilent()):
 		message = BugUtil.getText("TXT_KEY_AUTOLOG_LOGGING_GAME", (szfileName, ))
@@ -80,7 +80,7 @@ class autologEventManager:
 
 		global Logger
 		Logger = autolog.autologInstance()
-		
+
 		AutoLogEvent(eventManager)
 
 		# additions to self.Events
@@ -228,7 +228,7 @@ class AutoLogEvent(AbstractAutoLogEvent):
 		self.WonLastRound = 0
 		self.WdlAttacker = None
 		self.WdlDefender = None
-		
+
 		self.CIVAttitude = None
 		self.CIVCivics = None
 		self.CIVReligion = None
@@ -351,7 +351,7 @@ class AutoLogEvent(AbstractAutoLogEvent):
 				zsTurn = "%i" % (zcurrturn)
 			else:
 				zsTurn = "%i/%i" % (zcurrturn, zmaxturn)
-				
+
 			message = BugUtil.getText("TXT_KEY_AUTOLOG_TURN", (zsTurn, zyear, zCurrDateTime))
 
 			Logger.writeLog_pending_flush()
@@ -523,10 +523,10 @@ class AutoLogEvent(AbstractAutoLogEvent):
 
 		self.WdlAttacker = cdAttacker
 		self.WdlDefender = cdDefender
-		
+
 		if (iIsAttacker == 0):
 			self.WonLastRound = 0
-			
+
 		elif (iIsAttacker == 1):
 			self.WonLastRound = 1
 
@@ -656,7 +656,7 @@ class AutoLogEvent(AbstractAutoLogEvent):
 	def onTechAcquired(self, argsList):
 		if gc.getGame().getGameTurn() == 0:
 			return
-		
+
 		if (AutologOpt.isLogTechnology()):
 			iTechType, iTeam, iPlayer, bAnnounce = argsList
 
@@ -982,7 +982,7 @@ class AutoLogEvent(AbstractAutoLogEvent):
 	def onVassalState(self, argsList):
 		'Vassal State'
 		iMaster, iVassal, bVassal = argsList
-		
+
 		if (AutologOpt.isLogVassals()
 		and gc.getTeam(iMaster).isHasMet(gc.getActivePlayer().getTeam())
 		and gc.getTeam(iVassal).isHasMet(gc.getActivePlayer().getTeam())):
@@ -1023,7 +1023,7 @@ class AutoLogEvent(AbstractAutoLogEvent):
 									pTargetPlayer.getName(), pTargetPlayer.getCivilizationShortDescription(0),
 									szTargetItems))
 			Logger.writeLog(message, vColor="Navy")
-	
+
 	def onCityOffered(self, argsList):
 		eOfferPlayer, eTargetPlayer, iCityID = argsList
 		if AutologOpt.isLogTradeOffer():
@@ -1035,7 +1035,7 @@ class AutoLogEvent(AbstractAutoLogEvent):
 									pCityOffered.getName(),
 									pTargetPlayer.getName(), pTargetPlayer.getCivilizationShortDescription(0)))
 			Logger.writeLog(message, vColor="Navy")
-	
+
 	def onHelpOffered(self, argsList):
 		eOfferPlayer, eTargetPlayer, pTrade = argsList
 		if AutologOpt.isLogTradeOffer():
@@ -1055,7 +1055,7 @@ class AutoLogEvent(AbstractAutoLogEvent):
 									szOfferItems,
 									pTargetPlayer.getName(), pTargetPlayer.getCivilizationShortDescription(0)))
 			Logger.writeLog(message, vColor="Navy")
-	
+
 	def onPeaceOffered(self, argsList):
 		eOfferPlayer, eTargetPlayer = argsList
 		if AutologOpt.isLogTradeOffer():
@@ -1065,7 +1065,7 @@ class AutoLogEvent(AbstractAutoLogEvent):
 									(pOfferPlayer.getName(), pOfferPlayer.getCivilizationShortDescription(0),
 									pTargetPlayer.getName(), pTargetPlayer.getCivilizationShortDescription(0)))
 			Logger.writeLog(message, vColor="Navy")
-	
+
 	def onVassalOffered(self, argsList):
 		eOfferPlayer, eTargetPlayer = argsList
 		if AutologOpt.isLogTradeOffer():
@@ -1076,7 +1076,7 @@ class AutoLogEvent(AbstractAutoLogEvent):
 									(pOfferPlayer.getName(), pOfferPlayer.getCivilizationShortDescription(0),
 									pTargetPlayer.getName(), pTargetPlayer.getCivilizationShortDescription(0)))
 			Logger.writeLog(message, vColor="Navy")
-	
+
 	def onDealCanceled(self, argsList):
 		eOfferPlayer, eTargetPlayer, pTrade = argsList
 		if AutologOpt.isLogTradeOffer() and pTrade is not None:
@@ -1109,7 +1109,7 @@ class AutoLogEvent(AbstractAutoLogEvent):
 										szOfferItems,
 										pTargetPlayer.getName(), pTargetPlayer.getCivilizationShortDescription(0)))
 			Logger.writeLog(message, vColor="Red")
-	
+
 	def onDealAccepted(self, argsList):
 		eTargetPlayer, eOfferPlayer, pTrade = argsList
 		if AutologOpt.isLogTradeOffer():
@@ -1142,7 +1142,7 @@ class AutoLogEvent(AbstractAutoLogEvent):
 										szOfferItems,
 										pOfferPlayer.getName(), pOfferPlayer.getCivilizationShortDescription(0)))
 			Logger.writeLog(message, vColor="Green")
-	
+
 	def onDealRejected(self, argsList):
 		eTargetPlayer, eOfferPlayer, pTrade = argsList
 		if AutologOpt.isLogTradeOffer():
@@ -1175,7 +1175,7 @@ class AutoLogEvent(AbstractAutoLogEvent):
 										szOfferItems,
 										pOfferPlayer.getName(), pOfferPlayer.getCivilizationShortDescription(0)))
 			Logger.writeLog(message, vColor="Red")
-	
+
 	def onHelpDemanded(self, argsList):
 		eDemandPlayer, eTargetPlayer, pTrade = argsList
 		if AutologOpt.isLogTributeDemand():
@@ -1191,7 +1191,7 @@ class AutoLogEvent(AbstractAutoLogEvent):
 									pTargetPlayer.getName(), pTargetPlayer.getCivilizationShortDescription(0),
 									szItems))
 			Logger.writeLog(message, vColor="Navy")
-	
+
 	def onHelpAccepted(self, argsList):
 		eTargetPlayer, eDemandPlayer, pTrade = argsList
 		if AutologOpt.isLogTributeDemand():
@@ -1208,7 +1208,7 @@ class AutoLogEvent(AbstractAutoLogEvent):
 									szItems))
 			message = message + BugUtil.getText("TXT_KEY_AUTOLOG_DIPLO_GENERIC_ACCEPT", (pTargetPlayer.getName(),))
 			Logger.writeLog(message, vColor="Green")
-	
+
 	def onHelpRejected(self, argsList):
 		eTargetPlayer, eDemandPlayer, pTrade = argsList
 		if AutologOpt.isLogTributeDemand():
@@ -1225,7 +1225,7 @@ class AutoLogEvent(AbstractAutoLogEvent):
 									szItems))
 			message = message + BugUtil.getText("TXT_KEY_AUTOLOG_DIPLO_GENERIC_REJECT", (pTargetPlayer.getName(),))
 			Logger.writeLog(message, vColor="Red")
-	
+
 	def onTributeDemanded(self, argsList):
 		eDemandPlayer, eTargetPlayer, pTrade = argsList
 		if AutologOpt.isLogTributeDemand():
@@ -1241,7 +1241,7 @@ class AutoLogEvent(AbstractAutoLogEvent):
 									pTargetPlayer.getName(), pTargetPlayer.getCivilizationShortDescription(0),
 									szItems))
 			Logger.writeLog(message, vColor="Navy")
-	
+
 	def onTributeAccepted(self, argsList):
 		eTargetPlayer, eDemandPlayer, pTrade = argsList
 		if AutologOpt.isLogTributeDemand():
@@ -1258,7 +1258,7 @@ class AutoLogEvent(AbstractAutoLogEvent):
 									szItems))
 			message = message + BugUtil.getText("TXT_KEY_AUTOLOG_DIPLO_GENERIC_ACCEPT", (pTargetPlayer.getName(),))
 			Logger.writeLog(message, vColor="Green")
-	
+
 	def onTributeRejected(self, argsList):
 		eTargetPlayer, eDemandPlayer, pTrade = argsList
 		if AutologOpt.isLogTributeDemand():
@@ -1286,7 +1286,7 @@ class AutoLogEvent(AbstractAutoLogEvent):
 									pTargetPlayer.getName(), pTargetPlayer.getCivilizationShortDescription(0),
 									gc.getReligionInfo(eReligion).getDescription()))
 			Logger.writeLog(message, vColor="Navy")
-	
+
 	def onReligionAccepted(self, argsList):
 		eTargetPlayer, eDemandPlayer, eReligion = argsList
 		if AutologOpt.isLogReligionDemand():
@@ -1298,7 +1298,7 @@ class AutoLogEvent(AbstractAutoLogEvent):
 									gc.getReligionInfo(eReligion).getDescription()))
 			message = message + BugUtil.getText("TXT_KEY_AUTOLOG_DIPLO_GENERIC_ACCEPT", (pTargetPlayer.getName(),))
 			Logger.writeLog(message, vColor="Green")
-	
+
 	def onReligionRejected(self, argsList):
 		eTargetPlayer, eDemandPlayer, eReligion = argsList
 		if AutologOpt.isLogReligionDemand():
@@ -1321,7 +1321,7 @@ class AutoLogEvent(AbstractAutoLogEvent):
 									pTargetPlayer.getName(), pTargetPlayer.getCivilizationShortDescription(0),
 									gc.getCivicInfo(eCivic).getDescription()))
 			Logger.writeLog(message, vColor="Navy")
-	
+
 	def onCivicAccepted(self, argsList):
 		eTargetPlayer, eDemandPlayer, eCivic = argsList
 		if AutologOpt.isLogCivicDemand():
@@ -1333,7 +1333,7 @@ class AutoLogEvent(AbstractAutoLogEvent):
 									gc.getCivicInfo(eCivic).getDescription()))
 			message = message + BugUtil.getText("TXT_KEY_AUTOLOG_DIPLO_GENERIC_ACCEPT", (pTargetPlayer.getName(),))
 			Logger.writeLog(message, vColor="Green")
-	
+
 	def onCivicRejected(self, argsList):
 		eTargetPlayer, eDemandPlayer, eCivic = argsList
 		if AutologOpt.isLogCivicDemand():
@@ -1357,7 +1357,7 @@ class AutoLogEvent(AbstractAutoLogEvent):
 									pTargetPlayer.getName(), pTargetPlayer.getCivilizationShortDescription(0),
 									pVictim.getName(), pVictim.getCivilizationShortDescription(0)))
 			Logger.writeLog(message, vColor="Navy")
-	
+
 	def onWarAccepted(self, argsList):
 		eTargetPlayer, eDemandPlayer, eVictim = argsList
 		if AutologOpt.isLogWarDemand():
@@ -1370,7 +1370,7 @@ class AutoLogEvent(AbstractAutoLogEvent):
 									pVictim.getName(), pVictim.getCivilizationShortDescription(0)))
 			message = message + BugUtil.getText("TXT_KEY_AUTOLOG_DIPLO_GENERIC_ACCEPT", (pTargetPlayer.getName(),))
 			Logger.writeLog(message, vColor="Green")
-	
+
 	def onWarRejected(self, argsList):
 		eTargetPlayer, eDemandPlayer, eVictim = argsList
 		if AutologOpt.isLogWarDemand():
@@ -1395,7 +1395,7 @@ class AutoLogEvent(AbstractAutoLogEvent):
 									pTargetPlayer.getName(), pTargetPlayer.getCivilizationShortDescription(0),
 									pVictim.getName(), pVictim.getCivilizationShortDescription(0)))
 			Logger.writeLog(message, vColor="Navy")
-	
+
 	def onEmbargoAccepted(self, argsList):
 		eTargetPlayer, eDemandPlayer, eVictim = argsList
 		if AutologOpt.isLogEmbargoDemand():
@@ -1408,7 +1408,7 @@ class AutoLogEvent(AbstractAutoLogEvent):
 									pVictim.getName(), pVictim.getCivilizationShortDescription(0)))
 			message = message + BugUtil.getText("TXT_KEY_AUTOLOG_DIPLO_GENERIC_ACCEPT", (pTargetPlayer.getName(),))
 			Logger.writeLog(message, vColor="Green")
-	
+
 	def onEmbargoRejected(self, argsList):
 		eTargetPlayer, eDemandPlayer, eVictim = argsList
 		if AutologOpt.isLogEmbargoDemand():
@@ -1530,7 +1530,7 @@ class AutoLogEvent(AbstractAutoLogEvent):
 		ziMaxCiv = gc.getGame().countCivPlayersEverAlive()
 		if (not self.CIVReligion):
 			self.storeStuff()
-		
+
 		Logger.writeLog("")
 		Logger.writeLog("dumpStuff")
 		Logger.writeLog("state religion")

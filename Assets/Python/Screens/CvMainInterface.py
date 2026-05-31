@@ -1535,7 +1535,7 @@ class CvMainInterface:
 				RectLayout.MAX, self.cityScreenHeadingBackgrHeight())
 		gOffSetPoint("BuildingListLabel", "BuildingListBackground",
 				RectLayout.CENTER, self.cityScreenHeadingOffset())
-		
+
 		iTopAbs = gRect("BuildingListBackground").y() + VSPACE(5)
 		iBottomAbs = gRect("LowerLeftCornerPanel").y()
 		iRowH = BTNSZ(26)
@@ -4301,7 +4301,7 @@ class CvMainInterface:
 			if iCount >= iMaxCount:
 				break
 # BUG - Bars on single line for higher resolution screens - end
-		
+
 
 # BUG - city specialist - start
 	def updateCitizenButtons_hide(self):
@@ -6464,7 +6464,7 @@ class CvMainInterface:
 		# Step 1: Add the Logic to CvMainInterface.py
 		# --- START: Specialist Breakdown Widget (2-Row / Split Labels Fix) ---
 		if pHeadSelectedCity:
-			
+
 			# 1. Calculate Raw Values (Buildings vs Specialists)
 			iBldgRaw = 0
 			for iBuilding in range(gc.getNumBuildingInfos()):
@@ -6483,7 +6483,7 @@ class CvMainInterface:
 			# 2. Get Totals & Progress
 			iTotalRaw = iBldgRaw + iSpecRaw
 			iTotalRate = pHeadSelectedCity.getGreatPeopleRate()
-			
+
 			# --- FIX: Calculate REAL Modifier from the Result ---
 			# The discrepancy happens because pCity.getGreatPeopleRateModifier() in the Python API often only returns the building modifiers (like the National Epic), but ignores Traits (Philosophical) or Golden Ages. The C++ tooltip adds those up separately.
 			# Instead of trying to hunt down every single bonus source in Python (which is complex and prone to errors), we can reverse-engineer the correct modifier by comparing the Final Total (which the game gives us) against the Raw Base (which we calculated).
@@ -6499,7 +6499,7 @@ class CvMainInterface:
 			iProgress = pHeadSelectedCity.getGreatPeopleProgress()
 			pPlayer = gc.getPlayer(pHeadSelectedCity.getOwner())
 			iThreshold = pPlayer.greatPeopleThreshold(False)
-			
+
 			# Calculate Turns Remaining
 			if iTotalRate > 0:
 				iTurns = (iThreshold - iProgress + iTotalRate - 1) / iTotalRate
@@ -6519,7 +6519,7 @@ class CvMainInterface:
 			# 5. Positioning & Rendering (Split into TWO Labels)
 			# screen.setLabel ignores \n, so we must draw two separate text widgets.
 			iX = gRect("CityRightPanelContents").x() + 2
-		
+
 			# Position Row 2 (Bottom) just above the yellow bar
 			iY2 = gRect("GreatPeopleBar").y() - 22
 			# Position Row 1 (Top) above Row 2
@@ -6527,11 +6527,11 @@ class CvMainInterface:
 
 			# Draw Label 1 (Top)
 			screen.setLabel("SpecBreakdownLabel1", "Background", szRow1, CvUtil.FONT_LEFT_JUSTIFY, iX, iY1, -0.1, FontTypes.SMALL_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
-			
+
 			# Draw Label 2 (Bottom)
 			screen.setLabel("SpecBreakdownLabel2", "Background", szRow2, CvUtil.FONT_LEFT_JUSTIFY, iX, iY2, -0.1, FontTypes.SMALL_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
 			# --- END: Specialist Breakdown Widget ---
-			
+
 			# <!-- custom: culture breakdown summary (per-source base culture and total/turns), placed in the right half below specialists to mirror the specialist breakdown while keeping all other panels unchanged. Uses reverse-engineered modifier so traits/golden age/civics are included. (GPT-5.2-Codex) -->
 			if pHeadSelectedCity:
 				if hasattr(pHeadSelectedCity, "getReligionCommerce"):
@@ -6588,7 +6588,7 @@ class CvMainInterface:
 				iModPercent = 0
 				if iBaseRate > 0 and iTotalCultureRateTimes100 > iBaseRate * 100:
 					iModPercent = (iTotalCultureRateTimes100 / iBaseRate) - 100
-				
+
 				szRow1 = u"<font=2>(%d%s %d%s %d%s %d%s %d%s)" % (
 						iRelCulture, self.szReligionIcon,
 						iCorpCulture, self.szTradeIcon,
@@ -6599,7 +6599,7 @@ class CvMainInterface:
 				if iModPercent != 0:
 					szRow1 += u" +%d%%" % (iModPercent)
 				szRow1 += u"</font>"
-				
+
 				iCultureProgressTimes100 = pHeadSelectedCity.getCultureTimes100(
 						pHeadSelectedCity.getOwner())
 				iCultureThreshold = pHeadSelectedCity.getCultureThreshold()
@@ -6616,7 +6616,7 @@ class CvMainInterface:
 				szRate = u"%d.%02d" % (iRateWhole, iRateFrac)
 				szProgress = u"%d.%02d" % (iProgWhole, iProgFrac)
 				szRow2 = u"<font=2>%s%s: %s/%d %s</font>" % (szRate, self.szCultureIcon, szProgress, iCultureThreshold, szTurns)
-				
+
 				iSpecW1 = CyInterface().determineWidth(szRow1)
 				iSpecW2 = CyInterface().determineWidth(szRow2)
 				iSpecW = max(iSpecW1, iSpecW2)
@@ -7693,7 +7693,7 @@ class CvMainInterface:
 			screen.hide("InterfaceGlobeLayerPanel")
 			screen.setState("GlobeToggle", False)
 			return False
-	
+
 		# set up panel
 		# <advc.004z>
 		bUnitLayer = (eCurrentLayerType == GlobeLayerTypes.GLOBE_LAYER_UNIT)

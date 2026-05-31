@@ -189,7 +189,7 @@ class Deal(object):
 		return self.deal.isNone()
 	def getInitialGameTurn(self):
 		return self.deal.getInitialGameTurn()
-	
+
 	def isCancelable(self, eByPlayer, bIgnoreWaitingPeriod=False):
 		if BugDll.isPresent():
 			return self.deal.isCancelable(eByPlayer, bIgnoreWaitingPeriod)
@@ -210,7 +210,7 @@ class Deal(object):
 			return self.getInitialGameTurn() + gc.getDefineINT("PEACE_TREATY_LENGTH") - gc.getGame().getGameTurn()
 	def kill(self):
 		self.deal.kill()
-	
+
 	def isPeaceDeal(self):
 		return self.eitherHasType(TradeableItems.TRADE_PEACE_TREATY)
 	def isVassalDeal(self):
@@ -220,7 +220,7 @@ class Deal(object):
 		# 
 		return ((eByPlayer == self.getOtherPlayer() and self.hasAnyType(VASSAL_TRADE_ITEMS)) or
 				(eByPlayer == self.getPlayer() and self.otherHasAnyType(VASSAL_TRADE_ITEMS)))
-	
+
 	def isReversed(self):
 		return False
 	def getPlayer(self):
@@ -235,7 +235,7 @@ class Deal(object):
 		return self.deal.getFirstTrade(index)
 	def getOtherTrade(self, index):
 		return self.deal.getSecondTrade(index)
-	
+
 	def trades(self):
 		for i in range(self.getCount()):
 			yield self.getTrade(i)
@@ -256,7 +256,7 @@ class Deal(object):
 				if type == trade.ItemType:
 					found.append(type)
 		return found
-	
+
 	def __repr__(self):
 		return ("<deal %d [trades %d %s] [trades %d %s]>" % 
 				(self.getID(), 

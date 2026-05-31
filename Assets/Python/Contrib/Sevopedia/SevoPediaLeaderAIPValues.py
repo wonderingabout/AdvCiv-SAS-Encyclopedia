@@ -102,15 +102,15 @@ def try_load_predumped_cache():
 	try:
 		# Dynamic import of the pre-dumped module
 		predumped = __import__(PREDUMPED_MODULE_NAME)
-		
+
 		leaders_info_cached = predumped.LEADERS_INFO_CACHED
 		ai_right_categories = predumped.AI_RIGHT_CATEGORIES
 		ai_middle_categories = predumped.AI_MIDDLE_CATEGORIES
 		ai_left_categories = predumped.AI_LEFT_CATEGORIES
-		
+
 		print("AI Personality Panel cache Loaded pre-dumped cache from %s.py" % PREDUMPED_MODULE_NAME)
 		return (leaders_info_cached, ai_right_categories, ai_middle_categories, ai_left_categories)
-	
+
 	except:
 		raise ImportError("AI Personality Panel cache IMPORT ERROR: IS_USE_PREDUMPED_CACHE=True but %s.py not found. Please provide a valid precomputed file, or disable SAS_SEVOPEDIA_LEADER_AI_PERSONALITY_CACHE_USE_PREDUMPED in XML SAS defines (GlobalDefines_advciv_sas.xml)." % PREDUMPED_MODULE_NAME)
 
@@ -124,15 +124,15 @@ def get_leader_cache_predumped_or_compute(compute_func, excluded_leader_types, i
 	predumped = try_load_predumped_cache()
 	if predumped is not None:
 		return predumped
-	
+
 	# Compute at runtime
 	print("AI Personality Panel cache Computing leader cache at runtime...")
 	leader_cache = compute_func()
-	
+
 	# Dump to log only if enabled via define
 	if IS_DUMP_CACHE_TO_LOG:
 		dump_leader_cache_to_pythondbg(leader_cache, excluded_leader_types, is_emoji_enabled, is_raw_xml_names)
-	
+
 	return leader_cache
 
 
@@ -161,7 +161,7 @@ def _compute_leader_cache_internal():
 
 			if missing:
 				raise RuntimeError(u"[FATAL] Your mod DLL does not expose the following required Python getters:\n%s\n\nMissing for example from iLeader=%d. Please expose them in .cpp files and build the DLL again (or adjust the leader field list if your mod removes or renames these getters)." % (", ".join(missing), iLeader))
-			
+
 			# success: only check first real leader
 			if IS_DEBUG_LEADER:
 				print("[DEBUG] Getter check passed for iLeader=%d. All required Python getters are present." % iLeader)
@@ -342,7 +342,7 @@ def _compute_leader_cache_internal():
 
 		if not positive_or_negative_memory_indexes:
 			raise ValueError("[VALUE ERROR] memory_indexes=%s check is false; memory_indexes cannot be empty or missing or some other kind of related or similar error, please check memory types (positive or negative) are fetched/imported correctly" % str(positive_or_negative_memory_indexes))
-		
+
 		return positive_or_negative_memory_indexes
 
 
@@ -710,7 +710,7 @@ def _compute_leader_cache_internal():
 				suffix = get_pascal_case_suffix(attitude_type)  # → "Furious"
 				parsed_name_no_war_attitude_prob = "iNoWarAttitudeProb%s" % suffix  # → iNoWarAttitudeProbFurious
 				computeAndStoreMinMaxOfOneKey(parsed_name_no_war_attitude_prob, value_no_war_attitude_prob, leader_info_minimums, leader_info_maximums)
-		
+
 		# <!-- custom: after all min and max parsing is done, some sanity and warning checks -->
 		for key in leader_info_minimums:
 			# <!-- custom: ensure our leader_info_minimums is reliable even if a bit if not lot or not or yes or etcbefore proceeding further -->
@@ -721,7 +721,7 @@ def _compute_leader_cache_internal():
 			if leader_info_minimums[key] == leader_info_maximums[key]:
 				if IS_DEBUG_LEADER:
 					print("[WARNING] Key=%s has an identical min and max value (%d). Warning only once at module load so we don't have/want/need to redo it later at the normalization stage, fix/change the XML leader info value(s) of some leader(s) so that min and max among all leaders are different if desired, or keep as is if intended/desired that leaders behave the same for this key." % (key, leader_info_minimums[key]))
-		
+
 		if IS_DEBUG_LEADER:
 			print("[DEBUG] At end of the function get_leader_info_minimums_and_maximums, we return for the minimums leader_info_minimums=%s" % str(leader_info_minimums))
 			print("[DEBUG] At end of the function get_leader_info_minimums_and_maximums, we return for the maximums leader_info_maximums=%s" % str(leader_info_maximums))
@@ -765,7 +765,7 @@ def _compute_leader_cache_internal():
 
 		# <!-- custom: finally append ' ' + the abbreviated tail as intended, for example "SameRel" → "SameRelACL (39)" -->
 		key_or_suffix_with_abbreviated_tail = key_or_suffix_with_tail_trimmed_further_trimmed + abbreviated_tail + " " + label_raw
-		
+
 		return key_or_suffix_with_abbreviated_tail
 
 	def get_labels_as_keys_or_suffixes_max_length_label(key_or_suffix, label_raw, max_length):

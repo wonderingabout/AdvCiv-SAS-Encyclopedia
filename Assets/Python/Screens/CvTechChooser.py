@@ -196,7 +196,7 @@ class CvTechChooser:
 		# <!-- custom: cache the define lookup once. (GPT-5.2-Codex (summarized)). Note: done here rather than in init since it somehow doesn't work unlike in some other files -->
 		if self.iSAS_CV_TECH_CHOOSER_HORIZONTAL_DEPTH_MODE is None:
 			self.iSAS_CV_TECH_CHOOSER_HORIZONTAL_DEPTH_MODE = gc.getDefineINT("SAS_CV_TECH_CHOOSER_HORIZONTAL_DEPTH_MODE")
-		
+
 		# <!-- custom: since various players may like a different visual design, give several tech tree dimensions -->
 		if self.iSAS_CV_TECH_CHOOSER_HORIZONTAL_DEPTH_MODE <= 0:
 			self.W_RIGHT_SPACE_FOR_SCOREBOARD = 206
@@ -215,7 +215,7 @@ class CvTechChooser:
 		else:
 			self.W_RIGHT_SPACE_FOR_SCOREBOARD = 0
 			# <!-- custom: other variables unchanged. (GPT-5.2-Codex (summarized)) -->
-		
+
 		screen.setRenderInterfaceOnly(True)
 		screen.showScreen(PopupStates.POPUPSTATE_IMMEDIATE, False)
 
@@ -226,7 +226,7 @@ class CvTechChooser:
 # BUG - GP Tech Prefs - start
 		self.NO_TECH_ART = ArtFileMgr.getInterfaceArtInfo("INTERFACE_BUTTONS_CANCEL").getPath()
 # BUG - GP Tech Prefs - end
-			
+
 		if ( CyGame().isDebugMode() ):
 			screen.addDropDownBoxGFC( "CivDropDown", 22, 12, 192, WidgetTypes.WIDGET_GENERAL, -1, -1, FontTypes.SMALL_FONT )
 			screen.setActivation( "CivDropDown", ActivationTypes.ACTIVATE_MIMICPARENTFOCUS )
@@ -274,7 +274,7 @@ class CvTechChooser:
 		# 	xPanelWidth = 1024
 		# yPanelHeight = 768
 		# <!-- custom: preserve key display (commerce sliders, scoreboard, etc.) while maximizing game window usage. (GPT-5.2-Codex (summarized)) -->
-		
+
 		# <!-- custom: unlike in the foreign advisor and similar files, self.X_SCREEN/self.Y_SCREEN/etc. are initialized in interfaceScreen, so we can use the real screen resolution here. In those files, screen wasn't available in init and trying it caused crashes, so they keep hardcoded 1920x1080 minus gaps. This uses the available screen var to stay fully dynamic; per Gemini 3 Pro advice and empirical checks. (GPT-5.2-Codex (summarized)) -->
 
 		wLeftSpace = 0
@@ -294,7 +294,7 @@ class CvTechChooser:
 		yPanelHeight = self.H_SCREEN
 
 		screen.showWindowBackground( False )
-	
+
 		# <!-- custom: no longer center it; adjust dimensions like the military advisor and related reworks. (GPT-5.2-Codex (summarized)) -->
 		# screen.setDimensions((screen.getXResolution() - xPanelWidth) / 2, screen.centerY(0), xPanelWidth, yPanelHeight)
 		screen.setDimensions(self.X_SCREEN, self.Y_SCREEN, xPanelWidth, yPanelHeight)
@@ -583,7 +583,7 @@ class CvTechChooser:
 				screen.addDDSGFCAt( szObsoleteButton, szTechRecord, gc.getBonusInfo(j).getButton(), iX + fX, iY + Y_ROW, TEXTURE_SIZE, TEXTURE_SIZE, WidgetTypes.WIDGET_HELP_OBSOLETE_BONUS, j, -1, False )
 				screen.addDDSGFCAt( szObsoleteX, szTechRecord, ArtFileMgr.getInterfaceArtInfo("INTERFACE_BUTTONS_RED_X").getPath(), iX + fX, iY + Y_ROW, TEXTURE_SIZE, TEXTURE_SIZE, WidgetTypes.WIDGET_HELP_OBSOLETE_BONUS, j, -1, False )
 				fX += X_INCREMENT
-					
+
 		j = 0
 		k = 0
 
@@ -679,7 +679,7 @@ class CvTechChooser:
 
 		j = 0
 		k = 0
-		
+
 		# Adjustments  (advc.120g: Moved up so that the icon appears before the tech trading icon)
 		for j in range( CommerceTypes.NUM_COMMERCE_TYPES ):
 			# advc.120g: The second condition said (I paraphrase) "not team.isCommerceFlexible". This hides the icon once the tech is dicovered, which I don't like. If there were multiple techs unlocking the same slider it would make more sense. Actually, buildings can - in theory - unlock a slider for a player. So I'm going to check if the player already has the slider, but the team doesn't (meaning that the player must have it through a building).
@@ -1216,7 +1216,7 @@ class CvTechChooser:
 # BUG - GP Tech Prefs - start
 	def resetTechPrefs (self):
 		self.pPrefs = TechPrefs.TechPrefs()
-	
+
 	def updateTechPrefs (self):
 #		BugUtil.debug("cvTechChooser: updateTechPrefs")
 
@@ -1265,7 +1265,7 @@ class CvTechChooser:
 			# advc.004a: WIDGET added
 			screen.addDDSGFC( "GreatPersonHeading", ArtFileMgr.getInterfaceArtInfo("DISCOVER_TECHNOLOGY_BUTTON").getPath(), iX, iY-iIconSize/5, iIconSize, iIconSize, WidgetTypes.WIDGET_TECH_PREFS_HEADING, -1, -1 )
 			iX += 3 * PREF_ICON_SIZE # advc.004a: Continue to the right
-		
+
 		# advc.004a: Merged into the code below
 		#for i, f in enumerate(FLAVORS):
 		#	# GP icon
@@ -1288,7 +1288,7 @@ class CvTechChooser:
 			if (pPlayer.isResearchingTech(i)):
 				sTechs.add(self.pPrefs.getTech(i))
 				bAnyResearch = True # advc.004a
-		
+
 		# advc.004a: This loop is based on the placeGreatPeople function of the RFC:DoC mod
 		for i, f in enumerate(FLAVORS):
 			iUnitClass = gc.getInfoTypeForString(UNIT_CLASSES[i])
@@ -1317,7 +1317,7 @@ class CvTechChooser:
 			#	screen.addDDSGFC( szButtonName, self.NO_TECH_ART, iX, iY, PREF_ICON_SIZE, PREF_ICON_SIZE, WidgetTypes.WIDGET_TECH_PREFS_FUTURE, f, -1 )
 			# advc.004a: Rather show no button
 				screen.hide( szButtonName )
-				
+
 # BUG - GP Tech Prefs - end
 			iX += 2 * PREF_ICON_SIZE # advc.004a
 

@@ -90,10 +90,10 @@ def getSaveFileName(pathName):
 			fileName += '_' + turnYear.replace(" ", "-")
 		else:
 			objLeaderHead = gc.getLeaderHeadInfo (activePlayer.getLeaderType()).getText()
-			
+
 			game = gc.getGame()
 			map = gc.getMap()
-			
+
 			difficulty = gc.getHandicapInfo(activePlayer.getHandicapType()).getText()
 			mapType = os.path.basename(map.getMapScriptName())
 			mapSize = gc.getWorldInfo(map.getWorldSize()).getText()

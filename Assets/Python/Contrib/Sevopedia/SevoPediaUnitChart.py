@@ -39,7 +39,7 @@ class SevoPediaUnitChart:
 		self.W_NAME = 270
 		# <!-- custom: 129 is enough, but add a bit more margin to avoid truncation if digits are wider. (GPT-5.2-Codex (summarized)) -->
 		self.W_NUM = 130
-		
+
 		self.W_TABLE = ((self.N_COLUMNS - 2 - 1) * self.W_NUM) + (2 * self.MARGIN)
 
 
@@ -65,7 +65,7 @@ class SevoPediaUnitChart:
 			self.N_COLUMNS = 8
 		else:
 			self.N_COLUMNS = 10
-		
+
 		self.W_TABLE = (self.W_NAME + ((self.N_COLUMNS - 1) * self.W_NUM)) + (2 * self.MARGIN)
 
 		# <!-- custom: blue is more readable than standard i find, imported from base AdvCiv and modified with a similar kind of purpose -->
@@ -115,7 +115,7 @@ class SevoPediaUnitChart:
 			szAirEvasion = u"Air Evasion"
 			szAirIntercept = u"Air Intercept"
 			szAirRange = u"Air Range"
-			
+
 			szAirEvasionText = u"<font=2>     " + szAirEvasion + u"</font>"
 			szAirInterceptText = u"<font=2>    " + szAirIntercept + u"</font>"
 			szAirRangeText = u"<font=2>      " + szAirRange + u"</font>"

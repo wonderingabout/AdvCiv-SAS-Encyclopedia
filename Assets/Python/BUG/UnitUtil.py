@@ -60,7 +60,7 @@ def init():
 	for eUnit in range(NUM_UNITS):
 		unitInfo = gc.getUnitInfo(eUnit)
 		BugUtil.debug("==== %s ====", unitInfo.getDescription())
-		
+
 		# generic unit
 		classInfo = gc.getUnitClassInfo(unitInfo.getUnitClassType())
 		eGenericUnit = classInfo.getDefaultUnitIndex()
@@ -71,7 +71,7 @@ def init():
 			else:
 				BugUtil.debug("  unique of %s",
 						gc.getUnitInfo(eGenericUnit).getDescription())
-		
+
 		# resource sets
 		found = False
 		eBonus = unitInfo.getPrereqAndBonus()
@@ -89,7 +89,7 @@ def init():
 			unitsWithBonuses.add(eUnit)
 		else:
 			unitsWithoutBonuses.add(eUnit)
-		
+
 		# tech map
 		techs = set()
 		unitTechs[eUnit] = techs
@@ -102,12 +102,12 @@ def init():
 				techs.add(eTech)
 		for eTech in techs:
 			BugUtil.debug("  requires %s", gc.getTechInfo(eTech).getDescription())
-		
+
 	# upgrade maps
 	for eUnit in range(NUM_UNITS):
 		getOlderUnits(eUnit)
 		getNewerUnits(eUnit)
-	
+
 	initOrders()
 
 def unitInfos():
@@ -547,22 +547,22 @@ def getCanTrainUnits(playerOrID, askingPlayerOrID=None, military=None):
 
 (
 	ORDER_NONE,
-	
+
 	ORDER_SKIP,
 	ORDER_SLEEP,
 	ORDER_FORTIFY,
 	ORDER_HEAL,
-	
+
 	ORDER_SENTRY,
 	ORDER_INTERCEPT,
 	ORDER_PATROL,
 	ORDER_PLUNDER,
-	
+
 	ORDER_BUILD,  # improvement
 	ORDER_CONSTRUCT,  # building
 	ORDER_GOTO,
 	ORDER_EXPLORE,
-	
+
 	ORDER_AUTO_BUILD,
 	ORDER_AUTO_NETWORK,
 	ORDER_AUTO_CITY,

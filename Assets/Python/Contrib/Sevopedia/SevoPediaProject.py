@@ -29,7 +29,7 @@ localText = CyTranslator()
 
 
 class SevoPediaProject:
-	
+
 	def __init__(self, main):
 		self.iProject = -1
 		self.top = main

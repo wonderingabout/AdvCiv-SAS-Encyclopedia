@@ -233,7 +233,7 @@ class SevoPediaImprovement:
 					sign = ""
 				s += (u"%s%i%c " % (sign, iYieldChange, gc.getYieldInfo(k).getChar()))
 				nCount += 1
-		
+
 		if nCount > 0:
 			szYield = u"<font=4>%s</font>" % s
 
@@ -243,7 +243,7 @@ class SevoPediaImprovement:
 
 			xCenteringPositioning = ((self.W_IMPROVEMENT_PANE-10) / 2) - 4
 			yBottomPositioning = self.H_IMPROVEMENT_PANE - 44
-			
+
 			screen.addMultilineText(self.top.getNextWidgetName(), szYield, self.X_IMPROVEMENT_PANE + xCenteringPositioning + xCenteringAdjust +5, self.Y_IMPROVEMENT_PANE - 13 + yBottomPositioning, self.W_IMPROVEMENT_PANE-10, self.H_IMPROVEMENT_PANE-10, WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
 
 

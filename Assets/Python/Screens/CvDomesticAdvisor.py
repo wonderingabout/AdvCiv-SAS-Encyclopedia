@@ -25,12 +25,12 @@ class CvDomesticAdvisor:
 	#
 	def __init__(self):
 		self.listSelectedCities = []
-		
+
 	# Screen construction function
 	def interfaceScreen(self):
-	
+
 		player = gc.getPlayer(gc.getGame().getActivePlayer())
-		
+
 		# Create a new screen, called DomesticAdvisur, using the file CvDomesticAdvisor.py for input
 		screen = CyGInterfaceScreen( "DomesticAdvisor", CvScreenEnums.DOMESTIC_ADVISOR )
 
@@ -69,7 +69,7 @@ class CvDomesticAdvisor:
 		# <!-- custom: update: empty left/right edges remain and are distracting, so expand a bit beyond. (GPT-5.2-Codex (summarized)) -->
 		screen.setDimensions(-self.iExtraWidth, 105, self.nScreenWidth, self.nScreenHeight)
 		screen.showScreen(PopupStates.POPUPSTATE_IMMEDIATE, False)
-	
+
 		# Here we set the background widget and exit button, and we show the screen
 		screen.addPanel( "DomesticAdvisorBG", u"", u"", True, False, 0, 0, self.nScreenWidth, self.nScreenHeight, PanelStyles.PANEL_STYLE_MAIN )
 		screen.setText("DomesticExit", "Background",
@@ -90,72 +90,72 @@ class CvDomesticAdvisor:
 					break
 				# UNOFFICIAL_PATCH end
 			(loopCity, iter) = player.nextCity(iter, false)
-		
+
 		if (bCanLiberate or gc.getPlayer(gc.getGame().getActivePlayer()).canSplitEmpire()):
 			screen.setImageButton( "DomesticSplit", "", self.nScreenWidth - 110, self.nScreenHeight - 45, 28, 28, WidgetTypes.WIDGET_ACTION, gc.getControlInfo(ControlTypes.CONTROL_FREE_COLONY).getActionInfoIndex(), -1 )
 			screen.setStyle( "DomesticSplit", "Button_HUDAdvisorVictory_Style" )
-	
+
 		# Erase the flag?
 		CyInterface().setDirty(InterfaceDirtyBits.MiscButtons_DIRTY_BIT, True)
 
 		# Draw the city list...
 		self.drawContents( )
-		
+
 	# headers...
 	def drawHeaders( self ):
 
 		# Get the screen and the player
 		screen = CyGInterfaceScreen( "DomesticAdvisor", CvScreenEnums.DOMESTIC_ADVISOR )
-		
+
 		# Zoom to City
 		screen.setTableColumnHeader( "CityListBackground", 0, "", (30 * self.nTableWidth) / self.nNormalizedTableWidth )
-		
+
 		# Name Column (advc.193: Font size increased; was 2.)
 		screen.setTableColumnHeader( "CityListBackground", 1, "<font=3>" + localText.getText("TXT_KEY_DOMESTIC_ADVISOR_NAME", ()) + "</font>", (221 * self.nTableWidth) / self.nNormalizedTableWidth )
-		
+
 		# Population Column
 		# advc.002f: Replace localText.getText("TXT_KEY_POPULATION", ()) with CITIZEN_CHAR from BULL
 		screen.setTableColumnHeader( "CityListBackground", 2, "<font=2>" + (u"%c" % CyGame().getSymbolID(FontSymbols.CITIZEN_CHAR)) + "</font>", (40 * self.nTableWidth) / self.nNormalizedTableWidth )
-		
+
 		# Happiness Column  advc.ctr: width was 40
 		screen.setTableColumnHeader( "CityListBackground", 3, "<font=2>" + (u"%c" % CyGame().getSymbolID(FontSymbols.HAPPY_CHAR)) + "</font>", (33 * self.nTableWidth) / self.nNormalizedTableWidth )
-		
+
 		# Health Column  advc.ctr: width was 40
 		screen.setTableColumnHeader( "CityListBackground", 4, "<font=2>" + (u"%c" % CyGame().getSymbolID(FontSymbols.HEALTHY_CHAR)) + "</font>", (33 * self.nTableWidth) / self.nNormalizedTableWidth )
-		
+
 		# Food Column
 		screen.setTableColumnHeader( "CityListBackground", 5, "<font=2>" + (u"%c" % gc.getYieldInfo(YieldTypes.YIELD_FOOD).getChar()) + "</font>", (40 * self.nTableWidth) / self.nNormalizedTableWidth )
-		
+
 		# Production Column
 		screen.setTableColumnHeader( "CityListBackground", 6, "<font=2>" + (u"%c" % gc.getYieldInfo(YieldTypes.YIELD_PRODUCTION).getChar()) + "</font>", (40 * self.nTableWidth) / self.nNormalizedTableWidth )
-		
+
 		# Gold Column
 		screen.setTableColumnHeader( "CityListBackground", 7, "<font=2>" + (u"%c" % gc.getCommerceInfo(CommerceTypes.COMMERCE_GOLD).getChar()) + "</font>", (40 * self.nTableWidth) / self.nNormalizedTableWidth )
-		
+
 		# Research Column
 		szText = u"%c" %(gc.getCommerceInfo(CommerceTypes.COMMERCE_RESEARCH).getChar())
 		screen.setTableColumnHeader( "CityListBackground", 8, "<font=2>" + szText, (40 * self.nTableWidth) / self.nNormalizedTableWidth )
-		
+
 		# Espionage Column
 		szText = u"%c" %(gc.getCommerceInfo(CommerceTypes.COMMERCE_ESPIONAGE).getChar())
 		screen.setTableColumnHeader( "CityListBackground", 9, "<font=2>" + szText, (40 * self.nTableWidth) / self.nNormalizedTableWidth )
-		
+
 		# Culture Column
 		screen.setTableColumnHeader( "CityListBackground", 10, "<font=2>" + (u"%c" % gc.getCommerceInfo(CommerceTypes.COMMERCE_CULTURE).getChar()) + "</font>", (70 * self.nTableWidth) / self.nNormalizedTableWidth )
-				
+
 		# Trade Column
 		screen.setTableColumnHeader( "CityListBackground", 11, "<font=2>" + (u"%c" % CyGame().getSymbolID(FontSymbols.TRADE_CHAR)) + "</font>", (35 * self.nTableWidth) / self.nNormalizedTableWidth )
-				
+
 		# Maintenance Column  advc.ctr: width was 40
 		screen.setTableColumnHeader( "CityListBackground", 12, "<font=2>" + (u"%c" % CyGame().getSymbolID(FontSymbols.BAD_GOLD_CHAR)) + "</font>", (33 * self.nTableWidth) / self.nNormalizedTableWidth )
-		
+
 		# Great Person Column
 		screen.setTableColumnHeader( "CityListBackground", 13, "<font=2>" + (u"%c" % CyGame().getSymbolID(FontSymbols.GREAT_PEOPLE_CHAR)) + "</font>", (70 * self.nTableWidth) / self.nNormalizedTableWidth )
-				
+
 		# Garrison Column
 		# advc.004: Use STRENGTH_CHAR instead of DEFENSE_CHAR
 		screen.setTableColumnHeader( "CityListBackground", 14, "<font=2>" + (u"%c" % CyGame().getSymbolID(FontSymbols.STRENGTH_CHAR)) + "</font>", (35 * self.nTableWidth) / self.nNormalizedTableWidth )
-				
+
 		# Production Column (advc.193: Font size increased; was 2.)
 		screen.setTableColumnHeader( "CityListBackground", 15, "<font=3>" + localText.getText("TXT_KEY_DOMESTIC_ADVISOR_PRODUCING", ()) + "</font>", (132 * self.nTableWidth) / self.nNormalizedTableWidth )	
 
@@ -166,13 +166,13 @@ class CvDomesticAdvisor:
 
 	# Function to draw the contents of the cityList passed in
 	def drawContents (self):
-	
+
 		# Get the screen and the player
 		screen = CyGInterfaceScreen( "DomesticAdvisor", CvScreenEnums.DOMESTIC_ADVISOR )
 		player = gc.getPlayer(CyGame().getActivePlayer())
-		
+
 		screen.moveToFront( "Background" )
-		
+
 		# Build the table	
 		screen.addTableControlGFC( "CityListBackground", 19, 18, 21, self.nTableWidth, self.nTableHeight, True, False, 24, 24, TableStyles.TABLE_STYLE_STANDARD )
 		screen.enableSelect( "CityListBackground", True )
@@ -189,15 +189,15 @@ class CvDomesticAdvisor:
 			self.updateTable(pLoopCity, i)
 			i += 1
 			(pLoopCity, iter) = player.nextCity(iter, false)
-		
+
 		self.drawHeaders()
-		
+
 		self.drawSpecialists()
-		
+
 		screen.moveToBack( "DomesticAdvisorBG" )
-		
+
 		self.updateAppropriateCitySelection()
-		
+
 		CyInterface().setDirty(InterfaceDirtyBits.Domestic_Advisor_DIRTY_BIT, true)
 
 	def updateTable(self, pLoopCity, i):
@@ -221,27 +221,27 @@ class CvDomesticAdvisor:
 			szName += (u"%c" % CyGame().getSymbolID(FontSymbols.STAR_CHAR))
 		elif pLoopCity.isGovernmentCenter():
 			szName += (u"%c" % CyGame().getSymbolID(FontSymbols.SILVER_STAR_CHAR))
-		
+
 		for iReligion in range(gc.getNumReligionInfos()):
 			if pLoopCity.isHasReligion(iReligion):
 				if pLoopCity.isHolyCityByType(iReligion):
 					szName += (u"%c" % gc.getReligionInfo(iReligion).getHolyCityChar())
 				else:
 					szName += (u"%c" % gc.getReligionInfo(iReligion).getChar())
-						
+
 		for iCorporation in range(gc.getNumCorporationInfos()):
 			if pLoopCity.isHeadquartersByType(iCorporation):
 				szName += (u"%c" % gc.getCorporationInfo(iCorporation).getHeadquarterChar())
 			elif pLoopCity.isActiveCorporation(iCorporation):
 				szName += (u"%c" % gc.getCorporationInfo(iCorporation).getChar())
-					
+
 		# City name...
 		screen.setTableText( "CityListBackground", 1, i, szFontTagOpen + szName + szFontTagClose, "",
 				#WidgetTypes.WIDGET_GENERAL, -1, -1,
 				# advc.186b: BULL attaches this to the zoom button. I like it better on the city name b/c, that way, it doesn't obscure the button that the player may want to click.
 				WidgetTypes.WIDGET_EXAMINE_CITY, pLoopCity.getOwner(), pLoopCity.getID(),
 				CvUtil.FONT_LEFT_JUSTIFY )
-		
+
 		# Population
 		screen.setTableInt( "CityListBackground", 2, i, szFontTagOpen + unicode(pLoopCity.getPopulation()) + szFontTagClose, "", WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY )
 
@@ -271,7 +271,7 @@ class CvDomesticAdvisor:
 		elif iNetFood < 0:
 			szText = localText.getText("TXT_KEY_COLOR_NEGATIVE", ()) + szText + localText.getText("TXT_KEY_COLOR_REVERT", ())
 		screen.setTableInt( "CityListBackground", 5, i, szFontTagOpen + szText + szFontTagClose, "", WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY )
-		
+
 		# Production status...
 		screen.setTableInt( "CityListBackground", 6, i, szFontTagOpen+ unicode(pLoopCity.getYieldRate(YieldTypes.YIELD_PRODUCTION)) + szFontTagClose, "", WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY )
 
@@ -314,9 +314,9 @@ class CvDomesticAdvisor:
 				if iTurnsLeft * pLoopCity.getGreatPeopleRate() <  iGPPLeft:
 					iTurnsLeft += 1
 				szGreatPerson += u" (" + unicode(iTurnsLeft) + u")"
-		
+
 		screen.setTableInt( "CityListBackground", 13, i, szFontTagOpen + szGreatPerson + szFontTagClose, "", WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY )
-		
+
 		# Garrison
 		screen.setTableInt( "CityListBackground", 14, i, szFontTagOpen + unicode(pLoopCity.plot().getNumDefenders(pLoopCity.getOwner())) + szFontTagClose, "", WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY )
 
@@ -377,7 +377,7 @@ class CvDomesticAdvisor:
 			szRevoltPr = localText.changeTextColor(szRevoltPr, gc.getInfoTypeForString(szColorTag))
 			screen.setTableText("CityListBackground", 16, i, szFontTagOpen + szRevoltPr + szFontTagClose, "", WidgetTypes.WIDGET_GENERAL, -1, -1, CvUtil.FONT_LEFT_JUSTIFY)
 		# </advc.ctr>
-		
+
 	# Draw the specialist and their increase and decrease buttons
 	def drawSpecialists(self):
 		screen = CyGInterfaceScreen( "DomesticAdvisor", CvScreenEnums.DOMESTIC_ADVISOR )
@@ -408,14 +408,14 @@ class CvDomesticAdvisor:
 				screen.hide("SpecialistPlus" + str(i))
 				screen.hide("SpecialistMinus" + str(i))
 				screen.hide("SpecialistText" + str(i))
-				
+
 	def updateSpecialists(self):
 		# Function which shows the specialists.
 		#
 		screen = CyGInterfaceScreen( "DomesticAdvisor", CvScreenEnums.DOMESTIC_ADVISOR )
 
 		if (CyInterface().isOneCitySelected()):
-		
+
 			city = CyInterface().getHeadSelectedCity()
 			nPopulation = city.getPopulation()
 			nFreeSpecial = city.totalFreeSpecialists()
@@ -424,7 +424,7 @@ class CvDomesticAdvisor:
 				if (gc.getSpecialistInfo(i).isVisible()):	
 					szName = "SpecialistImage" + str(i)
 					screen.show(szName)
-					
+
 					szName = "SpecialistText" + str(i)
 					screen.setLabel(szName, "Background", str (city.getSpecialistCount(i)) + "/" + str(city.getMaxSpecialistCount(i)), CvUtil.FONT_LEFT_JUSTIFY, self.nFirstSpecialistX + (self.nSpecialistDistance * i) + self.nSpecTextOffsetX, self.nSpecialistY + self.nSpecTextOffsetY, 0, FontTypes.GAME_FONT, WidgetTypes.WIDGET_GENERAL, -1, -1)
 					screen.show(szName)
@@ -444,20 +444,20 @@ class CvDomesticAdvisor:
 						screen.hide(szName)
 		else:
 			self.hideSpecialists()
-				
+
 	# Will handle the input for this screen...
 	def handleInput (self, inputClass):
 		# Calls function mapped in DomesticAdvisorInputMap
 		#
 		# only get from the map if it has the key
-		
+
 		if ( inputClass.getNotifyCode() == NotifyCode.NOTIFY_LISTBOX_ITEM_SELECTED ):
 			if (inputClass.getMouseX() == 0):
 				screen = CyGInterfaceScreen( "DomesticAdvisor", CvScreenEnums.DOMESTIC_ADVISOR )
 				screen.hideScreen()
-				
+
 				CyInterface().selectCity(gc.getPlayer(inputClass.getData1()).getCity(inputClass.getData2()), true)
-				
+
 				popupInfo = CyPopupInfo()
 				popupInfo.setButtonPopupType(ButtonPopupTypes.BUTTONPOPUP_PYTHON_SCREEN)
 				popupInfo.setText(u"showDomesticAdvisor")
@@ -469,9 +469,9 @@ class CvDomesticAdvisor:
 			if (inputClass.getFunctionName() == "DomesticSplit"):
 				screen = CyGInterfaceScreen( "DomesticAdvisor", CvScreenEnums.DOMESTIC_ADVISOR )
 				screen.hideScreen()
-			
+
 		return 0
-	
+
 	def updateAppropriateCitySelection(self):
 		nCities = gc.getPlayer(gc.getGame().getActivePlayer()).getNumCities()
 		screen = CyGInterfaceScreen( "DomesticAdvisor", CvScreenEnums.DOMESTIC_ADVISOR )
@@ -480,11 +480,11 @@ class CvDomesticAdvisor:
 		for i in range(nCities):
 			if screen.isRowSelected("CityListBackground", i):
 				self.listSelectedCities.append(screen.getTableText("CityListBackground", 2, i))
-								
+
 	def update(self, fDelta):
 		if (CyInterface().isDirty(InterfaceDirtyBits.Domestic_Advisor_DIRTY_BIT)):
 			CyInterface().setDirty(InterfaceDirtyBits.Domestic_Advisor_DIRTY_BIT, False)
-			
+
 			screen = CyGInterfaceScreen( "DomesticAdvisor", CvScreenEnums.DOMESTIC_ADVISOR )
 			player = gc.getPlayer(CyGame().getActivePlayer())
 
@@ -494,7 +494,7 @@ class CvDomesticAdvisor:
 				self.updateTable(pLoopCity, i)
 				i += 1
 				(pLoopCity, iter) = player.nextCity(iter, false)
-			
+
 			self.updateSpecialists()
-		
+
 		return

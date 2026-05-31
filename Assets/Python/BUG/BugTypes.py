@@ -65,7 +65,7 @@ NORMALIZED_TYPES = {
 	STRING: STRING,
 	"str": STRING,
 	COLOR: COLOR,
-	
+
 	TUPLE: TUPLE,
 	"vector": TUPLE,
 	LIST: LIST,
